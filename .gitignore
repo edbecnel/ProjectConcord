@@ -1,0 +1,9 @@
+# ProjectConcord — local derived data (see ADR-0004)
+.projectconcord/
+
+# EDF conformance reports (transient evidence per EDF Bootstrap Report)
+reports/conformance/
+
+# macOS / editor-local
+.DS_Store
+.obsidian/

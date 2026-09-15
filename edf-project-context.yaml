@@ -1,0 +1,28 @@
+schema_version: "1.0.0"
+
+repository_role: engineering-project
+
+disciplines:
+  - software-engineering
+
+activities:
+  - development
+
+authority:
+  governed_scope: >
+    ProjectConcord product repository — software that operates EDF-managed
+    engineering projects. Canonical engineering knowledge for this product
+    lives under docs/ per EDF; source code will live under src/ after Gate G1.
+  decision_authority: Project owner / architect
+  canonicalization_policy: >
+    EDF repository artifacts are canonical. Derived application caches are
+    non-canonical per ADR-0004.
+
+capabilities:
+  - software-engineering
+
+legacy_profile: software-engineering
+
+extensions: []
+
+# See docs/Development/EDF_Gap_Register.md for EDF interpretation gaps.

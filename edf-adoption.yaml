@@ -1,0 +1,8 @@
+# EDF Adoption Configuration — ProjectConcord
+# See Engineering-Documentation-Framework: docs/Development/Profile_Aware_Bootstrap.md
+
+profile: software-engineering
+
+project_name: ProjectConcord
+
+copy_ai_handbook: false
