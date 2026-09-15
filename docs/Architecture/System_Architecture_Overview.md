@@ -2,7 +2,7 @@
 
 # System Architecture Overview
 
-> **Status:** Draft — complete [EGR-G0](../../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) for gate approval  
+> **Status:** Draft — [EGR-G0](../../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) **Satisfied** (2026-09-15)  
 > **Owner:** ProjectConcord  
 > **Applies To:** EDF Project Management System  
 > **Last Reviewed:** 2026-09-15 (multi-user amendments)  
@@ -117,6 +117,7 @@ src/
     Edf.Repository/       # Filesystem abstraction
     Edf.Git/              # Git status, diff, blame (LibGit2Sharp or similar)
     Edf.ChangeAnalysis/   # Change summaries (Roslyn later)
+    Edf.Integrity/          # Layered integrity, transitions, external change (M5+)
     Edf.Application/      # Use cases orchestrating Engine + UI-agnostic APIs
     Edf.ProjectServices/  # Membership, roles, change sets, operational persistence (M1: interfaces/stubs)
     Edf.Identity/         # Auth abstractions; local degenerate case for MVP
@@ -193,15 +194,45 @@ Parse text output initially; contribute JSON format to EDF when stable (GAP-010)
 ## Canonical Authoring and Lifecycle
 
 - **Authoring** — structured forms driven by EDF templates; emit canonical Markdown to prescribed paths (M5: one artifact type, SPEC).
+- **Integrity-aware authoring** — governed field changes SHOULD use semantic operations where [SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md) applies ([ADR-0011](ADRs/ADR-0011-Canonical-Artifact-Integrity-and-Trusted-State.md)).
 - **Raw Markdown** — supported for power users; validation on save (PCON-0000 §15).
 - **Lifecycle** — status values from templates; warn on unknown; no silent deletion — archive pattern per DIA.
 - **Move/rename** — user-initiated; scan inbound/outbound links; update indexes when user confirms.
 
 ---
 
+## Canonical Integrity Pipeline
+
+Normative behavior: [SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md). Decision: [ADR-0011](ADRs/ADR-0011-Canonical-Artifact-Integrity-and-Trusted-State.md).
+
+```text
+StructuralIntegrity
+        |
+        v
+SemanticStructuralIntegrity
+        |
+        v
+RelationshipAndLifecycleIntegrity  <-- SPEC-002 registry/index feeds this layer
+        |
+        v
+AuthorizationIntegrity             <-- roles / EGR independent review
+        |
+        v
+EngineeringIntentConsistency       <-- M7+ reconciliation (separate concern)
+```
+
+| Service (illustrative) | Role |
+|---|---|
+| `IntegrityService` | Orchestrate layered checks; artifact integrity status |
+| `TransitionEvaluator` | Governed lifecycle operations vs raw text edits |
+| `ExternalChangeMonitor` | Git/filesystem baseline; classify external deltas |
+| `TrustedIntegrityStore` | Operational fingerprints and trust records ([ADR-0009](ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md)) |
+
+**Multi-user:** Shared project services validate concurrent changes against the same integrity model before treating operational state as trusted ([SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md) §38–§39). Change-set coordination aligns with [AMD-0001](AMD-0001-Multi-User-Desktop-and-Shared-Project-Services.md).
+
 ## Relationship Graph
 
-Normative behavior: [SPEC-002](../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md). Decision: [ADR-0007](ADRs/ADR-0007-Semantic-Artifact-Identity-and-Referential-Integrity.md).
+Normative behavior: [SPEC-002](../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md). Decision: [ADR-0007](ADRs/ADR-0007-Semantic-Artifact-Identity-and-Referential-Integrity.md). Lifecycle authorization and trusted state: [SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md).
 
 Derived from:
 
@@ -316,6 +347,7 @@ Fixture repos under `tests/fixtures/` (created at M1/M2).
 | [ADR-0008](ADRs/ADR-0008-CRA-and-CKES-Dependency-Boundary.md) | CRA/CKES dependency |
 | [ADR-0009](ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md) | Multi-user platform |
 | [ADR-0010](ADRs/ADR-0010-Single-User-Administrator-Default-Model.md) | Administrator default |
+| [ADR-0011](ADRs/ADR-0011-Canonical-Artifact-Integrity-and-Trusted-State.md) | Canonical integrity and trusted state |
 
 ---
 
@@ -328,5 +360,6 @@ Fixture repos under `tests/fixtures/` (created at M1/M2).
 - [AMD-0001 — Multi-User Amendment](AMD-0001-Multi-User-Desktop-and-Shared-Project-Services.md)
 - [Multi-User Amendment Analysis](Multi_User_Amendment_Affected_Document_Analysis.md)
 - [SPEC-001 MVP](../Specifications/features/SPEC-001-mvp-edf-desktop-client.md)
+- [SPEC-003 Integrity](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)
 - [EDF Gap Register](../Development/EDF_Gap_Register.md)
 - [Implementation Roadmap](../Development/Implementation_Roadmap.md)

@@ -52,6 +52,10 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-019 | Persona vs authorization role taxonomy | Medium | [ADR-0010](../Architecture/ADRs/ADR-0010-Single-User-Administrator-Default-Model.md); UI personas documented separately from RBAC |
 | GAP-020 | Independent EDF/EGR review vs Administrator UX | Medium | Never bypass EDF-prescribed independent review; surface in gate UI |
 | GAP-021 | Concurrent canonical edit / change-set protocol | High | Optimistic concurrency + change sets; defer implementation to M6+ spec |
+| GAP-022 | Governed field registry (EDF) | High | [SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md); [ADR-0011](../Architecture/ADRs/ADR-0011-Canonical-Artifact-Integrity-and-Trusted-State.md) |
+| GAP-023 | Machine-readable lifecycle transitions | High | Semantic transition ops; flag external governed edits |
+| GAP-024 | Transition prerequisites / acceptance rules | Medium | EGR human gates; app surfaces independent review |
+| GAP-025 | Trusted integrity record portability | Medium | Rebuild from Git + validation; operational fingerprints optional |
 
 ---
 
@@ -264,6 +268,39 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | **Question** | How are conflicting canonical Markdown edits detected and resolved? |
 | **Interim policy** | Change-set model; avoid permanent locks; detailed behavior in post-M6 specification. |
 
+### GAP-022 — Governed canonical fields (SPEC-003)
+
+| Field | Content |
+|---|---|
+| **Source** | [SPEC-003 §8–9](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md) |
+| **Question** | Which artifact fields are governed vs ordinary content? |
+| **Current EDF behavior** | Templates and DIA imply governance; no single machine-readable governed-field manifest. |
+| **Interim policy** | Heuristic list in SPEC-003; confidence flags; EDF improvement feedback. |
+
+### GAP-023 — Lifecycle transition rules
+
+| Field | Content |
+|---|---|
+| **Source** | SPEC-003 §10–11; overlaps GAP-004 |
+| **Question** | Which lifecycle transitions are legal and how are they evaluated? |
+| **Interim policy** | Known Status enums only; semantic transition API in ProjectConcord; external edits flagged. |
+
+### GAP-024 — Prerequisites for acceptance / gate closure
+
+| Field | Content |
+|---|---|
+| **Source** | SPEC-003; EGR-0001 patterns |
+| **Question** | Are transition prerequisites machine-readable? |
+| **Interim policy** | EGR records human-driven; app surfaces independent-review requirements ([ADR-0010](../Architecture/ADRs/ADR-0010-Single-User-Administrator-Default-Model.md)). |
+
+### GAP-025 — Trusted integrity metadata
+
+| Field | Content |
+|---|---|
+| **Source** | SPEC-003 §19–20; [ADR-0011](../Architecture/ADRs/ADR-0011-Canonical-Artifact-Integrity-and-Trusted-State.md) |
+| **Question** | What integrity/trust state must travel with a repo clone vs remain operational? |
+| **Interim policy** | Rebuild trust from Git + deterministic validation; optional `.projectconcord/` or shared store caches fingerprints. |
+
 ---
 
 ## Parent
@@ -275,7 +312,8 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 - [CRA Alignment and Responsibility Boundaries](../Architecture/CRA_Alignment_and_Responsibility_Boundaries.md)
 - [SPEC-002 — Referential Integrity](../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md)
 - [PCON-0000 — Architectural Vision](../Architecture/PCON-0000-EDF-Project-Management-System-Architectural-Vision-and-Bootstrap-Handover.md)
-- [AMD-0001 — Multi-User Amendment](../Architecture/AMD-0001-Multi-User-Desktop-and-Shared-Project-Services.md)
+- [SPEC-003 — Canonical Artifact Integrity](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)
+- [Canonical Integrity Integration Analysis](../Architecture/Canonical_Integrity_Spec_Integration_Analysis.md)
 - [Multi-User Amendment Analysis](../Architecture/Multi_User_Amendment_Affected_Document_Analysis.md)
 - [System Architecture Overview](../Architecture/System_Architecture_Overview.md)
 - [Implementation Roadmap](Implementation_Roadmap.md)

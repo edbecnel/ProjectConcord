@@ -51,7 +51,7 @@ Satisfy AMD-0001 §44–§46: record which documents were amended, key decisions
 | Solo user UX | Default Administrator; same architecture ([ADR-0010](ADRs/ADR-0010-Single-User-Administrator-Default-Model.md)) |
 | MVP delivery | M1–M5 EDF desktop MVP may use local degenerate membership; interfaces reserved in M1 |
 
-## Open items (implementation / later specs)
+- Shared project validation boundary: [SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md) §39.
 
 - Minimum shared-service topology for first multi-desktop concurrent project (hosting, auth provider).
 - Detailed change-set and concurrent Markdown editing protocol.

@@ -30,6 +30,7 @@ Integrated amendments (rationale retained; normative summary in ADRs and System 
 | [AMD-0001](AMD-0001-Multi-User-Desktop-and-Shared-Project-Services.md) | Multi-User Desktop and Shared Project Services | Integrated 2026-09-15 |
 | [AMD-0002](AMD-0002-Single-User-Administrator-Model.md) | Single-User Administrator Model | Integrated 2026-09-15 |
 | [Analysis](Multi_User_Amendment_Affected_Document_Analysis.md) | Multi-User Amendment — Affected Document Analysis | Draft |
+| [Analysis](Canonical_Integrity_Spec_Integration_Analysis.md) | Canonical Integrity Spec — Integration Analysis | Draft |
 
 ## What Belongs Here
 

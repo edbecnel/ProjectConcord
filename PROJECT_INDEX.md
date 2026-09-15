@@ -24,6 +24,8 @@ This is the primary documentation hub for humans and AI assistants.
 - [EDF Gap Register](docs/Development/EDF_Gap_Register.md)
 - [SPEC-001 — MVP Desktop Client](docs/Specifications/features/SPEC-001-mvp-edf-desktop-client.md)
 - [SPEC-002 — Referential Integrity](docs/Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md)
+- [SPEC-003 — Canonical Artifact Integrity](docs/Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)
+- [Canonical Integrity Integration Analysis](docs/Architecture/Canonical_Integrity_Spec_Integration_Analysis.md)
 - [AI Engineering](docs/AI/README.md)
 - [Developer Handbook](docs/Developer_Handbook/README.md)
 - [First-Time Setup](docs/Developer_Handbook/00_First_Time_Setup.md)
@@ -38,8 +40,8 @@ This is the primary documentation hub for humans and AI assistants.
 
 ## Current Priorities
 
-1. Complete **[EGR-G0](docs/Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md)** checkboxes including **multi-user amendment** re-review (Gate G0).
-2. After EGR-G0 satisfied: **M1** .NET solution skeleton; complete **[EGR-G1](docs/Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md)** before intensive MVP work.
+1. **M1** — .NET solution skeleton ([EGR-G0](docs/Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) **Satisfied**).
+2. Complete **[EGR-G1](docs/Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md)** before intensive MVP implementation.
 3. Complete AI handbook and Governance domains when scheduling allows.
 
 ## AI Context

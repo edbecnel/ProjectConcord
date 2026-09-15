@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed
+Accepted
 
 ## Date
 
@@ -19,6 +19,8 @@ Proposed
 3. **Relationship index** — A derived **Relationship Index** records semantic edges (for example `governed-by`, `implements`) separately from incidental navigation links; inferred edges are flagged with confidence.
 4. **Mutating operations** — Move, rename, and supersede operations MUST run **referential impact analysis** before commit; user approval for bulk link updates; no silent rewrite of canonical files without explicit authorization ([ADR-0006](ADR-0006-AI-Boundary.md)).
 5. **EDF authority** — ProjectConcord MUST NOT invent permanent EDF identity or relationship policy; ambiguities are logged to the gap register and surfaced in UI.
+
+6. **Integrity pipeline** — Artifact Registry and Relationship Index from this ADR feed layered integrity checks in [SPEC-003](../../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md) ([ADR-0011](ADR-0011-Canonical-Artifact-Integrity-and-Trusted-State.md)). Lifecycle **authorization** and **trusted state** are out of scope for ADR-0007.
 
 ## Alternatives Considered
 
@@ -53,3 +55,4 @@ Proposed
 - [SPEC-002](../../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md)
 - [CRA Alignment and Responsibility Boundaries](../CRA_Alignment_and_Responsibility_Boundaries.md)
 - [System Architecture Overview](../System_Architecture_Overview.md)
+- [SPEC-003](../../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)

@@ -10,6 +10,7 @@ Functional requirements, non-functional requirements, feature specifications, an
 
 - [SPEC-001 — MVP EDF Desktop Client](features/SPEC-001-mvp-edf-desktop-client.md)
 - [SPEC-002 — Canonical Artifact Relationships and Referential Integrity](features/SPEC-002-canonical-artifact-relationships-referential-integrity.md)
+- [SPEC-003 — Canonical Artifact Integrity and Authorized State Transitions](features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)
 - [NFR](NFR.md)
 
 ## What Belongs Here

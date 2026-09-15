@@ -51,6 +51,7 @@ Engineers adopting EDF must navigate complex repository conventions manually. ED
 
 - Implementation order: [Implementation Roadmap](../../Development/Implementation_Roadmap.md) M1–M5.
 - Architecture: [System Architecture Overview](../../Architecture/System_Architecture_Overview.md).
+- Authoring and governed lifecycle: [SPEC-003](../../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md) (M5 initial slice: validation hooks; full integrity M6+).
 - Canonical authoring requirement (PCON-0000 §52): invalid SPEC must be fixable inside app when rules are deterministic.
 
 ## Dependencies

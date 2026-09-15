@@ -23,6 +23,7 @@
 
 - [System Architecture Overview](System_Architecture_Overview.md)
 - [SPEC-002 — Referential Integrity](../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md)
+- [SPEC-003 — Canonical Artifact Integrity](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)
 - [ADR-0007 — Semantic Artifact Identity](ADRs/ADR-0007-Semantic-Artifact-Identity-and-Referential-Integrity.md)
 - [ADR-0008 — CRA and CKES Dependency Boundary](ADRs/ADR-0008-CRA-and-CKES-Dependency-Boundary.md)
 - [PCON-0000](PCON-0000-EDF-Project-Management-System-Architectural-Vision-and-Bootstrap-Handover.md)
@@ -31,7 +32,9 @@
 
 # 1. Instructions to Cursor AI
 
-**Handover status (2026-09-15):** Classification: architecture domain (normative boundaries). Moved to [`CRA_Alignment_and_Responsibility_Boundaries.md`](CRA_Alignment_and_Responsibility_Boundaries.md). Integrated with [SPEC-002](../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md), [ADR-0007](ADRs/ADR-0007-Semantic-Artifact-Identity-and-Referential-Integrity.md), [ADR-0008](ADRs/ADR-0008-CRA-and-CKES-Dependency-Boundary.md). Review via [EGR-G0](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md).
+**Handover status (2026-09-15):** Classification: architecture domain (normative boundaries). Moved to [`CRA_Alignment_and_Responsibility_Boundaries.md`](CRA_Alignment_and_Responsibility_Boundaries.md). Integrated with [SPEC-002](../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md), [SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md), [ADR-0007](ADRs/ADR-0007-Semantic-Artifact-Identity-and-Referential-Integrity.md), [ADR-0008](ADRs/ADR-0008-CRA-and-CKES-Dependency-Boundary.md), [ADR-0011](ADRs/ADR-0011-Canonical-Artifact-Integrity-and-Trusted-State.md). Review via [EGR-G0](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md).
+
+**Canonical integrity:** CRA informs identity and representation fidelity (CRA-0001–0003). [SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md) operationalizes EDF for authorized state, external edits, and trusted integrity records at the ProjectConcord layer. Integrity gaps feed [CRA ↔ ProjectConcord Gap Analysis](../Development/CRA_ProjectConcord_Gap_Analysis.md) and [EDF Gap Register](../Development/EDF_Gap_Register.md) without inventing competing CRA theory.
 
 Original handover checklist (historical):
 

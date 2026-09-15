@@ -34,7 +34,7 @@ Record EDF bootstrap and architecture planning (M0) for ProjectConcord.
 | Inspect repository | Done | Greenfield → docs-only bootstrap |
 | Preserve historical artifacts | Done | Handover preserved as PCON-0000 |
 | Establish project engineering context | Done | `edf-project-context.yaml` |
-| Human confirmation | Pending | Complete [EGR-G0](docs/Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) |
+| Human confirmation | Done | [EGR-G0](docs/Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) **Satisfied** |
 | Apply EDF Core | Done | `create_canonical_structure.sh` |
 | Apply capability extensions | Done | software-engineering dirs |
 | Apply repository role overlay (ASR, etc.) | N/A | Not an ASR |
@@ -49,7 +49,8 @@ Record EDF bootstrap and architecture planning (M0) for ProjectConcord.
 | Original path | Category | New path | Normative? | Preserved? | Notes |
 |---|---|---|---|---|---|
 | `ProjectConcord-EDF … Handover.md` (root) | Architectural discovery | `docs/Architecture/PCON-0000-…md` | No | Yes | Renamed per discovery record convention |
-| `ProjectConcord — Canonical Artifact …` (root) | Normative specification | `docs/Specifications/features/SPEC-002-…md` | Yes | Yes | Referential integrity; [ADR-0007](docs/Architecture/ADRs/ADR-0007-Semantic-Artifact-Identity-and-Referential-Integrity.md) |
+| `ProjectConcord — Canonical Artifact …` (root, referential handover) | Normative specification | `docs/Specifications/features/SPEC-002-…md` | Yes | Yes | Referential integrity; [ADR-0007](docs/Architecture/ADRs/ADR-0007-Semantic-Artifact-Identity-and-Referential-Integrity.md) |
+| `ProjectConcord — Canonical Artifact Integrity …` (root) | Normative specification | `docs/Specifications/features/SPEC-003-…md` | Yes | Yes | Integrity and authorized transitions; [ADR-0011](docs/Architecture/ADRs/ADR-0011-Canonical-Artifact-Integrity-and-Trusted-State.md) |
 | `ProjectConcord — CRA …` (root) | Architecture boundaries | `docs/Architecture/CRA_Alignment_and_Responsibility_Boundaries.md` | Yes | Yes | [ADR-0008](docs/Architecture/ADRs/ADR-0008-CRA-and-CKES-Dependency-Boundary.md) |
 
 ## Project Context
@@ -62,7 +63,7 @@ See [edf-project-context.yaml](edf-project-context.yaml).
 |---|---|---|
 | Modular AI handbook | Post-M0 adoption | After G1 |
 | Governance domain content | Bootstrap skeleton only | M1+ |
-| `src/` solution | Gate G0/G1 | After approval |
+| `src/` solution | EGR-G0 satisfied; EGR-G1 for intensive MVP | M1 skeleton now; G1 before full MVP |
 
 ## Gaps Requiring Human Decision
 
@@ -93,8 +94,8 @@ Framework Advisor output under `reports/conformance/` is transient engineering e
 | Field | Value |
 |---|---|
 | **Authoritative EGR** | [EGR-G0](docs/Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) |
-| **Gate status** | Open until **Gate satisfied** is checked in EGR-G0 |
-| **Implementation (M1)** | Blocked until EGR-G0 satisfied |
+| **Gate status** | **Satisfied** (2026-09-15) |
+| **Implementation (M1)** | **Unblocked** — solution skeleton; [EGR-G1](docs/Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) for intensive MVP |
 
 ## Related Documents
 

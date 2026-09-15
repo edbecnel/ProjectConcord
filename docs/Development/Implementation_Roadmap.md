@@ -8,7 +8,7 @@
 
 ## Purpose
 
-Incremental delivery plan for ProjectConcord aligned with PCON-0000 §51, [AMD-0001](../Architecture/AMD-0001-Multi-User-Desktop-and-Shared-Project-Services.md), and [SPEC-001](../Specifications/features/SPEC-001-mvp-edf-desktop-client.md). **No `src/` or Avalonia code until [EGR-G0](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) gate decision is satisfied.**
+Incremental delivery plan for ProjectConcord aligned with PCON-0000 §51, [AMD-0001](../Architecture/AMD-0001-Multi-User-Desktop-and-Shared-Project-Services.md), and [SPEC-001](../Specifications/features/SPEC-001-mvp-edf-desktop-client.md). **[EGR-G0](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) satisfied** — M1 solution skeleton may begin; full MVP implementation intensity remains gated on [EGR-G1](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md).
 
 **Platform note:** Multi-user architecture is fixed at M0 ([ADR-0009](../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md)). M1–M5 may run as a local solo Administrator project; shared services and concurrent collaboration incrementally follow M6+.
 
@@ -18,8 +18,8 @@ Authoritative approval: complete checkboxes in the EGR files (EDF [EGR-0001](htt
 
 | Gate | EGR record | Unblocks |
 |---|---|---|
-| **G0** | [EGR-G0 — Architecture Planning Gate](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) | M1 solution creation |
-| **G1** | [EGR-G1 — MVP Implementation Gate](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) | M1 implementation in earnest |
+| **G0** | [EGR-G0 — Architecture Planning Gate](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) | **Satisfied** — M1 solution creation |
+| **G1** | [EGR-G1 — MVP Implementation Gate](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) | Open — M1 implementation in earnest |
 
 ## Milestones
 
@@ -30,10 +30,10 @@ Authoritative approval: complete checkboxes in the EGR files (EDF [EGR-0001](htt
 | **M2** | Discovery | Profile/capability resolution, artifact scan | Open ProjectConcord or EDF clone; list domains/artifacts |
 | **M3** | Validation | Invoke EDF conformance scripts; display scores | Matches `run_conformance_validation.sh` output |
 | **M4** | Navigation | PROJECT_INDEX, domain READMEs, link following | Semantic browse without tree-only UX |
-| **M5** | Authoring | SPEC create/edit; validate; save; initial referential checks per [SPEC-002](../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md) | SPEC-001 + move/rename impact preview (minimal) |
-| **M6** | Referential integrity | Artifact Registry, Relationship Index, safe move/rename | SPEC-002 core scenarios |
+| **M5** | Authoring + integrity hooks | SPEC create/edit; validate; save; identity/metadata validation; duplicate ID detection; basic external-change detection per [SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md) §60 | SPEC-001 + minimal referential preview |
+| **M6** | Referential + integrity core | Artifact Registry, Relationship Index, safe move/rename ([SPEC-002](../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md)); lifecycle/governed-field validation, fingerprints, reconciliation-required states ([SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)) | SPEC-002 + SPEC-003 core deterministic scenarios |
 | **M6+** | Shared project platform | Auth, membership, basic roles, shared operational store, repo access coordination, change-set / concurrency basics | Multiple desktop users on one project without canonical DB replacement |
-| **M7+** | Reconciliation & AI | Git impact, Roslyn, AI proposals, Agile | Separate specs; out of MVP |
+| **M7+** | Reconciliation & AI | Git impact, Roslyn, AI proposals, Agile; CI/server integrity enforcement deferred from SPEC-003 §60 | Separate specs; engineering-intent layer |
 
 ## Priority Order (from PCON-0000 §51)
 
@@ -43,22 +43,24 @@ Authoritative approval: complete checkboxes in the EGR files (EDF [EGR-0001](htt
 4. Validation (M3)  
 5. Semantic model & navigation (M4)  
 6. Canonical artifact CRUD (M5)  
-7. Referential integrity ([SPEC-002](../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md)) (M6)  
-8. Git, change impact, AI, Agile (M7+)
+7. Deterministic integrity hooks ([SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)) (M5–M6)  
+8. Referential integrity ([SPEC-002](../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md)) (M6)  
+9. Git, change impact, AI, Agile (M7+)
 
 ## Current Status
 
 | Milestone | State |
 |---|---|
-| M0 | **Complete** — [EGR-G0](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) **Open** (re-review after multi-user amendments) |
-| M1–M5 | Blocked on G0/G1 |
+| M0 | **Complete** — [EGR-G0](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) **Satisfied** (2026-09-15) |
+| M1 | **Ready** — solution skeleton per gate; complete [EGR-G1](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) before intensive MVP work |
+| M2–M5 | Blocked on G1 for implementation in earnest |
 | M6–M7+ | Deferred |
 
 ## Gate G0 Review
 
-**Authoritative record:** [EGR-G0 — Architecture Planning Gate](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) — complete **Reviewed**, **Approved**, ADR disposition, and **Gate satisfied** checkboxes there.
+**Decision:** **Satisfied** — recorded in [EGR-G0 — Architecture Planning Gate](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) (Gate Status **Satisfied**, all review items and ADR-0001–ADR-0011 accepted).
 
-Summary deliverables are linked from the EGR document. Implementation remains blocked until EGR-G0 gate decision is satisfied.
+**M1:** May proceed with .NET solution skeleton (`src/`). **G1** remains the gate for intensive MVP implementation (SPEC-001 delivery).
 
 ## Assumptions
 
@@ -78,4 +80,5 @@ Summary deliverables are linked from the EGR document. Implementation remains bl
 ## Related Documents
 
 - [tasks/README.md](../../tasks/README.md)
+- [SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)
 - [PCON-0000](../Architecture/PCON-0000-EDF-Project-Management-System-Architectural-Vision-and-Bootstrap-Handover.md)

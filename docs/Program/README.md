@@ -12,8 +12,8 @@ ProjectConcord adopts EGR as the **authoritative** mechanism for gate approval (
 
 | Gate ID | Record | Status | Unblocks |
 |---|---|---|---|
-| **G0** | [EGR-G0 — Architecture Planning Gate](Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) | Open | M1 solution creation |
-| **G1** | [EGR-G1 — MVP Implementation Gate](Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) | Open | M1 implementation (after G0) |
+| **G0** | [EGR-G0 — Architecture Planning Gate](Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) | **Satisfied** | M1 solution creation |
+| **G1** | [EGR-G1 — MVP Implementation Gate](Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) | Open | M1 MVP implementation in earnest (after G0) |
 
 ## Bootstrap vs Program Gates
 

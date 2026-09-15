@@ -28,10 +28,15 @@
 - [PCON-0000](../../Architecture/PCON-0000-EDF-Project-Management-System-Architectural-Vision-and-Bootstrap-Handover.md)
 - [CRA Alignment and Responsibility Boundaries](../../Architecture/CRA_Alignment_and_Responsibility_Boundaries.md)
 - [ADR-0008 CRA/CKES boundary](../../Architecture/ADRs/ADR-0008-CRA-and-CKES-Dependency-Boundary.md)
+- [SPEC-003 Canonical Artifact Integrity](SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)
 
 ## CRA grounding
 
 Referential integrity in SPEC-002 **operationalizes EDF** in a way that is **CRA-aligned** but does not implement CRA or CKES. Responsibility boundaries: [CRA Alignment and Responsibility Boundaries](../../Architecture/CRA_Alignment_and_Responsibility_Boundaries.md). Dependency rule: [ADR-0008](../../Architecture/ADRs/ADR-0008-CRA-and-CKES-Dependency-Boundary.md).
+
+## Relationship to SPEC-003
+
+SPEC-002 covers semantic **relationships**, registry/index, resolvers, and move/rename referential impact. **Lifecycle authorization**, **trusted integrity state**, **external change classification**, and **fingerprints** are normative in [SPEC-003](SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md) ([ADR-0011](../../Architecture/ADRs/ADR-0011-Canonical-Artifact-Integrity-and-Trusted-State.md)). Do not duplicate SPEC-003 rules here.
 
 ---
 

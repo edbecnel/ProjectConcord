@@ -4,15 +4,15 @@
 
 ## Document Metadata
 
-| Field | Value |
-|---|---|
-| **Document Type** | Engineering Gate Review Record |
-| **Normative** | Yes |
-| **Gate ID** | G0 |
-| **Gate Status** | Open |
-| **Milestone** | M0 |
-| **Owner** | Project owner |
-| **Unblocks** | M1 — .NET solution skeleton (`src/`) |
+| Field             | Value                                                                                                                                                     |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Document Type** | Engineering Gate Review Record                                                                                                                            |
+| **Normative**     | Yes                                                                                                                                                       |
+| **Gate ID**       | G0                                                                                                                                                        |
+| **Gate Status**   | Satisfied                                                                                                                                                 |
+| **Milestone**     | M0                                                                                                                                                        |
+| **Owner**         | Project owner                                                                                                                                             |
+| **Unblocks**      | M1 — .NET solution skeleton (`src/`)                                                                                                                      |
 | **Specification** | EDF [EGR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/EGR-0001-Engineering-Gate-Review-Records.md) |
 
 ## Purpose
@@ -23,7 +23,7 @@ Human approval of the M0 architecture planning package before any implementation
 
 Check **one** outcome when closing the gate:
 
-- [ ] **Gate satisfied** — M1 may begin (solution skeleton only until G1)
+- [x] **Gate satisfied** — M1 may begin (solution skeleton only until G1)
 - [ ] **Gate rejected**
 - [ ] **Gate deferred**
 
@@ -31,7 +31,7 @@ Check **one** outcome when closing the gate:
 |---|---|
 | **Decision maker** | |
 | **Decision date** | |
-| **Notes** | Multi-user / Administrator amendments integrated 2026-09-15 — re-review amended documents and ADR-0009/0010 before closing gate. |
+| **Notes** | Multi-user amendments (ADR-0009/0010) and SPEC-003 canonical integrity (ADR-0011) integrated 2026-09-15 — re-review before closing gate. |
 
 ## Documents Under Review
 
@@ -47,6 +47,8 @@ Check each item below (use task-list checkboxes, not the summary table alone).
 | Project Charter | [PROJECT_CHARTER.md](../../../PROJECT_CHARTER.md) |
 | SPEC-001 MVP Desktop Client | [SPEC-001-mvp-edf-desktop-client.md](../../Specifications/features/SPEC-001-mvp-edf-desktop-client.md) |
 | SPEC-002 Referential Integrity | [SPEC-002-canonical-artifact-relationships-referential-integrity.md](../../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md) |
+| SPEC-003 Canonical Artifact Integrity | [SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md](../../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md) |
+| Canonical Integrity Integration Analysis | [Canonical_Integrity_Spec_Integration_Analysis.md](../../Architecture/Canonical_Integrity_Spec_Integration_Analysis.md) |
 | Non-Functional Requirements | [NFR.md](../../Specifications/NFR.md) |
 | EDF Bootstrap Report | [EDF_BOOTSTRAP_REPORT.md](../../../EDF_BOOTSTRAP_REPORT.md) |
 | PCON-0000 (discovery — acknowledge only) | [PCON-0000 … Handover.md](../../Architecture/PCON-0000-EDF-Project-Management-System-Architectural-Vision-and-Bootstrap-Handover.md) |
@@ -56,81 +58,95 @@ Check each item below (use task-list checkboxes, not the summary table alone).
 
 ### System Architecture Overview
 
-Amended for multi-user platform ([ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md)).
+Amended for multi-user platform ([ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md)) and canonical integrity pipeline ([SPEC-003](../../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md), [ADR-0011](../../Architecture/ADRs/ADR-0011-Canonical-Artifact-Integrity-and-Trusted-State.md)).
 
-- [ ] Reviewed
-- [ ] Approved
+- [x] Reviewed
+- [x] Approved
 
 ### EDF Gap Register
 
-Amended GAP-018–GAP-021.
+Amended GAP-018–GAP-025.
 
-- [ ] Reviewed
-- [ ] Approved
+- [x] Reviewed
+- [x] Approved
 
 ### Implementation Roadmap
 
-Amended M1 platform seams and M6+ shared services.
+Amended M1 platform seams, M5–M6 integrity phasing ([SPEC-003](../../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)), and M6+ shared services.
 
-- [ ] Reviewed
-- [ ] Approved
+- [x] Reviewed
+- [x] Approved
 
 ### CRA Alignment and Responsibility Boundaries
 
-- [ ] Reviewed
-- [ ] Approved
+Amended for SPEC-003 integrity responsibilities.
+
+- [x] Reviewed
+- [x] Approved
 
 ### CRA ↔ ProjectConcord Gap Analysis
 
-Review confirms CRA-aligned posture (not full CRA-0003 conformance at MVP) and accepts tracked gaps CRA-G1–G5 for M6+.
+Review confirms CRA-aligned posture (not full CRA-0003 conformance at MVP) and accepts tracked gaps CRA-G1–CRA-G8 for M6+.
 
 - [x] Reviewed
 - [x] Approved
 
 ### Project Charter
 
-- [ ] Reviewed
-- [ ] Approved
+- [x] Reviewed
+- [x] Approved
 
 ### SPEC-001 MVP Desktop Client
 
-- [ ] Reviewed
-- [ ] Approved
+- [x] Reviewed
+- [x] Approved
 
 ### SPEC-002 Referential Integrity
 
-- [ ] Reviewed
-- [ ] Approved
+Amended SPEC-003 boundary section.
+
+- [x] Reviewed
+- [x] Approved
+
+### SPEC-003 Canonical Artifact Integrity
+
+- [x] Reviewed
+- [x] Approved
+
+### Canonical Integrity Integration Analysis
+
+- [x] Reviewed
+- [x] Approved
 
 ### Non-Functional Requirements
 
-- [ ] Reviewed
-- [ ] Approved
+- [x] Reviewed
+- [x] Approved
 
 ### EDF Bootstrap Report
 
-- [ ] Reviewed
-- [ ] Approved
+- [x] Reviewed
+- [x] Approved
 
 ### PCON-0000 (discovery — acknowledge only)
 
-- [ ] Reviewed
-- [ ] Acknowledged (non-normative; superseded for product model where [ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md) applies)
+- [x] Reviewed
+- [x] Acknowledged (non-normative; superseded for product model where [ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md) applies)
 
 ### Multi-User Amendment Analysis
 
-- [ ] Reviewed
-- [ ] Approved
+- [x] Reviewed
+- [x] Approved
 
 ### AMD-0001 (amendment — acknowledge integration)
 
-- [ ] Reviewed
-- [ ] Acknowledged (non-normative rationale; normative content in ADR-0009 and architecture overview)
+- [x] Reviewed
+- [x] Acknowledged (non-normative rationale; normative content in ADR-0009 and architecture overview)
 
 ### AMD-0002 (amendment — acknowledge integration)
 
-- [ ] Reviewed
-- [ ] Acknowledged (non-normative rationale; normative content in ADR-0010)
+- [x] Reviewed
+- [x] Acknowledged (non-normative rationale; normative content in ADR-0010)
 
 ## ADR Dispositions (G0)
 
@@ -138,61 +154,71 @@ Check **one** per ADR. Accepting an ADR requires updating its **Status** to Acce
 
 ### ADR-0001: Layered Architecture and Avalonia Client
 
-- [ ] Accept — [ADR-0001](../../Architecture/ADRs/ADR-0001-Layered-Architecture-and-Avalonia-Client.md)
+- [x] Accept — [ADR-0001](../../Architecture/ADRs/ADR-0001-Layered-Architecture-and-Avalonia-Client.md)
 - [ ] Reject
 - [ ] Revise
 
 ### ADR-0002: EDF Canonical Source of Truth
 
-- [ ] Accept — [ADR-0002](../../Architecture/ADRs/ADR-0002-EDF-Canonical-Source-of-Truth.md)
+- [x] Accept — [ADR-0002](../../Architecture/ADRs/ADR-0002-EDF-Canonical-Source-of-Truth.md)
 - [ ] Reject
 - [ ] Revise
 
 ### ADR-0003: EDF Validation Strategy
 
-- [ ] Accept — [ADR-0003](../../Architecture/ADRs/ADR-0003-EDF-Validation-Strategy.md)
+- [x] Accept — [ADR-0003](../../Architecture/ADRs/ADR-0003-EDF-Validation-Strategy.md)
 - [ ] Reject
 - [ ] Revise
 
 ### ADR-0004: Derived Data and Cache
 
-- [ ] Accept — [ADR-0004](../../Architecture/ADRs/ADR-0004-Derived-Data-and-Cache.md)
+- [x] Accept — [ADR-0004](../../Architecture/ADRs/ADR-0004-Derived-Data-and-Cache.md)
 - [ ] Reject
 - [ ] Revise
 
 ### ADR-0005: Repository Abstraction
 
-- [ ] Accept — [ADR-0005](../../Architecture/ADRs/ADR-0005-Repository-Abstraction.md)
+- [x] Accept — [ADR-0005](../../Architecture/ADRs/ADR-0005-Repository-Abstraction.md)
 - [ ] Reject
 - [ ] Revise
 
 ### ADR-0006: AI Boundary
 
-- [ ] Accept — [ADR-0006](../../Architecture/ADRs/ADR-0006-AI-Boundary.md)
+Amended for external Cursor edits and SPEC-003 §26–§27.
+
+- [x] Accept — [ADR-0006](../../Architecture/ADRs/ADR-0006-AI-Boundary.md)
 - [ ] Reject
 - [ ] Revise
 
 ### ADR-0007: Semantic Artifact Identity and Referential Integrity
 
-- [ ] Accept — [ADR-0007](../../Architecture/ADRs/ADR-0007-Semantic-Artifact-Identity-and-Referential-Integrity.md)
+Amended integrity pipeline cross-reference.
+
+- [x] Accept — [ADR-0007](../../Architecture/ADRs/ADR-0007-Semantic-Artifact-Identity-and-Referential-Integrity.md)
 - [ ] Reject
 - [ ] Revise
 
 ### ADR-0008: CRA and CKES Dependency Boundary
 
-- [ ] Accept — [ADR-0008](../../Architecture/ADRs/ADR-0008-CRA-and-CKES-Dependency-Boundary.md)
+- [x] Accept — [ADR-0008](../../Architecture/ADRs/ADR-0008-CRA-and-CKES-Dependency-Boundary.md)
 - [ ] Reject
 - [ ] Revise
 
 ### ADR-0009: Multi-User Platform and Shared Project Services
 
-- [ ] Accept — [ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md)
+- [x] Accept — [ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md)
 - [ ] Reject
 - [ ] Revise
 
 ### ADR-0010: Single-User Administrator Default Model
 
-- [ ] Accept — [ADR-0010](../../Architecture/ADRs/ADR-0010-Single-User-Administrator-Default-Model.md)
+- [x] Accept — [ADR-0010](../../Architecture/ADRs/ADR-0010-Single-User-Administrator-Default-Model.md)
+- [ ] Reject
+- [ ] Revise
+
+### ADR-0011: Canonical Artifact Integrity and Trusted State
+
+- [x] Accept — [ADR-0011](../../Architecture/ADRs/ADR-0011-Canonical-Artifact-Integrity-and-Trusted-State.md)
 - [ ] Reject
 - [ ] Revise
 
@@ -200,12 +226,12 @@ Check **one** per ADR. Accepting an ADR requires updating its **Status** to Acce
 
 After **Gate satisfied** is checked:
 
-- [ ] Set **Gate Status** in metadata above to **Satisfied**
-- [ ] Update [Implementation Roadmap](../../Development/Implementation_Roadmap.md) G0 section
-- [ ] Update [EDF_BOOTSTRAP_REPORT.md](../../../EDF_BOOTSTRAP_REPORT.md) Gate G0 decision
-- [ ] Update [Program README](../README.md) gate table
-- [ ] Set accepted ADR **Status** fields to Accepted in ADR files and indexes
-- [ ] Proceed to M1 only if G0 satisfied; full MVP coding intensity waits for [EGR-G1](EGR-G1-MVP-Implementation-Gate.md) where applicable
+- [x] Set **Gate Status** in metadata above to **Satisfied**
+- [x] Update [Implementation Roadmap](../../Development/Implementation_Roadmap.md) G0 section
+- [x] Update [EDF_BOOTSTRAP_REPORT.md](../../../EDF_BOOTSTRAP_REPORT.md) Gate G0 decision
+- [x] Update [Program README](../README.md) gate table
+- [x] Set accepted ADR **Status** fields to Accepted in ADR files and indexes
+- [x] Proceed to M1 only if G0 satisfied; full MVP coding intensity waits for [EGR-G1](EGR-G1-MVP-Implementation-Gate.md) where applicable
 
 ## Parent
 

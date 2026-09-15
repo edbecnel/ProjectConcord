@@ -15,7 +15,8 @@ Compare **Canonical Representation Architecture (CRA)** normative specifications
 
 | Document | Role |
 |---|---|
-| [SPEC-002](../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md) | Product behavior (registry, index, resolvers, move/rename, integrity) |
+| [SPEC-002](../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md) | Product behavior (registry, index, resolvers, move/rename) |
+| [SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md) | Integrity, transitions, external change, trusted state |
 | [CRA Alignment and Responsibility Boundaries](../Architecture/CRA_Alignment_and_Responsibility_Boundaries.md) | CRA → EDF → ProjectConcord layering |
 | [ADR-0007](../Architecture/ADRs/ADR-0007-Semantic-Artifact-Identity-and-Referential-Integrity.md) | ID-first, derived registry/index |
 | [ADR-0008](../Architecture/ADRs/ADR-0008-CRA-and-CKES-Dependency-Boundary.md) | CRA-aligned; no mandatory CKES for MVP |
@@ -77,6 +78,9 @@ Compare **Canonical Representation Architecture (CRA)** normative specifications
 | **Committed distinctions** for fidelity checks | RF-2 requires scope policy to list them | EDF templates imply distinctions (Status, Spec ID) but no machine-readable “committed distinction” set per artifact type |
 | **Governed designation / scope** | FP-4; IM-1 at designation time | EDF scope = repo + `edf-project-context.yaml`; not framed as CRA governance designation—**semantic alignment, procedural gap** |
 | **Reciprocal / required relationships** (SPEC-002 §21) | Not in CRA-0001–0003 | EDF gap GAP-016; CRA RF-7 only addresses navigation vs relationships |
+| **Authorized canonical state / trust** | FP-1, IM-5 imply lineage; no **trust record** or **authorized transition** model | SPEC-003 + ADR-0011; operational store — see **CRA-G6** |
+| **Representation vs semantic fingerprints** | RF-2 committed distinctions partial | Detection heuristics in ProjectConcord; **CRA-G7** |
+| **Governed transition semantics** | IM-5 versioning; not lifecycle **Accept/Supersede** ops | EDF GAP-023/024; **CRA-G8** |
 | **Split / merge / cross-artifact equivalence** | IM-7 requires governed acts | EDF move/rename/archive rules partial (GAP-009); no CRA tooling |
 
 ### CRA silent or deferred (do not treat as CRA bugs—track as upstream or interim)
@@ -113,8 +117,13 @@ CRA (CRA-0001..0003)     Partial typed relationships, designation ceremony,
 EDF                      Artifact types, link syntax, lifecycle, gates (EGR)
                          — see EDF_Gap_Register GAP-005, 009, 015, 016
 
-ProjectConcord (SPEC-002) Resolvers, integrity service, move/rename UX,
-                         transactional edits, external change detection
+ProjectConcord (SPEC-002) Resolvers, move/rename UX,
+                         transactional edits
+
+ProjectConcord (SPEC-003) Integrity layers, transitions,
+                         external change, trusted state
+
+ProjectConcord (SPEC-002/003) External change detection
 ```
 
 ProjectConcord **must not** fill CRA deferrals by inventing **global** canonical semantics. It **may** implement **scope-local** behavior for EDF-managed Git repositories, documented in ADRs and the EDF gap register, until CRA publishes relationship and validation specs.
@@ -130,6 +139,9 @@ ProjectConcord **must not** fill CRA deferrals by inventing **global** canonical
 | **CRA-G3** | **Committed distinctions** undefined per artifact | Start from EDF templates; extend `edf-project-context` or local policy table |
 | **CRA-G4** | IM-3 **equivalence** across external edits | Heuristics (ID in content, rename pairs) + human confirm; log low confidence |
 | **CRA-G5** | CRA **Draft** status | Track CRA spec versions; re-run this analysis when CRA-0001–0003 move to Accepted |
+| **CRA-G6** | No **authorized trust state** model | SPEC-003 + ADR-0011 operational records; propose CRA workstream on governed transitions |
+| **CRA-G7** | **Fingerprint** semantics for Markdown/YAML | ProjectConcord representation + governed semantic hashes; align with RF-2 distinctions |
+| **CRA-G8** | **Lifecycle operation** vocabulary (Accept, Supersede) | EDF schema feedback (GAP-023/024); do not invent global CRA ops in code |
 
 ---
 
@@ -160,7 +172,8 @@ Optional future work: CRA adoption report (similar to [EGLS CRA Adoption Report]
 
 - [CRA Alignment and Responsibility Boundaries](../Architecture/CRA_Alignment_and_Responsibility_Boundaries.md)
 - [SPEC-002](../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md)
-- [Implementation Roadmap](Implementation_Roadmap.md) — milestone M6
+- [SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)
+- [Implementation Roadmap](Implementation_Roadmap.md) — milestones M5–M6
 - [EGR-G0 — Architecture Planning Gate](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) (Gate G0 review item)
 
 ## Parent

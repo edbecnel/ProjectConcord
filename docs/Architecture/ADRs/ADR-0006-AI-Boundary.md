@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed
+Accepted
 
 ## Date
 
@@ -18,6 +18,7 @@ PCON-0000 envisions AI-assisted authoring and reconciliation. AI must not silent
 2. **Deterministic validation** (EDF scripts + in-process rules) runs before user accepts a proposal.
 3. **Human explicit approval** required to persist changes to canonical repository files.
 4. AI provider keys and prompts stored in user settings; no sending entire repo without user-configured scope (economical AI principle).
+5. **External editors (Cursor, IDE, Git)** — changes are external repository modifications unless made through ProjectConcord APIs; AI MUST NOT self-authorize governed lifecycle transitions ([SPEC-003](../../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md) §26–§27, [ADR-0011](ADR-0011-Canonical-Artifact-Integrity-and-Trusted-State.md)).
 
 ## Alternatives Considered
 
@@ -40,3 +41,4 @@ PCON-0000 envisions AI-assisted authoring and reconciliation. AI must not silent
 ## References
 
 - [PCON-0000](../PCON-0000-EDF-Project-Management-System-Architectural-Vision-and-Bootstrap-Handover.md) §18–20, §29
+- [SPEC-003](../../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)
