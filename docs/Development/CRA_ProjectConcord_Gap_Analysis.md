@@ -105,6 +105,7 @@ Compare **Canonical Representation Architecture (CRA)** normative specifications
 | Program gates (EGR-G0) | EDF EGR-0001 + ProjectConcord |
 | Code ↔ documentation reconciliation | ProjectConcord (PCON-0000); not CRA Core |
 | Milestones, gates, AWIs in project graph | EDF domain semantics |
+| **Architectural Audit Records (AAR)** | EDF + ProjectConcord workflow ([ADR-0012](../Architecture/ADRs/ADR-0012-Adopt-EDF-Architectural-Audit-Records.md)); not CRA scope |
 
 ---
 

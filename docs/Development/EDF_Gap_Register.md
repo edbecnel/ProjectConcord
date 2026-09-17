@@ -36,7 +36,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-003 | Machine-readable artifact type registry | High | Heuristic classification + gap log; no silent policy |
 | GAP-004 | Artifact lifecycle state machine | High | Parse Status tables/headings; validate known enums only |
 | GAP-005 | Explicit relationship syntax | High | Link graph + heading refs; infer with confidence flag |
-| GAP-006 | Milestones and gates representation | Medium | **Partial:** EDF [EGR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/EGR-0001-Engineering-Gate-Review-Records.md); ProjectConcord [EGR-G0/G1](../../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md); app UI for open gates deferred (M4+) |
+| GAP-006 | Milestones and gates representation | Medium | **Partial:** EDF [EGR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/EGR-0001-Engineering-Gate-Review-Records.md); ProjectConcord [EGR-G0/G1](../../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md); AAR under [Audits/](../../Architecture/Audits/README.md) per [ADR-0012](../../Architecture/ADRs/ADR-0012-Adopt-EDF-Architectural-Audit-Records.md); app UI deferred (M4+) |
 | GAP-007 | AWI / discovery record ID conventions | Low | Filename + metadata patterns per Architecture README |
 | GAP-008 | SPEC / ADR identifier enforcement | Medium | Regex + location rules from DIA and domain READMEs |
 | GAP-009 | Move/rename/supersession rules | Medium | Git + explicit user action; ADR-0004 cache invalidation |
@@ -56,6 +56,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-023 | Machine-readable lifecycle transitions | High | Semantic transition ops; flag external governed edits |
 | GAP-024 | Transition prerequisites / acceptance rules | Medium | EGR human gates; app surfaces independent review |
 | GAP-025 | Trusted integrity record portability | Medium | Rebuild from Git + validation; operational fingerprints optional |
+| GAP-026 | AAR discovery in Engine/UI | Medium | Parse `docs/Architecture/Audits/AAR-*.md` status (Open/Complete/Superseded); EDF [AAR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/AAR-0001-Architectural-Audit-Records.md); post-M5 |
 
 ---
 
@@ -301,6 +302,14 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | **Question** | What integrity/trust state must travel with a repo clone vs remain operational? |
 | **Interim policy** | Rebuild trust from Git + deterministic validation; optional `.projectconcord/` or shared store caches fingerprints. |
 
+### GAP-026 — Architectural Audit Record discovery
+
+| Field | Content |
+|---|---|
+| **Source** | EDF [AAR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/AAR-0001-Architectural-Audit-Records.md); [ADR-0012](../Architecture/ADRs/ADR-0012-Adopt-EDF-Architectural-Audit-Records.md) |
+| **Question** | How does the app list Open vs Complete implementation audits? |
+| **Interim policy** | Human-maintained [Audits/README.md](../Architecture/Audits/README.md); Engine discovery post-M5. |
+
 ---
 
 ## Parent
@@ -313,6 +322,8 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 - [SPEC-002 — Referential Integrity](../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md)
 - [PCON-0000 — Architectural Vision](../Architecture/PCON-0000-EDF-Project-Management-System-Architectural-Vision-and-Bootstrap-Handover.md)
 - [SPEC-003 — Canonical Artifact Integrity](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)
+- [Architecture Audits](../Architecture/Audits/README.md)
+- [ADR-0012](../Architecture/ADRs/ADR-0012-Adopt-EDF-Architectural-Audit-Records.md)
 - [Canonical Integrity Integration Analysis](../Architecture/Canonical_Integrity_Spec_Integration_Analysis.md)
 - [Multi-User Amendment Analysis](../Architecture/Multi_User_Amendment_Affected_Document_Analysis.md)
 - [System Architecture Overview](../Architecture/System_Architecture_Overview.md)

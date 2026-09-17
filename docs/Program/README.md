@@ -21,6 +21,7 @@ ProjectConcord adopts EGR as the **authoritative** mechanism for gate approval (
 |---|---|
 | **BVG-1 … BVG-6** | EDF bootstrap validation (Framework Advisor tiers) |
 | **G0 / G1 (EGR)** | ProjectConcord program gates in [Gate_Reviews/](Gate_Reviews/) |
+| **AAR (AAR-NNNN)** | Implementation conformance audits in [Architecture/Audits/](../Architecture/Audits/README.md) per EDF [AAR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/AAR-0001-Architectural-Audit-Records.md) |
 
 ## Parent
 

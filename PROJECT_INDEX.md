@@ -12,6 +12,7 @@ This is the primary documentation hub for humans and AI assistants.
 - [Architecture Decisions](ARCHITECTURE_DECISIONS.md)
 - [EDF Bootstrap Report](EDF_BOOTSTRAP_REPORT.md)
 - [Architecture](docs/Architecture/README.md)
+- [Architectural Audits](docs/Architecture/Audits/README.md)
 - [System Architecture Overview](docs/Architecture/System_Architecture_Overview.md)
 - [CRA Alignment and Responsibility Boundaries](docs/Architecture/CRA_Alignment_and_Responsibility_Boundaries.md)
 - [CRA ↔ ProjectConcord Gap Analysis](docs/Development/CRA_ProjectConcord_Gap_Analysis.md)

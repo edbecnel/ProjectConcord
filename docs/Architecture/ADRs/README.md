@@ -21,6 +21,7 @@ This directory contains individual Architecture Decision Records.
 | [ADR-0009](ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md) | Multi-user platform and shared project services | Accepted | 2026-09-15 |
 | [ADR-0010](ADR-0010-Single-User-Administrator-Default-Model.md) | Single-user Administrator default model | Accepted | 2026-09-15 |
 | [ADR-0011](ADR-0011-Canonical-Artifact-Integrity-and-Trusted-State.md) | Canonical artifact integrity and trusted state | Accepted | 2026-09-15 |
+| [ADR-0012](ADR-0012-Adopt-EDF-Architectural-Audit-Records.md) | Adopt EDF Architectural Audit Records (AAR) | Accepted | 2026-09-17 |
 
 ## Navigation
 

@@ -25,6 +25,7 @@ Individual ADRs live in [docs/Architecture/ADRs/](docs/Architecture/ADRs/README.
 | [ADR-0009](docs/Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md) | Multi-user platform; shared project services; canonical vs operational data | Accepted | 2026-09-15 |
 | [ADR-0010](docs/Architecture/ADRs/ADR-0010-Single-User-Administrator-Default-Model.md) | Default Administrator; no parallel single-user architecture | Accepted | 2026-09-15 |
 | [ADR-0011](docs/Architecture/ADRs/ADR-0011-Canonical-Artifact-Integrity-and-Trusted-State.md) | Canonical artifact integrity and trusted state | Accepted | 2026-09-15 |
+| [ADR-0012](docs/Architecture/ADRs/ADR-0012-Adopt-EDF-Architectural-Audit-Records.md) | Adopt EDF Architectural Audit Records (AAR) | Accepted | 2026-09-17 |
 
 ## Related Documents
 

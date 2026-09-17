@@ -11,6 +11,7 @@ System architecture, technical design, diagrams, and architecture decisions.
 - [System Architecture Overview](System_Architecture_Overview.md)
 - [CRA Alignment and Responsibility Boundaries](CRA_Alignment_and_Responsibility_Boundaries.md)
 - [Architecture Decision Records](ADRs/README.md)
+- [Architectural Audits](Audits/README.md)
 - [Project Architecture Decisions](../../ARCHITECTURE_DECISIONS.md)
 
 ## Architectural Discovery Records
@@ -31,6 +32,14 @@ Integrated amendments (rationale retained; normative summary in ADRs and System 
 | [AMD-0002](AMD-0002-Single-User-Administrator-Model.md) | Single-User Administrator Model | Integrated 2026-09-15 |
 | [Analysis](Multi_User_Amendment_Affected_Document_Analysis.md) | Multi-User Amendment — Affected Document Analysis | Draft |
 | [Analysis](Canonical_Integrity_Spec_Integration_Analysis.md) | Canonical Integrity Spec — Integration Analysis | Draft |
+
+## Architectural Audit Records
+
+Implementation conformance reviews compare `src/` (and related code) to Accepted ADRs and normative specifications. Rules: EDF [AAR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/AAR-0001-Architectural-Audit-Records.md); project adoption: [ADR-0012](ADRs/ADR-0012-Adopt-EDF-Architectural-Audit-Records.md).
+
+| Location | Index |
+|---|---|
+| [Audits/](Audits/README.md) | AAR instance files (`AAR-NNNN`) |
 
 ## What Belongs Here
 

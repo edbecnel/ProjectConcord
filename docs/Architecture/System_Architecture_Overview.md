@@ -191,6 +191,19 @@ Parse text output initially; contribute JSON format to EDF when stable (GAP-010)
 
 ---
 
+## Conformance and review artifacts
+
+| Artifact | Evaluates | Location |
+|---|---|---|
+| **EGR** | Human approval of authoritative **documents** | [docs/Program/Gate_Reviews/](../../Program/Gate_Reviews/) |
+| **AAR** | **Implementation** vs Accepted ADRs / normative SPECs | [docs/Architecture/Audits/](Audits/README.md) ([ADR-0012](ADRs/ADR-0012-Adopt-EDF-Architectural-Audit-Records.md), EDF [AAR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/AAR-0001-Architectural-Audit-Records.md)) |
+| **Framework Advisor** | **Documentation** structure and navigation | `reports/conformance/` (transient) |
+| **Operational audit** | Collaboration / integrity **events** (not AAR) | Operational store per [ADR-0009](ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md) |
+
+Post-M5, the Engine MAY discover EGR and AAR Markdown files for dashboard display (GAP-006, GAP-026).
+
+---
+
 ## Canonical Authoring and Lifecycle
 
 - **Authoring** — structured forms driven by EDF templates; emit canonical Markdown to prescribed paths (M5: one artifact type, SPEC).
@@ -348,6 +361,7 @@ Fixture repos under `tests/fixtures/` (created at M1/M2).
 | [ADR-0009](ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md) | Multi-user platform |
 | [ADR-0010](ADRs/ADR-0010-Single-User-Administrator-Default-Model.md) | Administrator default |
 | [ADR-0011](ADRs/ADR-0011-Canonical-Artifact-Integrity-and-Trusted-State.md) | Canonical integrity and trusted state |
+| [ADR-0012](ADRs/ADR-0012-Adopt-EDF-Architectural-Audit-Records.md) | Adopt EDF AAR |
 
 ---
 

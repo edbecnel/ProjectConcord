@@ -41,7 +41,7 @@ Record EDF bootstrap and architecture planning (M0) for ProjectConcord.
 | Map existing documents and artifacts | Done | See mappings table |
 | Create missing bootstrap artifacts | Done | Skeleton + planning docs |
 | Record deferred items | Done | Roadmap M6+, AI handbook |
-| Validate | Done | See validation summary |
+| Validate | Done | See validation summary; re-run after `docs/Architecture/Audits/` added (2026-09-17) |
 | Report gaps | Done | [EDF Gap Register](docs/Development/EDF_Gap_Register.md) |
 
 ## Document and Artifact Mappings
@@ -77,7 +77,7 @@ Use [EGR-G0](docs/Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) and
 
 Framework Advisor output under `reports/conformance/` is transient engineering evidence (per EDF Bootstrap Report template).
 
-### Outcomes (2026-09-15)
+### Outcomes (2026-09-15 baseline)
 
 | Metric | Score | Bootstrap tier target | Status |
 |---|---|---|---|
@@ -88,6 +88,15 @@ Framework Advisor output under `reports/conformance/` is transient engineering e
 | AI handbook | 10% | — | Deferred |
 
 **Report:** `reports/conformance/framework-advisor-20260915-095038.txt`
+
+### Outcomes (2026-09-17 — after `docs/Architecture/Audits/`)
+
+| Metric | Score | Notes |
+|---|---|---|
+| Overall | 26% | Stricter link/navigation ruleset pass; Structure **97%**; **Audits** Core dir present (no missing required dirs) |
+| Structure | 97% | EDF Core includes Audits path |
+
+**Report:** `reports/conformance/framework-advisor-20260917-103034.txt`
 
 ## Gate G0 — Architectural Review
 

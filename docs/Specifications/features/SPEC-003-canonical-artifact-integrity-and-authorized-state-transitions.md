@@ -1366,6 +1366,8 @@ Was the change externally authored and later reconciled?
 
 Do not duplicate information already reliably available from Git unless ProjectConcord requires additional semantic audit information.
 
+**Architectural Audit Records (AAR):** Periodic **implementation conformance reviews** (code vs Accepted ADRs and normative specs) are recorded as AAR files under [Architecture Audits](../../Architecture/Audits/README.md) per [ADR-0012](../../Architecture/ADRs/ADR-0012-Adopt-EDF-Architectural-Audit-Records.md). AAR is **not** the same as operational audit event storage in [ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md).
+
 ---
 
 # 46. Integrity and CRA
