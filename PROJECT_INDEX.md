@@ -20,6 +20,8 @@ This is the primary documentation hub for humans and AI assistants.
 - [PCON-0001 — AI Governance and Repository Execution Workflow](docs/Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md)
 - [PCON-0002 — Actor–Role Model and Engineering Domain Neutrality](docs/Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) (post-closeout discovery)
 - [AWI-0001 — Actor–Role Abstraction and Engineering Domain Profiles](docs/Architecture/Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md)
+- [PCON-0003 — Governed Pause, Continuation, and Resume](docs/Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md) (post-closeout discovery)
+- [AWI-0002 — Governed Pause, Continuation, and Resume](docs/Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md)
 - [AI Governance Workflow — Integration Analysis](docs/Architecture/AI_Governance_Workflow_Integration_Analysis.md)
 - [SPEC-004 — AI-Assisted Development Governance](docs/Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)
 - [ADR-0013 — Governed Development Workflow (Proposed)](docs/Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md)
@@ -48,7 +50,7 @@ This is the primary documentation hub for humans and AI assistants.
 
 ## Current Priorities
 
-**Pause (2026-09-21):** ProjectConcord work is intentionally stopped while focus is on Snaptara. Resume guidance: [PCR-0001 — Project Continuation and Pause Record](docs/Development/PCR-0001-Project-Continuation-and-Pause-Record.md). Continuation artifacts: [PCON-0002](docs/Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md), [AWI-0001](docs/Architecture/Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md), [GAP-037](docs/Development/EDF_Gap_Register.md).
+**Pause (2026-09-21):** ProjectConcord work is intentionally stopped while focus is on Snaptara. Resume guidance: [PCR-0001 — Project Continuation and Pause Record](docs/Development/PCR-0001-Project-Continuation-and-Pause-Record.md). Queued architectural input: [PCON-0002](docs/Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) / [AWI-0001](docs/Architecture/Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md) / [GAP-037](docs/Development/EDF_Gap_Register.md); [PCON-0003](docs/Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md) / [AWI-0002](docs/Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md) / [GAP-038](docs/Development/EDF_Gap_Register.md) (formal pause/resume capability — separate from AWI-0001).
 
 When work resumes (after repository inspection at that time):
 

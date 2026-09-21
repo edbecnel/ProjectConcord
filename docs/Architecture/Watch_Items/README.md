@@ -15,6 +15,7 @@ EDF convention: `docs/Architecture/Watch_Items/AWI-NNNN-Short-Title.md` ([EDF Ga
 | ID | Initiative | Status |
 |---|---|---|
 | [AWI-0001](AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md) | Actor–Role abstraction, capability separation, engineering-domain profiles, and reconciliation with AI governance artifacts | Active |
+| [AWI-0002](AWI-0002-Governed-Pause-Continuation-and-Resume.md) | First-class governed pause/continuation/resume capability (separate from AWI-0001) | Active |
 
 ## Lifecycle
 
@@ -33,5 +34,6 @@ Promotion path: AWI → Proposed ADR(s) → Accepted ADR(s). See EDF [Architectu
 ## Related Documents
 
 - [PCON-0002 — Actor–Role model and domain neutrality](../PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md)
+- [PCON-0003 — Governed pause, continuation, and resume](../PCON-0003-Governed-Pause-Continuation-and-Resume.md)
 - [Architecture README](../README.md)
 - [Architecture Decision Records](../ADRs/README.md)

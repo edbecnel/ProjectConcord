@@ -23,6 +23,7 @@ Non-normative records capture origin, motivation, and pre-specification explorat
 | [PCON-0000](PCON-0000-EDF-Project-Management-System-Architectural-Vision-and-Bootstrap-Handover.md) | EDF Project Management System — Architectural Vision and Bootstrap Handover | Draft |
 | [PCON-0001](PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) | AI-Assisted Architectural Governance and Repository Execution Workflow | Proposed |
 | [PCON-0002](PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) | Actor–Role Model, Engineering Domain Neutrality, and Governance Abstraction | Proposed (post-closeout discovery) |
+| [PCON-0003](PCON-0003-Governed-Pause-Continuation-and-Resume.md) | Governed Pause, Continuation, and Resume | Proposed (post-closeout discovery) |
 | [Analysis](AI_Governance_Workflow_Integration_Analysis.md) | AI Governance Workflow — Integration Analysis | Integrated 2026-09-21 (doc tranche accepted) |
 
 ## Architectural Watch Items
@@ -32,6 +33,7 @@ Deferred initiatives; non-authoritative while Active. Indexed in [Watch_Items/RE
 | ID | Initiative | Status |
 |---|---|---|
 | [AWI-0001](Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md) | Actor–Role abstraction and engineering-domain profiles | Active |
+| [AWI-0002](Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md) | Governed pause, continuation, and resume | Active |
 
 ## Architectural Amendments
 

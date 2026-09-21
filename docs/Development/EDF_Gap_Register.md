@@ -68,6 +68,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-035 | EDF upstream candidates (PC-AIGOV-022–028) | Low | Record only; no upstream in current tranche |
 | GAP-036 | Persona workspace vs governance workspace naming | Low | AMD-0002 vs PCON-0001 §4F; UI glossary |
 | GAP-037 | Candidate PC-AIGOV-029–051 (role/actor/domain profiles) | Low | Record only; [PCON-0002](../Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md); [AWI-0001](../Architecture/Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md); not normative in SPEC-004 |
+| GAP-038 | Candidate PC-AIGOV-052–059 (pause/continuation/resume) | Low | Record only; [PCON-0003](../Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md); [AWI-0002](../Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md); not normative in SPEC-004 |
 
 ---
 

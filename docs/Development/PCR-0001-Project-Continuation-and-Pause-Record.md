@@ -40,8 +40,13 @@ When architectural work resumes, these artifacts define the **queued** post-clos
 | **PCON-0002** | [docs/Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md](../Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) | **Proposed** — post-closeout architectural input | Actor; Role; RoleAssignment; authority/capability separation; separation of duties; distinct implementation, automated-test, QA, review, and acceptance responsibilities; Software Documentation Engineer; End-User Documentation Specialist; engineering-domain neutrality; engineering-domain profiles; multidisciplinary projects; Core versus domain-profile semantics; review of software/Git/repository-specific assumptions |
 | **AWI-0001** | [docs/Architecture/Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md](../Architecture/Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md) | **Active** | Architectural queue item preserving unresolved work |
 | **GAP-037** | [EDF Gap Register](EDF_Gap_Register.md) | Open (record-only) | Candidate [PC-AIGOV-029](../Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md)–051 index — **non-normative** |
+| **PCON-0003** | [docs/Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md](../Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md) | **Proposed** — post-closeout architectural input | Formal governed pause/continuation/resume capability (candidate **WorkContinuationRecord**); **separate** from PCON-0002 / AWI-0001 |
+| **AWI-0002** | [docs/Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md](../Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md) | **Active** | Queue item for pause/resume architecture — **not merged** into AWI-0001 |
+| **GAP-038** | [EDF Gap Register](EDF_Gap_Register.md) | Open (record-only) | Candidate PC-AIGOV-052–059 index — **non-normative** |
 
-PCON-0002 and AWI-0001 **do not** amend, accept, or supersede [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) or [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md).
+**Note:** PCR-0001 is interim **continuity documentation** for this repository pause. It is **not** accepted `WorkContinuationRecord` architecture ([PCON-0003](../Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md), [AWI-0002](../Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md)). Continuation here identifies state and resume sequence; it does **not** authorize implementation or automatically reactivate prior work authorizations.
+
+PCON-0002, PCON-0003, AWI-0001, and AWI-0002 **do not** amend, accept, or supersede [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) or [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md).
 
 ---
 
@@ -141,6 +146,8 @@ Software engineering may ultimately be represented as the first **Engineering Do
 - [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md)
 - [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)
 - [AI Governance Workflow Integration Analysis](../Architecture/AI_Governance_Workflow_Integration_Analysis.md)
-- [EDF Gap Register](EDF_Gap_Register.md) (GAP-037)
+- [EDF Gap Register](EDF_Gap_Register.md) (GAP-037, GAP-038)
+- [PCON-0003](../Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md)
+- [AWI-0002](../Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md)
 - [Implementation Roadmap](Implementation_Roadmap.md)
 - [PROJECT_INDEX](../../PROJECT_INDEX.md)
