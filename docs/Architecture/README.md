@@ -22,7 +22,7 @@ Non-normative records capture origin, motivation, and pre-specification explorat
 |---|---|---|
 | [PCON-0000](PCON-0000-EDF-Project-Management-System-Architectural-Vision-and-Bootstrap-Handover.md) | EDF Project Management System — Architectural Vision and Bootstrap Handover | Draft |
 | [PCON-0001](PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) | AI-Assisted Architectural Governance and Repository Execution Workflow | Proposed |
-| [Analysis](AI_Governance_Workflow_Integration_Analysis.md) | AI Governance Workflow — Integration Analysis | Draft |
+| [Analysis](AI_Governance_Workflow_Integration_Analysis.md) | AI Governance Workflow — Integration Analysis | Integrated 2026-09-21 (doc tranche accepted) |
 
 ## Architectural Amendments
 

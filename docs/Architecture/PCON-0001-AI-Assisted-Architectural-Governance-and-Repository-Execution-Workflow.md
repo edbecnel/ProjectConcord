@@ -14,6 +14,7 @@
 | **Owner** | ProjectConcord |
 | **Authoritative** | No — candidate models and requirements; normative behavior in [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) and [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) when accepted |
 | **Source** | Root handover `ProjectConcord_AI_Assisted_Architectural_Governance_and_Repository_Execution_Workflow.md` (integrated 2026-09-21) |
+| **Integration closeout** | Documentation tranche Project Architect **accepted** at `b728e2896992b58ee785d406ac93a6badf29c8c8` (2026-09-21); see [AI Governance Workflow Integration Analysis](AI_Governance_Workflow_Integration_Analysis.md). This record remains **Proposed**. |
 
 ---
 

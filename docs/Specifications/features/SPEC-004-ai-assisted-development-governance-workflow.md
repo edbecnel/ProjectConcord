@@ -15,6 +15,8 @@
 | **Governing decisions** | [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (Proposed), [ADR-0006](../../Architecture/ADRs/ADR-0006-AI-Boundary.md), [ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md) |
 | **Discovery source** | [PCON-0001](../../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) |
 
+**Integration closeout (2026-09-21):** PCON-0001 handover integrated; documentation tranche Project Architect **accepted** at commit `b728e2896992b58ee785d406ac93a6badf29c8c8` per [AI Governance Workflow Integration Analysis](../../Architecture/AI_Governance_Workflow_Integration_Analysis.md). This specification remains **Draft** and **not implemented**. [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) remains **Proposed**. Implementation gated per [Implementation Roadmap](../../Development/Implementation_Roadmap.md) M7+.
+
 ## Problem
 
 Engineering teams using an Architectural AI and a repository execution agent (for example GPT and Cursor) need **governed** coordination: explicit authorization, evidence, and human authority — without making chat transcripts or provider prompts canonical. Work may span **multiple projects** with destination-controlled acceptance and traceable cross-project dependencies.

@@ -2,9 +2,10 @@
 
 # AI-Assisted Development Governance — Integration Analysis
 
-> **Status:** Draft — for Project Architect review  
+> **Status:** Integrated — documentation tranche **Project Architect accepted** (2026-09-21)  
 > **Date:** 2026-09-21  
-> **Source:** [PCON-0001](PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) (root handover integrated 2026-09-21)
+> **Source:** [PCON-0001](PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) (root handover integrated 2026-09-21)  
+> **Integration commit:** `b728e2896992b58ee785d406ac93a6badf29c8c8`
 
 ## Purpose
 
@@ -122,6 +123,20 @@ Per architect direction — do not close in this documentation tranche:
 - Cross-read PCON-0001 against ADR-0001–0012, SPEC-001–003, Implementation Roadmap, EDF Gap Register
 - Verified GAP-026 already allocated (AAR discovery); new gaps use GAP-027+
 - No `src/` changes; no Framework Advisor re-run required for doc-only tranche
+
+## Documentation tranche closeout
+
+| Field | Value |
+|---|---|
+| **Disposition** | Project Architect **accepted** documentation integration scope |
+| **Accepted commit** | `b728e2896992b58ee785d406ac93a6badf29c8c8` |
+| **Closeout date** | 2026-09-21 |
+| **PCON-0001** | Remains **Proposed** / non-normative |
+| **SPEC-004** | Remains **Draft** / **not implemented** |
+| **ADR-0013** | Remains **Proposed** (not Accepted) |
+| **OPEN questions** | Unchanged — not resolved in this tranche |
+
+**Acceptance does not authorize:** SPEC-004 implementation, M7+ work, multi-project/inter-project features, Git/PR automation, EGR changes, or ADR-0013 acceptance.
 
 ## Parent
 
