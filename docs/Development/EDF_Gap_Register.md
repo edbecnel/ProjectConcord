@@ -67,6 +67,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-034 | CrossProjectDependency and source notification | Medium | PC-AIGOV-027–028; event mechanism OPEN |
 | GAP-035 | EDF upstream candidates (PC-AIGOV-022–028) | Low | Record only; no upstream in current tranche |
 | GAP-036 | Persona workspace vs governance workspace naming | Low | AMD-0002 vs PCON-0001 §4F; UI glossary |
+| GAP-037 | Candidate PC-AIGOV-029–051 (role/actor/domain profiles) | Low | Record only; [PCON-0002](../Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md); [AWI-0001](../Architecture/Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md); not normative in SPEC-004 |
 
 ---
 

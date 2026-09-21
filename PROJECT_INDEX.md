@@ -18,6 +18,8 @@ This is the primary documentation hub for humans and AI assistants.
 - [CRA ↔ ProjectConcord Gap Analysis](docs/Development/CRA_ProjectConcord_Gap_Analysis.md)
 - [PCON-0000 — Architectural Vision and Bootstrap Handover](docs/Architecture/PCON-0000-EDF-Project-Management-System-Architectural-Vision-and-Bootstrap-Handover.md)
 - [PCON-0001 — AI Governance and Repository Execution Workflow](docs/Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md)
+- [PCON-0002 — Actor–Role Model and Engineering Domain Neutrality](docs/Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) (post-closeout discovery)
+- [AWI-0001 — Actor–Role Abstraction and Engineering Domain Profiles](docs/Architecture/Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md)
 - [AI Governance Workflow — Integration Analysis](docs/Architecture/AI_Governance_Workflow_Integration_Analysis.md)
 - [SPEC-004 — AI-Assisted Development Governance](docs/Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)
 - [ADR-0013 — Governed Development Workflow (Proposed)](docs/Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md)

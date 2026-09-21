@@ -1,0 +1,37 @@
+# Architectural Watch Items
+
+[Home](../../../README.md) › [Project Index](../../../PROJECT_INDEX.md) › [Architecture](../README.md) › Architectural Watch Items
+
+## Purpose
+
+This directory contains **Architectural Watch Items (AWIs)** — deferred architectural initiatives intentionally outside the current roadmap.
+
+Watch items are **non-authoritative for implementation** while Active. They record open questions, longer-horizon evolution, or architectural uncertainty until promoted to ADRs or explicitly closed.
+
+EDF convention: `docs/Architecture/Watch_Items/AWI-NNNN-Short-Title.md` ([EDF Gap Register](../../Development/EDF_Gap_Register.md) GAP-007).
+
+## Watch Item Index
+
+| ID | Initiative | Status |
+|---|---|---|
+| [AWI-0001](AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md) | Actor–Role abstraction, capability separation, engineering-domain profiles, and reconciliation with AI governance artifacts | Active |
+
+## Lifecycle
+
+| Status | Meaning |
+|---|---|
+| **Active** | Under observation; non-authoritative for implementation |
+| **Promoted** | Elevated to one or more ADRs or implementation plans |
+| **Closed** | Resolved or explicitly withdrawn |
+
+Promotion path: AWI → Proposed ADR(s) → Accepted ADR(s). See EDF [Architectural Watch Items](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Architecture/Watch_Items/README.md).
+
+## Parent
+
+- [Architecture](../README.md)
+
+## Related Documents
+
+- [PCON-0002 — Actor–Role model and domain neutrality](../PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md)
+- [Architecture README](../README.md)
+- [Architecture Decision Records](../ADRs/README.md)

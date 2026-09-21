@@ -138,6 +138,16 @@ Per architect direction — do not close in this documentation tranche:
 
 **Acceptance does not authorize:** SPEC-004 implementation, M7+ work, multi-project/inter-project features, Git/PR automation, EGR changes, or ADR-0013 acceptance.
 
+## Post-closeout architectural discovery (queued)
+
+Discovery recorded **after** tranche closeout (`2dfdc97c84c5c464ce7fe7263bbe400e6ba3dcdc`); **not** part of the accepted integration scope above.
+
+| Artifact | Role |
+|---|---|
+| [PCON-0002](PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) | Architectural Discovery Record (Proposed) — Role/Actor/RoleAssignment, domain neutrality, candidate PC-AIGOV-029–051 |
+| [AWI-0001](Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md) | Active watch — future reconciliation with PCON-0001, ADR-0013, SPEC-004 |
+| [GAP-037](../Development/EDF_Gap_Register.md) | Candidate requirements index only |
+
 ## Parent
 
 - [Architecture](README.md)
@@ -147,3 +157,5 @@ Per architect direction — do not close in this documentation tranche:
 - [PCON-0001](PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md)
 - [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)
 - [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md)
+- [PCON-0002](PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md)
+- [AWI-0001](Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md)

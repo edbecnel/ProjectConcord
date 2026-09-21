@@ -15,6 +15,7 @@ AI-assisted engineering practices, governed development workflow (Architect AI �
 ## Architectural discovery and analysis
 
 - [PCON-0001 — AI-Assisted Architectural Governance and Repository Execution Workflow](../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) — Snaptara-derived workflow narrative (Proposed)
+- [PCON-0002 — Actor–Role model and engineering domain neutrality](../Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) — post-closeout discovery (Proposed); [AWI-0001](../Architecture/Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md)
 - [AI Governance Workflow Integration Analysis](../Architecture/AI_Governance_Workflow_Integration_Analysis.md)
 - [PCON-0000 §48 — Transitional Cursor handover](../Architecture/PCON-0000-EDF-Project-Management-System-Architectural-Vision-and-Bootstrap-Handover.md) — lighter-weight reconciliation handover example
 
