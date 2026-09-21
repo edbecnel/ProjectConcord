@@ -147,6 +147,7 @@ Discovery recorded **after** tranche closeout (`2dfdc97c84c5c464ce7fe7263bbe400e
 | [PCON-0002](PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) | Architectural Discovery Record (Proposed) — Role/Actor/RoleAssignment, domain neutrality, candidate PC-AIGOV-029–051 |
 | [AWI-0001](Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md) | Active watch — future reconciliation with PCON-0001, ADR-0013, SPEC-004 |
 | [GAP-037](../Development/EDF_Gap_Register.md) | Candidate requirements index only |
+| [PCR-0001](../Development/PCR-0001-Project-Continuation-and-Pause-Record.md) | Authoritative resume sequence and STOP state |
 
 ## Parent
 

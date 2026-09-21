@@ -28,6 +28,7 @@ This is the primary documentation hub for humans and AI assistants.
 - [Program](docs/Program/README.md)
 - [Program — Gate G0 (authoritative)](docs/Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md)
 - [Implementation Roadmap](docs/Development/Implementation_Roadmap.md)
+- [PCR-0001 — Project Continuation and Pause Record](docs/Development/PCR-0001-Project-Continuation-and-Pause-Record.md)
 - [EDF Gap Register](docs/Development/EDF_Gap_Register.md)
 - [SPEC-001 — MVP Desktop Client](docs/Specifications/features/SPEC-001-mvp-edf-desktop-client.md)
 - [SPEC-002 — Referential Integrity](docs/Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md)
@@ -47,9 +48,14 @@ This is the primary documentation hub for humans and AI assistants.
 
 ## Current Priorities
 
-1. **M1** — .NET solution skeleton ([EGR-G0](docs/Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) **Satisfied**).
-2. Complete **[EGR-G1](docs/Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md)** before intensive MVP implementation.
-3. AI governance architecture documented (PCON-0001, SPEC-004 Draft, ADR-0013 Proposed); implementation remains M7+.
+**Pause (2026-09-21):** ProjectConcord work is intentionally stopped while focus is on Snaptara. Resume guidance: [PCR-0001 — Project Continuation and Pause Record](docs/Development/PCR-0001-Project-Continuation-and-Pause-Record.md). Continuation artifacts: [PCON-0002](docs/Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md), [AWI-0001](docs/Architecture/Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md), [GAP-037](docs/Development/EDF_Gap_Register.md).
+
+When work resumes (after repository inspection at that time):
+
+1. **Architectural** — Step 1–3 in PCR-0001 (PCON-0002 / AWI-0001 disposition, reconciliation, then ADR-0013 / SPEC-004 review).
+2. **M1** — .NET solution skeleton ([EGR-G0](docs/Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) **Satisfied**); subject to architect authorization after PCR-0001 sequence.
+3. **[EGR-G1](docs/Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md)** before intensive MVP implementation.
+4. AI governance implementation remains M7+; PCON-0001 / SPEC-004 Draft / ADR-0013 Proposed disposition unchanged until explicit architect action.
 
 ## AI Context
 

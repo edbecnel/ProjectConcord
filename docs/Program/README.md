@@ -29,5 +29,6 @@ ProjectConcord adopts EGR as the **authoritative** mechanism for gate approval (
 
 ## Related Documents
 
+- [PCR-0001 — Project Continuation and Pause Record](../Development/PCR-0001-Project-Continuation-and-Pause-Record.md)
 - [Implementation Roadmap](../Development/Implementation_Roadmap.md)
 - [EDF Bootstrap Report](../../EDF_BOOTSTRAP_REPORT.md)
