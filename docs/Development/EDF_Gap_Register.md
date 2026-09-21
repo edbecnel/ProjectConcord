@@ -5,7 +5,7 @@
 > **Status:** Draft  
 > **Owner:** ProjectConcord  
 > **Applies To:** Deterministic EDF Engine design  
-> **Last Reviewed:** 2026-09-15  
+> **Last Reviewed:** 2026-09-21  
 > **Authoritative:** Yes — interim policies reference ADRs where binding
 
 ## Purpose
@@ -57,6 +57,16 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-024 | Transition prerequisites / acceptance rules | Medium | EGR human gates; app surfaces independent review |
 | GAP-025 | Trusted integrity record portability | Medium | Rebuild from Git + validation; operational fingerprints optional |
 | GAP-026 | AAR discovery in Engine/UI | Medium | Parse `docs/Architecture/Audits/AAR-*.md` status (Open/Complete/Superseded); EDF [AAR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/AAR-0001-Architectural-Audit-Records.md); post-M5 |
+| GAP-027 | DevelopmentWorkAuthorization schema and identity | High | [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md); operational per [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md); M7+ |
+| GAP-028 | Handover vs authorization rendering / rollover | Medium | Derived packages; [PCON-0001](../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) §23–24 |
+| GAP-029 | HumanInitiatedWorkItem vs AWI / backlog | Medium | HIW distinct from AWI; escalation to InterProjectHandover |
+| GAP-030 | Provider adapter interface and security | Medium | Manual clipboard first; PC-AIGOV-005–006 |
+| GAP-031 | Commit ↔ DevelopmentWorkAuthorization correlation | High | Scope conformance PC-AIGOV-010; M7b |
+| GAP-032 | Multi-project workspace / managed project identity | High | PC-AIGOV-022–023; candidate mechanisms OPEN |
+| GAP-033 | InterProjectHandover operational schema | High | Materialization to destination EDF; unloaded target behavior OPEN |
+| GAP-034 | CrossProjectDependency and source notification | Medium | PC-AIGOV-027–028; event mechanism OPEN |
+| GAP-035 | EDF upstream candidates (PC-AIGOV-022–028) | Low | Record only; no upstream in current tranche |
+| GAP-036 | Persona workspace vs governance workspace naming | Low | AMD-0002 vs PCON-0001 §4F; UI glossary |
 
 ---
 

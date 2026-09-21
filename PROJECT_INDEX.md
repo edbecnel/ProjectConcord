@@ -17,6 +17,10 @@ This is the primary documentation hub for humans and AI assistants.
 - [CRA Alignment and Responsibility Boundaries](docs/Architecture/CRA_Alignment_and_Responsibility_Boundaries.md)
 - [CRA ↔ ProjectConcord Gap Analysis](docs/Development/CRA_ProjectConcord_Gap_Analysis.md)
 - [PCON-0000 — Architectural Vision and Bootstrap Handover](docs/Architecture/PCON-0000-EDF-Project-Management-System-Architectural-Vision-and-Bootstrap-Handover.md)
+- [PCON-0001 — AI Governance and Repository Execution Workflow](docs/Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md)
+- [AI Governance Workflow — Integration Analysis](docs/Architecture/AI_Governance_Workflow_Integration_Analysis.md)
+- [SPEC-004 — AI-Assisted Development Governance](docs/Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)
+- [ADR-0013 — Governed Development Workflow (Proposed)](docs/Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md)
 - [Multi-User Amendment Analysis](docs/Architecture/Multi_User_Amendment_Affected_Document_Analysis.md)
 - [AMD-0001 — Multi-User Platform](docs/Architecture/AMD-0001-Multi-User-Desktop-and-Shared-Project-Services.md)
 - [Program](docs/Program/README.md)
@@ -43,7 +47,7 @@ This is the primary documentation hub for humans and AI assistants.
 
 1. **M1** — .NET solution skeleton ([EGR-G0](docs/Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) **Satisfied**).
 2. Complete **[EGR-G1](docs/Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md)** before intensive MVP implementation.
-3. Complete AI handbook and Governance domains when scheduling allows.
+3. AI governance architecture documented (PCON-0001, SPEC-004 Draft, ADR-0013 Proposed); implementation remains M7+.
 
 ## AI Context
 
@@ -51,4 +55,4 @@ AI assistants should begin here, follow links to authoritative documents, and av
 
 ## Last Reviewed
 
-2026-09-15
+2026-09-21

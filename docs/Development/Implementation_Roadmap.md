@@ -4,7 +4,7 @@
 
 > **Status:** Draft  
 > **Owner:** ProjectConcord  
-> **Last Reviewed:** 2026-09-15
+> **Last Reviewed:** 2026-09-21
 
 ## Purpose
 
@@ -33,7 +33,7 @@ Authoritative approval: complete checkboxes in the EGR files (EDF [EGR-0001](htt
 | **M5** | Authoring + integrity hooks | SPEC create/edit; validate; save; identity/metadata validation; duplicate ID detection; basic external-change detection per [SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md) §60 | SPEC-001 + minimal referential preview |
 | **M6** | Referential + integrity core | Artifact Registry, Relationship Index, safe move/rename ([SPEC-002](../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md)); lifecycle/governed-field validation, fingerprints, reconciliation-required states ([SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)) | SPEC-002 + SPEC-003 core deterministic scenarios |
 | **M6+** | Shared project platform | Auth, membership, basic roles, shared operational store, repo access coordination, change-set / concurrency basics | Multiple desktop users on one project without canonical DB replacement |
-| **M7+** | Reconciliation & AI | Git impact, Roslyn, AI proposals, Agile; CI/server integrity enforcement deferred from SPEC-003 §60 | Separate specs; engineering-intent layer |
+| **M7+** | Reconciliation & AI governance | Git impact, Roslyn, EDF reconciliation; [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) governed dev workflow (manual mode first); Agile optional; CI/server integrity deferred from SPEC-003 §60 | **Not started** — see M7 phasing below |
 
 ## Priority Order (from PCON-0000 §51)
 
@@ -45,7 +45,19 @@ Authoritative approval: complete checkboxes in the EGR files (EDF [EGR-0001](htt
 6. Canonical artifact CRUD (M5)  
 7. Deterministic integrity hooks ([SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)) (M5–M6)  
 8. Referential integrity ([SPEC-002](../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md)) (M6)  
-9. Git, change impact, AI, Agile (M7+)
+9. Git, change impact, AI governance ([SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)), Agile (M7+)
+
+## M7+ phasing ([SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md), [PCON-0001](../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md))
+
+| Sub-phase | Scope | Notes |
+|---|---|---|
+| **M7a** | Single-project manual governance | DevelopmentWorkAuthorization, handover packages, clipboard import/export, submissions |
+| **M7b** | Structured submission & Git correlation | Scope conformance, drift, baseline defects |
+| **M7c** | Provider adapters | Same semantics as manual mode |
+| **M7d / M8** | Inter-project workspace | InterProjectHandover, CrossProjectDependency, traceability — **not MVP** |
+| **M8+** | PR automation, permissions | Target branch/PR under authorization |
+
+**M1–M5 constraint:** Foundational architecture must not irreversibly assume one runtime ↔ one repository ([ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) Proposed). Specific seams are not prescribed in M1–M5 docs.
 
 ## Current Status
 
@@ -82,3 +94,6 @@ Authoritative approval: complete checkboxes in the EGR files (EDF [EGR-0001](htt
 - [tasks/README.md](../../tasks/README.md)
 - [SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)
 - [PCON-0000](../Architecture/PCON-0000-EDF-Project-Management-System-Architectural-Vision-and-Bootstrap-Handover.md)
+- [PCON-0001](../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md)
+- [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)
+- [AI Governance Integration Analysis](../Architecture/AI_Governance_Workflow_Integration_Analysis.md)
