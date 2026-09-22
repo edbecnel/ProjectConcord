@@ -151,6 +151,9 @@ Discovery recorded **after** tranche closeout (`2dfdc97c84c5c464ce7fe7263bbe400e
 | [PCON-0003](PCON-0003-Governed-Pause-Continuation-and-Resume.md) | Architectural Discovery (Proposed) — formal governed pause/continuation/resume capability |
 | [AWI-0002](Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md) | Active watch — separate from AWI-0001 |
 | [GAP-038](../Development/EDF_Gap_Register.md) | Candidate PC-AIGOV-052–059 index only |
+| [PCON-0004](PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md) | Architectural Discovery (Proposed) — primary orchestration UI, external AI/engineering-tool integration, candidate PC-AIGOV-060–071 |
+| [AWI-0003](Watch_Items/AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md) | Active watch — separate from AWI-0001/0002 |
+| [GAP-039](../Development/EDF_Gap_Register.md) | Candidate PC-AIGOV-060–071 index only |
 
 ## Parent
 
@@ -165,3 +168,5 @@ Discovery recorded **after** tranche closeout (`2dfdc97c84c5c464ce7fe7263bbe400e
 - [AWI-0001](Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md)
 - [PCON-0003](PCON-0003-Governed-Pause-Continuation-and-Resume.md)
 - [AWI-0002](Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md)
+- [PCON-0004](PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md)
+- [AWI-0003](Watch_Items/AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md)

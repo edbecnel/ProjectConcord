@@ -22,6 +22,8 @@ This is the primary documentation hub for humans and AI assistants.
 - [AWI-0001 — Actor–Role Abstraction and Engineering Domain Profiles](docs/Architecture/Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md)
 - [PCON-0003 — Governed Pause, Continuation, and Resume](docs/Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md) (post-closeout discovery)
 - [AWI-0002 — Governed Pause, Continuation, and Resume](docs/Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md)
+- [PCON-0004 — Primary Orchestration and External Engineering/AI Integration](docs/Architecture/PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md) (post-closeout discovery)
+- [AWI-0003 — Primary Orchestration and External AI/Engineering Tool Integration](docs/Architecture/Watch_Items/AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md)
 - [AI Governance Workflow — Integration Analysis](docs/Architecture/AI_Governance_Workflow_Integration_Analysis.md)
 - [SPEC-004 — AI-Assisted Development Governance](docs/Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)
 - [ADR-0013 — Governed Development Workflow (Proposed)](docs/Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md)
@@ -50,7 +52,7 @@ This is the primary documentation hub for humans and AI assistants.
 
 ## Current Priorities
 
-**Pause (2026-09-21):** ProjectConcord work is intentionally stopped while focus is on Snaptara. Resume guidance: [PCR-0001 — Project Continuation and Pause Record](docs/Development/PCR-0001-Project-Continuation-and-Pause-Record.md). Queued architectural input: [PCON-0002](docs/Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) / [AWI-0001](docs/Architecture/Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md) / [GAP-037](docs/Development/EDF_Gap_Register.md); [PCON-0003](docs/Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md) / [AWI-0002](docs/Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md) / [GAP-038](docs/Development/EDF_Gap_Register.md) (formal pause/resume capability — separate from AWI-0001).
+**Pause (2026-09-21):** ProjectConcord work is intentionally stopped while focus is on Snaptara. Resume guidance: [PCR-0001 — Project Continuation and Pause Record](docs/Development/PCR-0001-Project-Continuation-and-Pause-Record.md). Queued architectural input: [PCON-0002](docs/Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) / [AWI-0001](docs/Architecture/Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md) / [GAP-037](docs/Development/EDF_Gap_Register.md); [PCON-0003](docs/Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md) / [AWI-0002](docs/Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md) / [GAP-038](docs/Development/EDF_Gap_Register.md) (formal pause/resume capability — separate from AWI-0001); [PCON-0004](docs/Architecture/PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md) / [AWI-0003](docs/Architecture/Watch_Items/AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md) / [GAP-039](docs/Development/EDF_Gap_Register.md) (primary orchestration and external integration — separate from AWI-0001/0002).
 
 When work resumes (after repository inspection at that time):
 

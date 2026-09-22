@@ -26,6 +26,8 @@ AI-assisted governance documentation and subsequent discovery capture reached th
 | Integration tranche | `b728e2896992b58ee785d406ac93a6badf29c8c8` | PCON-0001 integrated; SPEC-004 / ADR-0013 drafted; see [AI Governance Workflow Integration Analysis](../Architecture/AI_Governance_Workflow_Integration_Analysis.md) |
 | Documentation-tranche closeout | `2dfdc97c84c5c464ce7fe7263bbe400e6ba3dcdc` | Project Architect accepted documentation integration scope; tranche **closed** |
 | Post-closeout architectural discovery capture | `199ae0eaefef7bcb1090e3306c3020ebdbdf5d43` | [PCON-0002](../Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) + [AWI-0001](../Architecture/Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md) + [GAP-037](EDF_Gap_Register.md); **did not** reopen the closed tranche |
+| Post-closeout architectural discovery capture | `63770938c224bb563df037f89baa900fd147cfd2` | [PCON-0003](../Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md) + [AWI-0002](../Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md) + [GAP-038](EDF_Gap_Register.md); **did not** reopen the closed tranche |
+| Post-closeout architectural discovery capture | `3cafdd025115d73e5f456af6c6b0e16ba6a12c38` | [PCON-0004](../Architecture/PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md) + [AWI-0003](../Architecture/Watch_Items/AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md) + [GAP-039](EDF_Gap_Register.md); **did not** reopen the closed tranche |
 
 **Continuation anchor (inspect at resume time):** After PCR-0001 updates, the last continuity commit is the commit that last modified this record. Do **not** assume recorded hashes remain `HEAD`; inspect repository state when work resumes.
 
@@ -43,10 +45,13 @@ When architectural work resumes, these artifacts define the **queued** post-clos
 | **PCON-0003** | [docs/Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md](../Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md) | **Proposed** — post-closeout architectural input | Formal governed pause/continuation/resume capability (candidate **WorkContinuationRecord**); **separate** from PCON-0002 / AWI-0001 |
 | **AWI-0002** | [docs/Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md](../Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md) | **Active** | Queue item for pause/resume architecture — **not merged** into AWI-0001 |
 | **GAP-038** | [EDF Gap Register](EDF_Gap_Register.md) | Open (record-only) | Candidate PC-AIGOV-052–059 index — **non-normative** |
+| **PCON-0004** | [docs/Architecture/PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md](../Architecture/PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md) | **Proposed** — post-closeout architectural input | Primary orchestration UI; external Project Architect and engineering-agent integration; provider-neutral adapters; transport independence; structured governed exchange; manual handover retained; **separate** from PCON-0002/0003 and AWI-0001/0002 |
+| **AWI-0003** | [docs/Architecture/Watch_Items/AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md](../Architecture/Watch_Items/AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md) | **Active** | Queue item for orchestration/integration architecture — **not merged** into AWI-0001 or AWI-0002 |
+| **GAP-039** | [EDF Gap Register](EDF_Gap_Register.md) | Open (record-only) | Candidate [PC-AIGOV-060](../Architecture/PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md)–071 index — **non-normative** |
 
 **Note:** PCR-0001 is interim **continuity documentation** for this repository pause. It is **not** accepted `WorkContinuationRecord` architecture ([PCON-0003](../Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md), [AWI-0002](../Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md)). Continuation here identifies state and resume sequence; it does **not** authorize implementation or automatically reactivate prior work authorizations.
 
-PCON-0002, PCON-0003, AWI-0001, and AWI-0002 **do not** amend, accept, or supersede [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) or [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md).
+PCON-0002, PCON-0003, PCON-0004, AWI-0001, AWI-0002, and AWI-0003 **do not** amend, accept, or supersede [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) or [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md).
 
 ---
 
@@ -61,6 +66,7 @@ Post-closeout discovery **did not** change disposition of the preceding governan
 | [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) | **Draft** / **not implemented** |
 | PC-AIGOV-001–028 | Represented through existing governance documentation |
 | PC-AIGOV-029–051 | **Candidate / non-normative only** (not in SPEC-004 as accepted requirements) |
+| PC-AIGOV-060–071 | **Candidate / non-normative only** (not in SPEC-004 as accepted requirements) |
 
 ---
 
@@ -146,8 +152,10 @@ Software engineering may ultimately be represented as the first **Engineering Do
 - [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md)
 - [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)
 - [AI Governance Workflow Integration Analysis](../Architecture/AI_Governance_Workflow_Integration_Analysis.md)
-- [EDF Gap Register](EDF_Gap_Register.md) (GAP-037, GAP-038)
+- [EDF Gap Register](EDF_Gap_Register.md) (GAP-037, GAP-038, GAP-039)
 - [PCON-0003](../Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md)
 - [AWI-0002](../Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md)
+- [PCON-0004](../Architecture/PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md)
+- [AWI-0003](../Architecture/Watch_Items/AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md)
 - [Implementation Roadmap](Implementation_Roadmap.md)
 - [PROJECT_INDEX](../../PROJECT_INDEX.md)

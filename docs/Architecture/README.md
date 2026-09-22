@@ -24,6 +24,7 @@ Non-normative records capture origin, motivation, and pre-specification explorat
 | [PCON-0001](PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) | AI-Assisted Architectural Governance and Repository Execution Workflow | Proposed |
 | [PCON-0002](PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) | Actor–Role Model, Engineering Domain Neutrality, and Governance Abstraction | Proposed (post-closeout discovery) |
 | [PCON-0003](PCON-0003-Governed-Pause-Continuation-and-Resume.md) | Governed Pause, Continuation, and Resume | Proposed (post-closeout discovery) |
+| [PCON-0004](PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md) | Primary Orchestration UI and External Engineering/AI Integration | Proposed (post-closeout discovery) |
 | [Analysis](AI_Governance_Workflow_Integration_Analysis.md) | AI Governance Workflow — Integration Analysis | Integrated 2026-09-21 (doc tranche accepted) |
 
 ## Architectural Watch Items
@@ -34,6 +35,7 @@ Deferred initiatives; non-authoritative while Active. Indexed in [Watch_Items/RE
 |---|---|---|
 | [AWI-0001](Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md) | Actor–Role abstraction and engineering-domain profiles | Active |
 | [AWI-0002](Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md) | Governed pause, continuation, and resume | Active |
+| [AWI-0003](Watch_Items/AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md) | Primary orchestration and external AI/engineering-tool integration | Active |
 
 ## Architectural Amendments
 
