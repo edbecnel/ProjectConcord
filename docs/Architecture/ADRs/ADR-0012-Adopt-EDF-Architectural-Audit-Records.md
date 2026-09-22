@@ -47,3 +47,4 @@ EDF introduced **Architectural Audit Records (AAR)** for structured **implementa
 - [Architecture Audits README](../Audits/README.md)
 - [Implementation Roadmap](../../Development/Implementation_Roadmap.md)
 - [EGR-G1 — MVP Implementation Gate](../../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md)
+- [EDF Governed Dependency Override — Architecture Handover](../../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md) — EDF [AAR-0001 v1.1](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/AAR-0001-Architectural-Audit-Records.md) SHOULD note implementation under Active GDOs where applicable

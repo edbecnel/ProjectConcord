@@ -14,6 +14,7 @@ For day-to-day project engineering (setup, Git, coding, testing), see [Developer
 - [CRA ↔ ProjectConcord Gap Analysis](CRA_ProjectConcord_Gap_Analysis.md)
 - [Implementation Roadmap](Implementation_Roadmap.md)
 - [PCR-0001 — Project Continuation and Pause Record](PCR-0001-Project-Continuation-and-Pause-Record.md) — **Active** pause; resume sequence
+- [Handover](../Handover/README.md) — inbound EDF/program architecture handovers (e.g. GDO)
 - [EDF Gap Register](EDF_Gap_Register.md)
 - [EDF Bootstrap Report](../../EDF_BOOTSTRAP_REPORT.md)
 

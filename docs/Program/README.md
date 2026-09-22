@@ -4,7 +4,7 @@
 
 ## Purpose
 
-Program-level documentation for ProjectConcord: milestones and **Engineering Gate Review Records (EGR)** per [EGR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/EGR-0001-Engineering-Gate-Review-Records.md) (normative EDF specification).
+Program-level documentation for ProjectConcord: milestones and **Engineering Gate Review Records (EGR)** per [EGR-0001 v1.1](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/EGR-0001-Engineering-Gate-Review-Records.md) (normative EDF specification), including **Governed Dependency Override (GDO)** semantics for non-blocking prerequisites while gates remain Open.
 
 ProjectConcord adopts EGR as the **authoritative** mechanism for gate approval (not chat-only).
 
@@ -29,6 +29,8 @@ ProjectConcord adopts EGR as the **authoritative** mechanism for gate approval (
 
 ## Related Documents
 
+- [EDF Governed Dependency Override — Architecture Handover](../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md)
+- [EDF Gap Register](../Development/EDF_Gap_Register.md) (GAP-006, GAP-040)
 - [PCR-0001 — Project Continuation and Pause Record](../Development/PCR-0001-Project-Continuation-and-Pause-Record.md)
 - [Implementation Roadmap](../Development/Implementation_Roadmap.md)
 - [EDF Bootstrap Report](../../EDF_BOOTSTRAP_REPORT.md)

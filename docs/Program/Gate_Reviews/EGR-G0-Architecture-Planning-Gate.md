@@ -222,6 +222,14 @@ Amended integrity pipeline cross-reference.
 - [ ] Reject
 - [ ] Revise
 
+## Governed Dependency Overrides
+
+None recorded. Gate **Satisfied** — no Active GDOs apply. Template section retained for EDF [EGR-0001 v1.1](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/EGR-0001-Engineering-Gate-Review-Records.md) alignment; see [GDO handover](../../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md).
+
+| Local ID | Authorized Downstream Scope | Authority | Date | Override Status |
+|---|---|---|---|---|
+| *(none)* | | | | |
+
 ## Post-Gate Actions
 
 After **Gate satisfied** is checked:

@@ -36,7 +36,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-003 | Machine-readable artifact type registry | High | Heuristic classification + gap log; no silent policy |
 | GAP-004 | Artifact lifecycle state machine | High | Parse Status tables/headings; validate known enums only |
 | GAP-005 | Explicit relationship syntax | High | Link graph + heading refs; infer with confidence flag |
-| GAP-006 | Milestones and gates representation | Medium | **Partial:** EDF [EGR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/EGR-0001-Engineering-Gate-Review-Records.md); ProjectConcord [EGR-G0/G1](../../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md); AAR under [Audits/](../../Architecture/Audits/README.md) per [ADR-0012](../../Architecture/ADRs/ADR-0012-Adopt-EDF-Architectural-Audit-Records.md); app UI deferred (M4+) |
+| GAP-006 | Milestones and gates representation | Medium | **Partial:** EDF [EGR-0001 v1.1](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/EGR-0001-Engineering-Gate-Review-Records.md) (incl. Governed Dependency Override semantics); ProjectConcord [EGR-G0/G1](../../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md); AAR under [Audits/](../../Architecture/Audits/README.md) per [ADR-0012](../../Architecture/ADRs/ADR-0012-Adopt-EDF-Architectural-Audit-Records.md); consumption guide [GDO handover](../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md); gate dashboard/UI deferred (M5+); see [GAP-040](#gap-040--gdo-dependency-evaluation-and-egr-round-trip) |
 | GAP-007 | AWI / discovery record ID conventions | Low | Filename + metadata patterns per Architecture README |
 | GAP-008 | SPEC / ADR identifier enforcement | Medium | Regex + location rules from DIA and domain READMEs |
 | GAP-009 | Move/rename/supersession rules | Medium | Git + explicit user action; ADR-0004 cache invalidation |
@@ -70,6 +70,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-037 | Candidate PC-AIGOV-029–051 (role/actor/domain profiles) | Low | Record only; [PCON-0002](../Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md); [AWI-0001](../Architecture/Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md); not normative in SPEC-004 |
 | GAP-038 | Candidate PC-AIGOV-052–059 (pause/continuation/resume) | Low | Record only; [PCON-0003](../Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md); [AWI-0002](../Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md); not normative in SPEC-004 |
 | GAP-039 | Candidate PC-AIGOV-060–071 (primary orchestration / external integration) | Low | Record only; [PCON-0004](../Architecture/PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md); [AWI-0003](../Architecture/Watch_Items/AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md); not normative in SPEC-004 |
+| GAP-040 | GDO dependency evaluation, EGR round-trip, governance debt UX | Medium | EDF normative via EGR-0001 v1.1; Concord consumption per [GDO handover](../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md); extends GAP-006; not AWI |
 
 ---
 
@@ -323,6 +324,14 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | **Question** | How does the app list Open vs Complete implementation audits? |
 | **Interim policy** | Human-maintained [Audits/README.md](../Architecture/Audits/README.md); Engine discovery post-M5. |
 
+### GAP-040 — GDO dependency evaluation and EGR round-trip
+
+| Field | Content |
+|---|---|
+| **Source** | EDF [EGR-0001 v1.1](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/EGR-0001-Engineering-Gate-Review-Records.md); [GDO handover](../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md) |
+| **Question** | How does ProjectConcord evaluate Blocking vs Non-Blocking prerequisites, persist GDO tables on EGR Markdown, surface governance debt, and validate downstream scope? |
+| **Interim policy** | Instance EGRs include EDF-shaped GDO sections; semantics per EDF + handover; Engine/UI implementation deferred per [Implementation Roadmap](Implementation_Roadmap.md) (M5+ display, M6+ evaluation). |
+
 ---
 
 ## Parent
@@ -341,4 +350,5 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 - [Multi-User Amendment Analysis](../Architecture/Multi_User_Amendment_Affected_Document_Analysis.md)
 - [System Architecture Overview](../Architecture/System_Architecture_Overview.md)
 - [Implementation Roadmap](Implementation_Roadmap.md)
+- [EDF Governed Dependency Override — Architecture Handover](../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md)
 - [EDF Documentation Information Architecture](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Architecture/Documentation_Information_Architecture.md)

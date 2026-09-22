@@ -202,6 +202,18 @@ Parse text output initially; contribute JSON format to EDF when stable (GAP-010)
 
 Post-M5, the Engine MAY discover EGR and AAR Markdown files for dashboard display (GAP-006, GAP-026).
 
+### Governed Dependency Override (GDO)
+
+EDF [EGR-0001 v1.1](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/EGR-0001-Engineering-Gate-Review-Records.md) defines **Governed Dependency Override**: a source gate may remain **Open** while a named downstream activity is **Non-Blocking** only when an **Active** GDO is recorded on the source EGR. ProjectConcord MUST NOT collapse these into a single status field:
+
+| Dimension | Role |
+|---|---|
+| **Gate Status** | Lifecycle of the gate obligation (Open, Satisfied, …) |
+| **Dependency Disposition** | Blocking vs Non-Blocking for a **specific** downstream activity |
+| **Override Status** | Lifecycle of the GDO row (Active, Reactivated, Closed) |
+
+Normative semantics and consumption guidance: [GDO handover](../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md) ([GAP-040](../Development/EDF_Gap_Register.md)). **GDO** governs **program gate prerequisite blocking**; it is distinct from AI-governance **handover** packages and **DevelopmentWorkAuthorization** ([SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)). When citing EDF gate decisions, use **EDF ADR-0007** — not ProjectConcord [ADR-0007](ADRs/ADR-0007-Semantic-Artifact-Identity-and-Referential-Integrity.md).
+
 ---
 
 ## Canonical Authoring and Lifecycle

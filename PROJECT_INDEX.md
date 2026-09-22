@@ -29,6 +29,8 @@ This is the primary documentation hub for humans and AI assistants.
 - [ADR-0013 — Governed Development Workflow (Proposed)](docs/Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md)
 - [Multi-User Amendment Analysis](docs/Architecture/Multi_User_Amendment_Affected_Document_Analysis.md)
 - [AMD-0001 — Multi-User Platform](docs/Architecture/AMD-0001-Multi-User-Desktop-and-Shared-Project-Services.md)
+- [Handover](docs/Handover/README.md)
+- [EDF Governed Dependency Override — Architecture Handover](docs/Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md)
 - [Program](docs/Program/README.md)
 - [Program — Gate G0 (authoritative)](docs/Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md)
 - [Implementation Roadmap](docs/Development/Implementation_Roadmap.md)

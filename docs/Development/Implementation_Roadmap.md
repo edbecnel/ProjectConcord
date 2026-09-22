@@ -21,6 +21,10 @@ Authoritative approval: complete checkboxes in the EGR files (EDF [EGR-0001](htt
 | **G0** | [EGR-G0 — Architecture Planning Gate](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) | **Satisfied** — M1 solution creation |
 | **G1** | [EGR-G1 — MVP Implementation Gate](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) | Open — intensive MVP after **Complete** AAR-0001 and G1 satisfied |
 
+### Deferred — GDO (EGR-0001 v1.1)
+
+[EDF Governed Dependency Override](../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md) §12 maps to Concord milestones after gate instances exist: **M5+** EGR parse/display (GDO tables, Active overrides index); **M6+** dependency evaluation engine, validation rules, governance-debt UX ([GAP-040](EDF_Gap_Register.md), extends [GAP-006](EDF_Gap_Register.md)). EDF semantics are normative; Concord does not redefine GDO via AWI or post-closeout PCON.
+
 ## Milestones
 
 | ID | Name | Scope | Exit criteria |

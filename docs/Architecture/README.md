@@ -14,6 +14,10 @@ System architecture, technical design, diagrams, and architecture decisions.
 - [Architectural Audits](Audits/README.md)
 - [Project Architecture Decisions](../../ARCHITECTURE_DECISIONS.md)
 
+## Inbound handovers
+
+Framework- or program-sourced architecture handovers (Active consumption guides; EDF retains normative gate semantics): [Handover](../Handover/README.md) — including [EDF Governed Dependency Override](../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md).
+
 ## Architectural Discovery Records
 
 Non-normative records capture origin, motivation, and pre-specification exploration. Normative requirements belong in [Specifications](../Specifications/README.md) (for example, `SPEC-NNN` identifiers); decisions belong in [ADRs](ADRs/README.md).

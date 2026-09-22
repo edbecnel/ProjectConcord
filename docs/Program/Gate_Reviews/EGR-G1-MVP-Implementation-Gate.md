@@ -68,6 +68,14 @@ ADR-0001–ADR-0011 were **Accepted** at G0. G1 confirms they remain binding for
 - [ ] Reject
 - [ ] Revise
 
+## Governed Dependency Overrides
+
+No **Active** overrides. Gate **Open** obligations remain **Blocking** for downstream activities unless a future GDO is recorded here per EDF [EGR-0001 v1.1](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/EGR-0001-Engineering-Gate-Review-Records.md) and [GDO handover](../../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md).
+
+| Local ID | Authorized Downstream Scope | Authority | Date | Override Status |
+|---|---|---|---|---|
+| *(none)* | | | | |
+
 ## Post-Gate Actions
 
 - [ ] Set SPEC-001 **Status** to Approved (if approved)
@@ -82,4 +90,5 @@ ADR-0001–ADR-0011 were **Accepted** at G0. G1 confirms they remain binding for
 ## Related Documents
 
 - [EGR-G0](EGR-G0-Architecture-Planning-Gate.md)
+- [GDO handover](../../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md)
 - [Architecture Audits README](../../Architecture/Audits/README.md)
