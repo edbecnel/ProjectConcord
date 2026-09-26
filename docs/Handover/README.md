@@ -11,6 +11,7 @@ Inbound architectural and integration handovers from external frameworks, progra
 | Document | Subject | Status |
 |---|---|---|
 | [EDF Governed Dependency Override — Architecture Handover](EDF-Governed-Dependency-Override-Architecture-Handover.md) | Incorporate EDF GDO into gate/dependency architecture | Active |
+| [EDF Governed Maintenance Fast Path — Architecture Handover](EDF-Governed-Maintenance-Fast-Path-Architecture-Handover.md) | Incorporate EDF GMFP/GMR into workflow-profile and maintenance-record consumption | Active |
 
 ## Parent
 
@@ -19,6 +20,6 @@ Inbound architectural and integration handovers from external frameworks, progra
 ## Related Documents
 
 - [Program](../Program/README.md)
-- [EDF Gap Register](../Development/EDF_Gap_Register.md) (GAP-006, GAP-040)
+- [EDF Gap Register](../Development/EDF_Gap_Register.md) (GAP-006, GAP-040, GAP-041)
 - [Program — Gate Reviews](../Program/Gate_Reviews/README.md)
 - [Implementation Roadmap](../Development/Implementation_Roadmap.md)

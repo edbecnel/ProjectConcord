@@ -24,6 +24,7 @@ This is the primary documentation hub for humans and AI assistants.
 - [AWI-0002 — Governed Pause, Continuation, and Resume](docs/Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md)
 - [PCON-0004 — Primary Orchestration and External Engineering/AI Integration](docs/Architecture/PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md) (post-closeout discovery)
 - [AWI-0003 — Primary Orchestration and External AI/Engineering Tool Integration](docs/Architecture/Watch_Items/AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md)
+- [AWI-0004 — Governed Maintenance Fast Path (GMFP)](docs/Architecture/Watch_Items/AWI-0004-Governed-Maintenance-Fast-Path.md)
 - [AI Governance Workflow — Integration Analysis](docs/Architecture/AI_Governance_Workflow_Integration_Analysis.md)
 - [SPEC-004 — AI-Assisted Development Governance](docs/Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)
 - [ADR-0013 — Governed Development Workflow (Proposed)](docs/Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md)
@@ -31,6 +32,7 @@ This is the primary documentation hub for humans and AI assistants.
 - [AMD-0001 — Multi-User Platform](docs/Architecture/AMD-0001-Multi-User-Desktop-and-Shared-Project-Services.md)
 - [Handover](docs/Handover/README.md)
 - [EDF Governed Dependency Override — Architecture Handover](docs/Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md)
+- [EDF Governed Maintenance Fast Path — Architecture Handover](docs/Handover/EDF-Governed-Maintenance-Fast-Path-Architecture-Handover.md)
 - [Program](docs/Program/README.md)
 - [Program — Gate G0 (authoritative)](docs/Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md)
 - [Implementation Roadmap](docs/Development/Implementation_Roadmap.md)
@@ -69,4 +71,4 @@ AI assistants should begin here, follow links to authoritative documents, and av
 
 ## Last Reviewed
 
-2026-09-21
+2026-09-26

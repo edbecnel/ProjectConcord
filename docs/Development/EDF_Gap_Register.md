@@ -71,6 +71,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-038 | Candidate PC-AIGOV-052–059 (pause/continuation/resume) | Low | Record only; [PCON-0003](../Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md); [AWI-0002](../Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md); not normative in SPEC-004 |
 | GAP-039 | Candidate PC-AIGOV-060–071 (primary orchestration / external integration) | Low | Record only; [PCON-0004](../Architecture/PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md); [AWI-0003](../Architecture/Watch_Items/AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md); not normative in SPEC-004 |
 | GAP-040 | GDO dependency evaluation, EGR round-trip, governance debt UX | Medium | EDF normative via EGR-0001 v1.1; Concord consumption per [GDO handover](../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md); extends GAP-006; not AWI |
+| GAP-041 | GMFP / GMR consumption and workflow-profile representation | Medium | EDF normative via [GMFP-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/b158f4a382dfbea941435eeacd96beb729443687/docs/Specifications/GMFP-0001-Governed-Maintenance-Fast-Path.md) at `b158f4a`; Concord consumption per [GMFP handover](../Handover/EDF-Governed-Maintenance-Fast-Path-Architecture-Handover.md); [AWI-0004](../Architecture/Watch_Items/AWI-0004-Governed-Maintenance-Fast-Path.md); **not implemented** — future GMR discovery, workflow profile, DWA projection, evidence, escalation, visualization |
 
 ---
 
@@ -332,6 +333,14 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | **Question** | How does ProjectConcord evaluate Blocking vs Non-Blocking prerequisites, persist GDO tables on EGR Markdown, surface governance debt, and validate downstream scope? |
 | **Interim policy** | Instance EGRs include EDF-shaped GDO sections; semantics per EDF + handover; Engine/UI implementation deferred per [Implementation Roadmap](Implementation_Roadmap.md) (M5+ display, M6+ evaluation). |
 
+### GAP-041 — GMFP / GMR consumption and workflow-profile representation
+
+| Field | Content |
+|---|---|
+| **Source** | EDF commit `b158f4a382dfbea941435eeacd96beb729443687`; [GMFP-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/b158f4a382dfbea941435eeacd96beb729443687/docs/Specifications/GMFP-0001-Governed-Maintenance-Fast-Path.md); [EDF ADR-0009 (GMFP)](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/b158f4a382dfbea941435eeacd96beb729443687/docs/Architecture/ADRs/ADR-0009-Governed-Maintenance-Fast-Path.md); [GMFP handover](../Handover/EDF-Governed-Maintenance-Fast-Path-Architecture-Handover.md); [AWI-0004](../Architecture/Watch_Items/AWI-0004-Governed-Maintenance-Fast-Path.md) |
+| **Question** | How does ProjectConcord discover and represent **Governed Maintenance Records (GMR)**, project canonical GMFP authorization into operational **DevelopmentWorkAuthorization** (or successor) without embedding DWA IDs in GMR, visualize **two human gates** and **GMFP-2 execution interval**, present consolidated evidence, handle **Escalated** / STOP, and distinguish GMFP from EGR/GDO/AAR — without hard-coding provisional workflow enums or GMR states? |
+| **Interim policy** | EDF GMR remains canonical in Git; semantics per EDF + handover; generic workflow-profile abstraction deferred to future PCON discovery before normative ADR-0013/SPEC-004 amendment; no parser, validator, workflow engine, GMFP UI, or schema in current tranche. |
+
 ---
 
 ## Parent
@@ -351,4 +360,5 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 - [System Architecture Overview](../Architecture/System_Architecture_Overview.md)
 - [Implementation Roadmap](Implementation_Roadmap.md)
 - [EDF Governed Dependency Override — Architecture Handover](../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md)
+- [EDF Governed Maintenance Fast Path — Architecture Handover](../Handover/EDF-Governed-Maintenance-Fast-Path-Architecture-Handover.md)
 - [EDF Documentation Information Architecture](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Architecture/Documentation_Information_Architecture.md)
