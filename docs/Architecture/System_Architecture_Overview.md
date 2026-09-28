@@ -160,12 +160,26 @@ Core EDF logic MUST NOT depend on Avalonia (PCON-0000 §4, §54.8).
 | Watch Item (AWI) | `docs/Architecture/Watch_Items/` | Discover |
 | Discovery Record | `docs/Architecture/` (e.g. PCON-0000) | Discover |
 | Conformance Report | Framework Advisor output | Yes (M3) |
+| Manual Verification Record (MVR) | `docs/Verification/Records/MVR-NNNN-*.md` | Discover (M2+); attestation UX (M5) per [SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md) |
 
 ### Deferred entities
 
-Milestone, Gate, Validation Evidence, Acceptance Record, Sprint, Task — require EDF taxonomy or project extensions ([EDF Gap Register](../Development/EDF_Gap_Register.md) GAP-006, GAP-007).
+Milestone, Gate, Sprint, Task — require EDF taxonomy or project extensions ([EDF Gap Register](../Development/EDF_Gap_Register.md) GAP-006, GAP-007). MVR **consumption implementation** tracked under GAP-042; architecture baseline in S0.
 
-Engine exposes semantic APIs (PCON-0000 §7), e.g. `GetProjectProfile()`, `GetArtifacts()`, `GetConformanceSummary()`, not raw directory walks in UI.
+Engine exposes semantic APIs (PCON-0000 §7), e.g. `GetProjectProfile()`, `GetArtifacts()`, `GetConformanceSummary()`, and (when implemented) `GetPendingManualVerification()`, not raw directory walks in UI.
+
+### Manual Verification Records (design)
+
+Normative product behavior: [SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md). EDF semantics: [MVR handover](../Handover/EDF-Manual-Verification-Record-Architecture-Handover.md) at commit `192fe5c`.
+
+| Concern | Rule |
+|---|---|
+| Canonical source | MVR Markdown in Git ([ADR-0002](ADRs/ADR-0002-EDF-Canonical-Source-of-Truth.md)) |
+| Identity | Record ID from Identity metadata; filename discovers **candidates** only — no silent identity inference |
+| Derived state | Rebuildable projection per [ADR-0004](ADRs/ADR-0004-Derived-Data-and-Cache.md); implementation-neutral (no dedicated MVR-only index required by architecture) |
+| Human execution status | Canonical field; validated for consistency; **Complete** only via human attestation ([ADR-0014](ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md)) |
+| Pending QA | ATTENTION dashboard when Manual QA required and execution unresolved |
+| Gates | Read-only hints later; **no** automatic EGR mutation from MVR state |
 
 ---
 
@@ -198,9 +212,10 @@ Parse text output initially; contribute JSON format to EDF when stable (GAP-010)
 | **EGR** | Human approval of authoritative **documents** | [docs/Program/Gate_Reviews/](../../Program/Gate_Reviews/) |
 | **AAR** | **Implementation** vs Accepted ADRs / normative SPECs | [docs/Architecture/Audits/](Audits/README.md) ([ADR-0012](ADRs/ADR-0012-Adopt-EDF-Architectural-Audit-Records.md), EDF [AAR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/AAR-0001-Architectural-Audit-Records.md)) |
 | **Framework Advisor** | **Documentation** structure and navigation | `reports/conformance/` (transient) |
+| **MVR** | **Human-executed** manual verification procedure and execution record | [docs/Verification/Records/](../../Verification/Records/README.md) ([SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md), GAP-042) |
 | **Operational audit** | Collaboration / integrity **events** (not AAR) | Operational store per [ADR-0009](ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md) |
 
-Post-M5, the Engine MAY discover EGR and AAR Markdown files for dashboard display (GAP-006, GAP-026).
+Post-M5, the Engine MAY discover EGR and AAR Markdown files for dashboard display (GAP-006, GAP-026). MVR pending-QA and attestation UX target M5 per SPEC-005; parser/discovery from M2.
 
 ### Governed Dependency Override (GDO)
 

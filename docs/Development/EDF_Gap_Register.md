@@ -5,7 +5,7 @@
 > **Status:** Draft  
 > **Owner:** ProjectConcord  
 > **Applies To:** Deterministic EDF Engine design  
-> **Last Reviewed:** 2026-09-21  
+> **Last Reviewed:** 2026-09-28  
 > **Authoritative:** Yes — interim policies reference ADRs where binding
 
 ## Purpose
@@ -72,6 +72,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-039 | Candidate PC-AIGOV-060–071 (primary orchestration / external integration) | Low | Record only; [PCON-0004](../Architecture/PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md); [AWI-0003](../Architecture/Watch_Items/AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md); not normative in SPEC-004 |
 | GAP-040 | GDO dependency evaluation, EGR round-trip, governance debt UX | Medium | EDF normative via EGR-0001 v1.1; Concord consumption per [GDO handover](../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md); extends GAP-006; not AWI |
 | GAP-041 | GMFP / GMR consumption and workflow-profile representation | Medium | EDF normative via [GMFP-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/b158f4a382dfbea941435eeacd96beb729443687/docs/Specifications/GMFP-0001-Governed-Maintenance-Fast-Path.md) at `b158f4a`; Concord consumption per [GMFP handover](../Handover/EDF-Governed-Maintenance-Fast-Path-Architecture-Handover.md); [AWI-0004](../Architecture/Watch_Items/AWI-0004-Governed-Maintenance-Fast-Path.md); **not implemented** — future GMR discovery, workflow profile, DWA projection, evidence, escalation, visualization |
+| GAP-042 | MVR / MVT consumption, attestation, pending QA | Medium | EDF normative via [MVR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/192fe5c1c6254c51e257d24aefc09e127ce72464/docs/Specifications/MVR-0001-Manual-Verification-Records.md) at `192fe5c`; Concord consumption per [MVR handover](../Handover/EDF-Manual-Verification-Record-Architecture-Handover.md), [SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md), [ADR-0014](../Architecture/ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md); [AWI-0005](../Architecture/Watch_Items/AWI-0005-Manual-Verification-Records.md); **not implemented** — future parser, pending-QA query, human attestation write-back, ATTENTION UI, read-only gate hints |
 
 ---
 
@@ -340,6 +341,14 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | **Source** | EDF commit `b158f4a382dfbea941435eeacd96beb729443687`; [GMFP-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/b158f4a382dfbea941435eeacd96beb729443687/docs/Specifications/GMFP-0001-Governed-Maintenance-Fast-Path.md); [EDF ADR-0009 (GMFP)](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/b158f4a382dfbea941435eeacd96beb729443687/docs/Architecture/ADRs/ADR-0009-Governed-Maintenance-Fast-Path.md); [GMFP handover](../Handover/EDF-Governed-Maintenance-Fast-Path-Architecture-Handover.md); [AWI-0004](../Architecture/Watch_Items/AWI-0004-Governed-Maintenance-Fast-Path.md) |
 | **Question** | How does ProjectConcord discover and represent **Governed Maintenance Records (GMR)**, project canonical GMFP authorization into operational **DevelopmentWorkAuthorization** (or successor) without embedding DWA IDs in GMR, visualize **two human gates** and **GMFP-2 execution interval**, present consolidated evidence, handle **Escalated** / STOP, and distinguish GMFP from EGR/GDO/AAR — without hard-coding provisional workflow enums or GMR states? |
 | **Interim policy** | EDF GMR remains canonical in Git; semantics per EDF + handover; generic workflow-profile abstraction deferred to future PCON discovery before normative ADR-0013/SPEC-004 amendment; no parser, validator, workflow engine, GMFP UI, or schema in current tranche. |
+
+### GAP-042 — MVR / MVT consumption, human attestation, pending manual QA
+
+| Field | Content |
+|---|---|
+| **Source** | EDF commit `192fe5c1c6254c51e257d24aefc09e127ce72464`; [MVR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/192fe5c1c6254c51e257d24aefc09e127ce72464/docs/Specifications/MVR-0001-Manual-Verification-Records.md); [EDF ADR-0010 (MVR)](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/192fe5c1c6254c51e257d24aefc09e127ce72464/docs/Architecture/ADRs/ADR-0010-Manual-Verification-Records.md); [MVR handover](../Handover/EDF-Manual-Verification-Record-Architecture-Handover.md); [SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md); [ADR-0014](../Architecture/ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md); [AWI-0005](../Architecture/Watch_Items/AWI-0005-Manual-Verification-Records.md) |
+| **Question** | How does ProjectConcord discover MVR candidates, validate canonical Record ID, parse MVT Results and Human execution status deterministically, maintain rebuildable non-authoritative projections, surface pending manual QA, perform human-attestation write-back with representational checkbox sync, enforce the Human-Attestation Authority Boundary, and show read-only gate blocking hints — without inferring optional MVT semantics, silently repairing identity, auto-mutating EGR, or treating GDO/GMFP validation as human MVR execution? |
+| **Interim policy** | Normative behavior in [SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md); S0 docs + `docs/Verification/` bootstrap complete; **no application implementation** until M2+ authorized under [Implementation Roadmap](Implementation_Roadmap.md) and EGR-G1/milestone sequence. |
 
 ---
 

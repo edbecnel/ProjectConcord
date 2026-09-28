@@ -39,6 +39,8 @@ Satisfying this gate does **not** auto-close open findings or change remediation
 |---|---|
 | Project Charter | [PROJECT_CHARTER.md](../../../PROJECT_CHARTER.md) |
 | SPEC-001 MVP Desktop Client | [SPEC-001-mvp-edf-desktop-client.md](../../Specifications/features/SPEC-001-mvp-edf-desktop-client.md) |
+| SPEC-005 MVR consumption (architecture baseline) | [SPEC-005-manual-verification-record-consumption.md](../../Specifications/features/SPEC-005-manual-verification-record-consumption.md) |
+| ADR-0014 MVR human attestation (Proposed) | [ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md](../../Architecture/ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md) |
 | AAR-0001 — M1 implementation conformance | [Audits/](../../Architecture/Audits/) (create when `src/` exists) |
 
 ### Project Charter
@@ -53,7 +55,7 @@ Satisfying this gate does **not** auto-close open findings or change remediation
 
 ### AAR-0001 — M1 solution skeleton conformance
 
-Requirements basis MUST include Accepted ADR-0001–ADR-0011 and SPEC-001 skeleton scope. **Audit status** MUST be **Complete** before G1 **Gate satisfied**.
+Requirements basis MUST include Accepted ADR-0001–ADR-0011, S0 MVR architecture baseline ([SPEC-005](../../Specifications/features/SPEC-005-manual-verification-record-consumption.md), [MVR handover](../../Handover/EDF-Manual-Verification-Record-Architecture-Handover.md)), and SPEC-001 skeleton scope. **Audit status** MUST be **Complete** before G1 **Gate satisfied**.
 
 - [ ] Reviewed
 - [ ] Approved (audit Complete)

@@ -18,6 +18,7 @@ EDF convention: `docs/Architecture/Watch_Items/AWI-NNNN-Short-Title.md` ([EDF Ga
 | [AWI-0002](AWI-0002-Governed-Pause-Continuation-and-Resume.md) | First-class governed pause/continuation/resume capability (separate from AWI-0001) | Active |
 | [AWI-0003](AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md) | Primary orchestration UI and external AI/engineering-tool integration (separate from AWI-0001/0002) | Active |
 | [AWI-0004](AWI-0004-Governed-Maintenance-Fast-Path.md) | EDF Governed Maintenance Fast Path (GMFP) consumption, workflow-profile risk, and deferred implementation | Active |
+| [AWI-0005](AWI-0005-Manual-Verification-Records.md) | EDF Manual Verification Records (MVR) consumption, attestation boundary, and deferred implementation | Active |
 
 ## Lifecycle
 
@@ -39,5 +40,6 @@ Promotion path: AWI → Proposed ADR(s) → Accepted ADR(s). See EDF [Architectu
 - [PCON-0003 — Governed pause, continuation, and resume](../PCON-0003-Governed-Pause-Continuation-and-Resume.md)
 - [PCON-0004 — Primary orchestration and external integration](../PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md)
 - [EDF Governed Maintenance Fast Path — Architecture Handover](../../Handover/EDF-Governed-Maintenance-Fast-Path-Architecture-Handover.md)
+- [EDF Manual Verification Records — Architecture Handover](../../Handover/EDF-Manual-Verification-Record-Architecture-Handover.md)
 - [Architecture README](../README.md)
 - [Architecture Decision Records](../ADRs/README.md)

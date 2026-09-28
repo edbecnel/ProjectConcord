@@ -12,6 +12,7 @@ Functional requirements, non-functional requirements, feature specifications, an
 - [SPEC-002 — Canonical Artifact Relationships and Referential Integrity](features/SPEC-002-canonical-artifact-relationships-referential-integrity.md)
 - [SPEC-003 — Canonical Artifact Integrity and Authorized State Transitions](features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)
 - [SPEC-004 — AI-Assisted Development Governance Workflow](features/SPEC-004-ai-assisted-development-governance-workflow.md) (Draft — not implemented)
+- [SPEC-005 — Manual Verification Record Consumption](features/SPEC-005-manual-verification-record-consumption.md)
 - [NFR](NFR.md)
 
 ## What Belongs Here

@@ -25,6 +25,8 @@ Engineers adopting EDF must navigate complex repository conventions manually. ED
 - Preserve EDF as canonical; no proprietary **engineering-state** database ([ADR-0002](../../Architecture/ADRs/ADR-0002-EDF-Canonical-Source-of-Truth.md)). Operational/collaboration persistence is allowed per [ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md).
 - Align solution structure with multi-user platform seams ([ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md), [ADR-0010](../../Architecture/ADRs/ADR-0010-Single-User-Administrator-Default-Model.md)) even when running as a solo Administrator locally.
 
+MVR human manual verification consumption (pending QA, attestation write-back) is **not** an MVP M1–M4 requirement. Normative behavior is defined in [SPEC-005](SPEC-005-manual-verification-record-consumption.md) (M2–M5). S0 architecture reconciliation is complete per [Implementation Roadmap](../../Development/Implementation_Roadmap.md).
+
 ## Non-Goals
 
 - Jira-like work management, full Git client, IDE features, cloud collaboration
@@ -57,6 +59,7 @@ Engineers adopting EDF must navigate complex repository conventions manually. ED
 ## Dependencies
 
 - [EGR-G1](../../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) satisfied; ADR-0001 and ADR-0002 Accepted
+- S0 MVR architecture reconciliation complete ([SPEC-005](SPEC-005-manual-verification-record-consumption.md))
 - Local EDF clone path configuration
 
 ## Future product (post-MVP)
@@ -77,5 +80,6 @@ Following EDF [EGR-0001](https://github.com/edbecnel/Engineering-Documentation-F
 ## Related Documents
 
 - [SPEC-002](../../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md)
+- [SPEC-005](SPEC-005-manual-verification-record-consumption.md)
 - [NFR](../NFR.md)
 - [PROJECT_CHARTER](../../../PROJECT_CHARTER.md)

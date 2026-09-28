@@ -4,11 +4,13 @@
 
 > **Status:** Draft  
 > **Owner:** ProjectConcord  
-> **Last Reviewed:** 2026-09-21
+> **Last Reviewed:** 2026-09-28
 
 ## Purpose
 
-Incremental delivery plan for ProjectConcord aligned with PCON-0000 §51, [AMD-0001](../Architecture/AMD-0001-Multi-User-Desktop-and-Shared-Project-Services.md), and [SPEC-001](../Specifications/features/SPEC-001-mvp-edf-desktop-client.md). **[EGR-G0](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) satisfied** — M1 solution skeleton may begin; full MVP implementation intensity remains gated on [EGR-G1](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md).
+Incremental delivery plan for ProjectConcord aligned with PCON-0000 §51, [AMD-0001](../Architecture/AMD-0001-Multi-User-Desktop-and-Shared-Project-Services.md), and [SPEC-001](../Specifications/features/SPEC-001-mvp-edf-desktop-client.md). **[EGR-G0](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) satisfied** — M1 solution skeleton may begin **after S0 MVR architecture reconciliation**; full MVP implementation intensity remains gated on [EGR-G1](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md).
+
+**MVR adoption:** Architecture and `docs/Verification/` bootstrap complete in **S0** ([SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md)). MVR **application** work is **M2–M5** only — not M1. **No separate MVR-adoption gate**; use existing EGR-G1 / milestone sequence.
 
 **Platform note:** Multi-user architecture is fixed at M0 ([ADR-0009](../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md)). M1–M5 may run as a local solo Administrator project; shared services and concurrent collaboration incrementally follow M6+.
 
@@ -25,12 +27,24 @@ Authoritative approval: complete checkboxes in the EGR files (EDF [EGR-0001](htt
 
 [EDF Governed Dependency Override](../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md) §12 maps to Concord milestones after gate instances exist: **M5+** EGR parse/display (GDO tables, Active overrides index); **M6+** dependency evaluation engine, validation rules, governance-debt UX ([GAP-040](EDF_Gap_Register.md), extends [GAP-006](EDF_Gap_Register.md)). EDF semantics are normative; Concord does not redefine GDO via AWI or post-closeout PCON.
 
+### MVR consumption ([SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md), GAP-042)
+
+| Stage | Milestone | Scope |
+|---|---|---|
+| **S0** | Architecture (pre-M1) | Handover, SPEC-005, ADR-0014, GAP-042, `docs/Verification/` bootstrap — **no** execution MVR instance |
+| **S1** | M2 | MVR discovery, parser, identity validation |
+| **S2** | M4 | MVR navigation / governing backlinks |
+| **S3** | M5 | ATTENTION pending QA, human attestation write-back |
+| **S4** | M5+ | Read-only gate/AAR/GMFP blocking hints — no EGR auto-mutation |
+
+M1 skeleton: **no** MVR workflow code; **no** speculative empty MVR domain types unless a concrete M1 contract requires them.
+
 ## Milestones
 
 | ID | Name | Scope | Exit criteria |
 |---|---|---|---|
 | **M0** | Architecture planning | Docs, ADRs, SPEC-001, bootstrap report, EGR-G0 | EGR-G0 satisfied |
-| **M1** | Solution skeleton | `ProjectConcord.sln`, `Edf.Domain`, `Edf.Engine`, `Edf.Application`, `Edf.ProjectServices` (stubs), `Edf.Identity` (local degenerate), `Edf.Desktop`, tests; open-folder stub | Builds on macOS; **Complete** [AAR-0001](../Architecture/Audits/) (M1 vs Accepted ADR-0001–0011 + SPEC-001 skeleton); [EGR-G1](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) for intensive MVP |
+| **M1** | Solution skeleton | `ProjectConcord.sln`, `Edf.Domain`, `Edf.Engine`, `Edf.Application`, `Edf.ProjectServices` (stubs), `Edf.Identity` (local degenerate), `Edf.Desktop`, tests; open-folder stub | Builds on macOS; architecture includes accepted MVR placement ([SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md)); **no** MVR implementation in M1; **Complete** [AAR-0001](../Architecture/Audits/) (M1 vs Accepted ADR-0001–0011 + SPEC-001 skeleton); [EGR-G1](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) for intensive MVP |
 | **M2** | Discovery | Profile/capability resolution, artifact scan | Open ProjectConcord or EDF clone; list domains/artifacts |
 | **M3** | Validation | Invoke EDF conformance scripts; display scores | Matches `run_conformance_validation.sh` output |
 | **M4** | Navigation | PROJECT_INDEX, domain READMEs, link following | Semantic browse without tree-only UX |
@@ -68,7 +82,8 @@ Authoritative approval: complete checkboxes in the EGR files (EDF [EGR-0001](htt
 | Milestone | State |
 |---|---|
 | M0 | **Complete** — [EGR-G0](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) **Satisfied** (2026-09-15) |
-| M1 | **Ready** — solution skeleton per gate; complete [EGR-G1](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) before intensive MVP work |
+| **S0** | **Complete** (2026-09-28) — MVR architecture docs, SPEC-005, ADR-0014, GAP-042, `docs/Verification/` bootstrap; see [MVR handover](../Handover/EDF-Manual-Verification-Record-Architecture-Handover.md) |
+| M1 | **Ready** — after S0; solution skeleton per gate; complete [EGR-G1](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) before intensive MVP work |
 | M2–M5 | Blocked on G1 for implementation in earnest |
 | M6–M7+ | Deferred |
 
@@ -97,6 +112,7 @@ Authoritative approval: complete checkboxes in the EGR files (EDF [EGR-0001](htt
 
 - [tasks/README.md](../../tasks/README.md)
 - [SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)
+- [SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md) (MVR consumption — M2–M5 implementation)
 - [PCON-0000](../Architecture/PCON-0000-EDF-Project-Management-System-Architectural-Vision-and-Bootstrap-Handover.md)
 - [PCON-0001](../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md)
 - [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)
