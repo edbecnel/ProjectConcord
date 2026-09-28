@@ -7,8 +7,12 @@
 **Architecture baseline commit (pre-M1 content):** `8f1938ba0adc3fbe933cdb27581e813142bb122f`  
 **Working Cursor copy (non-canonical):** `/Users/edbecnel/.cursor/plans/m1_egr-g1_implementation_plan_a088fdc4.plan.md`
 
-**M1a:** **IMPLEMENTATION COMPLETE** / Project Architect **ACCEPTED** / **PUBLICATION AUTHORIZED** (publication commit pending push to `origin/main`)  
-**M1b / M1c:** **NOT AUTHORIZED** until separate Project Architect authorization after each STOP.
+**M1a:** **CLOSED** / Project Architect **ACCEPTED** / **PUBLISHED** at `42f5a6e0e0e67d733a096f7a0fe0ef31976c6b6b` on `origin/main`  
+**M1b-A:** **COMPLETE** / Project Architect **ACCEPTED**  
+**AAR-0001:** **COMPLETE** / Project Architect **ACCEPTED** / **publication authorized** (M1b-B)  
+**M1b-B:** **AUTHORIZED** — publication in progress  
+**M1 (overall):** **OPEN** — EGR-G1 not satisfied  
+**M1c:** **NOT AUTHORIZED**
 
 ---
 
@@ -20,8 +24,8 @@
 | No M1 execution MVR from governing artifacts | **Accepted** |
 | **Plan** | **ACCEPTED** / **PUBLISHED** (`aaa9229`) |
 | **Pre-M1 doc reconciliation** | **CLOSED** / **PA ACCEPTED** / **PUBLISHED** (2026-09-28; C2, C4, PA-2) |
-| **M1a (M1 skeleton)** | **IMPLEMENTATION COMPLETE** / **PA ACCEPTED** / **PUBLICATION AUTHORIZED** |
-| **M1b AAR-0001** | **NOT AUTHORIZED** |
+| **M1a (M1 skeleton)** | **CLOSED** / **PA ACCEPTED** / **PUBLISHED** (`42f5a6e`) |
+| **M1b AAR-0001** | **COMPLETE** / **PA ACCEPTED** / **publication authorized** (M1b-B) |
 | **M1c EGR-G1 closure** | **NOT AUTHORIZED** |
 
 ---
@@ -75,7 +79,7 @@ flowchart TD
 | Layering | Desktop → Application → Engine / Identity / ProjectServices → Domain |
 | Validation | `dotnet build` / `dotnet test` (Release) — six executable tests |
 | **M1 overall** | **Not complete** — AAR-0001 and EGR-G1 remain |
-| **M1a publication** | **AUTHORIZED** — recorded on `origin/main` at M1a publication commit (after push) |
+| **M1a publication** | **PUBLISHED** — `42f5a6e0e0e67d733a096f7a0fe0ef31976c6b6b` on `origin/main` |
 
 **Not in M1a:** EDF discovery/parsing, MVR types, `.projectconcord/`, speculative future assemblies. **`ILocalProjectRuntime`** accepted as minimal marker seam for AAR-0001 review in M1b (not expanded in M1a).
 
@@ -175,7 +179,7 @@ Do **not** add behavior solely to justify tests. Do **not** require UI automatio
 | **Scope** | M1 implementation vs applicable canonical architecture: ADR-0001–0011, SPEC-001 **skeleton**, S0 MVR **placement** (SPEC-005/handover), ADR-0014 **Proposed** acknowledged |
 | **Not in scope** | SPEC-005 M2–M5 feature implementation; MVR execution record |
 | **Status for G1** | **Complete** before EGR-G1 **Gate satisfied** |
-| **File** | `docs/Architecture/Audits/AAR-0001-m1-solution-skeleton-conformance.md` (or next AAR-NNNN) — **not created** until M1b |
+| **File** | [`AAR-0001-m1-solution-skeleton-conformance.md`](../Architecture/Audits/AAR-0001-m1-solution-skeleton-conformance.md) — **Complete** / **PA ACCEPTED** |
 
 ---
 
@@ -228,9 +232,11 @@ Do **not** add behavior solely to justify tests. Do **not** require UI automatio
 | MVR S0 | Closed / PA accepted / **published** `8f1938b` |
 | M1/EGR-G1 plan | **PA ACCEPTED** / **PUBLISHED** — `aaa9229212baf12efdf0f97e210fc5287b0d8348` |
 | Pre-M1 doc reconciliation | **CLOSED** / **PA ACCEPTED** / **PUBLISHED** (2026-09-28) |
-| M1a (M1 skeleton) | **IMPLEMENTATION COMPLETE** / **PA ACCEPTED** / **PUBLICATION AUTHORIZED** |
-| M1 (overall) | **Open** — AAR-0001 + EGR-G1 not satisfied |
-| M1b / AAR-0001 | **NOT AUTHORIZED** |
+| M1a (M1 skeleton) | **CLOSED** / **PA ACCEPTED** / **PUBLISHED** (`42f5a6e`) |
+| M1 (overall) | **Open** — **AAR-0001 Complete** (PA accepted); **EGR-G1** not satisfied |
+| M1b-A | **Complete** / **PA ACCEPTED** |
+| M1b-B | **Authorized** — publication in progress |
+| AAR-0001 | **Complete** / **PA ACCEPTED** / **publication authorized** |
 | M1c / EGR-G1 closure | **NOT AUTHORIZED** |
 | EGR-G1 | **Open** |
 | ADR-0014 | **Proposed** |
