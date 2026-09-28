@@ -9,7 +9,7 @@
 | **Document Type** | Engineering Gate Review Record |
 | **Normative** | Yes |
 | **Gate ID** | G1 |
-| **Gate Status** | Open |
+| **Gate Status** | Satisfied |
 | **Milestone** | M1 completion and transition to intensive MVP (M2–M5) |
 | **Owner** | Project owner |
 | **Unblocks** | Intensive MVP implementation (M2–M5 feature work in earnest) after M1 skeleton is complete and this gate is **Satisfied** |
@@ -36,15 +36,15 @@ Satisfying this gate does **not** auto-close open findings or change remediation
 
 ## Gate Decision
 
-- [ ] **Gate satisfied**
+- [x] **Gate satisfied**
 - [ ] **Gate rejected**
 - [ ] **Gate deferred**
 
 | Field | Value |
 |---|---|
-| **Decision maker** | |
-| **Decision date** | |
-| **Notes** | Requires **Complete** [AAR-0001](../../Architecture/Audits/) after M1 skeleton exists. Expected filename pattern: `AAR-0001-m1-solution-skeleton-conformance.md` (or next free AAR-NNNN). |
+| **Decision maker** | Project owner (M1c gate review; Project Architect authorized closure) |
+| **Decision date** | 2026-09-28 |
+| **Notes** | M1 solution skeleton published at `42f5a6e`; [AAR-0001](../../Architecture/Audits/AAR-0001-m1-solution-skeleton-conformance.md) **Complete** / PA accepted / published at `58079c9446dea15b4a1e1f39839037da2b8c5742` (conformant for M1 scope; no Gap/Violation remediation). M1c validation: `dotnet build` / `dotnet test` (Release) — 6/6 tests. Satisfying G1 establishes eligibility for intensive MVP (M2–M5); it does **not** authorize M2+ implementation without separate tranche authorization. ADR-0014 remains **Proposed** (PA-5). |
 
 ## Documents Under Review
 
@@ -54,24 +54,24 @@ Satisfying this gate does **not** auto-close open findings or change remediation
 | SPEC-001 MVP Desktop Client | [SPEC-001-mvp-edf-desktop-client.md](../../Specifications/features/SPEC-001-mvp-edf-desktop-client.md) |
 | SPEC-005 MVR consumption (architecture baseline) | [SPEC-005-manual-verification-record-consumption.md](../../Specifications/features/SPEC-005-manual-verification-record-consumption.md) |
 | ADR-0014 MVR human attestation (Proposed) | [ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md](../../Architecture/ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md) |
-| AAR-0001 — M1 implementation conformance | [Audits/](../../Architecture/Audits/) (create when `src/` exists) |
+| AAR-0001 — M1 implementation conformance | [AAR-0001-m1-solution-skeleton-conformance.md](../../Architecture/Audits/AAR-0001-m1-solution-skeleton-conformance.md) (**Complete** / PA accepted / published `58079c9`) |
 
 ### Project Charter
 
-- [ ] Reviewed
-- [ ] Approved
+- [x] Reviewed
+- [x] Approved
 
 ### SPEC-001 MVP Desktop Client
 
-- [ ] Reviewed
-- [ ] Approved
+- [x] Reviewed
+- [x] Approved (MVP specification baseline for M2–M5; M1 skeleton scope satisfied separately via AAR-0001)
 
 ### AAR-0001 — M1 solution skeleton conformance
 
 Requirements basis MUST include Accepted ADR-0001–ADR-0011, S0 MVR architecture baseline ([SPEC-005](../../Specifications/features/SPEC-005-manual-verification-record-consumption.md), [MVR handover](../../Handover/EDF-Manual-Verification-Record-Architecture-Handover.md)), and SPEC-001 skeleton scope. **Audit status** MUST be **Complete** before G1 **Gate satisfied**.
 
-- [ ] Reviewed
-- [ ] Approved (audit Complete)
+- [x] Reviewed
+- [x] Approved (audit Complete)
 
 ## ADR Dispositions (G1)
 
@@ -79,7 +79,7 @@ ADR-0001–ADR-0011 were **Accepted** at G0. G1 confirms they remain binding for
 
 ### ADR-0012: Adopt EDF Architectural Audit Records
 
-- [ ] Accept — [ADR-0012](../../Architecture/ADRs/ADR-0012-Adopt-EDF-Architectural-Audit-Records.md) (Accepted at adoption; confirm at G1)
+- [x] Accept — [ADR-0012](../../Architecture/ADRs/ADR-0012-Adopt-EDF-Architectural-Audit-Records.md) (Accepted at adoption; confirmed at G1)
 - [ ] Reject
 - [ ] Revise
 
@@ -93,10 +93,10 @@ No **Active** overrides. Gate **Open** obligations remain **Blocking** for downs
 
 ## Post-Gate Actions
 
-- [ ] Set SPEC-001 **Status** to Approved (if approved)
-- [ ] Set Charter to Approved/Maintained per project policy
-- [ ] Update [Implementation Roadmap](../../Development/Implementation_Roadmap.md)
-- [ ] Update [Program README](../README.md)
+- [x] Set SPEC-001 **Status** to Approved (if approved)
+- [x] Set Charter to Approved/Maintained per project policy
+- [x] Update [Implementation Roadmap](../../Development/Implementation_Roadmap.md)
+- [x] Update [Program README](../README.md)
 
 ## Parent
 

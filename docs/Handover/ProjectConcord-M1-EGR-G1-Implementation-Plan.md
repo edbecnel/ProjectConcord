@@ -8,11 +8,11 @@
 **Working Cursor copy (non-canonical):** `/Users/edbecnel/.cursor/plans/m1_egr-g1_implementation_plan_a088fdc4.plan.md`
 
 **M1a:** **CLOSED** / Project Architect **ACCEPTED** / **PUBLISHED** at `42f5a6e0e0e67d733a096f7a0fe0ef31976c6b6b` on `origin/main`  
-**M1b-A:** **COMPLETE** / Project Architect **ACCEPTED**  
-**AAR-0001:** **COMPLETE** / Project Architect **ACCEPTED** / **publication authorized** (M1b-B)  
-**M1b-B:** **AUTHORIZED** — publication in progress  
-**M1 (overall):** **OPEN** — EGR-G1 not satisfied  
-**M1c:** **NOT AUTHORIZED**
+**M1b:** **CLOSED** / Project Architect **ACCEPTED** / **PUBLISHED** at `58079c9446dea15b4a1e1f39839037da2b8c5742` on `origin/main`  
+**AAR-0001:** **COMPLETE** / Project Architect **ACCEPTED** / **PUBLISHED** (`58079c9`)  
+**M1c:** **CLOSED** / Project Architect **ACCEPTED** / **PUBLISHED** (EGR-G1 **Satisfied** — see M1c publication commit on `origin/main`)  
+**M1 (overall):** **CLOSED** — EGR-G1 **Satisfied**  
+**M2+:** **NOT AUTHORIZED** (G1 eligibility only)
 
 ---
 
@@ -25,8 +25,8 @@
 | **Plan** | **ACCEPTED** / **PUBLISHED** (`aaa9229`) |
 | **Pre-M1 doc reconciliation** | **CLOSED** / **PA ACCEPTED** / **PUBLISHED** (2026-09-28; C2, C4, PA-2) |
 | **M1a (M1 skeleton)** | **CLOSED** / **PA ACCEPTED** / **PUBLISHED** (`42f5a6e`) |
-| **M1b AAR-0001** | **COMPLETE** / **PA ACCEPTED** / **publication authorized** (M1b-B) |
-| **M1c EGR-G1 closure** | **NOT AUTHORIZED** |
+| **M1b AAR-0001** | **CLOSED** / **PA ACCEPTED** / **PUBLISHED** (`58079c9`) |
+| **M1c EGR-G1 closure** | **CLOSED** / **PA ACCEPTED** / **PUBLISHED** (EGR-G1 **Satisfied**) |
 
 ---
 
@@ -78,7 +78,7 @@ flowchart TD
 | Runtime | **net10.0**, Avalonia **12.1.3**, first minimal desktop shell + open-folder / project-root |
 | Layering | Desktop → Application → Engine / Identity / ProjectServices → Domain |
 | Validation | `dotnet build` / `dotnet test` (Release) — six executable tests |
-| **M1 overall** | **Not complete** — AAR-0001 and EGR-G1 remain |
+| **M1 overall** | **Complete** — AAR-0001 published; EGR-G1 **Satisfied** (M1c) |
 | **M1a publication** | **PUBLISHED** — `42f5a6e0e0e67d733a096f7a0fe0ef31976c6b6b` on `origin/main` |
 
 **Not in M1a:** EDF discovery/parsing, MVR types, `.projectconcord/`, speculative future assemblies. **`ILocalProjectRuntime`** accepted as minimal marker seam for AAR-0001 review in M1b (not expanded in M1a).
@@ -187,9 +187,9 @@ Do **not** add behavior solely to justify tests. Do **not** require UI automatio
 
 **G1 satisfied** requires: M1 skeleton done; **AAR-0001 Complete**; Charter/SPEC-001 reviewed/approved per EGR; ADR-0012 confirmed; gate decision recorded. **Does not** require ADR-0014 Accept.
 
-**G1 satisfied unlocks:** intensive **M2–M5** MVP work — **not** S1 MVR until M2 tranche per roadmap.
+**G1 satisfied unlocks:** eligibility for intensive **M2–M5** MVP work — **not** automatic M2 authorization; **not** S1 MVR until M2 tranche per roadmap.
 
-**Current gate status:** **Open** — no satisfied decision recorded in this tranche.
+**Current gate status:** **Satisfied** (2026-09-28) — recorded in [EGR-G1](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md).
 
 ---
 
@@ -225,7 +225,7 @@ Do **not** add behavior solely to justify tests. Do **not** require UI automatio
 
 ---
 
-## Governance state (after PRE-M1 publication closeout)
+## Governance state (after M1c / EGR-G1 closure)
 
 | Item | State |
 |------|--------|
@@ -233,12 +233,12 @@ Do **not** add behavior solely to justify tests. Do **not** require UI automatio
 | M1/EGR-G1 plan | **PA ACCEPTED** / **PUBLISHED** — `aaa9229212baf12efdf0f97e210fc5287b0d8348` |
 | Pre-M1 doc reconciliation | **CLOSED** / **PA ACCEPTED** / **PUBLISHED** (2026-09-28) |
 | M1a (M1 skeleton) | **CLOSED** / **PA ACCEPTED** / **PUBLISHED** (`42f5a6e`) |
-| M1 (overall) | **Open** — **AAR-0001 Complete** (PA accepted); **EGR-G1** not satisfied |
-| M1b-A | **Complete** / **PA ACCEPTED** |
-| M1b-B | **Authorized** — publication in progress |
-| AAR-0001 | **Complete** / **PA ACCEPTED** / **publication authorized** |
-| M1c / EGR-G1 closure | **NOT AUTHORIZED** |
-| EGR-G1 | **Open** |
+| M1b (AAR-0001) | **CLOSED** / **PA ACCEPTED** / **PUBLISHED** (`58079c9`) |
+| M1 (overall) | **CLOSED** — **AAR-0001** published; **EGR-G1 Satisfied** |
+| AAR-0001 | **Complete** / **PA ACCEPTED** / **PUBLISHED** (`58079c9`) |
+| M1c / EGR-G1 closure | **CLOSED** / **PA ACCEPTED** / **PUBLISHED** (EGR-G1 **Satisfied**) |
+| EGR-G1 | **Satisfied** (2026-09-28) |
+| M2+ | **NOT AUTHORIZED** (eligibility only) |
 | ADR-0014 | **Proposed** |
 | STOP-2 | **BINDING** |
 | TRV CC-4B | **PAUSED / UNTOUCHED** |

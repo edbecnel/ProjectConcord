@@ -7,7 +7,7 @@
 | Field | Value |
 |---|---|
 | **Spec ID** | SPEC-001 |
-| **Status** | Draft |
+| **Status** | Approved |
 | **Owner** | ProjectConcord |
 | **Target release** | MVP (M1–M5) |
 

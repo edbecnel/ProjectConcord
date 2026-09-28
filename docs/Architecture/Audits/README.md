@@ -21,7 +21,7 @@ AARs record how code or reference implementation aligns with authoritative ADRs 
 
 | Audit ID | File | Status |
 |---|---|---|
-| AAR-0001 | [AAR-0001-m1-solution-skeleton-conformance.md](AAR-0001-m1-solution-skeleton-conformance.md) | **Complete** — Project Architect **accepted** (M1b-B publication authorized) |
+| AAR-0001 | [AAR-0001-m1-solution-skeleton-conformance.md](AAR-0001-m1-solution-skeleton-conformance.md) | **Complete** — Project Architect **accepted** / **published** (`58079c9446dea15b4a1e1f39839037da2b8c5742`) |
 
 Add rows when AAR files are created. First audit is required **Complete** before [EGR-G1](../../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) **Gate satisfied**.
 

@@ -23,10 +23,10 @@ Record implementation conformance of the **published M1a** ProjectConcord applic
 
 | Field | Value |
 |---|---|
-| **Tranche** | M1b-A audit execution (PA accepted); M1b-B publication authorized |
+| **Tranche** | M1b-A audit execution (PA accepted); M1b-B publication (PA accepted) |
 | **Implementation anchor** | `42f5a6e0e0e67d733a096f7a0fe0ef31976c6b6b` |
 | **Execution assistance** | Cursor Agent performed repository inspection, evidence collection, and draft authoring under M1b-A authorization; **Owner** remains Project Architect |
-| **Publication** | **Authorized** — M1b-B publication tranche (Project Architect accepted audit content) |
+| **Publication** | **Published** — `58079c9446dea15b4a1e1f39839037da2b8c5742` on `origin/main` (2026-09-28) |
 
 ## Requirements Basis
 

@@ -2,9 +2,9 @@
 
 # Project Charter
 
-> **Status:** Draft  
+> **Status:** Maintained  
 > **Owner:** ProjectConcord  
-> **Last Reviewed:** 2026-09-15
+> **Last Reviewed:** 2026-09-28 (EGR-G1)
 
 ## Mission
 

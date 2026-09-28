@@ -21,7 +21,7 @@ Authoritative approval: complete checkboxes in the EGR files (EDF [EGR-0001](htt
 | Gate | EGR record | Unblocks |
 |---|---|---|
 | **G0** | [EGR-G0 — Architecture Planning Gate](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) | **Satisfied** — M1 solution creation |
-| **G1** | [EGR-G1 — MVP Implementation Gate](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) | Open — intensive MVP after **Complete** AAR-0001 and G1 satisfied |
+| **G1** | [EGR-G1 — MVP Implementation Gate](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) | **Satisfied** (2026-09-28) — intensive MVP eligibility; M2+ requires separate authorization |
 
 ### Deferred — GDO (EGR-0001 v1.1)
 
@@ -84,15 +84,19 @@ M1 skeleton: **no** MVR workflow code; **no** speculative empty MVR domain types
 | M0 | **Complete** — [EGR-G0](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) **Satisfied** (2026-09-15) |
 | **S0** | **Complete** (2026-09-28) — MVR architecture docs; see [MVR handover](../Handover/EDF-Manual-Verification-Record-Architecture-Handover.md) |
 | **Pre-M1** | **Complete** (2026-09-28) — C2/C4 doc reconciliation; [M1 / EGR-G1 plan](../Handover/ProjectConcord-M1-EGR-G1-Implementation-Plan.md) published |
-| M1 | **Open** — M1a **published** (`42f5a6e`); **AAR-0001 Complete** (PA accepted); [EGR-G1](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) **Open** |
-| M2–M5 | Blocked on G1 for implementation in earnest |
+| M1 | **Complete** (2026-09-28) — M1a **published** (`42f5a6e`); **AAR-0001** published (`58079c9`); [EGR-G1](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) **Satisfied** |
+| M2–M5 | **Not started** — G1 satisfied; implementation in earnest requires separate PA authorization per milestone |
 | M6–M7+ | Deferred |
 
 ## Gate G0 Review
 
 **Decision:** **Satisfied** — recorded in [EGR-G0 — Architecture Planning Gate](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) (Gate Status **Satisfied**, all review items and ADR-0001–ADR-0011 accepted).
 
-**M1:** May proceed with .NET solution skeleton (`src/`). **G1** remains the gate for intensive MVP implementation (SPEC-001 delivery).
+**M1:** **Complete** — solution skeleton (`src/`) published; **AAR-0001 Complete**; **G1 Satisfied** (2026-09-28). Intensive MVP implementation (SPEC-001 delivery) is **eligible** but **not authorized** until a governed M2+ tranche.
+
+## Gate G1 Review
+
+**Decision:** **Satisfied** — recorded in [EGR-G1 — MVP Implementation Gate](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) (M1 skeleton, **Complete** AAR-0001, Charter/SPEC-001 reviewed, ADR-0012 confirmed at G1).
 
 ## Assumptions
 
