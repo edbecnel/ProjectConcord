@@ -8,6 +8,7 @@ namespace Edf.Application.Projects;
 public sealed class ProjectWorkspaceService : IProjectWorkspaceService
 {
     private readonly ProjectRootResolver _rootResolver;
+    private readonly IUserApplicationStatePersistence _persistence;
     private readonly IProjectRegistry _projectRegistry;
     private readonly IUserPreferencesStore _userPreferences;
     private readonly ILocalProjectRuntime _localRuntime;
@@ -15,14 +16,14 @@ public sealed class ProjectWorkspaceService : IProjectWorkspaceService
     public ProjectWorkspaceService(
         ProjectRootResolver rootResolver,
         ICurrentProjectActor currentActor,
-        IProjectRegistry projectRegistry,
-        IUserPreferencesStore userPreferences,
+        IUserApplicationStatePersistence persistence,
         ILocalProjectRuntime localRuntime)
     {
         _rootResolver = rootResolver ?? throw new ArgumentNullException(nameof(rootResolver));
         CurrentActor = currentActor ?? throw new ArgumentNullException(nameof(currentActor));
-        _projectRegistry = projectRegistry ?? throw new ArgumentNullException(nameof(projectRegistry));
-        _userPreferences = userPreferences ?? throw new ArgumentNullException(nameof(userPreferences));
+        _persistence = persistence ?? throw new ArgumentNullException(nameof(persistence));
+        _projectRegistry = persistence.ProjectRegistry;
+        _userPreferences = persistence.UserPreferences;
         _localRuntime = localRuntime ?? throw new ArgumentNullException(nameof(localRuntime));
     }
 
@@ -44,13 +45,18 @@ public sealed class ProjectWorkspaceService : IProjectWorkspaceService
             var openedUtc = DateTimeOffset.UtcNow;
             var displayName = new DirectoryInfo(locator.NormalizedAbsolutePath).Name;
 
-            var existing = _projectRegistry.ResolveByRegisteredLocator(locator);
-            var project = existing
-                ?? _projectRegistry.RegisterNewProjectAtLocator(locator, displayName, openedUtc);
+            ManagedProject project = null!;
+            _persistence.ExecuteInTransaction(() =>
+            {
+                var existing = _projectRegistry.ResolveByRegisteredLocator(locator);
+                project = existing
+                    ?? _projectRegistry.RegisterNewProjectAtLocator(locator, displayName, openedUtc);
 
-            _projectRegistry.RecordSuccessfulOpen(project.ProjectId, openedUtc);
+                _projectRegistry.RecordSuccessfulOpen(project.ProjectId, openedUtc);
+                _userPreferences.SetLastActiveProjectId(project.ProjectId);
+            });
+
             ActivateSession(project.ProjectId, root);
-            _userPreferences.SetLastActiveProjectId(project.ProjectId);
             return OpenProjectResult.Succeeded(root, project.ProjectId);
         }
         catch (Exception ex)
@@ -80,9 +86,13 @@ public sealed class ProjectWorkspaceService : IProjectWorkspaceService
         {
             var root = _rootResolver.Resolve(project.RegisteredLocator.NormalizedAbsolutePath);
             var openedUtc = DateTimeOffset.UtcNow;
-            _projectRegistry.RecordSuccessfulOpen(projectId, openedUtc);
+            _persistence.ExecuteInTransaction(() =>
+            {
+                _projectRegistry.RecordSuccessfulOpen(projectId, openedUtc);
+                _userPreferences.SetLastActiveProjectId(projectId);
+            });
+
             ActivateSession(projectId, root);
-            _userPreferences.SetLastActiveProjectId(projectId);
             return OpenProjectResult.Succeeded(root, projectId);
         }
         catch (Exception ex)
@@ -101,7 +111,12 @@ public sealed class ProjectWorkspaceService : IProjectWorkspaceService
             var displayName = new DirectoryInfo(locator.NormalizedAbsolutePath).Name;
             var reconciledUtc = DateTimeOffset.UtcNow;
 
-            var result = _projectRegistry.ReconcileProjectLocator(projectId, locator, displayName, reconciledUtc);
+            ReconcileLocatorResult result = ReconcileLocatorResult.Failed("Reconciliation failed.");
+            _persistence.ExecuteInTransaction(() =>
+            {
+                result = _projectRegistry.ReconcileProjectLocator(projectId, locator, displayName, reconciledUtc);
+            });
+
             if (!result.Success || result.Project is null)
             {
                 return result;

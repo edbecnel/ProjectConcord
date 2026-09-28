@@ -13,8 +13,16 @@ public static class ApplicationCompositionRoot
         var actor = new DegenerateAdministratorActor();
         var resolver = new ProjectRootResolver();
         var runtime = new LocalProjectRuntime();
-        var registry = new InMemoryProjectRegistry();
-        var preferences = new InMemoryUserPreferencesStore();
-        return new ProjectWorkspaceService(resolver, actor, registry, preferences, runtime);
+        var persistence = UserApplicationStatePersistenceFactory.CreateDefaultSqlite();
+        return new ProjectWorkspaceService(resolver, actor, persistence, runtime);
+    }
+
+    public static IProjectWorkspaceService CreateInMemoryWorkspaceService()
+    {
+        var actor = new DegenerateAdministratorActor();
+        var resolver = new ProjectRootResolver();
+        var runtime = new LocalProjectRuntime();
+        var persistence = new InMemoryUserApplicationStatePersistence();
+        return new ProjectWorkspaceService(resolver, actor, persistence, runtime);
     }
 }

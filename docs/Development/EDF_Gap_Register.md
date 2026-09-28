@@ -75,6 +75,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-042 | MVR / MVT consumption, attestation, pending QA | Medium | EDF normative via [MVR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/192fe5c1c6254c51e257d24aefc09e127ce72464/docs/Specifications/MVR-0001-Manual-Verification-Records.md) at `192fe5c`; Concord consumption per [MVR handover](../Handover/EDF-Manual-Verification-Record-Architecture-Handover.md), [SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md), [ADR-0014](../Architecture/ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md); [AWI-0005](../Architecture/Watch_Items/AWI-0005-Manual-Verification-Records.md); **not implemented** — future parser, pending-QA query, human attestation write-back, ATTENTION UI, read-only gate hints |
 | GAP-043 | PAR runtime, Project ID registry, per-user SQLite, package validation | High | Normative [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md); [PAR plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md); PAR track A1–A3; **not implemented** |
 | GAP-044 | CursorBridge transport (P1 extension/CLI, P2 MCP/ACP) | Medium | P0 manual per SPEC-006; [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md); PAR track A4; **not implemented** |
+| GAP-045 | Third-party NuGet dependency advisories (SQLite transitive) | Low | A1b: `NU1903` on `SQLitePCLRaw.lib.e_sqlite3` 2.1.10 via `Microsoft.Data.Sqlite` 9.0.3; [GHSA-2m69-gcr7-jv3q](https://github.com/advisories/GHSA-2m69-gcr7-jv3q); [AWI-0007](../Architecture/Watch_Items/AWI-0007-SQLite-Transitive-NuGet-Advisory.md); watch only — no mandatory A1b remediation |
 
 ---
 
@@ -365,6 +366,14 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 |---|---|
 | **Question** | What Cursor integration transport (extension, CLI, MCP, ACP) satisfies security, mode routing, and evidence return without redefining governance semantics? |
 | **Interim policy** | P0 manual first per SPEC-006; investigation [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md); A4 not authorized. |
+
+### GAP-045 — Third-party NuGet dependency advisories (SQLite transitive)
+
+| Field | Content |
+|---|---|
+| **Source** | A1b `dotnet build -c Release` / `dotnet list package --vulnerable` on `Edf.ProjectServices` |
+| **Question** | When and how should ProjectConcord remediate or accept transitive NuGet security advisories on infrastructure packages without expanding unrelated tranches? |
+| **Interim policy** | Recorded in [AWI-0007](../Architecture/Watch_Items/AWI-0007-SQLite-Transitive-NuGet-Advisory.md): `NU1903`, `SQLitePCLRaw.lib.e_sqlite3` 2.1.10, [GHSA-2m69-gcr7-jv3q](https://github.com/advisories/GHSA-2m69-gcr7-jv3q), via `Microsoft.Data.Sqlite` 9.0.3; monitor upstream; no A1b package change unless PA/security gate requires. |
 
 ---
 

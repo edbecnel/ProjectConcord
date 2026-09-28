@@ -302,11 +302,15 @@ public class ProjectWorkspaceA1Tests
         }
     }
 
-    private static ProjectWorkspaceService CreateService(InMemoryProjectRegistry? registry = null) =>
-        new(
+    private static ProjectWorkspaceService CreateService(InMemoryProjectRegistry? registry = null)
+    {
+        var persistence = registry is null
+            ? new InMemoryUserApplicationStatePersistence()
+            : new InMemoryUserApplicationStatePersistence(registry, new InMemoryUserPreferencesStore());
+        return new ProjectWorkspaceService(
             new ProjectRootResolver(),
             new DegenerateAdministratorActor("test-admin"),
-            registry ?? new InMemoryProjectRegistry(),
-            new InMemoryUserPreferencesStore(),
+            persistence,
             new LocalProjectRuntime());
+    }
 }

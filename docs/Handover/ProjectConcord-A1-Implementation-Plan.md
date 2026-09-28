@@ -21,8 +21,9 @@
 | A0 architecture | **CLOSED / PA ACCEPTED** |
 | **This A1 plan** | **FINAL ACCEPTED** (2026-09-28) |
 | **A1 overall** | **IN PROGRESS** |
-| **A1a** | **IMPLEMENTED / PA ACCEPTED / PUBLISHED** (2026-09-28; see publication commit on `main`) — **A1b not authorized** |
-| **A1b / A1c** | **NOT AUTHORIZED** |
+| **A1a** | **IMPLEMENTED / PA ACCEPTED / PUBLISHED** (2026-09-28; baseline `34f10686bae84b0eb0bf129361c2e10b6e267886`) |
+| **A1b** | **IMPLEMENTED / PA ACCEPTED / PUBLISHED** (2026-09-28; see A1b publication commit on `main`) |
+| **A1c** | **NOT AUTHORIZED** |
 | **ADR-0015** at A1 closeout | Provide conformance evidence only; **PA issues lifecycle disposition separately** — A1 does **not** auto-Accept ADR-0015 |
 
 ---
@@ -530,11 +531,39 @@ Implementation remains **not authorized** until explicit **A1a** authorization.
 
 ---
 
-## 17. STOP
+## 17. A1b implementation evidence (2026-09-28)
 
-**STOP** after A1a publication — awaiting explicit **A1b** authorization.
+| Item | Result |
+|------|--------|
+| **Scope** | Per-user SQLite `user-state.db`; schema v1; forward-only migrations; `SqliteUserApplicationStateStore`; Application adapters + `IUserApplicationStatePersistence`; transactional open/reconcile; default Desktop composition uses SQLite; **no** A1c UI |
+| **Build** | `dotnet build -c Release` — **succeeded** (SDK 10.0.401) |
+| **Tests** | `Edf.Application.Tests` — **19 passed**; `Edf.ProjectServices.Tests` — **13 passed** |
+| **SQLite package** | `Microsoft.Data.Sqlite` 9.0.3 on **`Edf.ProjectServices`** (tests project references for introspection only) |
+| **Layering** | **No** `Microsoft.Data.Sqlite` in `Edf.Domain` or `Edf.Application` assembly references |
+| **Locator availability** | **Not persisted**; derived via `LocatorAvailabilityEvaluator` at list/open |
+| **RepositoryIdentityHint / Git fingerprint** | **Absent** from schema and code |
+| **`.projectconcord/`** | **Not created** on open (tested) |
+| **ADR-0015** | Remains **Proposed** |
+| **A1c / M2 / A2–A4** | **Not started** |
 
-- **No** A1b/A1c
+### A1b files (summary)
+
+- **Application:** `IUserApplicationStatePersistence`, `InMemoryUserApplicationStatePersistence`, `SqliteUserApplicationStatePersistence`, `UserApplicationStatePersistenceFactory`; `ProjectWorkspaceService` transaction boundaries; `ApplicationCompositionRoot` default SQLite + `CreateInMemoryWorkspaceService` for tests
+- **ProjectServices:** `UserApplicationStatePathResolver`, `SchemaMigrationRunner`, `Migration001Initial`, `SqliteUserApplicationStateStore`, `UserApplicationStateSchemaException`
+- **Tests:** `tests/Edf.ProjectServices.Tests/SqliteUserApplicationStateStoreTests.cs`
+- **Solution:** `Edf.ProjectServices.Tests` added to `ProjectConcord.sln`
+
+**Publication commit:** recorded at A1b gate closeout (see Project Architect publication evidence).
+
+**NU1903:** transitive `SQLitePCLRaw.lib.e_sqlite3` 2.1.10 / [GHSA-2m69-gcr7-jv3q](https://github.com/advisories/GHSA-2m69-gcr7-jv3q) — [AWI-0007](../Architecture/Watch_Items/AWI-0007-SQLite-Transitive-NuGet-Advisory.md), [GAP-045](../Development/EDF_Gap_Register.md).
+
+---
+
+## 18. STOP
+
+**STOP** after A1b publication — awaiting explicit **A1c** authorization. **Do not** begin A1c without PA authorization.
+
+- **No** A1c
 - **No** M2, A2–A4
 - **No** `.projectconcord/`
 

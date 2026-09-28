@@ -77,8 +77,7 @@ public class ProjectWorkspaceServiceTests
         new(
             new ProjectRootResolver(),
             new DegenerateAdministratorActor("test-admin"),
-            new InMemoryProjectRegistry(),
-            new InMemoryUserPreferencesStore(),
+            new InMemoryUserApplicationStatePersistence(),
             new LocalProjectRuntime());
 }
 

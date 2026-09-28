@@ -101,8 +101,9 @@ Explicit track for Project Root, stable Project ID, per-user application state, 
 | M1 | **Complete** (2026-09-28) — M1a **published** (`42f5a6e`); **AAR-0001** published (`58079c9`); [EGR-G1](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) **Satisfied** |
 | PAR A0 | **Complete** (2026-09-28) — SPEC-006, ADR-0015 (Proposed), PA-amended [PAR plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md) |
 | PAR A1 plan | **Final accepted** — [A1 Implementation Plan](../Handover/ProjectConcord-A1-Implementation-Plan.md) |
-| PAR A1a | **Implemented** (2026-09-28) — domain/application/in-memory; **STOP** for PA review; A1b **not authorized** |
-| PAR A1b–A4 | **Not started** — not authorized |
+| PAR A1a | **Published** (2026-09-28; `34f1068`) — domain/application/in-memory |
+| PAR A1b | **Published** (2026-09-28) — SQLite persistence + migrations + `Edf.ProjectServices.Tests` |
+| PAR A1c–A4 | **Not started** — A1c **not authorized** |
 | M2–M5 | **Not started** — G1 satisfied; implementation in earnest requires separate PA authorization per milestone |
 | M6–M7+ | Deferred |
 
