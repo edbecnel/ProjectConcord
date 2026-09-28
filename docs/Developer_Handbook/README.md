@@ -14,6 +14,7 @@ New contributors begin with [00_First_Time_Setup.md](./00_First_Time_Setup.md).
 
 - [00_First_Time_Setup.md](./00_First_Time_Setup.md)
 - [01_Development_Environment.md](./01_Development_Environment.md)
+- [02_Per_User_Application_State.md](./02_Per_User_Application_State.md)
 
 ## Navigation
 

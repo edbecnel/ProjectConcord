@@ -103,7 +103,8 @@ Explicit track for Project Root, stable Project ID, per-user application state, 
 | PAR A1 plan | **Final accepted** — [A1 Implementation Plan](../Handover/ProjectConcord-A1-Implementation-Plan.md) |
 | PAR A1a | **Published** (2026-09-28; `34f1068`) — domain/application/in-memory |
 | PAR A1b | **Published** (2026-09-28) — SQLite persistence + migrations + `Edf.ProjectServices.Tests` |
-| PAR A1c–A4 | **Not started** — A1c **not authorized** |
+| PAR A1c | **Published** (2026-09-28) — Desktop Recent workflow; **[MVR-0001](../Verification/Records/MVR-0001-a1c-desktop-project-root-recent-workflow.md) PASSED** (2026-09-28) |
+| PAR A1 closeout / A2–A4 | **Not started** — A1 overall **in progress** |
 | M2–M5 | **Not started** — G1 satisfied; implementation in earnest requires separate PA authorization per milestone |
 | M6–M7+ | Deferred |
 
@@ -138,6 +139,8 @@ Explicit track for Project Root, stable Project ID, per-user application state, 
 - [tasks/README.md](../../tasks/README.md)
 - [SPEC-003](../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md)
 - [SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md) (MVR consumption — M2–M5 implementation)
+- [DVW-0001 (EDF)](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/048cdc6bc9ee581bb60fea5e7d26f7de673e5569/docs/Specifications/DVW-0001-Disposable-Verification-Workspaces.md) — adopted for A1c manual verification subjects (STOP-4)
+- [MVR-0001 A1c](../Verification/Records/MVR-0001-a1c-desktop-project-root-recent-workflow.md)
 - [PCON-0000](../Architecture/PCON-0000-EDF-Project-Management-System-Architectural-Vision-and-Bootstrap-Handover.md)
 - [PCON-0001](../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md)
 - [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)

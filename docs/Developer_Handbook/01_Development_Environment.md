@@ -89,7 +89,9 @@ dotnet test ProjectConcord.sln
 dotnet run --project src/Edf.Desktop/Edf.Desktop.csproj
 ```
 
-M1 skeleton: first Avalonia client — minimum shell and open-project-folder only (see [M1 / EGR-G1 Implementation Plan](../../Handover/ProjectConcord-M1-EGR-G1-Implementation-Plan.md)).
+**macOS app bundle (icon + Finder/Dock):** building `Edf.Desktop` on macOS produces `src/Edf.Desktop/bin/$(Configuration)/net10.0/ProjectConcord.app`. Open that `.app` in Finder to verify the bundle icon; `dotnet run` also sets the window and Dock icon at runtime via `AppBranding`. Source artwork: [`docs/Branding/ProjectConcord-Icon-WhiteBackground.png`](../Branding/ProjectConcord-Icon-WhiteBackground.png).
+
+A1 Desktop: Project Root open, Recent Projects, explicit reopen, **Relocate Project…** (missing locator only), Remove from Recent, and Close Project — see [A1 Implementation Plan](../../Handover/ProjectConcord-A1-Implementation-Plan.md) and [Per-user application state](./02_Per_User_Application_State.md).
 
 ### Verify installation
 

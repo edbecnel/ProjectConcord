@@ -23,7 +23,7 @@
 | **A1 overall** | **IN PROGRESS** |
 | **A1a** | **IMPLEMENTED / PA ACCEPTED / PUBLISHED** (2026-09-28; baseline `34f10686bae84b0eb0bf129361c2e10b6e267886`) |
 | **A1b** | **IMPLEMENTED / PA ACCEPTED / PUBLISHED** (2026-09-28; see A1b publication commit on `main`) |
-| **A1c** | **NOT AUTHORIZED** |
+| **A1c** | **IMPLEMENTED / PA ACCEPTED / PUBLISHED** (2026-09-28; see A1c publication commit on `main`) |
 | **ADR-0015** at A1 closeout | Provide conformance evidence only; **PA issues lifecycle disposition separately** — A1 does **not** auto-Accept ADR-0015 |
 
 ---
@@ -353,7 +353,7 @@ Backup/restore: **document** manual copy of `user-state.db`; automated backup **
 | **Missing path** | **Derived** `MissingOnDisk` in UI; offer **Relocate Project…** |
 | **Remove** | Remove from `recent_projects` only; keep `managed_projects` (PA-A1-5) |
 | **Reopen** | `OpenProjectById` if locator available on disk; else fail + Relocate |
-| **Relocate** | **Relocate Project…** → `ReconcileProjectLocator` (PA-A1-4) |
+| **Relocate** | **Relocate Project…** → `ReconcileProjectLocator` (PA-A1-4); **A1c UI:** offered only when derived `MissingOnDisk` (recovery — not general path change for available projects) |
 | **Last active** | `user_preferences`; highlight on startup, **no auto-open** (PA-A1-1) |
 | **Max recent** | **10** — application policy constant (PA-A1-5); trim on add |
 
@@ -559,13 +559,56 @@ Implementation remains **not authorized** until explicit **A1a** authorization.
 
 ---
 
-## 18. STOP
+## 18. A1c implementation evidence (2026-09-28)
 
-**STOP** after A1b publication — awaiting explicit **A1c** authorization. **Do not** begin A1c without PA authorization.
+| Item | Result |
+|------|--------|
+| **Scope** | Avalonia Desktop: Recent Projects list, Open/Close, reopen by ID, Remove from Recent, **Relocate Project…** (missing locator only), startup refresh without auto-open; handbook `02_Per_User_Application_State.md`; `Edf.Desktop.Tests` |
+| **PA amendment** | Relocate command **disabled** when `LocatorAvailability.Available`; **enabled** only for `MissingOnDisk` |
+| **Remove from Recent** | Does not close active session; managed registration retained |
+| **Build** | `dotnet build -c Release` — **succeeded** |
+| **Tests** | Application **19**; ProjectServices **13**; Desktop **4** — all **passed** |
+| **Composition** | `MainWindow` → `ApplicationCompositionRoot.CreateDefaultWorkspaceService()` (A1b SQLite) |
+| **Manual UI verification** | **[MVR-0001](../Verification/Records/MVR-0001-a1c-desktop-project-root-recent-workflow.md)** — **Complete** (2026-09-28): MVT-1–MVT-15 **Pass**; Human execution status **Complete**; PA **A1c manual verification PASSED** |
+| **ADR-0015** | Remains **Proposed** |
+| **A1 overall** | **IN PROGRESS** — not closed |
+| **M2 / A2–A4** | **Not started** |
+| **AWI-0007 / GAP-045** | **Open / watch** — unchanged |
 
-- **No** A1c
+### A1c files (summary)
+
+- **Desktop:** `MainWindowViewModel`, `RecentProjectItemViewModel`, `RelayCommand`, `MainWindow.axaml`, `MainWindow.axaml.cs`
+- **Tests:** `tests/Edf.Desktop.Tests/`
+- **Handbook:** `docs/Developer_Handbook/02_Per_User_Application_State.md`
+
+### Manual UI verification (operator)
+
+Authoritative checklist: **[MVR-0001 — A1c Desktop Project Root and Recent Projects workflow](../Verification/Records/MVR-0001-a1c-desktop-project-root-recent-workflow.md)** (15 MVTs; Human execution status **Complete** 2026-09-28).
+
+### A1c manual verification closeout (2026-09-28)
+
+| Item | Value |
+|------|--------|
+| **MVR** | [MVR-0001-a1c-desktop-project-root-recent-workflow.md](../Verification/Records/MVR-0001-a1c-desktop-project-root-recent-workflow.md) |
+| **Human execution** | **Complete** — Ed Becnel; verification date **2026-09-28** |
+| **MVT results** | MVT-1–MVT-15 **Pass** |
+| **PA disposition** | **A1c manual verification PASSED — PA ACCEPTED** |
+| **Anchor Project ID (MVT-2)** | `71da98d5-0671-4db2-bad8-ecdcb03a0124` |
+| **DVW session (unchanged evidence)** | `/var/folders/…/ProjectConcord-A1c-MVR-hBtcYv` (automation-prepared 2026-09-28) |
+| **Publication** | **Published** (2026-09-28) — see A1c publication commit on `main` |
+| **A1 overall** | **IN PROGRESS** — **STOP / PA A1 closeout** remains (ADR-0015 disposition separate per PA-A1-7) |
+
+**Publication commit:** recorded at A1c gate closeout (see Project Architect publication evidence).
+
+---
+
+## 19. STOP
+
+**STOP** after A1c publication on `main` (2026-09-28) — **awaiting STOP / PA A1 closeout** (§446). **Do not** mark A1 complete or Accept ADR-0015 without PA gate.
+
 - **No** M2, A2–A4
-- **No** `.projectconcord/`
+- **No** PAR runtime implementation
+- **No** `.projectconcord/` in product scope for A1c
 
 ---
 

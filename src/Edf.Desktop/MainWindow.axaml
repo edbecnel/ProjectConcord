@@ -3,24 +3,118 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:Edf.Desktop.ViewModels"
-        mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="320"
+        mc:Ignorable="d" d:DesignWidth="720" d:DesignHeight="520"
         x:Class="Edf.Desktop.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="ProjectConcord"
-        Width="640" Height="320"
-        MinWidth="480" MinHeight="240">
-  <StackPanel Margin="24" Spacing="12">
-    <TextBlock Text="ProjectConcord — M1 skeleton"
-               FontSize="18"
-               FontWeight="SemiBold" />
-    <TextBlock Text="{Binding ActorDisplayName, StringFormat=Actor: {0}}" />
-    <Button Content="Open project folder…"
-            Command="{Binding OpenProjectFolderCommand}"
-            HorizontalAlignment="Left" />
-    <TextBlock Text="{Binding ProjectRootPath, StringFormat=Project root: {0}}"
-               TextWrapping="Wrap" />
-    <TextBlock Text="{Binding StatusMessage}"
-               Foreground="Gray"
-               TextWrapping="Wrap" />
-  </StackPanel>
+        Width="720" Height="520"
+        MinWidth="560" MinHeight="400">
+  <NativeMenu.Menu>
+    <NativeMenu>
+      <NativeMenuItem Header="File">
+        <NativeMenu>
+          <NativeMenuItem Header="Open Project Folder…"
+                          Click="FileOpenProjectFolder_OnClick" />
+          <NativeMenuItem Header="Go to Folder…"
+                          Click="FileGoToFolder_OnClick" />
+        </NativeMenu>
+      </NativeMenuItem>
+    </NativeMenu>
+  </NativeMenu.Menu>
+  <ScrollViewer>
+    <StackPanel Margin="24" Spacing="16">
+      <TextBlock Text="ProjectConcord"
+                 FontSize="20"
+                 FontWeight="SemiBold" />
+      <TextBlock Text="{Binding ActorDisplayName, StringFormat=Actor: {0}}" />
+
+      <Border Padding="12" CornerRadius="4" BorderThickness="1" BorderBrush="#CCC">
+        <StackPanel Spacing="8">
+          <TextBlock Text="Active project" FontWeight="SemiBold" />
+          <TextBlock Text="No project open."
+                     IsVisible="{Binding !HasActiveProject}" />
+          <StackPanel Spacing="6" IsVisible="{Binding HasActiveProject}">
+            <TextBlock Text="{Binding CurrentProjectId, StringFormat=Project ID: {0}}" TextWrapping="Wrap" />
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBox Grid.Column="0"
+                       Text="{Binding ProjectRootPath}"
+                       IsReadOnly="True"
+                       TextWrapping="Wrap"
+                       MinHeight="32" />
+              <Button Grid.Column="1"
+                      Margin="8,0,0,0"
+                      Content="Copy path"
+                      Command="{Binding CopyActivePathCommand}"
+                      VerticalAlignment="Center" />
+            </Grid>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button Content="Open project folder…"
+                    Command="{Binding OpenProjectFolderCommand}" />
+            <Button Content="Close Project"
+                    Command="{Binding CloseProjectCommand}" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+      <TextBlock Text="Recent Projects" FontWeight="SemiBold" />
+      <TextBlock Text="{Binding RecentEmptyMessage}"
+                 IsVisible="{Binding !HasRecentProjects}"
+                 TextWrapping="Wrap"
+                 Foreground="Gray" />
+
+      <ItemsControl ItemsSource="{Binding RecentProjects}"
+                    IsVisible="{Binding HasRecentProjects}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:RecentProjectItemViewModel">
+            <Border Margin="0,0,0,8" Padding="12" CornerRadius="4" BorderThickness="1" BorderBrush="#DDD">
+              <StackPanel Spacing="6">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                  <TextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" />
+                  <TextBlock Text="Last active"
+                             IsVisible="{Binding IsLastActive}"
+                             FontSize="11"
+                             Foreground="#0066CC" />
+                  <TextBlock Text="{Binding AvailabilityLabel}"
+                             FontSize="11"
+                             Foreground="DarkOrange"
+                             IsVisible="{Binding IsMissingOnDisk}" />
+                  <TextBlock Text="{Binding AvailabilityLabel}"
+                             FontSize="11"
+                             Foreground="Gray"
+                             IsVisible="{Binding !IsMissingOnDisk}" />
+                </StackPanel>
+                <Grid ColumnDefinitions="*,Auto">
+                  <TextBox Grid.Column="0"
+                           Text="{Binding LocatorPath}"
+                           IsReadOnly="True"
+                           FontSize="12"
+                           TextWrapping="Wrap"
+                           MinHeight="28" />
+                  <Button Grid.Column="1"
+                          Margin="8,0,0,0"
+                          Content="Copy path"
+                          Command="{Binding CopyLocatorPathCommand}"
+                          VerticalAlignment="Center" />
+                </Grid>
+                <TextBlock Text="{Binding LastOpenedLabel, StringFormat=Last opened: {0}}" FontSize="11" Foreground="Gray" />
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                  <Button Content="Open"
+                          Command="{Binding OpenCommand}" />
+                  <Button Content="Relocate Project…"
+                          Command="{Binding RelocateCommand}" />
+                  <Button Content="Remove from Recent"
+                          Command="{Binding RemoveFromRecentCommand}" />
+                </StackPanel>
+              </StackPanel>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+      <TextBlock Text="{Binding StatusMessage}"
+                 Foreground="Gray"
+                 TextWrapping="Wrap" />
+    </StackPanel>
+  </ScrollViewer>
 </Window>

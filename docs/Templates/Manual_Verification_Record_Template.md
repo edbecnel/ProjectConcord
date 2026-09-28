@@ -31,6 +31,18 @@ State **what** must be verified and **why** (acceptance criteria, gate condition
 | Environment or build | |
 | Out of scope (explicit) | |
 
+## Operator environment and test data (optional)
+
+_Use when manual verification requires disposable filesystem subjects, fixtures, or environment reset. Reference [DVW-0001 (EDF)](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/048cdc6bc9ee581bb60fea5e7d26f7de673e5569/docs/Specifications/DVW-0001-Disposable-Verification-Workspaces.md) for normative disposable-workspace semantics; do not invent project-local placement policy._
+
+| Field | Value |
+|---|---|
+| **Disposable filesystem subjects required** | Yes / No |
+| **Resolved DVW path(s)** | _Record concrete path(s) during execution (evidence metadata)_ |
+| **Test data / fixture identification** | |
+| **Safety/reset prerequisites** | |
+| **Cleanup expectation** | |
+
 ## Manual verification — human execution required
 
 _Executable operator checklist. Do not bury tests in narrative prose._
@@ -89,4 +101,5 @@ _Informational only. May reference a governing waiver (for example EGR gate waiv
 ## Related Documents
 
 - [MVR-0001 (EDF)](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/192fe5c1c6254c51e257d24aefc09e127ce72464/docs/Specifications/MVR-0001-Manual-Verification-Records.md)
+- [DVW-0001 (EDF)](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/048cdc6bc9ee581bb60fea5e7d26f7de673e5569/docs/Specifications/DVW-0001-Disposable-Verification-Workspaces.md)
 - [SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md)

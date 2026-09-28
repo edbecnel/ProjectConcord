@@ -4,7 +4,19 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ApplicationTitle>ProjectConcord</ApplicationTitle>
+    <Product>ProjectConcord</Product>
+    <AssemblyTitle>ProjectConcord</AssemblyTitle>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <UseAppHost>true</UseAppHost>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+    <OutputPath>bin/$(Configuration)/$(TargetFramework)/ProjectConcord.app/Contents/MacOS/</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <BundleContentsPath>$(MSBuildProjectDirectory)/bin/$(Configuration)/$(TargetFramework)/ProjectConcord.app/Contents</BundleContentsPath>
+    <BundleIconSource>$(MSBuildProjectDirectory)/../../docs/Branding/ProjectConcord-Icon-WhiteBackground.png</BundleIconSource>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,4 +33,18 @@
   <ItemGroup>
     <ProjectReference Include="..\Edf.Application\Edf.Application.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="..\..\docs\Branding\ProjectConcord-Icon-WhiteBackground.png" Link="Assets\ProjectConcord-Icon-WhiteBackground.png" />
+    <Content Include="..\..\docs\Branding\ProjectConcord-Icon-WhiteBackground.png" Link="Assets\ProjectConcord-Icon-WhiteBackground.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <Target Name="PrepareMacOSAppBundle" BeforeTargets="Build" Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+    <MakeDir Directories="$(BundleContentsPath)/Resources" />
+    <MakeDir Directories="$(BundleContentsPath)/MacOS" />
+    <Copy SourceFiles="macOS/Info.plist" DestinationFolder="$(BundleContentsPath)" SkipUnchangedFiles="true" />
+    <Exec Command="bash &quot;$(MSBuildProjectDirectory)/macOS/generate-icon.sh&quot; &quot;$(BundleIconSource)&quot; &quot;$(BundleContentsPath)/Resources/ProjectConcord.icns&quot;" />
+  </Target>
 </Project>
