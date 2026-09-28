@@ -102,6 +102,26 @@ flowchart TB
 
 ---
 
+## PAR, Project Root, and governed workflow relay (A0 architecture)
+
+**Status:** Architecture documented 2026-09-28; **not implemented** ([SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) Proposed).
+
+| Concern | Rule |
+|---|---|
+| Session context | User explicitly selects a **Project Root** (filesystem locator) |
+| Logical identity | Stable **ProjectConcord Project ID** — path is not durable identity ([ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md)) |
+| Per-user state | Recent Project Roots, session provenance, advisories — OS app data SQLite (direction only) |
+| Project-local derived | `.projectconcord/` only when an authorized feature requires it — **not** on open/select |
+| PAR | Relay, package validation, STOP at boundary, evidence correlation — provider-neutral |
+| Project Architect | `IProjectArchitectProvider` boundary; manual ChatGPT product is one adapter |
+| Cursor | `CursorBridge` abstraction; P0 manual transport first ([AWI-0006](Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)) |
+| Tier 0 awareness | Shallow Git/governance metadata pre-M2 — not a second EDF parser |
+| ADR-0013 | Reconciled; remains **Proposed** until PCON-0002 disposition |
+
+Phasing: PAR track A0–A4 in [Implementation Roadmap](../Development/Implementation_Roadmap.md), separate from M2 EDF engine milestones.
+
+---
+
 ## Solution Structure
 
 Illustrative .NET layout (assemblies may be merged if boundaries stay clear):

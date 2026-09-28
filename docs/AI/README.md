@@ -11,6 +11,8 @@ AI-assisted engineering practices, governed development workflow (Architect AI �
 - [ADR-0006 — AI Boundary](../Architecture/ADRs/ADR-0006-AI-Boundary.md) — proposals only; human approval for canonical EDF writes
 - [SPEC-004 — AI-Assisted Development Governance Workflow](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) — **Draft; not implemented** (PC-AIGOV-001–028)
 - [ADR-0013 — Governed Development Workflow and Workspace Model](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) — **Proposed**
+- [SPEC-006 — PAR, Project Root, and governed workflow relay](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) — **Draft; not implemented**
+- [ADR-0015 — Project identity, PAR, per-user operational state](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) — **Proposed**
 
 ## Architectural discovery and analysis
 
@@ -30,7 +32,7 @@ AI-assisted engineering practices, governed development workflow (Architect AI �
 5. Evidence and validation with provenance; explicit STOP when required.
 6. Cross-project discoveries route via **InterProjectHandover**; destination project governs acceptance (see PCON-0001 §4G–4K).
 
-Manual copy/paste to Cursor or other agents is a first-class adapter ([SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) PC-AIGOV-006).
+Manual copy/paste to Cursor or other agents is a first-class adapter ([SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) PC-AIGOV-006). PAR ([SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)) defines P0 manual transport and provider-neutral Project Architect boundaries; ChatGPT product is a manual adapter only.
 
 ## What Belongs Here
 

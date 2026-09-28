@@ -48,7 +48,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-015 | Stable canonical artifact identity | High | ID-first resolution per [ADR-0007](../Architecture/ADRs/ADR-0007-Semantic-Artifact-Identity-and-Referential-Integrity.md); see [SPEC-002](../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md) §5 |
 | GAP-016 | Formal vs navigational Markdown links | High | Relationship index with confidence; formal edges only when EDF defines or user confirms |
 | GAP-017 | CRA semantics for deterministic import | Medium | Full analysis: [CRA ↔ ProjectConcord Gap Analysis](CRA_ProjectConcord_Gap_Analysis.md); [ADR-0008](../Architecture/ADRs/ADR-0008-CRA-and-CKES-Dependency-Boundary.md) |
-| GAP-018 | Operational store schema for membership/audit/change sets | Medium | [ADR-0009](../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md); technology TBD; not canonical EDF |
+| GAP-018 | Operational store schema for membership/audit/change sets | Medium | [ADR-0009](../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md); PAR architecture: per-user SQLite in app data, partitions by Project ID ([ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md)); **not implemented** |
 | GAP-019 | Persona vs authorization role taxonomy | Medium | [ADR-0010](../Architecture/ADRs/ADR-0010-Single-User-Administrator-Default-Model.md); UI personas documented separately from RBAC |
 | GAP-020 | Independent EDF/EGR review vs Administrator UX | Medium | Never bypass EDF-prescribed independent review; surface in gate UI |
 | GAP-021 | Concurrent canonical edit / change-set protocol | High | Optimistic concurrency + change sets; defer implementation to M6+ spec |
@@ -62,7 +62,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-029 | HumanInitiatedWorkItem vs AWI / backlog | Medium | HIW distinct from AWI; escalation to InterProjectHandover |
 | GAP-030 | Provider adapter interface and security | Medium | Manual clipboard first; PC-AIGOV-005–006 |
 | GAP-031 | Commit ↔ DevelopmentWorkAuthorization correlation | High | Scope conformance PC-AIGOV-010; M7b |
-| GAP-032 | Multi-project workspace / managed project identity | High | PC-AIGOV-022–023; candidate mechanisms OPEN |
+| GAP-032 | Multi-project workspace / managed project identity | High | **Partial policy:** stable ProjectConcord Project ID per [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md); path = locator; PC-AIGOV-022–023 workspace UI OPEN |
 | GAP-033 | InterProjectHandover operational schema | High | Materialization to destination EDF; unloaded target behavior OPEN |
 | GAP-034 | CrossProjectDependency and source notification | Medium | PC-AIGOV-027–028; event mechanism OPEN |
 | GAP-035 | EDF upstream candidates (PC-AIGOV-022–028) | Low | Record only; no upstream in current tranche |
@@ -73,6 +73,8 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-040 | GDO dependency evaluation, EGR round-trip, governance debt UX | Medium | EDF normative via EGR-0001 v1.1; Concord consumption per [GDO handover](../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md); extends GAP-006; not AWI |
 | GAP-041 | GMFP / GMR consumption and workflow-profile representation | Medium | EDF normative via [GMFP-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/b158f4a382dfbea941435eeacd96beb729443687/docs/Specifications/GMFP-0001-Governed-Maintenance-Fast-Path.md) at `b158f4a`; Concord consumption per [GMFP handover](../Handover/EDF-Governed-Maintenance-Fast-Path-Architecture-Handover.md); [AWI-0004](../Architecture/Watch_Items/AWI-0004-Governed-Maintenance-Fast-Path.md); **not implemented** — future GMR discovery, workflow profile, DWA projection, evidence, escalation, visualization |
 | GAP-042 | MVR / MVT consumption, attestation, pending QA | Medium | EDF normative via [MVR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/192fe5c1c6254c51e257d24aefc09e127ce72464/docs/Specifications/MVR-0001-Manual-Verification-Records.md) at `192fe5c`; Concord consumption per [MVR handover](../Handover/EDF-Manual-Verification-Record-Architecture-Handover.md), [SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md), [ADR-0014](../Architecture/ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md); [AWI-0005](../Architecture/Watch_Items/AWI-0005-Manual-Verification-Records.md); **not implemented** — future parser, pending-QA query, human attestation write-back, ATTENTION UI, read-only gate hints |
+| GAP-043 | PAR runtime, Project ID registry, per-user SQLite, package validation | High | Normative [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md); [PAR plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md); PAR track A1–A3; **not implemented** |
+| GAP-044 | CursorBridge transport (P1 extension/CLI, P2 MCP/ACP) | Medium | P0 manual per SPEC-006; [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md); PAR track A4; **not implemented** |
 
 ---
 
@@ -350,6 +352,20 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | **Question** | How does ProjectConcord discover MVR candidates, validate canonical Record ID, parse MVT Results and Human execution status deterministically, maintain rebuildable non-authoritative projections, surface pending manual QA, perform human-attestation write-back with representational checkbox sync, enforce the Human-Attestation Authority Boundary, and show read-only gate blocking hints — without inferring optional MVT semantics, silently repairing identity, auto-mutating EGR, or treating GDO/GMFP validation as human MVR execution? |
 | **Interim policy** | Normative behavior in [SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md); S0 docs + `docs/Verification/` bootstrap complete; **no application implementation** until M2+ authorized under [Implementation Roadmap](Implementation_Roadmap.md) and EGR-G1/milestone sequence. |
 
+### GAP-043 — PAR runtime and per-user operational persistence
+
+| Field | Content |
+|---|---|
+| **Question** | How does ProjectConcord assign stable Project IDs, persist per-user SQLite state (recent roots, session provenance, workflow partitions), implement PAR package validation (including INCOMPLETE handover rules), and Tier 0 awareness without creating `.projectconcord/` on open or depending on ChatGPT/API? |
+| **Interim policy** | Architecture in [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md), [PAR plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md); implementation only via separately authorized PAR tranches A1–A3. |
+
+### GAP-044 — CursorBridge automated transport
+
+| Field | Content |
+|---|---|
+| **Question** | What Cursor integration transport (extension, CLI, MCP, ACP) satisfies security, mode routing, and evidence return without redefining governance semantics? |
+| **Interim policy** | P0 manual first per SPEC-006; investigation [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md); A4 not authorized. |
+
 ---
 
 ## Parent
@@ -368,6 +384,8 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 - [Multi-User Amendment Analysis](../Architecture/Multi_User_Amendment_Affected_Document_Analysis.md)
 - [System Architecture Overview](../Architecture/System_Architecture_Overview.md)
 - [Implementation Roadmap](Implementation_Roadmap.md)
+- [PAR Workflow Architecture Plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md)
+- [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)
 - [EDF Governed Dependency Override — Architecture Handover](../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md)
 - [EDF Governed Maintenance Fast Path — Architecture Handover](../Handover/EDF-Governed-Maintenance-Fast-Path-Architecture-Handover.md)
 - [EDF Documentation Information Architecture](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Architecture/Documentation_Information_Architecture.md)

@@ -4,7 +4,7 @@
 
 > **Status:** Draft  
 > **Owner:** ProjectConcord  
-> **Last Reviewed:** 2026-09-28
+> **Last Reviewed:** 2026-09-28 (PAR track added)
 
 ## Purpose
 
@@ -65,11 +65,25 @@ M1 skeleton: **no** MVR workflow code; **no** speculative empty MVR domain types
 8. Referential integrity ([SPEC-002](../Specifications/features/SPEC-002-canonical-artifact-relationships-referential-integrity.md)) (M6)  
 9. Git, change impact, AI governance ([SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)), Agile (M7+)
 
+## PAR track ([SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md))
+
+Explicit track for Project Root, stable Project ID, per-user application state, and Project Architect Relay — **before** full M7a governance UI breadth. **Not a substitute** for M7a; reconciles overlap without pulling entire M7a forward.
+
+| Stage | Scope | Authorization |
+|---|---|---|
+| **A0** | Architecture / canonical docs | **Complete** (2026-09-28) — [PAR plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md) PA-amended |
+| **A1** | Per-user app state + Recent Project Roots (SQLite direction) | **Plan published** — [A1 Implementation Plan](../Handover/ProjectConcord-A1-Implementation-Plan.md); **implementation not authorized** |
+| **A2** | PAR manual packages — P0 transport (generate, validate, export, import) | **Not authorized** |
+| **A3** | Governed workflow MVP (manual), overlaps M7a subset | **Not authorized** |
+| **A4** | Cursor bridge P1+ ([AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)) | **Not authorized** |
+
+**M2** (EDF discovery) remains a **separately governed** track. Tier 0 PAR awareness may run before M2; deep Canonical Markdown awareness follows M2+.
+
 ## M7+ phasing ([SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md), [PCON-0001](../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md))
 
 | Sub-phase | Scope | Notes |
 |---|---|---|
-| **M7a** | Single-project manual governance | DevelopmentWorkAuthorization, handover packages, clipboard import/export, submissions |
+| **M7a** | Single-project manual governance | DevelopmentWorkAuthorization, handover packages, clipboard import/export, submissions — **builds on PAR track A2–A3 where authorized**; not exclusive M7a-only work |
 | **M7b** | Structured submission & Git correlation | Scope conformance, drift, baseline defects |
 | **M7c** | Provider adapters | Same semantics as manual mode |
 | **M7d / M8** | Inter-project workspace | InterProjectHandover, CrossProjectDependency, traceability — **not MVP** |
@@ -85,6 +99,10 @@ M1 skeleton: **no** MVR workflow code; **no** speculative empty MVR domain types
 | **S0** | **Complete** (2026-09-28) — MVR architecture docs; see [MVR handover](../Handover/EDF-Manual-Verification-Record-Architecture-Handover.md) |
 | **Pre-M1** | **Complete** (2026-09-28) — C2/C4 doc reconciliation; [M1 / EGR-G1 plan](../Handover/ProjectConcord-M1-EGR-G1-Implementation-Plan.md) published |
 | M1 | **Complete** (2026-09-28) — M1a **published** (`42f5a6e`); **AAR-0001** published (`58079c9`); [EGR-G1](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) **Satisfied** |
+| PAR A0 | **Complete** (2026-09-28) — SPEC-006, ADR-0015 (Proposed), PA-amended [PAR plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md) |
+| PAR A1 plan | **Final accepted** — [A1 Implementation Plan](../Handover/ProjectConcord-A1-Implementation-Plan.md) |
+| PAR A1a | **Implemented** (2026-09-28) — domain/application/in-memory; **STOP** for PA review; A1b **not authorized** |
+| PAR A1b–A4 | **Not started** — not authorized |
 | M2–M5 | **Not started** — G1 satisfied; implementation in earnest requires separate PA authorization per milestone |
 | M6–M7+ | Deferred |
 
@@ -123,3 +141,5 @@ M1 skeleton: **no** MVR workflow code; **no** speculative empty MVR domain types
 - [PCON-0001](../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md)
 - [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)
 - [AI Governance Integration Analysis](../Architecture/AI_Governance_Workflow_Integration_Analysis.md)
+- [PAR Workflow Architecture Plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md)
+- [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)

@@ -90,6 +90,20 @@ Proposed
 
 - Premature implementation of inter-project or PR automation before M7 — mitigated by roadmap phasing and SPEC-004 “not implemented” status.
 
+## Reconciliation with PAR (2026-09-28 — ADR remains Proposed)
+
+[ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) and [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) introduce **Project Architect Relay (PAR)**, stable **ProjectConcord Project ID**, and per-user operational persistence **without accepting ADR-0013**.
+
+| ADR-0013 concept | PAR tranche relationship |
+|---|---|
+| Operational vs canonical (§1) | PAR packages and per-user SQLite direction remain **operational/derived** |
+| DevelopmentWorkAuthorization | Target for A3 / M7a; PAR validates and carries references, does not replace |
+| Handover vs authorization (§2) | Enforced at PAR relay boundary per SPEC-006 |
+| Multi-project workspace (§7) | Project ID + locator model preserves non-lock-in; workspace UI deferred |
+| M1–M5 non-lock-in (§8) | Stable Project ID satisfies PA disposition vs path-only identity |
+
+**Acceptance of ADR-0013 is still deferred** until [PCON-0002](../PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) Actor/Role dependencies are dispositioned. PAR uses **provisional transport attribution** only.
+
 ## References
 
 - [PCON-0001](../PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md)
@@ -97,3 +111,4 @@ Proposed
 - [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)
 - [ADR-0006](ADR-0006-AI-Boundary.md), [ADR-0009](ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md), [ADR-0012](ADR-0012-Adopt-EDF-Architectural-Audit-Records.md)
 - [Implementation Roadmap](../../Development/Implementation_Roadmap.md)
+- [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md), [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [PAR Workflow Architecture Plan](../../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md)

@@ -19,6 +19,7 @@ EDF convention: `docs/Architecture/Watch_Items/AWI-NNNN-Short-Title.md` ([EDF Ga
 | [AWI-0003](AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md) | Primary orchestration UI and external AI/engineering-tool integration (separate from AWI-0001/0002) | Active |
 | [AWI-0004](AWI-0004-Governed-Maintenance-Fast-Path.md) | EDF Governed Maintenance Fast Path (GMFP) consumption, workflow-profile risk, and deferred implementation | Active |
 | [AWI-0005](AWI-0005-Manual-Verification-Records.md) | EDF Manual Verification Records (MVR) consumption, attestation boundary, and deferred implementation | Active |
+| [AWI-0006](AWI-0006-PAR-Cursor-Bridge-Transport.md) | PAR CursorBridge transport (P1/P2) after P0 manual relay | Active |
 
 ## Lifecycle
 

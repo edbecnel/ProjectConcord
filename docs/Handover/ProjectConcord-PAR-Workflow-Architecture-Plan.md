@@ -1,0 +1,264 @@
+[Home](../../README.md) › [Project Index](../../PROJECT_INDEX.md) › [Handover](README.md) › ProjectConcord PAR Workflow Architecture Plan
+
+# ProjectConcord — PAR / Project Root / Governed Workflow Architecture Plan
+
+## Governance status
+
+| Item | Status |
+|---|---|
+| **Initial plan** | Cursor PLAN tranche at baseline `c08af261ff323a0ddd54a84bd5c8b990a49fa84f` |
+| **Project Architect disposition** | **ACCEPT WITH BINDING AMENDMENTS** (2026-09-28) |
+| **Final architecture acceptance (A0)** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-28) |
+| **A1 implementation plan** | [ProjectConcord-A1-Implementation-Plan.md](ProjectConcord-A1-Implementation-Plan.md) — planning only; **not authorized** |
+| **M1 / EGR-G1** | Closed / Satisfied — unchanged |
+| **M2+** | **Not authorized** |
+| **A1–A4** | **Not authorized for implementation** |
+| **ADR-0014** | **Proposed** |
+| **STOP-2** | **Binding** |
+| **ADR-0013** | **Proposed** — reconciled, **not accepted** |
+| **TRV CC-4B** | Paused / untouched |
+
+## Purpose
+
+Authoritative architecture plan for Project Root lifecycle, stable project identity, per-user application state, Project Architect Relay (PAR), governed workflow relay boundaries, and Cursor/ChatGPT integration **as one workflow architecture**.
+
+This document incorporates **all binding PA amendments** from the 2026-09-28 Plan Amendment Handover. Normative requirements live in [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md); architectural decisions in [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md).
+
+**This tranche authorizes architecture/documentation canonicalization only.**
+
+## Normative ProjectConcord artifacts (post–A0)
+
+| Artifact | Role |
+|---|---|
+| [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) | Normative PAR, Project Root, identity, provider boundaries |
+| [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) | Project ID, persistence direction, component boundaries |
+| [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) | Cross-referenced PC-AIGOV requirements (not duplicated) |
+| [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) | Reconciled; remains Proposed |
+| [Implementation Roadmap](../Development/Implementation_Roadmap.md) | PAR track before M7a |
+| [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md) | Cursor transport investigation |
+| [GAP-043](../Development/EDF_Gap_Register.md), [GAP-044](../Development/EDF_Gap_Register.md) | PAR implementation and bridge gaps |
+
+## Accepted architectural decisions (summary)
+
+### Identity (binding)
+
+- **ProjectConcord Project ID** — stable logical identity for operational/workflow continuity.
+- **Project Root** — current filesystem locator only.
+- **Repository identity**, **Git remote URL**, **repository/workspace name** — distinct; not interchangeable with Project ID.
+- Identity mapping MUST NOT require `.projectconcord/` on open.
+
+### Persistence (architecture direction; not implemented)
+
+- Per-user **SQLite** in OS application data.
+- Project-scoped operational partitions keyed by **Project ID**.
+- Migration, versioning, recovery documented before A1.
+
+### `.projectconcord/` (binding)
+
+- MUST NOT be created on open/select.
+- NOT auto-created by M2.
+- Created only when an authorized feature requires project-local derived state (or future explicit user init).
+
+### Provider separation (binding)
+
+```
+Governance semantics (Concord/PAR)
+        |
+        v
+   PAR (relay, validation, provenance, STOP at boundary)
+        |
+        +--> IProjectArchitectProvider (neutral contract)
+        |         +-- ProjectArchitectManualAdapter (ChatGPT product today)
+        |         +-- OpenAIProjectArchitectAdapter (future)
+        |         +-- Other providers (future)
+        |
+        +--> CursorBridge (P0 manual; P1/P2 future)
+```
+
+Core semantics MUST NOT depend on ChatGPT or OpenAI API.
+
+### PCON-0002 / PCR-0001
+
+- PAR architecture proceeds **now**; PCON-0002 is **not bypassed**.
+- Provisional transport attribution only until Actor/Role normative model is dispositioned.
+
+### Tier 0 Canonical Markdown awareness
+
+Shallow pre-M2 scope only — see [SPEC-006 §12](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md). No competing EDF parser.
+
+### PA handover schema (binding)
+
+Governance-critical: `Cursor-Mode`, `Cursor-Chat`, `ChatGPT-Chat`; plus `Cursor-Mode-Transition` when mode changes; explicit authorization and STOP representation.
+
+Missing critical metadata → **INCOMPLETE** → **no automated Cursor relay**; no silent inference.
+
+### Chat / session provenance (binding)
+
+Core: `ProjectArchitectSession` + `ProjectArchitectSessionAdvisory` (and engineering-agent parallels).
+
+Manual adapter renders `ChatGPT-Chat` / `ChatGPT-Chat-Advisory` and `Cursor-Chat` / `Cursor-Chat-Advisory` for current workflow.
+
+Provenance chain: observed context → advisory → user decision → requested action → package event. NEW/CONTINUE alone is insufficient.
+
+### Cursor transport
+
+**P0 manual** first: generate, validate, export, import evidence.
+
+`CursorBridge` preserved; P1/P2 not implemented in this tranche.
+
+### Roadmap
+
+Explicit **PAR track** (A0–A4) **before** M7a; M7a scope not silently pulled forward; tranches independently governed.
+
+## Component architecture
+
+```mermaid
+flowchart TB
+  subgraph perUser [PerUser_OSAppData_SQLite_direction]
+    RecentRoots[RecentProjectRoots]
+    ProjRegistry[ProjectId_to_locator_map]
+    Sessions[WorkSessionProvenance]
+  end
+
+  subgraph concord [ProjectConcord_Core]
+    RootCtx[ProjectRootContext]
+    Par[PAR]
+    WfState[GovernedWorkflowState_operational]
+    Tier0[CanonicalMarkdownAwareness_Tier0]
+    StopEnf[RelayBoundarySTOP]
+  end
+
+  subgraph providers [ProviderLayer]
+    PAProvider[IProjectArchitectProvider]
+    ManualPA[ManualChatGPTAdapter]
+    CursorBridge[CursorBridge_P0_manual]
+  end
+
+  subgraph git [Git_Canonical]
+    Md[EDF_Markdown]
+  end
+
+  User --> RootCtx
+  RootCtx --> ProjRegistry
+  RootCtx --> WfState
+  WfState --> Tier0
+  Tier0 --> Md
+  Par --> WfState
+  Par --> Tier0
+  Par --> StopEnf
+  Par --> PAProvider
+  PAProvider --> ManualPA
+  Par --> CursorBridge
+```
+
+## Workflow state (planning model)
+
+```mermaid
+stateDiagram-v2
+  direction LR
+  [*] --> RootSelected
+  RootSelected --> PackageReady: Tier0_plus_operational
+  PackageReady --> PAExchange: provider_export_import
+  PAExchange --> HandoverValidated: schema_OK
+  PAExchange --> Incomplete: missing_critical_metadata
+  Incomplete --> PAExchange: human_fix
+  HandoverValidated --> CursorIntent: P0_human_or_future_bridge
+  CursorIntent --> EvidenceRecorded: ingest
+  EvidenceRecorded --> PAExchange: review_submission
+  CursorIntent --> Stopped: STOP
+  Stopped --> PAExchange: disposition
+```
+
+## Implementation staging (accepted planning model)
+
+| Stage | Scope | Authorized |
+|---|---|---|
+| **A0** | Architecture / canonical documentation | **Complete** — PA accepted |
+| **A1** | Per-user app state + Recent Project Roots | **Plan:** [A1 Implementation Plan](ProjectConcord-A1-Implementation-Plan.md) — **implementation not authorized** |
+| **A2** | PAR manual package workflow (P0) | **No** |
+| **A3** | Governed workflow MVP (manual) | **No** |
+| **A4** | Cursor bridge P1 | **No** |
+| **M2** | EDF discovery (SPEC-001) | **No** — separate track; feeds Tier 0+ later |
+
+Dependencies: A2+ may consume Tier 0 before M2; deep awareness requires M2+.
+
+## Current-state evidence (baseline `c08af26`)
+
+| Observation | Evidence |
+|---|---|
+| In-memory Project Root only | `ProjectWorkspaceService` — no persistence |
+| No PAR / recent roots | [AAR-0001](../Architecture/Audits/AAR-0001-m1-solution-skeleton-conformance.md) Finding 14 — not an M1 defect |
+| PA-3 honored | No `.projectconcord/` in M1 |
+| `ILocalProjectRuntime` marker | Future project-local seam — not identity store |
+
+## ADR-0013 reconciliation (without acceptance)
+
+ADR-0013 operational entities (DevelopmentWorkAuthorization, handover packages, submissions) remain the **target model** for A3+ and M7a. SPEC-006 PAR packages are **derived/operational** per ADR-0013 §1.
+
+PAR track delivers **relay and identity foundation** earlier than M7a UI breadth. ADR-0013 acceptance still gated on PCON-0002 examination.
+
+## Validation performed (A0 documentation tranche)
+
+| Check | Result |
+|---|---|
+| No `src/` feature implementation | Confirmed — docs only |
+| No `tests/` implementation changes | Confirmed |
+| No A1–A4 / M2 authorization introduced | Confirmed |
+| No `.projectconcord/` creation behavior specified on open | Confirmed in SPEC-006 / ADR-0015 |
+| No Cursor bridge / SQLite implementation | Confirmed — direction only |
+| No OpenAI API assumption | Confirmed — provider boundary |
+| STOP-2 binding preserved | Confirmed |
+| ADR-0014 remains Proposed | Confirmed |
+| ADR-0013 not accepted | Confirmed |
+| PCON-0002 dependency visible | Confirmed §PCON-0002 above |
+
+## Appendix A — Requirements traceability (handover items 1–18)
+
+| # | Handover requirement | Normative | Architecture decision | Operational/derived | Staging |
+|---|---|---|---|---|---|
+| 1 | Project Root lifecycle | PC-PAR-005–008 | ADR-0015 §1, §3 | Recent roots in per-user store | A1 |
+| 2 | Recent Project Roots | PC-PAR-007–008 | ADR-0015 §2 | SQLite recent list | A1 |
+| 3 | Per-user application state | PC-PAR-009–011 | ADR-0015 §2 | DB schema TBD | A1 |
+| 4 | Project-local state boundaries | PC-PAR-006; ADR-0004 | ADR-0015 §3 | `.projectconcord/` only when justified | A2+ / feature tranches |
+| 5 | Governed workflow state | SPEC-004 PC-AIGOV-002–004 | ADR-0013 (Proposed) | Operational partition by Project ID | A3 / M7a overlap |
+| 6 | Canonical Markdown awareness | PC-PAR-T0 §12 | ADR-0015 §5 | Tier 0 snapshots | A2+; deep M2+ |
+| 7 | PAR | PC-PAR-012–015 | ADR-0015 §4 | Package records | A2 |
+| 8 | Cursor integration / bridge | PC-PAR-022 | AWI-0006 | P0 manual artifacts | A2 P0; A4 P1 |
+| 9 | PLAN/AGENT/DEBUG routing | §9 schema + PC-PAR-022 | — | Validated handover fields | A2 |
+| 10 | Evidence/result ingestion | PC-PAR-012; PC-AIGOV-008 | — | Submission correlation IDs | A2–A3 |
+| 11 | PA package preparation | PC-PAR-012 | Provider boundary §8 | Export bundles | A2 |
+| 12 | PA-to-Cursor relay | PC-PAR-014, 022 | CursorBridge | P0 human relay | A2 |
+| 13 | STOP enforcement | PC-AIGOV-007; SPEC-006 §14 | — | Relay boundary flags | A2–A3 |
+| 14 | Independent Cursor chat lifecycle | PC-PAR-021 | Core session model | EngineeringAgentSession | A1–A2 |
+| 15 | Independent ChatGPT chat lifecycle | PC-PAR-021; §8 | Manual adapter rendering | ProjectArchitectSession | A1–A2 |
+| 16 | NEW/CONTINUE advisory | §9 advisories | — | Advisory records | A1 |
+| 17 | New-chat context packaging | PC-AIGOV-015; PC-PAR-021 | Tier 0 bounds | Package bundles | A2 |
+| 18 | PA handover metadata validation | §9; PC-PAR-013–015 | INCOMPLETE rules | Validator | A2 |
+
+**SPEC-004 mapping (representative):** 1–5 → PC-AIGOV-002–004, 015; 7–13 → PC-AIGOV-005–008, 007, 016; 10–11 → PC-AIGOV-008, 016. Full PC-AIGOV set remains in SPEC-004 for M7a breadth.
+
+## Appendix B — Evidence package index
+
+| Item | Location |
+|---|---|
+| Baseline commit | `c08af261ff323a0ddd54a84bd5c8b990a49fa84f` |
+| M1 conformance | [AAR-0001](../Architecture/Audits/AAR-0001-m1-solution-skeleton-conformance.md) |
+| M1 PA decisions PA-3, STOP-2 | [M1 plan](ProjectConcord-M1-EGR-G1-Implementation-Plan.md) |
+| Prior integration analysis | [AI Governance Workflow Integration Analysis](../Architecture/AI_Governance_Workflow_Integration_Analysis.md) |
+| Orchestration discovery | [PCON-0004](../Architecture/PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md) |
+| Continuation independence | [PCON-0003](../Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md) §7 |
+| Cursor working plan (non-authoritative) | `.cursor/plans/par_workflow_architecture_fe62cc01.plan.md` |
+
+## Working copy
+
+Detailed iteration may exist in Cursor `.plan.md` files. **This repository document** is the persistent record after PA amendment incorporation (mirrors [MVR plan](ProjectConcord-MVR-Adoption-Architecture-Plan.md) pattern).
+
+## Parent
+
+- [Handover](README.md)
+
+## Related Documents
+
+- [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)
+- [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md)
+- [Implementation Roadmap](../Development/Implementation_Roadmap.md)

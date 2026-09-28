@@ -1,4 +1,5 @@
 using Edf.Application.Projects;
+using Edf.Application.Projects.InMemory;
 using Edf.Engine.Projects;
 using Edf.Identity.Actors;
 using Edf.ProjectServices.Local;
@@ -12,6 +13,8 @@ public static class ApplicationCompositionRoot
         var actor = new DegenerateAdministratorActor();
         var resolver = new ProjectRootResolver();
         var runtime = new LocalProjectRuntime();
-        return new ProjectWorkspaceService(resolver, actor, runtime);
+        var registry = new InMemoryProjectRegistry();
+        var preferences = new InMemoryUserPreferencesStore();
+        return new ProjectWorkspaceService(resolver, actor, registry, preferences, runtime);
     }
 }

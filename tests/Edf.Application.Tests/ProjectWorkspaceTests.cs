@@ -1,4 +1,5 @@
 using Edf.Application.Projects;
+using Edf.Application.Projects.InMemory;
 using Edf.Domain.Projects;
 using Edf.Engine.Projects;
 using Edf.Identity.Actors;
@@ -48,7 +49,9 @@ public class ProjectWorkspaceServiceTests
 
             Assert.True(result.Success);
             Assert.NotNull(result.Root);
+            Assert.NotNull(result.ProjectId);
             Assert.Equal(result.Root, service.CurrentRoot);
+            Assert.Equal(result.ProjectId, service.CurrentProjectId);
         }
         finally
         {
@@ -66,16 +69,17 @@ public class ProjectWorkspaceServiceTests
 
         Assert.False(result.Success);
         Assert.Null(service.CurrentRoot);
+        Assert.Null(service.CurrentProjectId);
         Assert.False(string.IsNullOrWhiteSpace(result.ErrorMessage));
     }
 
-    private static ProjectWorkspaceService CreateService()
-    {
-        return new ProjectWorkspaceService(
+    private static ProjectWorkspaceService CreateService() =>
+        new(
             new ProjectRootResolver(),
             new DegenerateAdministratorActor("test-admin"),
+            new InMemoryProjectRegistry(),
+            new InMemoryUserPreferencesStore(),
             new LocalProjectRuntime());
-    }
 }
 
 public class DegenerateAdministratorActorTests
