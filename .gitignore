@@ -1,3 +1,7 @@
+# .NET build output
+[Bb]in/
+[Oo]bj/
+
 # ProjectConcord — local derived data (see ADR-0004)
 .projectconcord/
 

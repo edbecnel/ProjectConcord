@@ -15,24 +15,38 @@ New contributors should follow [00_First_Time_Setup.md](./00_First_Time_Setup.md
 | Tool | Minimum version | Purpose | Install reference |
 |------|-----------------|---------|-------------------|
 | Git | | Version control | |
-| .NET SDK | **10.x** (.NET 10 LTS) | Application build (`net10.0`) | [https://dotnet.microsoft.com/download](https://dotnet.microsoft.com/download) |
+| .NET SDK | **10.0.401** (pinned in repository [`global.json`](../../global.json); .NET 10 LTS line) | Application build (`net10.0`) | [https://dotnet.microsoft.com/download](https://dotnet.microsoft.com/download) |
 | Avalonia | **12.x stable** (via NuGet when `Edf.Desktop` exists) | Desktop UI framework for `Edf.Desktop` | [https://avaloniaui.net/](https://avaloniaui.net/) |
 
-### Initial implementation baseline (greenfield)
+### Initial implementation baseline (M1a)
 
-ProjectConcord currently has **no** `src/`, **no** `ProjectConcord.sln`, **no** `Edf.Desktop`, and **no** existing Avalonia application. When M1a is authorized, implementation will establish the **first** .NET desktop client using:
+ProjectConcord ships the **first** .NET desktop client (M1a skeleton) using:
 
 | Setting | Value |
 |---------|--------|
+| SDK pin (repo root) | **`10.0.401`** via [`global.json`](../../global.json) |
 | Target framework | **.NET 10 LTS** |
-| TFM | **`net10.0`** |
-| UI | **Avalonia 12** stable package line (resolve current 12.x at project creation) |
+| TFM | **`net10.0`** (all solution projects) |
+| UI | **Avalonia 12.1.3** in `Edf.Desktop` (12.x stable line) |
 
 This is an **initial implementation baseline**, not a migration, upgrade, modernization, or replacement of a prior UI.
 
-**M1a UI scope (when implemented):** minimum Avalonia **application shell** plus minimum **open-folder / project-root** interaction per [Implementation Roadmap](../../Development/Implementation_Roadmap.md) and [ProjectConcord M1 / EGR-G1 Implementation Plan](../../Handover/ProjectConcord-M1-EGR-G1-Implementation-Plan.md). Navigation, dashboards, EDF artifact views, ATTENTION, MVR UI, authoring, and governance UX remain **deferred** to later milestones.
+**M1a UI scope:** minimum Avalonia **application shell** plus **open-folder / project-root** interaction per [Implementation Roadmap](../../Development/Implementation_Roadmap.md) and [ProjectConcord M1 / EGR-G1 Implementation Plan](../../Handover/ProjectConcord-M1-EGR-G1-Implementation-Plan.md). Navigation, dashboards, EDF artifact views, ATTENTION, MVR UI, authoring, and governance UX remain **deferred**.
 
 Do **not** target preview .NET releases or preview Avalonia packages for the baseline.
+
+### Verify SDK from repository root
+
+After clone, run commands from the repository root so `global.json` selects the pinned SDK:
+
+```bash
+cd <project-directory>
+dotnet --version
+```
+
+Expected: **`10.0.401`** (or compatible roll-forward within the pinned policy in `global.json`).
+
+If `dotnet --version` reports an older SDK (for example 8.x), install [.NET 10 SDK](https://dotnet.microsoft.com/download) and adjust **PATH** so the `dotnet` executable from that installation is found **before** any older SDK on your machine. This is ordinary development-environment setup — not a permanent architectural requirement for a specific install location.
 
 ## Repository setup
 
@@ -67,14 +81,21 @@ cd <project-directory>
 
 ### Start commands
 
+Requires [.NET 10 SDK](https://dotnet.microsoft.com/download) on `PATH` (see Prerequisites).
+
 ```bash
-# [command]
+dotnet build ProjectConcord.sln
+dotnet test ProjectConcord.sln
+dotnet run --project src/Edf.Desktop/Edf.Desktop.csproj
 ```
+
+M1 skeleton: first Avalonia client — minimum shell and open-project-folder only (see [M1 / EGR-G1 Implementation Plan](../../Handover/ProjectConcord-M1-EGR-G1-Implementation-Plan.md)).
 
 ### Verify installation
 
 ```bash
-# [health check]
+dotnet build ProjectConcord.sln -c Release
+dotnet test ProjectConcord.sln -c Release
 ```
 
 ## IDE configuration
@@ -83,7 +104,11 @@ cd <project-directory>
 
 ## Troubleshooting
 
-[Common environment issues and resolutions.]
+### Wrong .NET SDK version at repository root
+
+Symptom: `dotnet --version` shows an older SDK when run from the repository root, or build fails with framework/SDK mismatch.
+
+Resolution: Install .NET 10 SDK **10.0.401** or newer compatible with [`global.json`](../../global.json). Ensure your shell **PATH** prefers that installation’s `dotnet` over an older system or package-manager SDK. Re-run `dotnet --version` from the repository root to confirm **`10.0.401`** (or policy-allowed roll-forward).
 
 ## Parent
 

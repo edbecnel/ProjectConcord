@@ -1,0 +1,26 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:Edf.Desktop.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="320"
+        x:Class="Edf.Desktop.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="ProjectConcord"
+        Width="640" Height="320"
+        MinWidth="480" MinHeight="240">
+  <StackPanel Margin="24" Spacing="12">
+    <TextBlock Text="ProjectConcord — M1 skeleton"
+               FontSize="18"
+               FontWeight="SemiBold" />
+    <TextBlock Text="{Binding ActorDisplayName, StringFormat=Actor: {0}}" />
+    <Button Content="Open project folder…"
+            Command="{Binding OpenProjectFolderCommand}"
+            HorizontalAlignment="Left" />
+    <TextBlock Text="{Binding ProjectRootPath, StringFormat=Project root: {0}}"
+               TextWrapping="Wrap" />
+    <TextBlock Text="{Binding StatusMessage}"
+               Foreground="Gray"
+               TextWrapping="Wrap" />
+  </StackPanel>
+</Window>

@@ -7,7 +7,8 @@
 **Architecture baseline commit (pre-M1 content):** `8f1938ba0adc3fbe933cdb27581e813142bb122f`  
 **Working Cursor copy (non-canonical):** `/Users/edbecnel/.cursor/plans/m1_egr-g1_implementation_plan_a088fdc4.plan.md`
 
-**M1a / M1b / M1c implementation:** **NOT AUTHORIZED** until separate Project Architect authorization after each STOP.
+**M1a:** **IMPLEMENTATION COMPLETE** / Project Architect **ACCEPTED** / **PUBLICATION AUTHORIZED** (publication commit pending push to `origin/main`)  
+**M1b / M1c:** **NOT AUTHORIZED** until separate Project Architect authorization after each STOP.
 
 ---
 
@@ -19,7 +20,7 @@
 | No M1 execution MVR from governing artifacts | **Accepted** |
 | **Plan** | **ACCEPTED** / **PUBLISHED** (`aaa9229`) |
 | **Pre-M1 doc reconciliation** | **CLOSED** / **PA ACCEPTED** / **PUBLISHED** (2026-09-28; C2, C4, PA-2) |
-| **M1a implementation** | **NOT AUTHORIZED** |
+| **M1a (M1 skeleton)** | **IMPLEMENTATION COMPLETE** / **PA ACCEPTED** / **PUBLICATION AUTHORIZED** |
 | **M1b AAR-0001** | **NOT AUTHORIZED** |
 | **M1c EGR-G1 closure** | **NOT AUTHORIZED** |
 
@@ -65,9 +66,22 @@ flowchart TD
 
 ---
 
-## M1 minimum physical scope (PA-1, PA-12)
+## M1a implementation status (skeleton — PA accepted)
 
-When **M1a** is authorized (documentation only until then — **do not create** these paths prematurely):
+| Item | Status |
+|------|--------|
+| Physical scope | `ProjectConcord.sln`, six `src/Edf.*` projects, `tests/Edf.Application.Tests`, `global.json` (SDK **10.0.401**) |
+| Runtime | **net10.0**, Avalonia **12.1.3**, first minimal desktop shell + open-folder / project-root |
+| Layering | Desktop → Application → Engine / Identity / ProjectServices → Domain |
+| Validation | `dotnet build` / `dotnet test` (Release) — six executable tests |
+| **M1 overall** | **Not complete** — AAR-0001 and EGR-G1 remain |
+| **M1a publication** | **AUTHORIZED** — recorded on `origin/main` at M1a publication commit (after push) |
+
+**Not in M1a:** EDF discovery/parsing, MVR types, `.projectconcord/`, speculative future assemblies. **`ILocalProjectRuntime`** accepted as minimal marker seam for AAR-0001 review in M1b (not expanded in M1a).
+
+---
+
+## M1 minimum physical scope (PA-1, PA-12)
 
 ```text
 ProjectConcord.sln
@@ -203,7 +217,7 @@ Do **not** add behavior solely to justify tests. Do **not** require UI automatio
 | `analyze_project_structure.sh` | Referenced by EDF; **not present in this repository** — not re-run for pre-M1 tranche unless script is added |
 | `run_conformance_validation.sh` | **NOT EXECUTED — SCRIPT NOT AVAILABLE** — not reinterpreted as PASS/FAIL (PA-9) |
 | Pre-M1 doc tranche | Internal reference/navigation review; no invented validators |
-| `dotnet build` / `dotnet test` | Required when **M1a** implemented |
+| `dotnet build` / `dotnet test` | **Passed** at M1a (Release; six tests) |
 
 ---
 
@@ -214,7 +228,8 @@ Do **not** add behavior solely to justify tests. Do **not** require UI automatio
 | MVR S0 | Closed / PA accepted / **published** `8f1938b` |
 | M1/EGR-G1 plan | **PA ACCEPTED** / **PUBLISHED** — `aaa9229212baf12efdf0f97e210fc5287b0d8348` |
 | Pre-M1 doc reconciliation | **CLOSED** / **PA ACCEPTED** / **PUBLISHED** (2026-09-28) |
-| M1a | **NOT AUTHORIZED** |
+| M1a (M1 skeleton) | **IMPLEMENTATION COMPLETE** / **PA ACCEPTED** / **PUBLICATION AUTHORIZED** |
+| M1 (overall) | **Open** — AAR-0001 + EGR-G1 not satisfied |
 | M1b / AAR-0001 | **NOT AUTHORIZED** |
 | M1c / EGR-G1 closure | **NOT AUTHORIZED** |
 | EGR-G1 | **Open** |
