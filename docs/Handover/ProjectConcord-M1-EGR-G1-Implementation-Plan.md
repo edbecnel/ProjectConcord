@@ -2,13 +2,10 @@
 
 # ProjectConcord M1 / EGR-G1 — Implementation Plan
 
-**Plan:** Project Architect **ACCEPTED** (includes PA-1 through PA-13)  
-**Repository persistence:** **PREPARED** in working tree — **AWAITING PUBLICATION** (authorized commit/push to `origin/main`)  
-**Pre-M1 documentation reconciliation:** **COMPLETE** / **PA CONTENT ACCEPTED** (2026-09-28) — C2, C4, PA-2, repository plan file — **AWAITING PUBLICATION**  
-**Canonical baseline commit:** `8f1938ba0adc3fbe933cdb27581e813142bb122f`  
+**M1/EGR-G1 plan:** Project Architect **ACCEPTED** / **PUBLISHED** (`aaa9229212baf12efdf0f97e210fc5287b0d8348` on `origin/main`)  
+**Pre-M1 documentation reconciliation:** **CLOSED** / Project Architect **ACCEPTED** / **PUBLISHED** (2026-09-28) — C2, C4, PA-2, canonical handover + index links in commit `aaa9229`  
+**Architecture baseline commit (pre-M1 content):** `8f1938ba0adc3fbe933cdb27581e813142bb122f`  
 **Working Cursor copy (non-canonical):** `/Users/edbecnel/.cursor/plans/m1_egr-g1_implementation_plan_a088fdc4.plan.md`
-
-Working-tree artifact **≠** canonical repository publication until committed and pushed.
 
 **M1a / M1b / M1c implementation:** **NOT AUTHORIZED** until separate Project Architect authorization after each STOP.
 
@@ -20,9 +17,8 @@ Working-tree artifact **≠** canonical repository publication until committed a
 |------|--------|
 | Governance sequence (G0 → M1a → PA → M1b AAR → PA → M1c G1 → PA → M2+) | **Accepted** |
 | No M1 execution MVR from governing artifacts | **Accepted** |
-| **Plan** | **ACCEPTED** |
-| **Repository persistence (this file + index links)** | **PREPARED** — **AWAITING PUBLICATION** |
-| **Pre-M1 doc reconciliation** | **COMPLETE** / **PA CONTENT ACCEPTED** — **AWAITING PUBLICATION** (C2, C4, PA-2) |
+| **Plan** | **ACCEPTED** / **PUBLISHED** (`aaa9229`) |
+| **Pre-M1 doc reconciliation** | **CLOSED** / **PA ACCEPTED** / **PUBLISHED** (2026-09-28; C2, C4, PA-2) |
 | **M1a implementation** | **NOT AUTHORIZED** |
 | **M1b AAR-0001** | **NOT AUTHORIZED** |
 | **M1c EGR-G1 closure** | **NOT AUTHORIZED** |
@@ -146,14 +142,14 @@ Do **not** add behavior solely to justify tests. Do **not** require UI automatio
 
 ---
 
-## Pre-M1 documentation reconciliation (PA-6) — executed
+## Pre-M1 documentation reconciliation (PA-6) — closed / published
 
 | Item | Action | Status |
 |------|--------|--------|
 | **C2** | [EGR-G1](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md): G0 authorizes M1 **solution skeleton**; **G1** accepts completed M1 skeleton and permits **intensive MVP (M2+)**; explicit governance sequence | **Done** |
 | **C4** | [ADR-0012](../Architecture/ADRs/ADR-0012-Adopt-EDF-Architectural-Audit-Records.md) §6: AAR-0001 requirements basis (ADRs, SPEC-001 skeleton, S0 MVR placement / SPEC-005 conformance only) | **Done** |
 | **PA-2** | .NET 10 / Avalonia 12 in [Developer Handbook](../Developer_Handbook/01_Development_Environment.md); roadmap/SPEC-001 open questions updated | **Done** |
-| **Git publication** | Commit/push of this handover plan + index updates to `origin/main` | **AWAITING PUBLICATION** (content prepared in working tree) |
+| **Git publication** | PRE-M1 tranche on `origin/main` | **PUBLISHED** — `aaa9229212baf12efdf0f97e210fc5287b0d8348` |
 
 ---
 
@@ -211,13 +207,13 @@ Do **not** add behavior solely to justify tests. Do **not** require UI automatio
 
 ---
 
-## Governance state (pre-M1 content accepted — awaiting git publication)
+## Governance state (after PRE-M1 publication closeout)
 
 | Item | State |
 |------|--------|
 | MVR S0 | Closed / PA accepted / **published** `8f1938b` |
-| M1/EGR-G1 plan | **PA ACCEPTED**; repository copy **PREPARED** — **AWAITING PUBLICATION** |
-| Pre-M1 doc reconciliation | **COMPLETE** / **PA CONTENT ACCEPTED** (2026-09-28) — **AWAITING PUBLICATION** |
+| M1/EGR-G1 plan | **PA ACCEPTED** / **PUBLISHED** — `aaa9229212baf12efdf0f97e210fc5287b0d8348` |
+| Pre-M1 doc reconciliation | **CLOSED** / **PA ACCEPTED** / **PUBLISHED** (2026-09-28) |
 | M1a | **NOT AUTHORIZED** |
 | M1b / AAR-0001 | **NOT AUTHORIZED** |
 | M1c / EGR-G1 closure | **NOT AUTHORIZED** |
