@@ -9,10 +9,10 @@
 | **Initial plan** | Cursor PLAN tranche at baseline `c08af261ff323a0ddd54a84bd5c8b990a49fa84f` |
 | **Project Architect disposition** | **ACCEPT WITH BINDING AMENDMENTS** (2026-09-28) |
 | **Final architecture acceptance (A0)** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-28) |
-| **A1 implementation plan** | [ProjectConcord-A1-Implementation-Plan.md](ProjectConcord-A1-Implementation-Plan.md) — planning only; **not authorized** |
+| **A1 implementation plan** | [ProjectConcord-A1-Implementation-Plan.md](ProjectConcord-A1-Implementation-Plan.md) — **CLOSED / PA ACCEPTED / PUBLISHED** (2026-09-28; `fba5be5`) |
 | **M1 / EGR-G1** | Closed / Satisfied — unchanged |
 | **M2+** | **Not authorized** |
-| **A1–A4** | **Not authorized for implementation** |
+| **A2–A4** | **Not authorized for implementation** |
 | **ADR-0014** | **Proposed** |
 | **STOP-2** | **Binding** |
 | **ADR-0013** | **Proposed** — reconciled, **not accepted** |
@@ -174,7 +174,7 @@ stateDiagram-v2
 | Stage | Scope | Authorized |
 |---|---|---|
 | **A0** | Architecture / canonical documentation | **Complete** — PA accepted |
-| **A1** | Per-user app state + Recent Project Roots | **Plan:** [A1 Implementation Plan](ProjectConcord-A1-Implementation-Plan.md) — **implementation not authorized** |
+| **A1** | Per-user app state + Recent Project Roots | **Complete** — published A1a/A1b/A1c; closeout [A1 plan §20](ProjectConcord-A1-Implementation-Plan.md#20-a1-overall-closeout-2026-09-28) |
 | **A2** | PAR manual package workflow (P0) | **No** |
 | **A3** | Governed workflow MVP (manual) | **No** |
 | **A4** | Cursor bridge P1 | **No** |
@@ -249,9 +249,23 @@ PAR track delivers **relay and identity foundation** earlier than M7a UI breadth
 | Continuation independence | [PCON-0003](../Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md) §7 |
 | Cursor working plan (non-authoritative) | `.cursor/plans/par_workflow_architecture_fe62cc01.plan.md` |
 
-## Working copy
+**Working copy**
 
 Detailed iteration may exist in Cursor `.plan.md` files. **This repository document** is the persistent record after PA amendment incorporation (mirrors [MVR plan](ProjectConcord-MVR-Adoption-Architecture-Plan.md) pattern).
+
+## Deferred architecture requirements (not authorized for design or implementation)
+
+The following are **prospective** PAR-track requirements only. They do **not** authorize implementation in A1 or A1 closeout.
+
+### Human-interactive verification workspaces (EDF DVW-0001 v1.1)
+
+[GMR-0002](https://github.com/edbecnel/Engineering-Documentation-Framework) (EDF) refined EDF **DVW-0001** to v1.1. Future ProjectConcord human-interactive MVRs should follow DVW-0001 v1.1 and prefer **short, recognizable, readily navigable** disposable paths where practical. Completed A1c DVW evidence (including platform-generated session paths) remains **unchanged**.
+
+### Architect ↔ developer interaction and delegated authority
+
+EDF governance should distinguish **genuine architectural/governance gates** from **AI-orchestration checkpoints** caused by separate agent contexts. Future architecture must support **delegated authority envelopes** so an accepted implementation plan can authorize implementation autonomy within defined constraints, with escalation on architectural boundary crossings, deviations, unresolved decisions, or required governance gates.
+
+ProjectConcord must **not** hard-code one architect/developer interaction model. Appropriate governance guardrails, delegated authority, escalation conditions, and interaction/checkpoint intensity must ultimately be **user-configurable**, while preserving non-negotiable governance and evidence invariants.
 
 ## Parent
 

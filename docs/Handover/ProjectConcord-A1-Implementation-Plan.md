@@ -4,11 +4,13 @@
 
 **Tranche:** PAR track **A1** — Project identity, Project Root lifecycle, per-user application state, Recent Project Roots
 
-**Mode:** PLAN only — **no A1 implementation authorized** by this document
+**Mode:** **CLOSED** — A1 implementation tranche complete (2026-09-28); **A2 not authorized**
 
-**Architecture basis (closed):** [PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md) (A0 **PA accepted**), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Proposed**)
+**Published baseline (A1 overall):** `fba5be51559364d8385edca18b12399f2b5e9b28` on `main` (A1c publication commit)
 
-**Implementation baseline:** `c08af261ff323a0ddd54a84bd5c8b990a49fa84f` (M1 skeleton; AAR-0001 Finding 14 intentional deferral)
+**Implementation baseline (origin):** `c08af261ff323a0ddd54a84bd5c8b990a49fa84f` (M1 skeleton; AAR-0001 Finding 14 addressed by A1 recent/identity scope)
+
+**Architecture basis (closed):** [PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md) (A0 **PA accepted**), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Proposed** — see [§20 ADR-0015 conformance](#20-a1-overall-closeout-2026-09-28))
 
 **Governance:** M2 **not authorized**; A2–A4 **not authorized**; STOP-2 **binding**; ADR-0013/0014 **Proposed**
 
@@ -20,10 +22,10 @@
 |------|--------|
 | A0 architecture | **CLOSED / PA ACCEPTED** |
 | **This A1 plan** | **FINAL ACCEPTED** (2026-09-28) |
-| **A1 overall** | **IN PROGRESS** |
-| **A1a** | **IMPLEMENTED / PA ACCEPTED / PUBLISHED** (2026-09-28; baseline `34f10686bae84b0eb0bf129361c2e10b6e267886`) |
-| **A1b** | **IMPLEMENTED / PA ACCEPTED / PUBLISHED** (2026-09-28; see A1b publication commit on `main`) |
-| **A1c** | **IMPLEMENTED / PA ACCEPTED / PUBLISHED** (2026-09-28; see A1c publication commit on `main`) |
+| **A1 overall** | **CLOSED / PA ACCEPTED / PUBLISHED** (2026-09-28; `fba5be5` on `main`) |
+| **A1a** | **IMPLEMENTED / PA ACCEPTED / PUBLISHED** (2026-09-28; `34f10686bae84b0eb0bf129361c2e10b6e267886`) |
+| **A1b** | **IMPLEMENTED / PA ACCEPTED / PUBLISHED** (2026-09-28; `583de920121cd64e4d0c918ce1b37d403b13361d`) |
+| **A1c** | **IMPLEMENTED / PA ACCEPTED / PUBLISHED** (2026-09-28; `fba5be51559364d8385edca18b12399f2b5e9b28`) |
 | **ADR-0015** at A1 closeout | Provide conformance evidence only; **PA issues lifecycle disposition separately** — A1 does **not** auto-Accept ADR-0015 |
 
 ---
@@ -473,7 +475,7 @@ flowchart TD
 
 All PA-A1-1 through PA-A1-8 dispositions are **binding** and recorded in [Recorded PA decisions](#recorded-pa-decisions-pa-a1-1--pa-a1-8) above.
 
-Implementation remains **not authorized** until explicit **A1a** authorization.
+A1a, A1b, and A1c were implemented and published per §11 staging; **A1 overall closeout** recorded in §20.
 
 ---
 
@@ -570,8 +572,8 @@ Implementation remains **not authorized** until explicit **A1a** authorization.
 | **Tests** | Application **19**; ProjectServices **13**; Desktop **4** — all **passed** |
 | **Composition** | `MainWindow` → `ApplicationCompositionRoot.CreateDefaultWorkspaceService()` (A1b SQLite) |
 | **Manual UI verification** | **[MVR-0001](../Verification/Records/MVR-0001-a1c-desktop-project-root-recent-workflow.md)** — **Complete** (2026-09-28): MVT-1–MVT-15 **Pass**; Human execution status **Complete**; PA **A1c manual verification PASSED** |
-| **ADR-0015** | Remains **Proposed** |
-| **A1 overall** | **IN PROGRESS** — not closed |
+| **ADR-0015** | Remains **Proposed** — conformance evidence in §20 |
+| **A1 overall** | **CLOSED / PA ACCEPTED / PUBLISHED** (2026-09-28) |
 | **M2 / A2–A4** | **Not started** |
 | **AWI-0007 / GAP-045** | **Open / watch** — unchanged |
 
@@ -595,20 +597,81 @@ Authoritative checklist: **[MVR-0001 — A1c Desktop Project Root and Recent Pro
 | **PA disposition** | **A1c manual verification PASSED — PA ACCEPTED** |
 | **Anchor Project ID (MVT-2)** | `71da98d5-0671-4db2-bad8-ecdcb03a0124` |
 | **DVW session (unchanged evidence)** | `/var/folders/…/ProjectConcord-A1c-MVR-hBtcYv` (automation-prepared 2026-09-28) |
-| **Publication** | **Published** (2026-09-28) — see A1c publication commit on `main` |
-| **A1 overall** | **IN PROGRESS** — **STOP / PA A1 closeout** remains (ADR-0015 disposition separate per PA-A1-7) |
+| **Publication** | **Published** (2026-09-28) — `fba5be51559364d8385edca18b12399f2b5e9b28` |
+| **A1 overall** | **CLOSED / PA ACCEPTED / PUBLISHED** (2026-09-28) — see §20 |
 
-**Publication commit:** recorded at A1c gate closeout (see Project Architect publication evidence).
+**Publication commit:** `fba5be51559364d8385edca18b12399f2b5e9b28` — *Publish ProjectConcord A1c Desktop Recent workflow and MVR-0001.*
 
 ---
 
-## 19. STOP
+## 20. A1 overall closeout (2026-09-28)
 
-**STOP** after A1c publication on `main` (2026-09-28) — **awaiting STOP / PA A1 closeout** (§446). **Do not** mark A1 complete or Accept ADR-0015 without PA gate.
+**PA disposition:** **A1 CLOSED / PA ACCEPTED / PUBLISHED** — identity, per-user SQLite application state, Recent Project Roots, and Desktop workflow tranche complete on `main` at `fba5be5`.
 
-- **No** M2, A2–A4
-- **No** PAR runtime implementation
-- **No** `.projectconcord/` in product scope for A1c
+### Publication chain
+
+| Stage | Commit | Subject (abbrev.) |
+|-------|--------|-------------------|
+| **A1a** | `34f10686bae84b0eb0bf129361c2e10b6e267886` | Implement ProjectConcord A1a project identity foundation. |
+| **A1b** | `583de920121cd64e4d0c918ce1b37d403b13361d` | Implement ProjectConcord A1b SQLite application state. |
+| **A1c** | `fba5be51559364d8385edca18b12399f2b5e9b28` | Publish ProjectConcord A1c Desktop Recent workflow and MVR-0001. |
+
+### Acceptance criteria reconciliation
+
+| Criterion | Evidence | Result |
+|-----------|----------|--------|
+| §1.1 in-scope capabilities (identity, open/switch/close, SQLite, recent, locator handling, startup, migrations, ports, tests) | §16–§18; automated tests; handbook | **Satisfied** |
+| §1.2 explicit non-goals (no PAR runtime, no `.projectconcord/`, no A2–A4/M2, no ADR Accept at A1 closeout) | §1.2; §18; MVR MVT-14/15 | **Satisfied** |
+| PA-A1-1–PA-A1-8 binding decisions | Implementation + [MVR-0001](../Verification/Records/MVR-0001-a1c-desktop-project-root-recent-workflow.md) | **Satisfied** |
+| §11 staged deliverables A1a → A1b → A1c | Publication chain; §16–§18 | **Satisfied** |
+| §12 test strategy areas | Application, ProjectServices, Desktop tests; MVR where UI/manual | **Satisfied** |
+| A1c manual verification | [MVR-0001](../Verification/Records/MVR-0001-a1c-desktop-project-root-recent-workflow.md) — **Complete** (2026-09-28); MVT-1–MVT-15 **Pass** | **Satisfied** |
+| PC-PAR-012–022 (PAR packages, relay) | Explicitly **deferred** to A2+ per §2 | **Out of A1 scope — not a defect** |
+| AAR-0001 Finding 14 (recent / PAR foundation) | A1 recent + identity delivery | **Addressed for A1 scope** |
+
+**No unresolved A1 finding blocks closeout.** [AWI-0007](../Architecture/Watch_Items/AWI-0007-SQLite-Transitive-NuGet-Advisory.md) / [GAP-045](../Development/EDF_Gap_Register.md) remain **open / watch** — documented at A1b; **do not block** A1 closure.
+
+### ADR-0015 conformance assessment (evidence only — lifecycle unchanged)
+
+| ADR-0015 topic | A1 evidence | Conformance (A1 scope) |
+|----------------|-------------|-------------------------|
+| §1 Identifier separation; path as locator | Domain types; workspace service; PA-A1-2/3; tests + MVR | **Conforms** |
+| §2 Per-user SQLite operational persistence | A1b store, migrations, handbook §02 | **Conforms** (A1 subset; not full PAR partitions) |
+| §3 No `.projectconcord/` on open | Tests + MVR MVT-14 | **Conforms** |
+| §4 PAR / provider / Cursor boundaries | **Not implemented** — correct A1 non-goal | **N/A — deferred to A2–A4** |
+| §5 Tier 0 awareness | **Not implemented** — deferred | **N/A — A2+ / M2+** |
+| §6 ADR-0013 | Remains **Proposed** — unchanged | **Per PA-A1-7** |
+| §7 Staging table | A1 delivered via authorized tranches | **Conforms to staged intent** |
+
+**ADR-0015 status:** remains **Proposed**.
+
+**Exact PA lifecycle decision required (separate gate):** Whether to **Accept** [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) as an architectural decision record given A1 implementation evidence, PAR remainder (A2–A4), and PCON-0002 / ADR-0013 dependencies — **not inferred** from A1 success alone (PA-A1-7).
+
+### Deferred items preserved (prospective / architecture only)
+
+1. **EDF DVW-0001 v1.1 (GMR-0002):** Recorded in [MVR-0001](../Verification/Records/MVR-0001-a1c-desktop-project-root-recent-workflow.md) Notes — future human-interactive ProjectConcord verification prefers short, navigable disposable paths where practical; **A1c DVW session unchanged**.
+
+2. **Architect ↔ developer interaction architecture:** Recorded in [PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md) §Deferred architecture requirements — distinguish governance gates from AI-orchestration checkpoints; support delegated authority envelopes with escalation; **user-configurable** guardrails while preserving governance/evidence invariants; **no design or implementation in A1**.
+
+### GAP / watch disposition (A1 closeout)
+
+| Item | A1 closeout disposition |
+|------|-------------------------|
+| **GAP-043** | **Partially addressed** — Project ID, per-user SQLite, recent roots **implemented**; PAR package validation, Tier 0, relay **remain open** for A2–A3 |
+| **GAP-044** | Unchanged — A4 / bridge |
+| **GAP-045 / AWI-0007** | Unchanged — watch; no remediation in A1 closeout |
+
+**Closeout publication:** **Pending PA authorization** — governed commit updating A1/PAR/roadmap/handover index only (no `src/` changes).
+
+---
+
+## 21. STOP
+
+**STOP** after A1 overall closeout documentation reconciliation — **A1 CLOSED / PUBLISHED** on `main` at `fba5be5`. **Await explicit PA authorization** for **A2** (or M2) before implementation.
+
+- **No** ADR-0015 **Accept** without separate PA lifecycle gate
+- **No** M2, A2–A4, or PAR runtime unless separately authorized
+- **No** `.projectconcord/` in product scope beyond A1 non-goals
 
 ---
 

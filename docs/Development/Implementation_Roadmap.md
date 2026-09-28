@@ -72,7 +72,7 @@ Explicit track for Project Root, stable Project ID, per-user application state, 
 | Stage | Scope | Authorization |
 |---|---|---|
 | **A0** | Architecture / canonical docs | **Complete** (2026-09-28) — [PAR plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md) PA-amended |
-| **A1** | Per-user app state + Recent Project Roots (SQLite direction) | **Plan published** — [A1 Implementation Plan](../Handover/ProjectConcord-A1-Implementation-Plan.md); **implementation not authorized** |
+| **A1** | Per-user app state + Recent Project Roots (SQLite direction) | **Closed / published** (2026-09-28) — [A1 Implementation Plan](../Handover/ProjectConcord-A1-Implementation-Plan.md); baseline `fba5be5` |
 | **A2** | PAR manual packages — P0 transport (generate, validate, export, import) | **Not authorized** |
 | **A3** | Governed workflow MVP (manual), overlaps M7a subset | **Not authorized** |
 | **A4** | Cursor bridge P1+ ([AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)) | **Not authorized** |
@@ -104,7 +104,8 @@ Explicit track for Project Root, stable Project ID, per-user application state, 
 | PAR A1a | **Published** (2026-09-28; `34f1068`) — domain/application/in-memory |
 | PAR A1b | **Published** (2026-09-28) — SQLite persistence + migrations + `Edf.ProjectServices.Tests` |
 | PAR A1c | **Published** (2026-09-28) — Desktop Recent workflow; **[MVR-0001](../Verification/Records/MVR-0001-a1c-desktop-project-root-recent-workflow.md) PASSED** (2026-09-28) |
-| PAR A1 closeout / A2–A4 | **Not started** — A1 overall **in progress** |
+| PAR A1 overall | **Closed / published** (2026-09-28; `fba5be51559364d8385edca18b12399f2b5e9b28`) — see [A1 plan §20](../Handover/ProjectConcord-A1-Implementation-Plan.md#20-a1-overall-closeout-2026-09-28) |
+| PAR A2–A4 | **Not started** — **not authorized** |
 | M2–M5 | **Not started** — G1 satisfied; implementation in earnest requires separate PA authorization per milestone |
 | M6–M7+ | Deferred |
 
