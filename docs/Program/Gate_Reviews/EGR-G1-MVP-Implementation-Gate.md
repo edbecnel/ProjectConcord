@@ -10,10 +10,23 @@
 | **Normative** | Yes |
 | **Gate ID** | G1 |
 | **Gate Status** | Open |
-| **Milestone** | M1 (implementation start) |
+| **Milestone** | M1 completion and transition to intensive MVP (M2–M5) |
 | **Owner** | Project owner |
-| **Unblocks** | M1 implementation in earnest (feature work on MVP) |
-| **Prerequisite** | [EGR-G0](EGR-G0-Architecture-Planning-Gate.md) **Satisfied**; **AAR-0001** **Audit status: Complete** (M1 `src/` scope) |
+| **Unblocks** | Intensive MVP implementation (M2–M5 feature work in earnest) after M1 skeleton is complete and this gate is **Satisfied** |
+| **Prerequisite** | [EGR-G0](EGR-G0-Architecture-Planning-Gate.md) **Satisfied** (authorizes **limited M1 solution skeleton** — see below); **AAR-0001** **Audit status: Complete** (M1 `src/` scope) |
+
+## Governance sequence (gate direction)
+
+This record does **not** require **EGR-G1 Satisfied** before starting the M1 solution skeleton.
+
+| Step | Gate / activity | Role |
+|------|-----------------|------|
+| 1 | **[EGR-G0](EGR-G0-Architecture-Planning-Gate.md) Satisfied** | Authorizes creation of the **limited M1 solution skeleton** (`src/`, roadmap assemblies, open-folder stub) |
+| 2 | **M1a** (implementation — separately authorized) | Produces the implementation skeleton |
+| 3 | **AAR-0001 Complete** (after M1a PA review and M1b authorization) | Audits the **implemented** M1 skeleton |
+| 4 | **EGR-G1 Satisfied** (this record) | Accepts completed M1 skeleton / governance baseline; permits **subsequent intensive MVP** milestones (M2–M5) |
+
+**G1 is not** a prerequisite to **begin** the M1 skeleton. **G1 is** the acceptance boundary after M1 skeleton work and **Complete** AAR-0001.
 
 ## Purpose
 

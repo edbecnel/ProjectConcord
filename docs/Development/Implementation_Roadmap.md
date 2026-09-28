@@ -82,8 +82,9 @@ M1 skeleton: **no** MVR workflow code; **no** speculative empty MVR domain types
 | Milestone | State |
 |---|---|
 | M0 | **Complete** — [EGR-G0](../Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) **Satisfied** (2026-09-15) |
-| **S0** | **Complete** (2026-09-28) — MVR architecture docs, SPEC-005, ADR-0014, GAP-042, `docs/Verification/` bootstrap; see [MVR handover](../Handover/EDF-Manual-Verification-Record-Architecture-Handover.md) |
-| M1 | **Ready** — after S0; solution skeleton per gate; complete [EGR-G1](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) before intensive MVP work |
+| **S0** | **Complete** (2026-09-28) — MVR architecture docs; see [MVR handover](../Handover/EDF-Manual-Verification-Record-Architecture-Handover.md) |
+| **Pre-M1** | **Complete** (2026-09-28) — C2/C4 doc reconciliation; [M1 / EGR-G1 plan](../Handover/ProjectConcord-M1-EGR-G1-Implementation-Plan.md) published |
+| M1 | **Ready for M1a** — after PA authorizes M1a; skeleton per plan; **Complete** AAR-0001 then [EGR-G1](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) |
 | M2–M5 | Blocked on G1 for implementation in earnest |
 | M6–M7+ | Deferred |
 
@@ -101,8 +102,9 @@ M1 skeleton: **no** MVR workflow code; **no** speculative empty MVR domain types
 
 ## Open Questions
 
-- Minimum .NET SDK version for Avalonia target framework.
-- Whether to gitignore `.projectconcord/` via template in M1.
+- [x] Minimum supported .NET version for Avalonia LTS — **.NET 10 LTS** (`net10.0`); Avalonia **12** stable (see [Developer Handbook](../Developer_Handbook/01_Development_Environment.md))
+- [ ] Ship embedded EDF script runner vs require user-configured EDF path only
+- [ ] Whether to gitignore `.projectconcord/` via template in M1 — deferred until first milestone that produces derived/local ProjectConcord state ([M1 plan](../Handover/ProjectConcord-M1-EGR-G1-Implementation-Plan.md) PA-3)
 
 ## Parent
 

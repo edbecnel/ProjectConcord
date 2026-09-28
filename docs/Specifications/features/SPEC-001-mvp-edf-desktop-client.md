@@ -70,7 +70,7 @@ Following EDF [EGR-0001](https://github.com/edbecnel/Engineering-Documentation-F
 
 ## Open Questions
 
-- [ ] Minimum supported .NET version for Avalonia LTS
+- [ ] Minimum supported .NET version for Avalonia LTS — **Resolved:** .NET 10 LTS (`net10.0`), Avalonia 12 stable ([Developer Handbook](../../Developer_Handbook/01_Development_Environment.md), [M1 plan](../../Handover/ProjectConcord-M1-EGR-G1-Implementation-Plan.md))
 - [ ] Ship embedded EDF script runner vs require user-configured EDF path only
 
 ## Parent

@@ -21,7 +21,16 @@ EDF introduced **Architectural Audit Records (AAR)** for structured **implementa
 3. Do **not** copy AAR-0001 into `docs/Specifications/`; framework spec remains authoritative via EDF.
 4. AAR findings MUST NOT change ADR or normative SPEC **Status**; remediation follows normal ADR and document lifecycle ([AAR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/AAR-0001-Architectural-Audit-Records.md) §8).
 5. **AAR** MUST NOT be confused with **operational audit** metadata (membership, integrity events) in [ADR-0009](ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md) and [SPEC-003](../../Specifications/features/SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md).
-6. First required audit: **AAR-0001** for M1 solution skeleton vs Accepted ADR-0001–ADR-0011 and SPEC-001 skeleton scope; **Complete** before [EGR-G1](../../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) **Gate satisfied**.
+6. First required audit: **AAR-0001** for the M1 solution skeleton. **Requirements basis** (implementation vs architecture — not feature delivery for deferred milestones):
+
+   - **Accepted ADRs** applicable to M1 (including ADR-0001–ADR-0011 at G0; [ADR-0012](ADR-0012-Adopt-EDF-Architectural-Audit-Records.md) adoption confirmed at G1);
+   - [SPEC-001](../../Specifications/features/SPEC-001-mvp-edf-desktop-client.md) **M1 / skeleton scope** (not full MVP acceptance criteria);
+   - S0 **MVR architecture placement** constraints: [SPEC-005](../../Specifications/features/SPEC-005-manual-verification-record-consumption.md) and [MVR handover](../../Handover/EDF-Manual-Verification-Record-Architecture-Handover.md) only insofar as the skeleton must **not contradict or preclude** accepted MVR architecture (**architectural conformance**);
+   - [ProjectConcord M1 / EGR-G1 Implementation Plan](../../Handover/ProjectConcord-M1-EGR-G1-Implementation-Plan.md) and other canonical architecture applicable at audit time.
+
+   **AAR-0001 does not** require implementation of SPEC-005 M2–M5 MVR feature functionality. **[ADR-0014](ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md)** may remain **Proposed**; the audit acknowledges its status and placement rules without requiring Accept at G1.
+
+   **Complete** before [EGR-G1](../../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) **Gate satisfied**.
 7. Use [Architectural_Audit_Record_Template.md](../../Templates/Architectural_Audit_Record_Template.md) for new AAR files.
 
 ## Alternatives Considered

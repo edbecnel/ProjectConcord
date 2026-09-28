@@ -14,6 +14,7 @@ Inbound architectural and integration handovers from external frameworks, progra
 | [EDF Governed Maintenance Fast Path — Architecture Handover](EDF-Governed-Maintenance-Fast-Path-Architecture-Handover.md) | Incorporate EDF GMFP/GMR into workflow-profile and maintenance-record consumption | Active |
 | [EDF Manual Verification Records — Architecture Handover](EDF-Manual-Verification-Record-Architecture-Handover.md) | Incorporate EDF MVR into consumption, attestation, and pending-QA architecture | Active |
 | [ProjectConcord MVR Adoption Architecture Plan](ProjectConcord-MVR-Adoption-Architecture-Plan.md) | Accepted architecture plan (STOP-1 closed); S0 executed 2026-09-28 | Active |
+| [ProjectConcord M1 / EGR-G1 Implementation Plan](ProjectConcord-M1-EGR-G1-Implementation-Plan.md) | PA-accepted M1 skeleton, AAR, and G1 sequence; pre-M1 doc reconciliation complete 2026-09-28 | Active |
 
 ## Parent
 

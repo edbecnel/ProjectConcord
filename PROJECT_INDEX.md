@@ -39,6 +39,7 @@ This is the primary documentation hub for humans and AI assistants.
 - [EDF Governed Maintenance Fast Path — Architecture Handover](docs/Handover/EDF-Governed-Maintenance-Fast-Path-Architecture-Handover.md)
 - [EDF Manual Verification Records — Architecture Handover](docs/Handover/EDF-Manual-Verification-Record-Architecture-Handover.md)
 - [ProjectConcord MVR Adoption Architecture Plan](docs/Handover/ProjectConcord-MVR-Adoption-Architecture-Plan.md)
+- [ProjectConcord M1 / EGR-G1 Implementation Plan](docs/Handover/ProjectConcord-M1-EGR-G1-Implementation-Plan.md)
 - [Program](docs/Program/README.md)
 - [Program — Gate G0 (authoritative)](docs/Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md)
 - [Implementation Roadmap](docs/Development/Implementation_Roadmap.md)
