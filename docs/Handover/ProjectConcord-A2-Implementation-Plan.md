@@ -4,11 +4,11 @@
 
 **Tranche:** PAR track **A2** — Manual P0 Governed Interaction Relay
 
-> **A2 implementation:** **IN PROGRESS** — **A2-T1**, **A2-T2**, and **A2-T3 closed / PA accepted**; see [T1](ProjectConcord-A2-T1-Implementation-Notes.md), [T2](ProjectConcord-A2-T2-Implementation-Notes.md), and [T3](ProjectConcord-A2-T3-Implementation-Notes.md) implementation notes.
+> **A2 implementation:** **IN PROGRESS** — **A2-T1** through **A2-T4 closed / PA accepted**; see [T1](ProjectConcord-A2-T1-Implementation-Notes.md), [T2](ProjectConcord-A2-T2-Implementation-Notes.md), [T3](ProjectConcord-A2-T3-Implementation-Notes.md), and [T4](ProjectConcord-A2-T4-Implementation-Notes.md) implementation notes.
 >
-> **A2-T4 through A2-T8: NOT AUTHORIZED** (separate PA authorization per tranche).
+> **A2-T5 through A2-T8: NOT AUTHORIZED** (separate PA authorization per tranche).
 
-**Mode:** **CLOSED** — A2 **implementation plan** accepted and published (2026-09-29); **A2 `src/` implementation in progress** (T1–T3 published; A2 not complete)
+**Mode:** **CLOSED** — A2 **implementation plan** accepted and published (2026-09-29); **A2 `src/` implementation in progress** (T1–T4 published; A2 not complete)
 
 **Planning baseline (pre-plan tranche):** `1098a336569b2f0d7e0af347788b25d8d7e877b3` — *Accept reconciled SPEC-006 governed relay specification.*
 
@@ -18,9 +18,9 @@
 
 **Architecture basis:** [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) (**Accepted** 2026-09-29), [ADR-0016](../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md), [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md), [ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md), [PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md) (A0), [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)
 
-**Governance inputs:** A2 Readiness and Implementation-Scope Analysis — **ACCEPTED WITH PA QUALIFICATIONS**; **A2-T1 PA accepted** (2026-09-29); **A2-T2 PA accepted** (2026-09-30); **A2-T3 PA accepted** (2026-09-30); **A2-T4–T8 NOT AUTHORIZED**; **A3 / A4 NOT AUTHORIZED**; **PCON-0002** remains **Proposed** / deferred.
+**Governance inputs:** A2 Readiness and Implementation-Scope Analysis — **ACCEPTED WITH PA QUALIFICATIONS**; **A2-T1 PA accepted** (2026-09-29); **A2-T2 PA accepted** (2026-09-30); **A2-T3 PA accepted** (2026-09-30); **A2-T4 PA accepted** (2026-09-30); **A2-T5–T8 NOT AUTHORIZED**; **A3 / A4 NOT AUTHORIZED**; **PCON-0002** remains **Proposed** / deferred.
 
-**Published A2-T1 baseline:** [§27](#27-a2-t1-closeout-2026-09-29). **Published A2-T2 baseline:** [§28](#28-a2-t2-closeout-2026-09-30). **Published A2-T3 baseline:** [§29](#29-a2-t3-closeout-2026-09-30).
+**Published A2-T1 baseline:** [§27](#27-a2-t1-closeout-2026-09-29). **Published A2-T2 baseline:** [§28](#28-a2-t2-closeout-2026-09-30). **Published A2-T3 baseline:** [§29](#29-a2-t3-closeout-2026-09-30). **Published A2-T4 baseline:** [§30](#30-a2-t4-closeout-2026-09-30).
 
 ---
 
@@ -31,11 +31,12 @@
 | A2 readiness analysis | **ACCEPTED WITH PA QUALIFICATIONS** |
 | A2 plan documentation tranche | **CLOSED** (draft + binding amendments incorporated 2026-09-29) |
 | **This A2 plan** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-09-29) — binding amendments 1–3 preserved in §8, §18, §22 (T8) |
-| A2 implementation (`src/`) | **IN PROGRESS** — T1–T3 published; A2 not complete |
+| A2 implementation (`src/`) | **IN PROGRESS** — T1–T4 published; A2 not complete |
 | **A2-T1** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-29) — [implementation notes](ProjectConcord-A2-T1-Implementation-Notes.md) |
 | **A2-T2** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30) — [implementation notes](ProjectConcord-A2-T2-Implementation-Notes.md) |
 | **A2-T3** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30) — [implementation notes](ProjectConcord-A2-T3-Implementation-Notes.md) |
-| A2-T4 … A2-T8 | **NOT AUTHORIZED** — separate PA authorization per tranche |
+| **A2-T4** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30) — [implementation notes](ProjectConcord-A2-T4-Implementation-Notes.md) |
+| A2-T5 … A2-T8 | **NOT AUTHORIZED** — separate PA authorization per tranche |
 | A3 / A4 | **NOT AUTHORIZED** |
 | STOP-2 (MVR execution instances) | **Binding** — out of relay scope |
 
@@ -608,18 +609,20 @@ No A3 workflow management UI (DWA editor, submission inbox).
 
 | | |
 |---|---|
-| **Authorization** | **NOT AUTHORIZED** |
+| **Authorization** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30) |
 | **Objective** | PA Review profile payload + `ISoftwareDevelopmentRelayProfileValidator` |
 | **Scope** | `Edf.Application/Relay/SoftwareDevelopment/*` |
-| **Non-goals** | DWA entity store, submissions |
+| **Non-goals** | DWA entity store, submissions; full DWA schema (GAP-027 deferred) |
 | **Prerequisites** | T3 |
 | **Owners** | B (validator), A (orchestration hook) |
 | **PC-PAR** | 012 B-clause, 015 |
-| **PC-AIGOV** | 003, 004, 007 |
-| **Persistence** | `profile_payload_json` only |
-| **Tests** | Fixture packages — conflation failures |
-| **Acceptance** | B boundary tests green |
-| **STOP** | End T4 → PA review |
+| **PC-AIGOV** | 003, 004, 007, 014 |
+| **Persistence** | `profile_payload` BLOB only (T3); no Migration003 |
+| **Tests** | 17 focused Software Development profile tests; 94 total Release tests green |
+| **Acceptance** | PA accepted — [T4 implementation notes](ProjectConcord-A2-T4-Implementation-Notes.md) |
+| **Composition note** | Production Software Development relay paths **must** use `SoftwareDevelopmentRelayProfileValidator` (not null Core seam); wiring demonstrated in a later authorized tranche |
+| **Evidence** | Baseline `75d894bc19c5e5dbed13f75f98b24dc8cc356358`; publication commit in [§30](#30-a2-t4-closeout-2026-09-30) |
+| **STOP** | T4 closed — **await PA authorization for A2-T5 only** |
 
 ---
 
@@ -792,7 +795,25 @@ flowchart TD
 | Release tests | 76 passed (Application 30, ProjectServices 42, Desktop 4) |
 | Publication commit | Recorded on `main` at T3 closeout commit SHA (see git log) |
 
-**Next governance decision:** Whether to authorize **A2-T4 only** (Software Development relay profile + boundary rules). **Do not** infer T5–T8 authorization.
+**Next governance decision (historical):** Whether to authorize **A2-T4 only** — **resolved** 2026-09-30 (T4 accepted; see [§30](#30-a2-t4-closeout-2026-09-30)).
+
+---
+
+## 30. A2-T4 closeout (2026-09-30)
+
+**PA disposition:** **A2-T4 CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30). Software Development relay governance profile and boundary validation published on `main`; **A2-T5 NOT AUTHORIZED**.
+
+| Item | Notes |
+|------|--------|
+| Implementation baseline | `75d894bc19c5e5dbed13f75f98b24dc8cc356358` |
+| Evidence | [A2-T4 implementation notes](ProjectConcord-A2-T4-Implementation-Notes.md) |
+| DWA | Relay-bound `DevelopmentWorkAuthorizationProjection` only; **GAP-027** full schema **deferred** |
+| Focused tests | 17 passed (`FullyQualifiedName~SoftwareDevelopmentRelayProfileValidator`); profile_payload round-trip passed |
+| Release tests | 94 passed (Application 47, ProjectServices 43, Desktop 4) |
+| Composition | Production B-layer paths must inject `SoftwareDevelopmentRelayProfileValidator` (null seam remains Core default only) |
+| Publication commit | Recorded on `main` at T4 closeout commit SHA (see git log) |
+
+**Next governance decision:** Whether to authorize **A2-T5 only** (Project Architect provider + serialization v1). **Do not** infer T6–T8 authorization.
 
 ---
 

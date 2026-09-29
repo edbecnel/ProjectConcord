@@ -109,8 +109,9 @@ Explicit track for Project Root, stable Project ID, per-user application state, 
 | PAR A2-T1 | **Closed / PA accepted / published** (2026-09-29) — [T1 implementation notes](../Handover/ProjectConcord-A2-T1-Implementation-Notes.md); baseline `916ba950` |
 | PAR A2-T2 | **Closed / PA accepted / published** (2026-09-30) — [T2 implementation notes](../Handover/ProjectConcord-A2-T2-Implementation-Notes.md); baseline `05cdd85` |
 | PAR A2-T3 | **Closed / PA accepted / published** (2026-09-30) — [T3 implementation notes](../Handover/ProjectConcord-A2-T3-Implementation-Notes.md); baseline `1af4dac` |
-| PAR A2-T4–T8 | **Not authorized** |
-| PAR A2 overall | **In progress** — T1–T3 only; not complete |
+| PAR A2-T4 | **Closed / PA accepted / published** (2026-09-30) — [T4 implementation notes](../Handover/ProjectConcord-A2-T4-Implementation-Notes.md); baseline `75d894b` |
+| PAR A2-T5–T8 | **Not authorized** |
+| PAR A2 overall | **In progress** — T1–T4 only; not complete |
 | PAR A3–A4 implementation | **Not started** — **not authorized** (no material dependency on Project Work Record ontology per [ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md)) |
 | Stage 2 architecture | **PA accepted** (2026-09-29) — [AMD-0004](../Architecture/AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md), [ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) **Accepted**; pre-publication closeout; **not implemented** in `src/` |
 | M2–M5 | **Not started** — G1 satisfied; implementation in earnest requires separate PA authorization per milestone |

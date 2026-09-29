@@ -2,6 +2,7 @@ using Edf.Application.Composition;
 using Edf.Application.Projects;
 using Edf.Application.Projects.Sqlite;
 using Edf.Application.Relay;
+using Edf.Application.Relay.SoftwareDevelopment;
 using Edf.Domain.Projects;
 using Edf.Domain.Relay;
 using Edf.ProjectServices.Persistence;
@@ -282,6 +283,37 @@ public class RelayOperationalPersistenceTests
         Assert.NotNull(reloaded);
         Assert.Equal(RelayStopState.Active, reloaded!.Package.GovernanceCritical.Stop.State);
         Assert.False(reloaded.Package.GovernanceCritical.AuthorizationDispositionPresent);
+
+        TryDelete(path);
+    }
+
+    [Fact]
+    public void SoftwareDevelopmentProfilePayload_RoundTrips_OnPackage()
+    {
+        var (path, projectId, relay) = CreateRelayHarness();
+        var payload = SoftwareDevelopmentProfilePayloadSerializer.Empty with
+        {
+            DevelopmentWorkAuthorization = new DevelopmentWorkAuthorizationProjection(
+                SoftwareDevelopmentAuthorizationKind.Implementation,
+                "A2-T4",
+                ["scope"],
+                "ref",
+                false),
+        };
+        var bytes = SoftwareDevelopmentProfilePayloadSerializer.Serialize(payload);
+        var package = BuildPackage(projectId, GovernedPackageId.New(), GovernedCorrelationId.New())
+            with { ProfilePayload = bytes };
+
+        relay.SavePackage(new PersistedGovernedRelayPackage(package, RelayValidationState.Valid, []));
+
+        var reloaded = relay.GetPackage(package.PackageId);
+        Assert.NotNull(reloaded);
+        Assert.True(
+            SoftwareDevelopmentProfilePayloadSerializer.TryDeserialize(
+                reloaded!.Package.ProfilePayload,
+                out var roundTrip,
+                out _));
+        Assert.Equal("A2-T4", roundTrip!.DevelopmentWorkAuthorization!.AuthorizedTrancheId);
 
         TryDelete(path);
     }
