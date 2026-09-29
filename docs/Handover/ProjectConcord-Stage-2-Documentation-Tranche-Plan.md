@@ -33,7 +33,7 @@ Canonicalize Stage 2 **Project Work Record** architecture (thin Core coordinatio
 
 - **Project Architect acceptance:** 2026-09-29 (Stage 2 architecture + ADR-0017)
 - **Publication date:** 2026-09-29
-- **Primary publication commit:** `c968a88559364d8385edca18b12399f2b5e9b28` — use `git rev-parse c968a88` on `main` if verifying; recorded at closeout commit time
+- **Primary publication commit:** `c968a88303c09d38e8f95e0c63f95c76662fc52f`
 - Stage 2 capability architecture published via AMD-0004 + ADR-0017 and consequential doc amendments
 - Implementation, A2, ADR-0013/0015 acceptance, and deferred semantics listed below remain **not authorized**
 

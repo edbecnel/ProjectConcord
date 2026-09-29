@@ -18,7 +18,7 @@ Inbound architectural and integration handovers from external frameworks, progra
 | [ProjectConcord PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md) | PA-amended PAR / Project Root / governed workflow architecture (A0 **PA accepted** 2026-09-28); A1–A4 implementation not authorized | Active |
 | [ProjectConcord A1 Implementation Plan](ProjectConcord-A1-Implementation-Plan.md) | A1 **closed / published** (2026-09-28; `fba5be5` on `main`); A2 not authorized | Active |
 | [Stage 1 Documentation Tranche Plan](ProjectConcord-Stage-1-Documentation-Tranche-Plan.md) | Stage 1 architecture — **CLOSED / PA ACCEPTED** (2026-09-29) | Active |
-| [Stage 2 Documentation Tranche Plan](ProjectConcord-Stage-2-Documentation-Tranche-Plan.md) | Stage 2 — **ADR-0017 Accepted** (2026-09-29); pre-publication closeout; not published | Active |
+| [Stage 2 Documentation Tranche Plan](ProjectConcord-Stage-2-Documentation-Tranche-Plan.md) | Stage 2 — **CLOSED / PA ACCEPTED / PUBLISHED** (2026-09-29; `c968a88`) | Active |
 
 ## Parent
 
