@@ -30,6 +30,7 @@ Individual ADRs live in [docs/Architecture/ADRs/](docs/Architecture/ADRs/README.
 | [ADR-0014](docs/Architecture/ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md) | MVR human attestation and AI boundary | Proposed | 2026-09-28 |
 | [ADR-0015](docs/Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) | Project ID, PAR boundaries, per-user operational state (SQLite direction) | Proposed | 2026-09-28 |
 | [ADR-0016](docs/Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) | Core, domain extension, and working environment boundary (Stage 1) | Accepted | 2026-09-29 |
+| [ADR-0017](docs/Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) | Project Work Record Core boundary (Stage 2) | Accepted | 2026-09-29 |
 
 ## Related Documents
 

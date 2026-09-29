@@ -36,7 +36,7 @@ Stage 1 architecture analysis and repository investigation established that Proj
 
 10. **Delegation decomposition** — A domain-neutral generic delegation/authority primitive (working name *AuthorityGrant* — **not** a finalized type name; **no schema** in this tranche) is conceptually **Core**. Software execution authorization, supervision/checkpoint policy, and provider-rendered instructions are **not** Core semantics.
 
-11. **Work Item** — Generic Work Item ownership is **deferred** pending bounded Stage 2 analysis. This ADR does not introduce a universal Core WorkItem entity.
+11. **Work Item** — Generic Work Item deferral is **architecturally resolved** by Stage 2 ([ADR-0017](ADR-0017-Project-Work-Record-Core-Boundary.md) **Accepted** 2026-09-29, [AMD-0004](../AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md)): Core owns a thin **Project Work Record** coordination capability (`ProjectWorkRecord` — **working name only**), **not** a universal task-management entity. Persistence, APIs, UI, lifecycle schema, and relationship taxonomy remain **deferred** (implementation not authorized).
 
 12. **Provider neutrality** — Governance semantics must not depend on ChatGPT, Cursor, or OpenAI API. Reference adapters are permitted.
 
@@ -84,3 +84,4 @@ Stage 1 architecture analysis and repository investigation established that Proj
 - [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)
 - [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)
 - [Stage 1 Documentation Tranche Plan](../../Handover/ProjectConcord-Stage-1-Documentation-Tranche-Plan.md)
+- [ADR-0017](ADR-0017-Project-Work-Record-Core-Boundary.md), [AMD-0004](../AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md), [Stage 2 Documentation Tranche Plan](../../Handover/ProjectConcord-Stage-2-Documentation-Tranche-Plan.md)

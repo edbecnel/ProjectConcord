@@ -26,6 +26,7 @@ This directory contains individual Architecture Decision Records.
 | [ADR-0014](ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md) | MVR human attestation and AI boundary (Human-Attestation Authority Boundary) | Proposed | 2026-09-28 |
 | [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) | Project identity, PAR boundaries, per-user operational state | Proposed | 2026-09-28 |
 | [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) | Core, domain extension, and working environment boundary | Accepted | 2026-09-29 |
+| [ADR-0017](ADR-0017-Project-Work-Record-Core-Boundary.md) | Project Work Record Core boundary (Stage 2) | Accepted | 2026-09-29 |
 
 ## Navigation
 

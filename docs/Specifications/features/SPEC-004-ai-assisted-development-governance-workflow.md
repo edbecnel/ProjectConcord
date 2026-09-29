@@ -11,8 +11,8 @@
 | **Owner** | ProjectConcord |
 | **Normative** | Yes — product behavior requirements when implemented |
 | **Implementation** | **Not implemented** — requirements define future M7+ capability unless separately authorized |
-| **Last Reviewed** | 2026-09-29 (Stage 1 ownership) |
-| **Governing decisions** | [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) (Accepted), [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (Proposed), [ADR-0006](../../Architecture/ADRs/ADR-0006-AI-Boundary.md), [ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md) |
+| **Last Reviewed** | 2026-09-29 (Stage 2 Project Work Record ownership) |
+| **Governing decisions** | [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) (Accepted), [ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) (Accepted 2026-09-29), [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (Proposed), [ADR-0006](../../Architecture/ADRs/ADR-0006-AI-Boundary.md), [ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md) |
 | **Architecture scope** | **Software Development / Engineering Extension** — not ProjectConcord Core neutrality ([AMD-0003](../../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md)) |
 | **Discovery source** | [PCON-0001](../../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) |
 
@@ -49,10 +49,11 @@ Specific identity, API scoping, and persistence mechanisms are **not** prescribe
 | Concern | Owner (A–F) |
 |---|---|
 | PC-AIGOV-001–004, 007, 014–016 (governance invariants) | Core + extension; relay via [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md) |
-| DevelopmentWorkAuthorization, submissions, HIW, inter-project entities | **B** — Software Development extension (operational store) |
+| **ProjectWorkRecord** (working name; Core per [ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) Accepted) | **A** — coordination identity; not task/backlog ontology ([AMD-0004](../../Architecture/AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md)) |
+| DevelopmentWorkAuthorization, submissions, inter-project entities, **HumanInitiatedWorkItem** | **B** — Software Development extension (operational store) |
 | Generic delegation primitive | **A** — conceptual only; working name *AuthorityGrant*; **no schema**; repository term **DevelopmentWorkAuthorization** until migration |
 | Provider manual/integration modes (PC-AIGOV-005–006) | **E** |
-| Generic Work Item / backlog semantics | **Deferred** — Stage 2 bounded analysis; not introduced in this spec revision |
+| Backlog / sprint / story / epic / task / ranking (methodology) | **C** — not Core; operates over work identities when implemented |
 
 ## Logical entities (when implemented)
 
@@ -61,12 +62,18 @@ Specific identity, API scoping, and persistence mechanisms are **not** prescribe
 | DevelopmentWorkAuthorization | Operational | Capability-bounded permitted work per project (**B** — software extension; see Stage 1 decomposition) |
 | Handover package | Derived / operational snapshot | Inherited project context for agents |
 | ArchitecturalReviewSubmission | Operational | Plan or implementation return for review |
-| HumanInitiatedWorkItem | Operational | Inbox/triage; distinct from AWI |
+| HumanInitiatedWorkItem | Operational | Inbox/triage; distinct from AWI and from generic Core **ProjectWorkRecord** (see § Stage 2 intake semantics) |
 | InterProjectHandover | Operational | Governed cross-project event |
 | CrossProjectDependency | Operational | Ongoing cross-project relationship |
 | Evidence / validation records | Operational | Linked to authorization and Git state |
 
 Destination **EDF artifacts** remain canonical in the target project Git repository only through destination governance.
+
+## Stage 2 intake semantics (documentation — not normative rename)
+
+Stage 2 architecture ([AMD-0004](../../Architecture/AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md), [ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) Accepted) establishes that **HumanInitiatedWorkItem** represents **intake/capture/triage**, not the generic Core **ProjectWorkRecord** abstraction. **`OperationalIntakeRecord`** is **preferred working terminology only** for future architecture; final name, type identity, and Core-versus-extension ownership remain **deferred**. This spec **retains HumanInitiatedWorkItem** as normative entity naming until a separately governed migration.
+
+An intake record (HIW) may result in: creation of a Project Work Record; association with an existing Project Work Record; merging into existing work/intake; routing toward another governed process; or rejection/disposition **without** creating a Project Work Record.
 
 ## Requirements (PC-AIGOV-001–028)
 
@@ -148,3 +155,4 @@ Remain OPEN per [AI Governance Workflow Integration Analysis](../../Architecture
 - [AI Governance Workflow Integration Analysis](../../Architecture/AI_Governance_Workflow_Integration_Analysis.md)
 - [Implementation Roadmap](../../Development/Implementation_Roadmap.md)
 - [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md), [ADR-0015](../../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md)
+- [ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md), [AMD-0004](../../Architecture/AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md)

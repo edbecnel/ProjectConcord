@@ -116,7 +116,9 @@ flowchart TB
 | Working Environment | Composable capability facets; built-in presets + custom compositions — separate from domain |
 | Core | Domain-neutral shell, identity, lifecycle, operational partition, EDF consumption, **Governed Interaction Relay**, conceptual UI host |
 | Software Development extension | Software execution authorization profile, software governance packages, repo handoff semantics ([SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)) |
-| Generic Work Item | **Deferred** — Stage 2 bounded analysis ([PCON-0002](PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md)) |
+| **Project Work Record** (`ProjectWorkRecord` — working name) | **Accepted** Core boundary ([ADR-0017](ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md)); capability model [AMD-0004](AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md); **not implemented** in `src/` |
+| Operational intake vs PWR | **HumanInitiatedWorkItem** (SPEC-004 normative name) = intake/triage, not PWR; **OperationalIntakeRecord** = preferred working terminology only; intake ownership deferred |
+| PWR relationships | Core durable relationship capability — typed semantics deferred |
 | Physical extensions | Plugin loader, manifests, discovery — **deferred** |
 
 ---
@@ -139,6 +141,23 @@ flowchart TB
 | ADR-0013 / ADR-0015 | Reconciled with Stage 1; remain **Proposed** |
 
 Phasing: PAR track A0–A4 in [Implementation Roadmap](../Development/Implementation_Roadmap.md) (A2 reframed — manual P0 governed interaction relay); separate from M2 EDF engine milestones.
+
+---
+
+## Stage 2 capability model — Project Work Record
+
+**Status:** Documented 2026-09-29 ([AMD-0004](AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md) integrated; [ADR-0017](ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) **Accepted** 2026-09-29). Pre-publication closeout; **not published** until PA publication commit. **Not implemented** in `src/`.
+
+| Concern | Rule |
+|---|---|
+| Core identity | **ProjectWorkRecord** (working name) — thin coordination primitive; **not** universal task/backlog ontology |
+| Essential semantics | Stable id, declaration/title, Project ID scope, lightweight provenance |
+| Domain association | 0, 1, or n domains; historical associations retained when domain disabled |
+| Authority | Work record does **not** grant authority; **AuthorityGrant** / **DWA** remain separate |
+| Lifecycle | No canonized Core states in Stage 2 — names/model **deferred** |
+| Relationships | Durable PWR-to-PWR capability — relationship **types** deferred |
+| Intake | **OperationalIntakeRecord** (working name) ≠ PWR; legacy **HumanInitiatedWorkItem** |
+| A2 | **Not authorized**; no material dependency on PWR ontology |
 
 ---
 

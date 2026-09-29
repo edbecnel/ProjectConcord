@@ -55,7 +55,7 @@ Conceptual states (final names and persistence deferred):
 
 Projects may combine domains (for example Electrical + Firmware/Software + Mechanical). Cross-domain work shares **project-level** EDF canonical state in Git. Domain-specific operational data remains partitioned by domain extension semantics under the same **ProjectConcord Project ID**.
 
-Full cross-domain workflow and acceptance semantics are **deferred**; Stage 1 only ensures identity and lifecycle semantics do not foreclose them.
+Full cross-domain workflow and acceptance semantics remain **deferred**; Stage 1 identity/lifecycle and Stage 2 **Project Work Record** coordination do not foreclose them ([AMD-0004](AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md) §12).
 
 ## 5. Working Environment
 
@@ -73,14 +73,14 @@ Object model, persistence, and UI remain **deferred**.
 
 | Category | Label | Scope |
 |---|---|---|
-| **A** | ProjectConcord Core — engineering-domain neutral | Project identity, locator reconciliation, neutral domain lifecycle, operational partitioning, EDF read projections, generic **Governed Interaction Relay**, conceptual UI host, generic delegation primitive (semantics only — see §8) |
+| **A** | ProjectConcord Core — engineering-domain neutral | Project identity, locator reconciliation, neutral domain lifecycle, operational partitioning, EDF read projections, generic **Governed Interaction Relay**, conceptual UI host, generic delegation primitive (semantics only — see §8), **Project Work Record** coordination identity and PWR-to-PWR relationships (see [AMD-0004](AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md)) |
 | **B** | Software Development / Engineering Extension | Software execution authorization profile, software governance package content, repository/Git evidence semantics, software Tier-0+ snapshot rules |
 | **C** | Methodology-specific capability/configuration | Sprint cadence, ceremony semantics, Kanban column/WIP rules when methodology-specific |
 | **D** | Organization/project policy | Supervision intensity, assignment policy, escalation thresholds |
 | **E** | Provider/tool adapter/integration | ChatGPT/Cursor field rendering, manual transport formatting, future MCP/CLI |
 | **F** | EDF-governed upstream fact projected into ProjectConcord | EGR, ADR, AAR, MVR, GDO, GMR, etc. |
 
-**Deferred:** Universal **Work Item** ownership — requires bounded Stage 2 analysis; do not assume software backlog semantics generalize to all engineering disciplines ([PCON-0002](PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) investigation themes).
+**Stage 2 (2026-09-29):** Universal generic **Work Item** deferral **resolved architecturally** — Core **Project Work Record** ([ADR-0017](ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) **Accepted**, [AMD-0004](AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md)). Software backlog/task semantics remain **not** Core; implementation deferred.
 
 ## 7. Core responsibility boundary (summary)
 
@@ -156,7 +156,8 @@ Closed governance evidence (EGR-G0/G1, AAR-0001, A1 closeout) is **not** retroac
 - [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)
 - [PAR Workflow Architecture Plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md)
 - [AWI-0001](Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md)
+- [AMD-0004](AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md), [ADR-0017](ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md)
 
 ## Maintenance
 
-Stage 1 documentation tranche **closed / Project Architect accepted** (2026-09-29). Update when Stage 2 bounded analyses complete or consequential architecture changes.
+Stage 1 documentation tranche **closed / Project Architect accepted** (2026-09-29). Stage 2 work-model architecture **accepted** 2026-09-29 ([AMD-0004](AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md), [ADR-0017](ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) **Accepted**); publication commit pending PA authorization.

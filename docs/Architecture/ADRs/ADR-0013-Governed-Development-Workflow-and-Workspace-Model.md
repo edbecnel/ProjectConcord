@@ -115,7 +115,22 @@ Proposed
 | Multi-project workspace (§7) | Orthogonal to per-project **domain enablement**; both preserve non-lock-in |
 | Workspace vs domain | **Project** undertaking may enable multiple **domains**; Working Environment composes facets per ADR-0016 |
 
-**ADR-0016 does not accept ADR-0013.** Generic **Work Item** ownership remains deferred (Stage 2 analysis).
+**ADR-0016 does not accept ADR-0013.** Generic Work Item deferral is **architecturally resolved** by [ADR-0017](ADR-0017-Project-Work-Record-Core-Boundary.md) (**Accepted** 2026-09-29) / [AMD-0004](../AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md). **ADR-0013 remains Proposed** until a separate acceptance tranche reconciling the A/B decomposition below.
+
+## Reconciliation with Stage 2 Project Work Record (2026-09-29 — ADR remains Proposed)
+
+Stage 2 canonical architecture splits operational concepts that ADR-0013 §1 lists together:
+
+| ADR-0013 concept | Stage 2 placement |
+|---|---|
+| **ProjectWorkRecord** (working name) | **Core (A)** — coordination identity; not task/backlog ontology |
+| **HumanInitiatedWorkItem** | Intake/triage — not generic Core **ProjectWorkRecord**; **OperationalIntakeRecord** is preferred working terminology only (final name/ownership **deferred**); HIW retained as normative name in SPEC-004 |
+| **DevelopmentWorkAuthorization** | **B** — software execution authorization; references optional Core delegation concept |
+| **ArchitecturalReviewSubmission** | **B** |
+| **InterProjectHandover** / **CrossProjectDependency** | **B** — not universal Core dependency model |
+| Canonical vs operational (§1) | Unchanged — PWR defaults operational like other execution-adjacent records |
+
+**Acceptance of ADR-0013** still requires subsequent governed step after PA review of this A/B mapping and PCON-0002 dependencies.
 
 ## References
 
@@ -126,3 +141,4 @@ Proposed
 - [Implementation Roadmap](../../Development/Implementation_Roadmap.md)
 - [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md), [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [PAR Workflow Architecture Plan](../../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md)
 - [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [AMD-0003](../AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md)
+- [ADR-0017](ADR-0017-Project-Work-Record-Core-Boundary.md), [AMD-0004](../AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md)
