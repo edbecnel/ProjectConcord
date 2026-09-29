@@ -58,13 +58,17 @@ M2 discovery/validation is **not** an automatic creation trigger.
 
 ### 4. Architectural component boundaries
 
+Stage 1 decomposition ([ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [AMD-0003](../AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md)): historical **PAR** maps to multiple owners; this ADR remains **Proposed**.
+
 | Layer | Responsibility |
 |---|---|
 | **Governance / workflow semantics** | Canonical vs operational rules; STOP; authorization vs handover; ties to SPEC-004 / ADR-0013 when accepted |
-| **Project Architect Relay (PAR)** | Package assembly, validation, relay-boundary STOP, evidence correlation, Cursor handover validation, workflow provenance |
-| **Project Architect provider boundary** | Provider-neutral exchange contract (`IProjectArchitectProvider` or equivalent); capability negotiation |
+| **Core — Governed Interaction Relay** | Generic package/correlation identity, validation, provenance, relay-boundary STOP hooks (historically part of PAR) |
+| **Software Development extension** | Software governance package/profile content; handoff/execution semantics |
+| **Working Environment / project policy** | Supervision, checkpoints, escalation where configured |
+| **Project Architect provider boundary** | Provider-neutral exchange contract (`IProjectArchitectProvider` or equivalent); capability negotiation — **adapter (E)** |
 | **Provider implementations** | Manual ChatGPT product adapter, future OpenAI API adapter, other providers — **transport only** |
-| **Engineering agent bridge** | `CursorBridge` abstraction; P0 manual first ([AWI-0006](../Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)) |
+| **Engineering agent bridge** | `CursorBridge` abstraction; P0 manual first ([AWI-0006](../Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)) — **adapter (E)** |
 
 **Core governance semantics MUST NOT depend on the ChatGPT product or OpenAI API.** Human-mediated ChatGPT is a **current provider configuration**, not a permanent architectural constraint.
 
@@ -84,7 +88,7 @@ ADR-0013 is **reconciled** with this ADR and SPEC-006 but **not accepted** in th
 |---|---|---|
 | **A0** | Architecture / canonical docs (this tranche) | Documentation only |
 | **A1** | Per-user app state + Recent Project Roots | **No** — separate PAR tranche |
-| **A2** | PAR manual packages (P0 transport) | **No** |
+| **A2** | Manual P0 governed interaction relay (reframed; Core relay + software package profile + provider transport) | **No** |
 | **A3** | Governed workflow MVP (manual) | **No** |
 | **A4** | Cursor bridge P1+ | **No** |
 | **M2** | EDF discovery track | **No** — separate governance |

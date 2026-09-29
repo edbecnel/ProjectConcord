@@ -73,7 +73,7 @@ Explicit track for Project Root, stable Project ID, per-user application state, 
 |---|---|---|
 | **A0** | Architecture / canonical docs | **Complete** (2026-09-28) — [PAR plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md) PA-amended |
 | **A1** | Per-user app state + Recent Project Roots (SQLite direction) | **Closed / published** (2026-09-28) — [A1 Implementation Plan](../Handover/ProjectConcord-A1-Implementation-Plan.md); baseline `fba5be5` |
-| **A2** | PAR manual packages — P0 transport (generate, validate, export, import) | **Not authorized** |
+| **A2** | Manual P0 **governed interaction relay** (reframed in place): Core relay/validation/provenance + Software Development governance package profile + provider manual transport — historical label “PAR manual packages”; see [AMD-0003](../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §2a | **Not authorized** |
 | **A3** | Governed workflow MVP (manual), overlaps M7a subset | **Not authorized** |
 | **A4** | Cursor bridge P1+ ([AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)) | **Not authorized** |
 
@@ -147,4 +147,5 @@ Explicit track for Project Root, stable Project ID, per-user application state, 
 - [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)
 - [AI Governance Integration Analysis](../Architecture/AI_Governance_Workflow_Integration_Analysis.md)
 - [PAR Workflow Architecture Plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md)
+- [AMD-0003](../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md), [ADR-0016](../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md)
 - [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)

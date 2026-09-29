@@ -102,23 +102,43 @@ flowchart TB
 
 ---
 
-## PAR, Project Root, and governed workflow relay (A0 architecture)
+## Stage 1 capability model — Core, domains, working environment
 
-**Status:** Architecture documented 2026-09-28; **not implemented** ([SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) Proposed).
+**Status:** Documented 2026-09-29 ([AMD-0003](AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md) integrated; [ADR-0016](ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) Accepted). **Not implemented** in `src/`.
+
+| Concern | Rule |
+|---|---|
+| Project identity | **ProjectConcord Project ID** represents the engineering undertaking — not a domain type ([ADR-0016](ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md)) |
+| Invariants | `Project != Domain != Extension != Methodology != Working Environment` |
+| Multi-domain | Projects may enable multiple domains/extensions; enablement mutable without new Project ID |
+| Domain lifecycle | **Available → Enabled → Activated** (working context); **Disabled** retains history |
+| Activation | One or many enabled domains may be active in a working context; not required as default |
+| Working Environment | Composable capability facets; built-in presets + custom compositions — separate from domain |
+| Core | Domain-neutral shell, identity, lifecycle, operational partition, EDF consumption, **Governed Interaction Relay**, conceptual UI host |
+| Software Development extension | Software execution authorization profile, software governance packages, repo handoff semantics ([SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)) |
+| Generic Work Item | **Deferred** — Stage 2 bounded analysis ([PCON-0002](PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md)) |
+| Physical extensions | Plugin loader, manifests, discovery — **deferred** |
+
+---
+
+## Project Root, relay, and PAR track (A0 / A1 architecture)
+
+**Status:** Project Root + A1 identity/SQLite **implemented**; relay/PAR packages **not implemented** ([SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) Proposed).
 
 | Concern | Rule |
 |---|---|
 | Session context | User explicitly selects a **Project Root** (filesystem locator) |
 | Logical identity | Stable **ProjectConcord Project ID** — path is not durable identity ([ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md)) |
-| Per-user state | Recent Project Roots, session provenance, advisories — OS app data SQLite (direction only) |
+| Per-user state | Recent Project Roots, session provenance, advisories — OS app data SQLite (A1 implemented) |
 | Project-local derived | `.projectconcord/` only when an authorized feature requires it — **not** on open/select |
-| PAR | Relay, package validation, STOP at boundary, evidence correlation — provider-neutral |
-| Project Architect | `IProjectArchitectProvider` boundary; manual ChatGPT product is one adapter |
-| Cursor | `CursorBridge` abstraction; P0 manual transport first ([AWI-0006](Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)) |
+| Governed Interaction Relay (Core) | Generic package/correlation, validation, provenance, relay-boundary STOP ([ADR-0016](ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md)) |
+| Historical **PAR** term | Umbrella for relay + software package + policy + adapters — see [AMD-0003](AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md) §9 |
+| Project Architect | `IProjectArchitectProvider` boundary; manual ChatGPT product is one adapter (**E**) |
+| Cursor | `CursorBridge` abstraction; P0 manual transport first ([AWI-0006](Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)) (**E**) |
 | Tier 0 awareness | Shallow Git/governance metadata pre-M2 — not a second EDF parser |
-| ADR-0013 | Reconciled; remains **Proposed** until PCON-0002 disposition |
+| ADR-0013 / ADR-0015 | Reconciled with Stage 1; remain **Proposed** |
 
-Phasing: PAR track A0–A4 in [Implementation Roadmap](../Development/Implementation_Roadmap.md), separate from M2 EDF engine milestones.
+Phasing: PAR track A0–A4 in [Implementation Roadmap](../Development/Implementation_Roadmap.md) (A2 reframed — manual P0 governed interaction relay); separate from M2 EDF engine milestones.
 
 ---
 

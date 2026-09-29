@@ -13,6 +13,7 @@
 | **M1 / EGR-G1** | Closed / Satisfied — unchanged |
 | **M2+** | **Not authorized** |
 | **A2–A4** | **Not authorized for implementation** |
+| **Stage 1 architecture** | [AMD-0003](../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md) integrated 2026-09-29; [ADR-0016](../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) Accepted — PAR decomposed; A2 reframed in place |
 | **ADR-0014** | **Proposed** |
 | **STOP-2** | **Binding** |
 | **ADR-0013** | **Proposed** — reconciled, **not accepted** |
@@ -175,7 +176,7 @@ stateDiagram-v2
 |---|---|---|
 | **A0** | Architecture / canonical documentation | **Complete** — PA accepted |
 | **A1** | Per-user app state + Recent Project Roots | **Complete** — published A1a/A1b/A1c; closeout [A1 plan §20](ProjectConcord-A1-Implementation-Plan.md#20-a1-overall-closeout-2026-09-28) |
-| **A2** | PAR manual package workflow (P0) | **No** |
+| **A2** | Manual P0 **governed interaction relay** (Core relay + software package profile + provider transport; historical PAR packaging) | **No** |
 | **A3** | Governed workflow MVP (manual) | **No** |
 | **A4** | Cursor bridge P1 | **No** |
 | **M2** | EDF discovery (SPEC-001) | **No** — separate track; feeds Tier 0+ later |

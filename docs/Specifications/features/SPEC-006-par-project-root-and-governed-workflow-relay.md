@@ -10,7 +10,7 @@
 | **Status** | Draft |
 | **Owner** | ProjectConcord |
 | **Normative** | Yes — PAR, Project Root lifecycle, per-user application state, and relay boundaries |
-| **Last Reviewed** | 2026-09-28 |
+| **Last Reviewed** | 2026-09-29 (Stage 1 decomposition) |
 | **Target release** | PAR track A1–A4 (separately authorized); not part of M1 |
 | **Implementation** | **Not authorized** until explicit PAR implementation tranches |
 | **Architecture baseline** | `c08af261ff323a0ddd54a84bd5c8b990a49fa84f` |
@@ -28,6 +28,7 @@
 - [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) — **Proposed**; reconciled, not superseded
 - [PAR Workflow Architecture Plan](../../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md)
 - [AWI-0006](../../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)
+- [AMD-0003](../../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md), [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md)
 
 ---
 
@@ -69,6 +70,19 @@ Define normative ProjectConcord behavior for:
 - Creating `.projectconcord/` on open/select
 - Normative Actor/Role model ([PCON-0002](../../Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md))
 - MVR execution instances (**STOP-2** binding; [SPEC-005](SPEC-005-manual-verification-record-consumption.md))
+
+### Stage 1 ownership decomposition (relay vs PAR umbrella)
+
+**Project Architect Relay (PAR)** remains historical/umbrella terminology in this specification. Normative requirements below map to owners per [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md):
+
+| Owner | Scope in SPEC-006 |
+|---|---|
+| **Core — Governed Interaction Relay** | Package/correlation identity; generic import/export validation; provenance chain (§10 PC-PAR-021); relay-boundary STOP enforcement hooks; INCOMPLETE metadata gate |
+| **Software Development / Engineering Extension** | Software governance package/profile content; handoff vs **DevelopmentWorkAuthorization** separation; software execution context in packages |
+| **Working Environment / project policy** | Supervision, checkpoint, and escalation behavior where configured for relay |
+| **Provider adapter (E)** | `IProjectArchitectProvider`, manual ChatGPT formatting, `CursorBridge`, governance-critical handover fields (`Cursor-Mode`, `Cursor-Chat`, etc.) |
+
+**A2 (documentation reframe):** Future authorized implementation tranche **A2** delivers manual P0 governed interaction relay per this decomposition. **A2 is not authorized** by this spec revision.
 
 ## 3. Relationship to SPEC-004
 

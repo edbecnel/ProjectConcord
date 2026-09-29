@@ -11,8 +11,9 @@
 | **Owner** | ProjectConcord |
 | **Normative** | Yes — product behavior requirements when implemented |
 | **Implementation** | **Not implemented** — requirements define future M7+ capability unless separately authorized |
-| **Last Reviewed** | 2026-09-21 |
-| **Governing decisions** | [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (Proposed), [ADR-0006](../../Architecture/ADRs/ADR-0006-AI-Boundary.md), [ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md) |
+| **Last Reviewed** | 2026-09-29 (Stage 1 ownership) |
+| **Governing decisions** | [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) (Accepted), [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (Proposed), [ADR-0006](../../Architecture/ADRs/ADR-0006-AI-Boundary.md), [ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md) |
+| **Architecture scope** | **Software Development / Engineering Extension** — not ProjectConcord Core neutrality ([AMD-0003](../../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md)) |
 | **Discovery source** | [PCON-0001](../../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) |
 
 **Integration closeout (2026-09-21):** PCON-0001 handover integrated; documentation tranche Project Architect **accepted** at commit `b728e2896992b58ee785d406ac93a6badf29c8c8` per [AI Governance Workflow Integration Analysis](../../Architecture/AI_Governance_Workflow_Integration_Analysis.md). This specification remains **Draft** and **not implemented**. [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) remains **Proposed**. Implementation gated per [Implementation Roadmap](../../Development/Implementation_Roadmap.md) M7+.
@@ -43,11 +44,21 @@ When M1–M5 foundational code is implemented, it **MUST NOT** establish an impl
 
 Specific identity, API scoping, and persistence mechanisms are **not** prescribed by this spec; see [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md).
 
+## Stage 1 ownership (summary)
+
+| Concern | Owner (A–F) |
+|---|---|
+| PC-AIGOV-001–004, 007, 014–016 (governance invariants) | Core + extension; relay via [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md) |
+| DevelopmentWorkAuthorization, submissions, HIW, inter-project entities | **B** — Software Development extension (operational store) |
+| Generic delegation primitive | **A** — conceptual only; working name *AuthorityGrant*; **no schema**; repository term **DevelopmentWorkAuthorization** until migration |
+| Provider manual/integration modes (PC-AIGOV-005–006) | **E** |
+| Generic Work Item / backlog semantics | **Deferred** — Stage 2 bounded analysis; not introduced in this spec revision |
+
 ## Logical entities (when implemented)
 
 | Entity | Default store | Purpose |
 |---|---|---|
-| DevelopmentWorkAuthorization | Operational | Capability-bounded permitted work per project |
+| DevelopmentWorkAuthorization | Operational | Capability-bounded permitted work per project (**B** — software extension; see Stage 1 decomposition) |
 | Handover package | Derived / operational snapshot | Inherited project context for agents |
 | ArchitecturalReviewSubmission | Operational | Plan or implementation return for review |
 | HumanInitiatedWorkItem | Operational | Inbox/triage; distinct from AWI |

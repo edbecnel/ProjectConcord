@@ -104,6 +104,19 @@ Proposed
 
 **Acceptance of ADR-0013 is still deferred** until [PCON-0002](../PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) Actor/Role dependencies are dispositioned. PAR uses **provisional transport attribution** only.
 
+## Reconciliation with Stage 1 capability model (2026-09-29 — ADR remains Proposed)
+
+[ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) and [AMD-0003](../AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md) accept this ADR's **operational vs canonical** split and **DevelopmentWorkAuthorization** naming discipline but decompose concerns:
+
+| ADR-0013 concept | Stage 1 placement |
+|---|---|
+| DevelopmentWorkAuthorization | Software extension execution authorization; generic delegation primitive conceptually **Core** (working name *AuthorityGrant* — not finalized; no schema) |
+| Handover packages | Core **Governed Interaction Relay** + software package profile; derived per §1 |
+| Multi-project workspace (§7) | Orthogonal to per-project **domain enablement**; both preserve non-lock-in |
+| Workspace vs domain | **Project** undertaking may enable multiple **domains**; Working Environment composes facets per ADR-0016 |
+
+**ADR-0016 does not accept ADR-0013.** Generic **Work Item** ownership remains deferred (Stage 2 analysis).
+
 ## References
 
 - [PCON-0001](../PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md)
@@ -112,3 +125,4 @@ Proposed
 - [ADR-0006](ADR-0006-AI-Boundary.md), [ADR-0009](ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md), [ADR-0012](ADR-0012-Adopt-EDF-Architectural-Audit-Records.md)
 - [Implementation Roadmap](../../Development/Implementation_Roadmap.md)
 - [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md), [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [PAR Workflow Architecture Plan](../../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md)
+- [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [AMD-0003](../AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md)
