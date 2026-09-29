@@ -11,7 +11,7 @@ AI-assisted engineering practices, governed development workflow (Architect AI �
 - [ADR-0006 — AI Boundary](../Architecture/ADRs/ADR-0006-AI-Boundary.md) — proposals only; human approval for canonical EDF writes
 - [SPEC-004 — AI-Assisted Development Governance Workflow](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) — **Draft; not implemented** (PC-AIGOV-001–028)
 - [ADR-0013 — Software Development Governed Workflow and Cross-Project Governance](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) — **Accepted** (2026-09-29)
-- [SPEC-006 — PAR, Project Root, and governed workflow relay](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) — **Draft; not implemented**
+- [SPEC-006 — Project Root, Identity, and governed workflow relay (historical PAR track)](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) — **Accepted** 2026-09-29; A1 published; relay A2+ not authorized
 - [ADR-0015 — Project Identity, Project Root, and Per-User Operational State](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) — **Accepted** (2026-09-29)
 
 ## Architectural discovery and analysis

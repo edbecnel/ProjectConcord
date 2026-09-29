@@ -149,7 +149,7 @@ Requirements PC-AIGOV-021–028 are **Software Development extension (B)** inter
 - [SPEC-003](SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md) — canonical **artifact** integrity and lifecycle; external IDE edits.
 - [SPEC-001](SPEC-001-mvp-edf-desktop-client.md) — M1–M5 MVP does not implement this spec.
 - [ADR-0006](../../Architecture/ADRs/ADR-0006-AI-Boundary.md) — AI proposals for EDF writes; complementary.
-- [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md) — PAR, Project Root, stable Project ID, provider-neutral Project Architect boundary, Cursor relay, and PA handover validation (**Draft**; not implemented). SPEC-006 specializes relay behavior; PC-AIGOV-001–028 remain defined here.
+- [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md) — Project Root, identity, Core Governed Interaction Relay, provider adapters (**Accepted** 2026-09-29; relay tranches A2+ not implemented; A1 identity subset published). SPEC-006 enforces at relay boundary; PC-AIGOV-001–028 remain defined here.
 
 ## Acceptance criteria (future — not applicable until implementation authorized)
 

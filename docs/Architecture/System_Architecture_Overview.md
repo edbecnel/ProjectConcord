@@ -125,7 +125,7 @@ flowchart TB
 
 ## Project Root, relay, and PAR track (A0 / A1 architecture)
 
-**Status:** Project Root + A1 identity/SQLite **implemented**; relay/PAR packages **not implemented** ([SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Accepted** 2026-09-29).
+**Status:** Project Root + A1 identity/SQLite **implemented**; relay packages **not implemented** ([SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) **Accepted** 2026-09-29, [ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Accepted** 2026-09-29).
 
 | Concern | Rule |
 |---|---|

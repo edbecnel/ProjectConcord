@@ -19,6 +19,7 @@ Inbound architectural and integration handovers from external frameworks, progra
 | [ProjectConcord A1 Implementation Plan](ProjectConcord-A1-Implementation-Plan.md) | A1 **closed / published** (2026-09-28; `fba5be5` on `main`); A2 not authorized | Active |
 | [Stage 1 Documentation Tranche Plan](ProjectConcord-Stage-1-Documentation-Tranche-Plan.md) | Stage 1 architecture — **CLOSED / PA ACCEPTED** (2026-09-29) | Active |
 | [Stage 2 Documentation Tranche Plan](ProjectConcord-Stage-2-Documentation-Tranche-Plan.md) | Stage 2 — **CLOSED / PA ACCEPTED / PUBLISHED** (2026-09-29; `c968a88`) | Active |
+| [SPEC-006 Reconciliation Documentation Tranche Plan](ProjectConcord-SPEC-006-Reconciliation-Documentation-Tranche-Plan.md) | SPEC-006 reconciliation + acceptance — **CLOSED / PA ACCEPTED** (2026-09-29) | Active |
 
 ## Parent
 
