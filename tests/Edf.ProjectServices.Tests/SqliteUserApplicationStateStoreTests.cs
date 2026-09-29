@@ -13,12 +13,12 @@ namespace Edf.ProjectServices.Tests;
 public class SqliteUserApplicationStateStoreTests
 {
     [Fact]
-    public void FreshDatabase_CreatesSchemaVersionOne()
+    public void FreshDatabase_CreatesCurrentSchemaVersion()
     {
         var path = CreateTempDatabasePath();
         using var store = new SqliteUserApplicationStateStore(path);
 
-        Assert.Equal(1, ReadSchemaVersion(path));
+        Assert.Equal(2, ReadSchemaVersion(path));
         Assert.True(File.Exists(path));
     }
 

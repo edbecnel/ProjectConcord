@@ -3,7 +3,7 @@ using Microsoft.Data.Sqlite;
 
 namespace Edf.ProjectServices.Persistence;
 
-public sealed class SqliteUserApplicationStateStore : IDisposable
+public sealed partial class SqliteUserApplicationStateStore : IDisposable
 {
     public const int DefaultMaxRecentProjects = 10;
     private const string LastActivePreferenceKey = "last_active_project_id";

@@ -4,11 +4,11 @@
 
 **Tranche:** PAR track **A2** — Manual P0 Governed Interaction Relay
 
-> **A2 implementation:** **IN PROGRESS** — **A2-T1** and **A2-T2 closed / PA accepted**; see [T1](ProjectConcord-A2-T1-Implementation-Notes.md) and [T2](ProjectConcord-A2-T2-Implementation-Notes.md) implementation notes.
+> **A2 implementation:** **IN PROGRESS** — **A2-T1**, **A2-T2**, and **A2-T3 closed / PA accepted**; see [T1](ProjectConcord-A2-T1-Implementation-Notes.md), [T2](ProjectConcord-A2-T2-Implementation-Notes.md), and [T3](ProjectConcord-A2-T3-Implementation-Notes.md) implementation notes.
 >
-> **A2-T3 through A2-T8: NOT AUTHORIZED** (separate PA authorization per tranche).
+> **A2-T4 through A2-T8: NOT AUTHORIZED** (separate PA authorization per tranche).
 
-**Mode:** **CLOSED** — A2 **implementation plan** accepted and published (2026-09-29); **A2 `src/` implementation in progress** (T1–T2 published; A2 not complete)
+**Mode:** **CLOSED** — A2 **implementation plan** accepted and published (2026-09-29); **A2 `src/` implementation in progress** (T1–T3 published; A2 not complete)
 
 **Planning baseline (pre-plan tranche):** `1098a336569b2f0d7e0af347788b25d8d7e877b3` — *Accept reconciled SPEC-006 governed relay specification.*
 
@@ -18,9 +18,9 @@
 
 **Architecture basis:** [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) (**Accepted** 2026-09-29), [ADR-0016](../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md), [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md), [ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md), [PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md) (A0), [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)
 
-**Governance inputs:** A2 Readiness and Implementation-Scope Analysis — **ACCEPTED WITH PA QUALIFICATIONS**; **A2-T1 PA accepted** (2026-09-29); **A2-T2 PA accepted** (2026-09-30); **A2-T3–T8 NOT AUTHORIZED**; **A3 / A4 NOT AUTHORIZED**; **PCON-0002** remains **Proposed** / deferred.
+**Governance inputs:** A2 Readiness and Implementation-Scope Analysis — **ACCEPTED WITH PA QUALIFICATIONS**; **A2-T1 PA accepted** (2026-09-29); **A2-T2 PA accepted** (2026-09-30); **A2-T3 PA accepted** (2026-09-30); **A2-T4–T8 NOT AUTHORIZED**; **A3 / A4 NOT AUTHORIZED**; **PCON-0002** remains **Proposed** / deferred.
 
-**Published A2-T1 baseline:** [§27](#27-a2-t1-closeout-2026-09-29). **Published A2-T2 baseline:** [§28](#28-a2-t2-closeout-2026-09-30).
+**Published A2-T1 baseline:** [§27](#27-a2-t1-closeout-2026-09-29). **Published A2-T2 baseline:** [§28](#28-a2-t2-closeout-2026-09-30). **Published A2-T3 baseline:** [§29](#29-a2-t3-closeout-2026-09-30).
 
 ---
 
@@ -31,10 +31,11 @@
 | A2 readiness analysis | **ACCEPTED WITH PA QUALIFICATIONS** |
 | A2 plan documentation tranche | **CLOSED** (draft + binding amendments incorporated 2026-09-29) |
 | **This A2 plan** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-09-29) — binding amendments 1–3 preserved in §8, §18, §22 (T8) |
-| A2 implementation (`src/`) | **IN PROGRESS** — T1–T2 published; A2 not complete |
+| A2 implementation (`src/`) | **IN PROGRESS** — T1–T3 published; A2 not complete |
 | **A2-T1** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-29) — [implementation notes](ProjectConcord-A2-T1-Implementation-Notes.md) |
 | **A2-T2** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30) — [implementation notes](ProjectConcord-A2-T2-Implementation-Notes.md) |
-| A2-T3 … A2-T8 | **NOT AUTHORIZED** — separate PA authorization per tranche |
+| **A2-T3** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30) — [implementation notes](ProjectConcord-A2-T3-Implementation-Notes.md) |
+| A2-T4 … A2-T8 | **NOT AUTHORIZED** — separate PA authorization per tranche |
 | A3 / A4 | **NOT AUTHORIZED** |
 | STOP-2 (MVR execution instances) | **Binding** — out of relay scope |
 
@@ -588,17 +589,18 @@ No A3 workflow management UI (DWA editor, submission inbox).
 
 | | |
 |---|---|
-| **Authorization** | **NOT AUTHORIZED** |
+| **Authorization** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30) |
 | **Objective** | Orchestrator, provenance events, Migration002 |
-| **Scope** | `IGovernedInteractionRelayService`; SQLite tables §7; ports |
+| **Scope** | `IGovernedInteractionRelayService`; `IRelayOperationalStore`; SQLite tables §7; ports |
 | **Non-goals** | B profile content, adapters, UI |
 | **Prerequisites** | T1, T2 |
 | **Owners** | A |
 | **PC-PAR** | 012, 021 |
-| **Persistence** | §7 tables |
-| **Tests** | ProjectServices integration; restart continuity |
-| **Acceptance** | Export records package + events without render |
-| **STOP** | End T3 → PA review |
+| **Persistence** | `relay_continuity`, `relay_package`, `relay_provenance_event` (Migration002) |
+| **Tests** | 17 focused relay operational tests; 76 total Release tests green |
+| **Acceptance** | PA accepted — [T3 implementation notes](ProjectConcord-A2-T3-Implementation-Notes.md) |
+| **Evidence** | Baseline `1af4dac7a49118d498c8f56948a0c683fb2ce9d0`; publication commit in [§29](#29-a2-t3-closeout-2026-09-30) |
+| **STOP** | T3 closed — **await PA authorization for A2-T4 only** |
 
 ---
 
@@ -773,7 +775,24 @@ flowchart TD
 | Release tests | 59 passed (Application 30, ProjectServices 25, Desktop 4) |
 | Publication commit | Recorded on `main` at T2 closeout commit SHA (see git log) |
 
-**Next governance decision:** Whether to authorize **A2-T3 only** (relay orchestration + persistence). **Do not** infer T4–T8 authorization.
+**Next governance decision (historical):** Whether to authorize **A2-T3 only** — **resolved** 2026-09-30 (T3 accepted; see [§29](#29-a2-t3-closeout-2026-09-30)).
+
+---
+
+## 29. A2-T3 closeout (2026-09-30)
+
+**PA disposition:** **A2-T3 CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30). Relay continuity, persistence, and provenance published on `main`; **A2-T4 NOT AUTHORIZED**.
+
+| Item | Notes |
+|------|--------|
+| Implementation baseline | `1af4dac7a49118d498c8f56948a0c683fb2ce9d0` |
+| Evidence | [A2-T3 implementation notes](ProjectConcord-A2-T3-Implementation-Notes.md) |
+| Migration | `Migration002RelayOperational` (schema version 2) |
+| Focused tests | 17 passed (`FullyQualifiedName~RelayOperational`) |
+| Release tests | 76 passed (Application 30, ProjectServices 42, Desktop 4) |
+| Publication commit | Recorded on `main` at T3 closeout commit SHA (see git log) |
+
+**Next governance decision:** Whether to authorize **A2-T4 only** (Software Development relay profile + boundary rules). **Do not** infer T5–T8 authorization.
 
 ---
 

@@ -73,7 +73,7 @@ Explicit track for Project Root, stable Project ID, per-user application state, 
 |---|---|---|
 | **A0** | Architecture / canonical docs | **Complete** (2026-09-28) — [PAR plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md) PA-amended |
 | **A1** | Per-user app state + Recent Project Roots (SQLite direction) | **Closed / published** (2026-09-28) — [A1 Implementation Plan](../Handover/ProjectConcord-A1-Implementation-Plan.md); baseline `fba5be5` |
-| **A2** | Manual P0 **governed interaction relay** (reframed in place): Core relay/validation/provenance + Software Development governance package profile + provider manual transport — historical label “PAR manual packages”; see [AMD-0003](../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §2a | **In progress** — T1–T2 **closed / PA accepted**; T3–T8 **not authorized**; A2 not complete |
+| **A2** | Manual P0 **governed interaction relay** (reframed in place): Core relay/validation/provenance + Software Development governance package profile + provider manual transport — historical label “PAR manual packages”; see [AMD-0003](../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §2a | **In progress** — T1–T3 **closed / PA accepted**; T4–T8 **not authorized**; A2 not complete |
 | **A3** | Governed workflow MVP (manual), overlaps M7a subset | **Not authorized** |
 | **A4** | Cursor bridge P1+ ([AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)) | **Not authorized** |
 
@@ -108,8 +108,9 @@ Explicit track for Project Root, stable Project ID, per-user application state, 
 | PAR A2 plan | **Closed / PA accepted / published** (2026-09-29) — [A2 Implementation Plan](../Handover/ProjectConcord-A2-Implementation-Plan.md) |
 | PAR A2-T1 | **Closed / PA accepted / published** (2026-09-29) — [T1 implementation notes](../Handover/ProjectConcord-A2-T1-Implementation-Notes.md); baseline `916ba950` |
 | PAR A2-T2 | **Closed / PA accepted / published** (2026-09-30) — [T2 implementation notes](../Handover/ProjectConcord-A2-T2-Implementation-Notes.md); baseline `05cdd85` |
-| PAR A2-T3–T8 | **Not authorized** |
-| PAR A2 overall | **In progress** — T1–T2 only; not complete |
+| PAR A2-T3 | **Closed / PA accepted / published** (2026-09-30) — [T3 implementation notes](../Handover/ProjectConcord-A2-T3-Implementation-Notes.md); baseline `1af4dac` |
+| PAR A2-T4–T8 | **Not authorized** |
+| PAR A2 overall | **In progress** — T1–T3 only; not complete |
 | PAR A3–A4 implementation | **Not started** — **not authorized** (no material dependency on Project Work Record ontology per [ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md)) |
 | Stage 2 architecture | **PA accepted** (2026-09-29) — [AMD-0004](../Architecture/AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md), [ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) **Accepted**; pre-publication closeout; **not implemented** in `src/` |
 | M2–M5 | **Not started** — G1 satisfied; implementation in earnest requires separate PA authorization per milestone |
