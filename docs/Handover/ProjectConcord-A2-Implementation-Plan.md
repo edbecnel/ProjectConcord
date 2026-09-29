@@ -4,11 +4,11 @@
 
 **Tranche:** PAR track **A2** — Manual P0 Governed Interaction Relay
 
-> **A2 IMPLEMENTATION NOT AUTHORIZED**
+> **A2 implementation:** **IN PROGRESS** — **A2-T1 closed / PA accepted** (2026-09-29); see [T1 implementation notes](ProjectConcord-A2-T1-Implementation-Notes.md).
 >
-> **A2-T1 through A2-T8: NOT AUTHORIZED** (each tranche requires separate Project Architect authorization after this plan is accepted/published).
+> **A2-T2 through A2-T8: NOT AUTHORIZED** (separate PA authorization per tranche).
 
-**Mode:** **CLOSED** — A2 **implementation plan** accepted and published (2026-09-29); **A2 implementation not authorized**
+**Mode:** **CLOSED** — A2 **implementation plan** accepted and published (2026-09-29); **A2 `src/` implementation in progress** (T1 only)
 
 **Planning baseline (pre-plan tranche):** `1098a336569b2f0d7e0af347788b25d8d7e877b3` — *Accept reconciled SPEC-006 governed relay specification.*
 
@@ -18,7 +18,9 @@
 
 **Architecture basis:** [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) (**Accepted** 2026-09-29), [ADR-0016](../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md), [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md), [ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md), [PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md) (A0), [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)
 
-**Governance inputs:** A2 Readiness and Implementation-Scope Analysis — **ACCEPTED WITH PA QUALIFICATIONS**; this documentation tranche **AUTHORIZED**; **A2 implementation NOT AUTHORIZED**; **A3 / A4 NOT AUTHORIZED**; **PCON-0002** remains **Proposed** / deferred.
+**Governance inputs:** A2 Readiness and Implementation-Scope Analysis — **ACCEPTED WITH PA QUALIFICATIONS**; this documentation tranche **AUTHORIZED**; **A2-T1 implemented and PA accepted** (2026-09-29); **A2-T2–T8 NOT AUTHORIZED**; **A3 / A4 NOT AUTHORIZED**; **PCON-0002** remains **Proposed** / deferred.
+
+**Published A2-T1 baseline:** see [§27 A2-T1 closeout](#27-a2-t1-closeout-2026-09-29) (governed commit on `main`).
 
 ---
 
@@ -29,8 +31,9 @@
 | A2 readiness analysis | **ACCEPTED WITH PA QUALIFICATIONS** |
 | A2 plan documentation tranche | **CLOSED** (draft + binding amendments incorporated 2026-09-29) |
 | **This A2 plan** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-09-29) — binding amendments 1–3 preserved in §8, §18, §22 (T8) |
-| A2 implementation (`src/`) | **NOT AUTHORIZED** |
-| A2-T1 … A2-T8 | **NOT AUTHORIZED** — separate PA authorization per tranche after plan publication |
+| A2 implementation (`src/`) | **IN PROGRESS** — T1 published; A2 not complete |
+| **A2-T1** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-29) — [implementation notes](ProjectConcord-A2-T1-Implementation-Notes.md) |
+| A2-T2 … A2-T8 | **NOT AUTHORIZED** — separate PA authorization per tranche |
 | A3 / A4 | **NOT AUTHORIZED** |
 | STOP-2 (MVR execution instances) | **Binding** — out of relay scope |
 
@@ -545,19 +548,19 @@ No A3 workflow management UI (DWA editor, submission inbox).
 
 | | |
 |---|---|
-| **Authorization** | **NOT AUTHORIZED** |
+| **Authorization** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-29) |
 | **Objective** | Neutral envelope types, PC-PAR-020 validation rules, INCOMPLETE/malformed distinction |
 | **Scope** | `Edf.Domain/Relay/*`; validation in `Edf.Application/Relay/` |
-| **Non-goals** | SQLite, UI, adapters, Tier-0 |
+| **Non-goals** | SQLite, UI, adapters, Tier-0 provider |
 | **Prerequisites** | A1 published; **this plan accepted** |
 | **Owners** | A (+ B validator interfaces) |
 | **PC-PAR** | 013, 014 (rules), 015, 020 |
 | **PC-AIGOV** | 003, 004 (interface stubs) |
 | **Persistence** | None |
-| **Tests** | Unit — missing fields, STOP, no inference |
-| **Acceptance** | Validator unit suite green |
-| **PA evidence** | Test report; tranche summary in git commit message |
-| **STOP** | End T1 → PA review before T2 auth |
+| **Tests** | 11 focused relay unit tests; 47 total Release tests green |
+| **Acceptance** | PA accepted — [T1 implementation notes](ProjectConcord-A2-T1-Implementation-Notes.md) |
+| **Evidence** | Baseline `916ba9509d7beded5e57ee94d83be32b073d64bc`; publication commit in [§27](#27-a2-t1-closeout-2026-09-29) |
+| **STOP** | T1 closed — **await PA authorization for A2-T2 only** |
 
 ---
 
@@ -736,7 +739,23 @@ flowchart TD
 | Plan draft + amendments 1–3 | Incorporated (MVR disposable root §18; T8 remediation §22; serialization authority §8) |
 | Plan acceptance / publication | **2026-09-29** — governed documentation commit on `main` (see git log for SHA) |
 
-**Next governance decision:** Whether to authorize **A2-T1** only (Core domain/package model + validation). **Do not** infer T2–T8 authorization from plan publication.
+**Next governance decision (historical):** Whether to authorize **A2-T1** only — **resolved** 2026-09-29 (T1 accepted; see [§27](#27-a2-t1-closeout-2026-09-29)).
+
+---
+
+## 27. A2-T1 closeout (2026-09-29)
+
+**PA disposition:** **A2-T1 CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-29). Core governed relay domain types and validation published on `main`; **A2-T2 NOT AUTHORIZED**.
+
+| Item | Notes |
+|------|--------|
+| Implementation baseline | `916ba9509d7beded5e57ee94d83be32b073d64bc` |
+| Evidence | [A2-T1 implementation notes](ProjectConcord-A2-T1-Implementation-Notes.md) |
+| Focused tests | 11 passed (`FullyQualifiedName~Relay`) |
+| Release tests | 47 passed (Application 30, ProjectServices 13, Desktop 4) |
+| Publication commit | Recorded on `main` at T1 closeout commit SHA (see git log) |
+
+**Next governance decision:** Whether to authorize **A2-T2 only** (Tier-0 snapshot capability). **Do not** infer T3–T8 authorization.
 
 ---
 
