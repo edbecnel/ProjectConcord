@@ -11,12 +11,12 @@
 | **Owner** | ProjectConcord |
 | **Normative** | Yes — product behavior requirements when implemented |
 | **Implementation** | **Not implemented** — requirements define future M7+ capability unless separately authorized |
-| **Last Reviewed** | 2026-09-29 (Stage 2 Project Work Record ownership) |
-| **Governing decisions** | [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) (Accepted), [ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) (Accepted 2026-09-29), [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (Proposed), [ADR-0006](../../Architecture/ADRs/ADR-0006-AI-Boundary.md), [ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md) |
+| **Last Reviewed** | 2026-09-29 (Stage 2 PWR ownership; ADR-0013 reconciliation and acceptance) |
+| **Governing decisions** | [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) (Accepted), [ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) (Accepted 2026-09-29), [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (Accepted 2026-09-29 — Software Development governed workflow), [ADR-0006](../../Architecture/ADRs/ADR-0006-AI-Boundary.md), [ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md) |
 | **Architecture scope** | **Software Development / Engineering Extension** — not ProjectConcord Core neutrality ([AMD-0003](../../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md)) |
 | **Discovery source** | [PCON-0001](../../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) |
 
-**Integration closeout (2026-09-21):** PCON-0001 handover integrated; documentation tranche Project Architect **accepted** at commit `b728e2896992b58ee785d406ac93a6badf29c8c8` per [AI Governance Workflow Integration Analysis](../../Architecture/AI_Governance_Workflow_Integration_Analysis.md). This specification remains **Draft** and **not implemented**. [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) remains **Proposed**. Implementation gated per [Implementation Roadmap](../../Development/Implementation_Roadmap.md) M7+.
+**Integration closeout (2026-09-21):** PCON-0001 handover integrated; documentation tranche Project Architect **accepted** at commit `b728e2896992b58ee785d406ac93a6badf29c8c8` per [AI Governance Workflow Integration Analysis](../../Architecture/AI_Governance_Workflow_Integration_Analysis.md). This specification remains **Draft** and **not implemented**. [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) **Accepted** 2026-09-29 (Software Development governance architecture). Implementation gated per [Implementation Roadmap](../../Development/Implementation_Roadmap.md) M7+.
 
 ## Problem
 
@@ -27,7 +27,7 @@ Engineering teams using an Architectural AI and a repository execution agent (fo
 - Model canonical governance state separately from derived AI/provider transport.
 - Separate handover context from DevelopmentWorkAuthorization.
 - Support manual and integrated provider modes with identical semantics.
-- Support multi-project workspace direction without implying current MVP delivery.
+- Support **multi-project application context** (Core product shell — multiple Project IDs in one application instance) without implying current MVP delivery; **not** Working Environment ([ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md)).
 - Preserve cross-project provenance and destination governance authority.
 
 ## Non-Goals
@@ -38,17 +38,29 @@ Engineering teams using an Architectural AI and a repository execution agent (fo
 - Upstreaming PC-AIGOV-022–028 to EDF in this tranche.
 - MVP (M1–M5) delivery of governance UI or inter-project features.
 
+## Terminology (workspace-adjacent — not synonyms)
+
+| Term | Owner | Role in this spec |
+|---|---|---|
+| **Multi-project application context** | **Core (A)** | Multiple **ProjectConcord Project IDs** in one application instance ([ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md)). |
+| **Working Environment** | **D** | Composable policy/methodology facets — **not** multi-project hosting. |
+| **Project Root / session locator** | **A** (detail [ADR-0015](../../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Proposed**, [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md)) | Session binding to a filesystem locator. |
+| **Git worktree / branch** | **B** | Software Development execution/evidence context. |
+| **Provider / agent session** | **E** | Transport and adapter session state. |
+| **Persona / UI workspace** | UI ([GAP-036](../../Development/EDF_Gap_Register.md)) | UX-only; not governance semantics. |
+
 ## M1–M5 architectural constraint
 
-When M1–M5 foundational code is implemented, it **MUST NOT** establish an implicit or irreversible assumption that one ProjectConcord runtime corresponds to exactly one project/repository. A practical migration path to multiple independently governed projects in one workspace **MUST** remain feasible.
+When M1–M5 foundational code is implemented, it **MUST NOT** establish an implicit or irreversible assumption that one ProjectConcord runtime corresponds to exactly one project/repository. A practical migration path to **multi-project application context (A)** **MUST** remain feasible.
 
-Specific identity, API scoping, and persistence mechanisms are **not** prescribed by this spec; see [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md).
+Specific identity, API scoping, and persistence mechanisms are **not** prescribed by this spec; see [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (non-lock-in cross-reference), [ADR-0015](../../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Proposed**), and [Implementation Roadmap](../../Development/Implementation_Roadmap.md).
 
 ## Stage 1 ownership (summary)
 
 | Concern | Owner (A–F) |
 |---|---|
-| PC-AIGOV-001–004, 007, 014–016 (governance invariants) | Core + extension; relay via [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md) |
+| PC-AIGOV-001–004, 007, 014–016 (governance invariants) | **A** relay + **B** Software Development semantics; enforcement via [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md) at relay boundary |
+| PC-AIGOV-022–023 (multi-project application) | **A** product-shell capability; **B** requirements assume per-project SD partitions when extension enabled |
 | **ProjectWorkRecord** (working name; Core per [ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) Accepted) | **A** — coordination identity; not task/backlog ontology ([AMD-0004](../../Architecture/AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md)) |
 | DevelopmentWorkAuthorization, submissions, inter-project entities, **HumanInitiatedWorkItem** | **B** — Software Development extension (operational store) |
 | Generic delegation primitive | **A** — conceptual only; working name *AuthorityGrant*; **no schema**; repository term **DevelopmentWorkAuthorization** until migration |
@@ -65,9 +77,9 @@ Specific identity, API scoping, and persistence mechanisms are **not** prescribe
 | HumanInitiatedWorkItem | Operational | Inbox/triage; distinct from AWI and from generic Core **ProjectWorkRecord** (see § Stage 2 intake semantics) |
 | InterProjectHandover | Operational | Governed cross-project event |
 | CrossProjectDependency | Operational | Ongoing cross-project relationship |
-| Evidence / validation records | Operational | Linked to authorization and Git state |
+| Evidence / validation records | Operational (**B**) | Software implementation evidence packages; linked to DWA and Git state; optional PWR correlation (**A** references only) |
 
-Destination **EDF artifacts** remain canonical in the target project Git repository only through destination governance.
+Destination **EDF artifacts** remain canonical in the target project Git repository only through destination governance (**F**). Architectural acceptance is **F-layer** governance — not Git PR merge alone (PC-AIGOV-026).
 
 ## Stage 2 intake semantics (documentation — not normative rename)
 
@@ -117,12 +129,14 @@ An intake record (HIW) may result in: creation of a Project Work Record; associa
 | **PC-AIGOV-019** | Out-of-band repository or canonical changes SHALL be surfaced; reconciliation SHALL be required before affected governed work proceeds. |
 | **PC-AIGOV-020** | Repository-agent scope deviations SHALL be preserved for review, not silently normalized into authorization. |
 
-### Cross-project and workspace
+### Cross-project and multi-project application context
+
+Requirements PC-AIGOV-021–028 are **Software Development extension (B)** inter-project governance flows. They assume **multi-project application context (A)** per [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md); they do **not** define Core multi-project shell architecture ([ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) §7). **InterProjectHandover** and **CrossProjectDependency** MUST NOT be generalized into universal Core Project Work Record relationship types ([ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) §12).
 
 | ID | Requirement |
 |---|---|
 | **PC-AIGOV-021** | Work routed to another project or framework SHALL preserve origin without becoming part of the originating project's active gate. |
-| **PC-AIGOV-022** | Architecture SHALL support multiple independently governed projects within one ProjectConcord workspace (future implementation). |
+| **PC-AIGOV-022** | Architecture SHALL support multiple independently governed projects within one ProjectConcord **application instance** (multi-project application context — **A**; future implementation). |
 | **PC-AIGOV-023** | Each managed project SHALL retain its own canonical EDF state, repository state, authorization partition, governance lifecycle, and authority boundaries. |
 | **PC-AIGOV-024** | A project SHALL be able to originate a governed inter-project handover while preserving source provenance. |
 | **PC-AIGOV-025** | Inter-project handover SHALL NOT bypass destination governance; disposition and acceptance occur under destination rules. |

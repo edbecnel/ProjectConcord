@@ -144,7 +144,7 @@ Reframed scope: **manual P0 governed interaction relay** with decomposed ownersh
 
 [PCON-0002](PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) remains **Proposed** discovery — referenced for Actor/Role and multidisciplinary themes, **not** promoted wholesale as this Stage 1 artifact.
 
-[ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) and [ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) remain **Proposed**; reconciled in place without status elevation in this tranche.
+[ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) **Accepted** 2026-09-29; [ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) remains **Proposed**; reconciled in place without status elevation in the Stage 1 tranche.
 
 Closed governance evidence (EGR-G0/G1, AAR-0001, A1 closeout) is **not** retroactively rewritten.
 

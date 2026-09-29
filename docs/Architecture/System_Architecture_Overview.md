@@ -138,7 +138,7 @@ flowchart TB
 | Project Architect | `IProjectArchitectProvider` boundary; manual ChatGPT product is one adapter (**E**) |
 | Cursor | `CursorBridge` abstraction; P0 manual transport first ([AWI-0006](Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)) (**E**) |
 | Tier 0 awareness | Shallow Git/governance metadata pre-M2 — not a second EDF parser |
-| ADR-0013 / ADR-0015 | Reconciled with Stage 1; remain **Proposed** |
+| ADR-0013 / ADR-0015 | [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) **Accepted** 2026-09-29 (**B-layer** Software Development governance); [ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Proposed** |
 
 Phasing: PAR track A0–A4 in [Implementation Roadmap](../Development/Implementation_Roadmap.md) (A2 reframed — manual P0 governed interaction relay); separate from M2 EDF engine milestones.
 

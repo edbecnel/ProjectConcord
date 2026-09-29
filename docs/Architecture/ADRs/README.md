@@ -22,7 +22,7 @@ This directory contains individual Architecture Decision Records.
 | [ADR-0010](ADR-0010-Single-User-Administrator-Default-Model.md) | Single-user Administrator default model | Accepted | 2026-09-15 |
 | [ADR-0011](ADR-0011-Canonical-Artifact-Integrity-and-Trusted-State.md) | Canonical artifact integrity and trusted state | Accepted | 2026-09-15 |
 | [ADR-0012](ADR-0012-Adopt-EDF-Architectural-Audit-Records.md) | Adopt EDF Architectural Audit Records (AAR) | Accepted | 2026-09-17 |
-| [ADR-0013](ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) | Governed development workflow and workspace model | Proposed | 2026-09-21 |
+| [ADR-0013](ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) | Software Development governed workflow and cross-project governance (B-layer) | Accepted | 2026-09-29 |
 | [ADR-0014](ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md) | MVR human attestation and AI boundary (Human-Attestation Authority Boundary) | Proposed | 2026-09-28 |
 | [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) | Project identity, PAR boundaries, per-user operational state | Proposed | 2026-09-28 |
 | [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) | Core, domain extension, and working environment boundary | Accepted | 2026-09-29 |

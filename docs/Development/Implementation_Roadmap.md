@@ -89,7 +89,7 @@ Explicit track for Project Root, stable Project ID, per-user application state, 
 | **M7d / M8** | Inter-project workspace | InterProjectHandover, CrossProjectDependency, traceability — **not MVP** |
 | **M8+** | PR automation, permissions | Target branch/PR under authorization |
 
-**M1–M5 constraint:** Foundational architecture must not irreversibly assume one runtime ↔ one repository ([ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) Proposed). Specific seams are not prescribed in M1–M5 docs.
+**M1–M5 constraint:** Foundational architecture must not irreversibly assume one runtime ↔ one repository ([ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) **Accepted**). Specific seams are not prescribed in M1–M5 docs.
 
 ## Current Status
 

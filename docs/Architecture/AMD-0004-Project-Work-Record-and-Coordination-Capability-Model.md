@@ -165,12 +165,12 @@ Example: embedded product change spanning EE, ME, and Software.
 
 | ADR | Stage 2 effect |
 |---|---|
-| [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) | Remains **Proposed** — reconciliation appendix added; acceptance requires subsequent governed step |
+| [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) | **Accepted** 2026-09-29 — B-layer Software Development governance; reconciliation complete |
 | [ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) | Remains **Proposed** — compatible with PWR keyed by Project ID |
 
 ## 15. Explicitly deferred
 
-Final type names; persistence; APIs; UI; plugin mechanics; Actor/Role; AuthorityGrant/DWA schemas; Core lifecycle state names; relationship type taxonomy; OperationalIntakeRecord ownership; generic Core evidence payload; ADR-0013/0015 acceptance; A2 authorization.
+Final type names; persistence; APIs; UI; plugin mechanics; Actor/Role; AuthorityGrant/DWA schemas; Core lifecycle state names; relationship type taxonomy; OperationalIntakeRecord ownership; generic Core evidence payload; ADR-0015 acceptance; A2 authorization.
 
 ## 16. Related documents
 

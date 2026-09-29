@@ -36,7 +36,7 @@ This is the primary documentation hub for humans and AI assistants.
 - [Verification](docs/Verification/README.md)
 - [AI Governance Workflow — Integration Analysis](docs/Architecture/AI_Governance_Workflow_Integration_Analysis.md)
 - [SPEC-004 — AI-Assisted Development Governance](docs/Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)
-- [ADR-0013 — Governed Development Workflow (Proposed)](docs/Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md)
+- [ADR-0013 — Software Development Governed Workflow (Accepted 2026-09-29)](docs/Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md)
 - [Multi-User Amendment Analysis](docs/Architecture/Multi_User_Amendment_Affected_Document_Analysis.md)
 - [AMD-0001 — Multi-User Platform](docs/Architecture/AMD-0001-Multi-User-Desktop-and-Shared-Project-Services.md)
 - [AMD-0003 — Core, Domain Extension, and Working Environment (integrated 2026-09-29)](docs/Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md)
@@ -81,7 +81,7 @@ When work resumes (after repository inspection at that time):
 1. **Architectural** — Step 1–3 in PCR-0001 (PCON-0002 / AWI-0001 disposition, reconciliation, then ADR-0013 / SPEC-004 review).
 2. **M1** — .NET solution skeleton ([EGR-G0](docs/Program/Gate_Reviews/EGR-G0-Architecture-Planning-Gate.md) **Satisfied**); subject to architect authorization after PCR-0001 sequence.
 3. **[EGR-G1](docs/Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md)** before intensive MVP implementation.
-4. AI governance implementation remains M7+; PCON-0001 / SPEC-004 Draft / ADR-0013 Proposed disposition unchanged until explicit architect action.
+4. AI governance implementation remains M7+; [ADR-0013](docs/Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) **Accepted** 2026-09-29; [SPEC-004](docs/Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) Draft / not implemented; [PCON-0001](docs/Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) Proposed discovery.
 
 ## AI Context
 

@@ -62,7 +62,7 @@ Post-closeout discovery **did not** change disposition of the preceding governan
 | Artifact | Disposition |
 |---|---|
 | [PCON-0001](../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) | **Proposed** / non-normative |
-| [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) | **Proposed** |
+| [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) | **Accepted** 2026-09-29 |
 | [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) | **Draft** / **not implemented** |
 | PC-AIGOV-001–028 | Represented through existing governance documentation |
 | PC-AIGOV-029–051 | **Candidate / non-normative only** (not in SPEC-004 as accepted requirements) |

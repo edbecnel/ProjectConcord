@@ -9,7 +9,7 @@
 | **Created** | 2026-09-22 |
 | **Revisit Trigger** | Future Project Architect review of primary orchestration and external AI/engineering-tool integration; after relevant disposition per [PCR-0001](../../Development/PCR-0001-Project-Continuation-and-Pause-Record.md) |
 | **Discovery source** | [PCON-0004](../PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md) |
-| **Related ADRs** | [ADR-0013](../ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (Proposed) |
+| **Related ADRs** | [ADR-0013](../ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (**Accepted** 2026-09-29) |
 | **Related specs** | [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) (Draft / not implemented) |
 | **Cross-reference only** | [AWI-0001](AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md) (Active); [AWI-0002](AWI-0002-Governed-Pause-Continuation-and-Resume.md) (Active) — compatibility; **separate** initiatives |
 

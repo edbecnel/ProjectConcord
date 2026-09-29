@@ -16,7 +16,7 @@
 | **Stage 1 architecture** | [AMD-0003](../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md) integrated 2026-09-29; [ADR-0016](../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) Accepted — PAR decomposed; A2 reframed in place |
 | **ADR-0014** | **Proposed** |
 | **STOP-2** | **Binding** |
-| **ADR-0013** | **Proposed** — reconciled, **not accepted** |
+| **ADR-0013** | **Accepted** 2026-09-29 — Software Development governance ([reconciliation tranche plan](ProjectConcord-ADR-0013-Reconciliation-Documentation-Tranche-Plan.md)) |
 | **TRV CC-4B** | Paused / untouched |
 
 ## Purpose
@@ -34,7 +34,7 @@ This document incorporates **all binding PA amendments** from the 2026-09-28 Pla
 | [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) | Normative PAR, Project Root, identity, provider boundaries |
 | [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) | Project ID, persistence direction, component boundaries |
 | [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) | Cross-referenced PC-AIGOV requirements (not duplicated) |
-| [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) | Reconciled; remains Proposed |
+| [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) | Software Development governed workflow — **Accepted** 2026-09-29 |
 | [Implementation Roadmap](../Development/Implementation_Roadmap.md) | PAR track before M7a |
 | [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md) | Cursor transport investigation |
 | [GAP-043](../Development/EDF_Gap_Register.md), [GAP-044](../Development/EDF_Gap_Register.md) | PAR implementation and bridge gaps |
@@ -221,7 +221,7 @@ PAR track delivers **relay and identity foundation** earlier than M7a UI breadth
 | 2 | Recent Project Roots | PC-PAR-007–008 | ADR-0015 §2 | SQLite recent list | A1 |
 | 3 | Per-user application state | PC-PAR-009–011 | ADR-0015 §2 | DB schema TBD | A1 |
 | 4 | Project-local state boundaries | PC-PAR-006; ADR-0004 | ADR-0015 §3 | `.projectconcord/` only when justified | A2+ / feature tranches |
-| 5 | Governed workflow state | SPEC-004 PC-AIGOV-002–004 | ADR-0013 (Proposed) | Operational partition by Project ID | A3 / M7a overlap |
+| 5 | Governed workflow state | SPEC-004 PC-AIGOV-002–004 | ADR-0013 (**Accepted** 2026-09-29) | Operational partition by Project ID | A3 / M7a overlap |
 | 6 | Canonical Markdown awareness | PC-PAR-T0 §12 | ADR-0015 §5 | Tier 0 snapshots | A2+; deep M2+ |
 | 7 | PAR | PC-PAR-012–015 | ADR-0015 §4 | Package records | A2 |
 | 8 | Cursor integration / bridge | PC-PAR-022 | AWI-0006 | P0 manual artifacts | A2 P0; A4 P1 |

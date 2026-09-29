@@ -16,7 +16,7 @@
 | **Distinct from** | [PCON-0002](PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) / [AWI-0001](Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md); [PCON-0003](PCON-0003-Governed-Pause-Continuation-and-Resume.md) / [AWI-0002](Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md) — **do not merge** |
 | **Watch item** | [AWI-0003](Watch_Items/AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md) |
 | **Related discovery** | [PCON-0001](PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) (Proposed) |
-| **Related decisions / specs** | [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (Proposed); [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) (Draft / not implemented) |
+| **Related decisions / specs** | [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (**Accepted** 2026-09-29); [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) (Draft / not implemented) |
 
 ---
 
@@ -283,7 +283,7 @@ This is **candidate architecture**, not an accepted ADR.
 
 ## 18. Future reconciliation
 
-When architecture is next reviewed, reconcile this discovery with [PCON-0001](PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md), [PCON-0002](PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md), [PCON-0003](PCON-0003-Governed-Pause-Continuation-and-Resume.md), [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (remain Proposed until explicitly accepted), [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) (remain Draft / not implemented), and [AI Governance Workflow Integration Analysis](AI_Governance_Workflow_Integration_Analysis.md).
+When architecture is next reviewed, reconcile this discovery with [PCON-0001](PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md), [PCON-0002](PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md), [PCON-0003](PCON-0003-Governed-Pause-Continuation-and-Resume.md), [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (**Accepted** 2026-09-29), [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) (remain Draft / not implemented), and [AI Governance Workflow Integration Analysis](AI_Governance_Workflow_Integration_Analysis.md).
 
 **Resume ordering** among PCON-0002, PCON-0003, this discovery, ADR-0013, and SPEC-004 is **not** prescribed here; see [PCR-0001](../Development/PCR-0001-Project-Continuation-and-Pause-Record.md).
 

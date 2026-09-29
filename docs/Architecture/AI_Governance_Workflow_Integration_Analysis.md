@@ -170,3 +170,7 @@ Discovery recorded **after** tranche closeout (`2dfdc97c84c5c464ce7fe7263bbe400e
 - [AWI-0002](Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md)
 - [PCON-0004](PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md)
 - [AWI-0003](Watch_Items/AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md)
+
+## Maintenance (2026-09-29)
+
+[ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) **Accepted** by Project Architect following post–Stage 2 reconciliation ([ADR-0013 Reconciliation Documentation Tranche Plan](../Handover/ProjectConcord-ADR-0013-Reconciliation-Documentation-Tranche-Plan.md)). The **2026-09-21 documentation tranche closeout** table in this document remains an accurate historical record; it is not amended retroactively.

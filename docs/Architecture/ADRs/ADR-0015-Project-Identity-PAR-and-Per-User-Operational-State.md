@@ -14,7 +14,7 @@ Proposed
 
 Project Architect disposition (**2026-09-28**) accepts the [PAR Workflow Architecture Plan](../../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md) **with binding amendments** and authorizes **architecture/documentation canonicalization only**. **A1–A4, M2+, SQLite implementation, `.projectconcord/`, and Cursor bridge implementation are not authorized.**
 
-[ADR-0013](ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) remains **Proposed** — reconciled here without acceptance. Normative product behavior for PAR is defined in [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md). [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) remains the broad governed-development workflow spec; SPEC-006 specializes PAR without duplicating PC-AIGOV-001–028.
+[ADR-0013](ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) **Accepted** 2026-09-29. [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) remains **Proposed**. Normative product behavior for PAR is defined in [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md). [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) remains the broad governed-development workflow spec; SPEC-006 specializes PAR without duplicating PC-AIGOV-001–028.
 
 [PCON-0002](../PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) remains a **dependency** for normative Actor/Role semantics. PAR may use **provisional transport attribution** (for example “Project Architect”, “Engineering Agent”) until PCON-0002 is dispositioned.
 

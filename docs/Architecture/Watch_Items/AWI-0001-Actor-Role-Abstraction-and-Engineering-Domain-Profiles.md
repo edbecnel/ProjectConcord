@@ -9,7 +9,7 @@
 | **Created** | 2026-09-21 |
 | **Revisit Trigger** | Future Project Architect review of AI governance / workspace architecture; after disposition of [ADR-0013](../ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) and [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) relative to [PCON-0002](../PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) |
 | **Discovery source** | [PCON-0002](../PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) (post-closeout; tranche closed at `2dfdc97c84c5c464ce7fe7263bbe400e6ba3dcdc`) |
-| **Related ADRs** | [ADR-0013](../ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (Proposed) |
+| **Related ADRs** | [ADR-0013](../ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (**Accepted** 2026-09-29) |
 | **Related specs** | [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) (Draft / not implemented) |
 | **Related discovery** | [PCON-0001](../PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) (Proposed) |
 
@@ -26,7 +26,7 @@ Investigate whether ProjectConcord governance, workspace, and evidence models sh
 This watch item:
 
 - Does **not** authorize implementation of role management, domain profiles, multi-project features, provider integration, or Git/PR automation.
-- Does **not** change [ADR-0013](../ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) from **Proposed** or [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) from **Draft / not implemented**.
+- Does **not** change [ADR-0013](../ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (**Accepted** 2026-09-29) or [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) from **Draft / not implemented**.
 - Does **not** add PC-AIGOV-029–051 to SPEC-004 as normative requirements (candidates recorded in PCON-0002 §8 and [GAP-037](../../Development/EDF_Gap_Register.md)).
 - Does **not** rename or redesign existing concepts (for example DevelopmentWorkAuthorization, Repository Execution Agent) — only flags them for later review.
 

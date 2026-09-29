@@ -9,7 +9,7 @@
 | **Created** | 2026-09-21 |
 | **Revisit Trigger** | Future Project Architect review of governed pause/continuation/resume; after or in parallel with disposition of related governance models per [PCR-0001](../../Development/PCR-0001-Project-Continuation-and-Pause-Record.md) |
 | **Discovery source** | [PCON-0003](../PCON-0003-Governed-Pause-Continuation-and-Resume.md) |
-| **Related ADRs** | [ADR-0013](../ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (Proposed) |
+| **Related ADRs** | [ADR-0013](../ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (**Accepted** 2026-09-29) |
 | **Related specs** | [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) (Draft / not implemented) |
 | **Cross-reference only** | [AWI-0001](AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md) (Active) — Actor/Role compatibility; **separate** initiative |
 

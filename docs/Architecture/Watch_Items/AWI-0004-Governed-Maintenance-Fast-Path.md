@@ -9,7 +9,7 @@
 | **Created** | 2026-09-26 |
 | **Revisit Trigger** | EDF GMFP consumed in ProjectConcord; future PCON discovery for workflow-profile abstraction; before normative ADR-0013 / SPEC-004 amendment |
 | **Discovery source** | [GMFP handover](../../Handover/EDF-Governed-Maintenance-Fast-Path-Architecture-Handover.md) |
-| **Related ADRs** | [ADR-0013](../ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (Proposed) — **do not amend in this tranche** |
+| **Related ADRs** | [ADR-0013](../ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (**Accepted** 2026-09-29) — **do not amend in this tranche** |
 | **Related specs** | [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) (Draft / not implemented) |
 | **Gap** | [GAP-041](../../Development/EDF_Gap_Register.md#gap-041--gmfp-gmr-consumption-and-workflow-profile-representation) |
 

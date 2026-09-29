@@ -17,7 +17,7 @@
 | **Integration context** | Prior tranche integrated at `b728e2896992b58ee785d406ac93a6badf29c8c8`; see [AI Governance Workflow Integration Analysis](AI_Governance_Workflow_Integration_Analysis.md) |
 | **Watch item** | [AWI-0001](Watch_Items/AWI-0001-Actor-Role-Abstraction-and-Engineering-Domain-Profiles.md) |
 | **Related discovery** | [PCON-0001](PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) (Proposed) |
-| **Related decisions / specs** | [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (Proposed); [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) (Draft / not implemented) |
+| **Related decisions / specs** | [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (**Accepted** 2026-09-29); [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) (Draft / not implemented) |
 
 ---
 
@@ -251,7 +251,7 @@ Indexed for discovery: [EDF Gap Register](../Development/EDF_Gap_Register.md) GA
 When architecture is next reviewed for AI governance and workspace models, reconcile this discovery with:
 
 - [PCON-0001](PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) participant-oriented narrative
-- [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (remain Proposed until explicitly accepted)
+- [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (**Accepted** 2026-09-29)
 - [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) (remain Draft / not implemented until explicitly implemented)
 - [GAP-019](../Development/EDF_Gap_Register.md) persona vs authorization role taxonomy
 - EDF upstream [AWI-0001 — Domain Independence](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Architecture/Watch_Items/AWI-0001-Domain-Independence.md) (methodology-level domain neutrality)
