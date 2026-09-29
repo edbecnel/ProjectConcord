@@ -10,6 +10,7 @@
 | **Project Architect disposition** | **ACCEPT WITH BINDING AMENDMENTS** (2026-09-28) |
 | **Final architecture acceptance (A0)** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-28) |
 | **A1 implementation plan** | [ProjectConcord-A1-Implementation-Plan.md](ProjectConcord-A1-Implementation-Plan.md) — **CLOSED / PA ACCEPTED / PUBLISHED** (2026-09-28; `fba5be5`) |
+| **A2 implementation plan** | [ProjectConcord-A2-Implementation-Plan.md](ProjectConcord-A2-Implementation-Plan.md) — **CLOSED / PA ACCEPTED / PUBLISHED** (2026-09-29); A2 implementation **not authorized** |
 | **M1 / EGR-G1** | Closed / Satisfied — unchanged |
 | **M2+** | **Not authorized** |
 | **A2–A4** | **Not authorized for implementation** |
@@ -192,11 +193,13 @@ Dependencies: A2+ may consume Tier 0 before M2; deep awareness requires M2+.
 | PA-3 honored | No `.projectconcord/` in M1 |
 | `ILocalProjectRuntime` marker | Future project-local seam — not identity store |
 
-## ADR-0013 reconciliation (without acceptance)
+## ADR-0013 (current state)
 
-ADR-0013 operational entities (DevelopmentWorkAuthorization, handover packages, submissions) remain the **target model** for A3+ and M7a. SPEC-006 PAR packages are **derived/operational** per ADR-0013 §1.
+[ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) is **Accepted** (2026-09-29). Software Development operational entities (DevelopmentWorkAuthorization, handover packages, submissions, and related **B-layer** artifacts) remain the **target model** for **A3+** and M7a. SPEC-006 governed interaction packages are **derived/operational** per ADR-0013 §1.
 
-PAR track delivers **relay and identity foundation** earlier than M7a UI breadth. ADR-0013 acceptance still gated on PCON-0002 examination.
+PAR track delivers **relay and identity foundation** earlier than M7a UI breadth. **PCON-0002** remains **Proposed**; it did **not** block ADR-0013 or SPEC-006 acceptance (provisional transport attribution per SPEC-006 §13).
+
+*Historical note (A0 tranche, 2026-09-28): ADR-0013 was not yet Accepted when this plan was first validated; see [Validation performed (A0 documentation tranche)](#validation-performed-a0-documentation-tranche) below.*
 
 ## Validation performed (A0 documentation tranche)
 
@@ -210,7 +213,7 @@ PAR track delivers **relay and identity foundation** earlier than M7a UI breadth
 | No OpenAI API assumption | Confirmed — provider boundary |
 | STOP-2 binding preserved | Confirmed |
 | ADR-0014 remains Proposed | Confirmed |
-| ADR-0013 not accepted | Confirmed |
+| ADR-0013 not accepted | **Historical (A0 only)** — ADR-0013 **Accepted** 2026-09-29 |
 | PCON-0002 dependency visible | Confirmed §PCON-0002 above |
 
 ## Appendix A — Requirements traceability (handover items 1–18)

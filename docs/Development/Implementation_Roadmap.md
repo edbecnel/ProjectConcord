@@ -105,7 +105,8 @@ Explicit track for Project Root, stable Project ID, per-user application state, 
 | PAR A1b | **Published** (2026-09-28) — SQLite persistence + migrations + `Edf.ProjectServices.Tests` |
 | PAR A1c | **Published** (2026-09-28) — Desktop Recent workflow; **[MVR-0001](../Verification/Records/MVR-0001-a1c-desktop-project-root-recent-workflow.md) PASSED** (2026-09-28) |
 | PAR A1 overall | **Closed / published** (2026-09-28; `fba5be51559364d8385edca18b12399f2b5e9b28`) — see [A1 plan §20](../Handover/ProjectConcord-A1-Implementation-Plan.md#20-a1-overall-closeout-2026-09-28) |
-| PAR A2–A4 | **Not started** — **not authorized** (no material dependency on Project Work Record ontology per [ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md)) |
+| PAR A2 plan | **Closed / PA accepted / published** (2026-09-29) — [A2 Implementation Plan](../Handover/ProjectConcord-A2-Implementation-Plan.md); **A2 implementation not authorized**; A2-T1–T8 **not authorized** |
+| PAR A2–A4 implementation | **Not started** — **not authorized** (no material dependency on Project Work Record ontology per [ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md)) |
 | Stage 2 architecture | **PA accepted** (2026-09-29) — [AMD-0004](../Architecture/AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md), [ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) **Accepted**; pre-publication closeout; **not implemented** in `src/` |
 | M2–M5 | **Not started** — G1 satisfied; implementation in earnest requires separate PA authorization per milestone |
 | M6–M7+ | Deferred |
@@ -148,6 +149,7 @@ Explicit track for Project Root, stable Project ID, per-user application state, 
 - [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)
 - [AI Governance Integration Analysis](../Architecture/AI_Governance_Workflow_Integration_Analysis.md)
 - [PAR Workflow Architecture Plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md)
+- [A2 Implementation Plan](../Handover/ProjectConcord-A2-Implementation-Plan.md) (closed / published 2026-09-29)
 - [AMD-0003](../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md), [ADR-0016](../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md)
 - [AMD-0004](../Architecture/AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md), [ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md), [Stage 2 tranche plan](../Handover/ProjectConcord-Stage-2-Documentation-Tranche-Plan.md)
 - [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)
