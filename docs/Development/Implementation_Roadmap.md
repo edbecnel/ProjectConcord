@@ -99,7 +99,7 @@ Explicit track for Project Root, stable Project ID, per-user application state, 
 | **S0** | **Complete** (2026-09-28) — MVR architecture docs; see [MVR handover](../Handover/EDF-Manual-Verification-Record-Architecture-Handover.md) |
 | **Pre-M1** | **Complete** (2026-09-28) — C2/C4 doc reconciliation; [M1 / EGR-G1 plan](../Handover/ProjectConcord-M1-EGR-G1-Implementation-Plan.md) published |
 | M1 | **Complete** (2026-09-28) — M1a **published** (`42f5a6e`); **AAR-0001** published (`58079c9`); [EGR-G1](../Program/Gate_Reviews/EGR-G1-MVP-Implementation-Gate.md) **Satisfied** |
-| PAR A0 | **Complete** (2026-09-28) — SPEC-006, ADR-0015 (Proposed), PA-amended [PAR plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md) |
+| PAR A0 | **Complete** (2026-09-28) — SPEC-006, ADR-0015 (**Accepted** 2026-09-29), PA-amended [PAR plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md) |
 | PAR A1 plan | **Final accepted** — [A1 Implementation Plan](../Handover/ProjectConcord-A1-Implementation-Plan.md) |
 | PAR A1a | **Published** (2026-09-28; `34f1068`) — domain/application/in-memory |
 | PAR A1b | **Published** (2026-09-28) — SQLite persistence + migrations + `Edf.ProjectServices.Tests` |

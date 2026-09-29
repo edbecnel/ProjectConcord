@@ -233,4 +233,4 @@ When a PAR implementation tranche is authorized, acceptance tests SHALL demonstr
 
 ## Maintenance
 
-Update when PAR tranches are authorized or ADR-0015 is accepted.
+Update when PAR tranches are authorized. [ADR-0015](../../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Accepted** 2026-09-29.

@@ -14,7 +14,7 @@ Accepted
 
 This ADR records **Software Development / Engineering extension (B-layer)** governance decisions for AI-assisted repository execution workflow: canonical vs operational boundaries for **B** entities, naming invariants, intake vs EDF watch items, execution authorization, submissions and evidence packages, **Software Development inter-project governance**, and provider-neutral semantics consumption.
 
-This ADR **does not** define, own, or supersede accepted **Core (A)** capabilities. Generic capabilities are defined in [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0017](ADR-0017-Project-Work-Record-Core-Boundary.md), [AMD-0003](../AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md), and [AMD-0004](../AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md). Normative product requirements remain in [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md). Relay and Project Root binding remain in [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) and [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Proposed**).
+This ADR **does not** define, own, or supersede accepted **Core (A)** capabilities. Generic capabilities are defined in [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0017](ADR-0017-Project-Work-Record-Core-Boundary.md), [AMD-0003](../AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md), and [AMD-0004](../AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md). Normative product requirements remain in [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md). Relay and Project Root binding remain in [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) and [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Accepted** 2026-09-29).
 
 **Multi-project application capability** (ProjectConcord hosting multiple **ProjectConcord Project IDs**) is a **Core/product-shell** concern, independent of Software Development enablement. This ADR governs **Software Development workflow operating across projects**, not generic multi-project application architecture.
 
@@ -32,7 +32,7 @@ Accepted Stage 1 and Stage 2 architecture assign **Project Work Record**, **Gove
 |---|---|---|
 | **Multi-project application context** | **Core / product shell (A)** | One ProjectConcord application instance may host/manage multiple **ProjectConcord Project IDs**. Not defined by this ADR. See [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md). |
 | **Working Environment** | **D** | Composable capability/policy facets per [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) §5 — **not** multi-project hosting. |
-| **Project Root / session locator** | Core binding (**A**); detail **ADR-0015 Proposed**, [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) | Currently selected filesystem locator for session context. |
+| **Project Root / session locator** | Core binding (**A**); detail [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Accepted** 2026-09-29, [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) | Currently selected filesystem locator for session context. |
 | **Git worktree / branch** | **B** execution/evidence context | Repository-scoped Software Development detail. |
 | **Provider / agent session** | **E** | Adapter/session rendering (for example Cursor chat continuity). |
 | **Persona / UI workspace** | UI / glossary (**GAP-036**) | UX layout facet; not governance architecture. |
@@ -90,11 +90,11 @@ When the Software Development extension is enabled, governed workflow **may** sp
 - **InterProjectHandover** and **CrossProjectDependency** are **distinct** (PC-AIGOV-027).
 - Traceability from source through target acceptance and back to dependent source work is required when implemented (PC-AIGOV-028).
 
-Generic **multi-project application context** is prerequisite infrastructure owned by **Core (A)**, not by this ADR. PC-AIGOV-022–023 product requirements are specified in [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) and assume accepted Core identity/partitioning ([ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Proposed**).
+Generic **multi-project application context** is prerequisite infrastructure owned by **Core (A)**, not by this ADR. PC-AIGOV-022–023 product requirements are specified in [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) and assume accepted Core identity/partitioning ([ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Accepted** 2026-09-29).
 
 ### 8. M1–M5 non-lock-in (cross-reference)
 
-Foundational M1–M5 code **MUST NOT** irreversibly assume one runtime ↔ one project/repository. That constraint protects future **multi-project application context (A)** and Software Development workflows alike. Mechanisms (`ProjectId`, scoping APIs, schema partitions) are **not** mandated here; see [Implementation Roadmap](../../Development/Implementation_Roadmap.md), [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md), and [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Proposed**).
+Foundational M1–M5 code **MUST NOT** irreversibly assume one runtime ↔ one project/repository. That constraint protects future **multi-project application context (A)** and Software Development workflows alike. Mechanisms (`ProjectId`, scoping APIs, schema partitions) are **not** mandated here; see [Implementation Roadmap](../../Development/Implementation_Roadmap.md), [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md), and [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Accepted** 2026-09-29).
 
 ### 9. AAR vs submission review
 
@@ -116,7 +116,7 @@ This ADR **consumes** without redefining:
 |---|---|---|
 | Project Work Record | **A** | [ADR-0017](ADR-0017-Project-Work-Record-Core-Boundary.md), [AMD-0004](../AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md) |
 | Governed Interaction Relay | **A** | [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) §7, [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) |
-| Project identity / multi-project application shell | **A** | [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Proposed**) |
+| Project identity / multi-project application shell | **A** | [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Accepted** 2026-09-29) |
 | Working Environment | **D** | [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) §5 |
 | AuthorityGrant (conceptual) | **A** — no schema | [AMD-0003](../AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md) §10 |
 
@@ -172,7 +172,7 @@ The following appendices record tranche integration history. **Normative placeme
 
 ### PAR integration (2026-09-28)
 
-[ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Proposed**) and [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) introduce Project Root, stable Project ID, and relay validation without accepting ADR-0013. Historical **PAR** maps to Core relay + **B** software package + **D** policy + **E** adapters ([ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) §9).
+[ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Accepted** 2026-09-29) and [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) introduce Project Root, stable Project ID, and relay validation. Historical **PAR** maps to Core relay + **B** software package + **D** policy + **E** adapters ([ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) §9).
 
 ### Stage 1 integration (2026-09-29)
 
@@ -197,7 +197,7 @@ Documentation-only reconciliation per [ADR-0013 Reconciliation Documentation Tra
 - [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)
 - [ADR-0006](ADR-0006-AI-Boundary.md), [ADR-0009](ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md), [ADR-0012](ADR-0012-Adopt-EDF-Architectural-Audit-Records.md)
 - [Implementation Roadmap](../../Development/Implementation_Roadmap.md)
-- [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Proposed**), [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)
+- [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Accepted** 2026-09-29), [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)
 - [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [AMD-0003](../AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md)
 - [ADR-0017](ADR-0017-Project-Work-Record-Core-Boundary.md), [AMD-0004](../AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md)
 - [PCON-0002](../PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) (**Proposed**)

@@ -12,7 +12,7 @@ Accepted
 
 [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) deferred generic **Work Item** ownership pending bounded Stage 2 analysis. Stage 2 investigation and Project Architect disposition (**2026-09-29**) established that ProjectConcord requires a thin, engineering-domain-neutral operational identity for project undertakings without adopting a universal task-management ontology. This ADR was **accepted by the Project Architect on 2026-09-29** following Stage 2 documentation review. Companion capability model: [AMD-0004](../AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md). Tranche record: [Stage 2 Documentation Tranche Plan](../../Handover/ProjectConcord-Stage-2-Documentation-Tranche-Plan.md).
 
-[ADR-0013](ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) **Accepted** 2026-09-29; [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) remains **Proposed**; this ADR does not accept ADR-0015.
+[ADR-0013](ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) **Accepted** 2026-09-29; [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Accepted** 2026-09-29. This ADR did not accept ADR-0015 at Stage 2 acceptance; identity binding is a companion Accepted ADR.
 
 **ADR numbering:** `ADR-0017` is the ProjectConcord decision in [ADR index](README.md). Example `ADR-0017` identifiers in other documents (for example SPEC-003 illustrations) are unrelated fictional samples.
 

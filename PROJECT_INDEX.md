@@ -27,7 +27,7 @@ This is the primary documentation hub for humans and AI assistants.
 - [AWI-0004 — Governed Maintenance Fast Path (GMFP)](docs/Architecture/Watch_Items/AWI-0004-Governed-Maintenance-Fast-Path.md)
 - [SPEC-005 — Manual Verification Record Consumption](docs/Specifications/features/SPEC-005-manual-verification-record-consumption.md)
 - [SPEC-006 — PAR, Project Root, and Governed Workflow Relay (Draft)](docs/Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)
-- [ADR-0015 — Project Identity, PAR, and Per-User Operational State (Proposed)](docs/Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md)
+- [ADR-0015 — Project Identity, Project Root, and Per-User Operational State (Accepted 2026-09-29)](docs/Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md)
 - [AWI-0006 — PAR Cursor Bridge Transport](docs/Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)
 - [PAR Workflow Architecture Plan](docs/Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md)
 - [A1 Implementation Plan](docs/Handover/ProjectConcord-A1-Implementation-Plan.md) (planning — not implementation authorized)

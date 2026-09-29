@@ -125,7 +125,7 @@ flowchart TB
 
 ## Project Root, relay, and PAR track (A0 / A1 architecture)
 
-**Status:** Project Root + A1 identity/SQLite **implemented**; relay/PAR packages **not implemented** ([SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) Proposed).
+**Status:** Project Root + A1 identity/SQLite **implemented**; relay/PAR packages **not implemented** ([SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Accepted** 2026-09-29).
 
 | Concern | Rule |
 |---|---|
@@ -138,7 +138,7 @@ flowchart TB
 | Project Architect | `IProjectArchitectProvider` boundary; manual ChatGPT product is one adapter (**E**) |
 | Cursor | `CursorBridge` abstraction; P0 manual transport first ([AWI-0006](Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)) (**E**) |
 | Tier 0 awareness | Shallow Git/governance metadata pre-M2 — not a second EDF parser |
-| ADR-0013 / ADR-0015 | [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) **Accepted** 2026-09-29 (**B-layer** Software Development governance); [ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Proposed** |
+| ADR-0013 / ADR-0015 | [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) **Accepted** 2026-09-29 (**B-layer** Software Development governance); [ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Accepted** 2026-09-29 |
 
 Phasing: PAR track A0–A4 in [Implementation Roadmap](../Development/Implementation_Roadmap.md) (A2 reframed — manual P0 governed interaction relay); separate from M2 EDF engine milestones.
 

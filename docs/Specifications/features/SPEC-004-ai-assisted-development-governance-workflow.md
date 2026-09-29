@@ -44,7 +44,7 @@ Engineering teams using an Architectural AI and a repository execution agent (fo
 |---|---|---|
 | **Multi-project application context** | **Core (A)** | Multiple **ProjectConcord Project IDs** in one application instance ([ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md)). |
 | **Working Environment** | **D** | Composable policy/methodology facets — **not** multi-project hosting. |
-| **Project Root / session locator** | **A** (detail [ADR-0015](../../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Proposed**, [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md)) | Session binding to a filesystem locator. |
+| **Project Root / session locator** | **A** (detail [ADR-0015](../../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Accepted** 2026-09-29, [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md)) | Session binding to a filesystem locator. |
 | **Git worktree / branch** | **B** | Software Development execution/evidence context. |
 | **Provider / agent session** | **E** | Transport and adapter session state. |
 | **Persona / UI workspace** | UI ([GAP-036](../../Development/EDF_Gap_Register.md)) | UX-only; not governance semantics. |
@@ -53,7 +53,7 @@ Engineering teams using an Architectural AI and a repository execution agent (fo
 
 When M1–M5 foundational code is implemented, it **MUST NOT** establish an implicit or irreversible assumption that one ProjectConcord runtime corresponds to exactly one project/repository. A practical migration path to **multi-project application context (A)** **MUST** remain feasible.
 
-Specific identity, API scoping, and persistence mechanisms are **not** prescribed by this spec; see [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (non-lock-in cross-reference), [ADR-0015](../../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Proposed**), and [Implementation Roadmap](../../Development/Implementation_Roadmap.md).
+Specific identity, API scoping, and persistence mechanisms are **not** prescribed by this spec; see [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (non-lock-in cross-reference), [ADR-0015](../../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Accepted** 2026-09-29), and [Implementation Roadmap](../../Development/Implementation_Roadmap.md).
 
 ## Stage 1 ownership (summary)
 

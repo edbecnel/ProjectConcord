@@ -44,7 +44,11 @@ ADR-0013 is a **Software Development / Engineering extension (B-layer) governanc
 - **Reconciliation:** Project Architect **accepted with qualifications** (2026-09-29)
 - **ADR-0013 acceptance:** Project Architect **2026-09-29** (following Stage 1/2 publication and reconciliation review)
 - **PCON-0002:** Unresolved; actor/role dependencies exposed in ADR-0013 §13; **not** an acceptance blocker per PA disposition
-- **ADR-0015:** Remains **Proposed**
+- **ADR-0015:** **Accepted** 2026-09-29 (separate closeout after this tranche)
+
+## Maintenance (2026-09-29)
+
+[ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Accepted** by Project Architect (2026-09-29). The **Explicitly not authorized** list above remains an accurate record of that tranche.
 - **A2 / implementation:** **Not authorized** by this tranche
 
 ## Binding dispositions (summary)

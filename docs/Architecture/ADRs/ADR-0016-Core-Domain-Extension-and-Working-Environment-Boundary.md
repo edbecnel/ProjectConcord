@@ -12,7 +12,7 @@ Accepted
 
 Stage 1 architecture analysis and repository investigation established that ProjectConcord must remain engineering-domain neutral at Core while supporting multiple domains/extensions per project, composable Working Environments, and decomposed relay/authorization concerns previously bundled under **PAR** and **DevelopmentWorkAuthorization**. See [AMD-0003](../AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md).
 
-[ADR-0013](ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) **Accepted** 2026-09-29; [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) remains **Proposed**; this ADR does not accept ADR-0015.
+[ADR-0013](ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) **Accepted** 2026-09-29; [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Accepted** 2026-09-29. This ADR did not subsume ADR-0015 at Stage 1 acceptance; companion identity architecture is now Accepted separately.
 
 ## Decision
 
@@ -79,7 +79,7 @@ Stage 1 architecture analysis and repository investigation established that Proj
 
 - [AMD-0003](../AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md)
 - [ADR-0013](ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (**Accepted** 2026-09-29)
-- [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (Proposed)
+- [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Accepted** 2026-09-29)
 - [PCON-0002](../PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) (Proposed discovery)
 - [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)
 - [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)

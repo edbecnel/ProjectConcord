@@ -9,7 +9,7 @@
 | **Created** | 2026-09-28 |
 | **Revisit Trigger** | Before A4 implementation authorization or PA request to evaluate P1 transport |
 | **Discovery source** | [PAR Workflow Architecture Plan](../../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md); [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) |
-| **Related ADRs** | [ADR-0015](../ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (Proposed) |
+| **Related ADRs** | [ADR-0015](../ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Accepted** 2026-09-29) |
 | **Related specs** | [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) (Draft) |
 | **Cross-reference** | [AWI-0003](AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md) — broader orchestration; AWI-0006 scopes PAR Cursor bridge transport only |
 
