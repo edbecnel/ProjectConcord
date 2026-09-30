@@ -125,7 +125,10 @@ public class RelayWorkflowViewModelTests
         ((AsyncRelayCommand)vm.ImportPaHandoverCommand).Execute(null);
 
         Assert.Contains("RejectedMalformed", vm.PaImportValidationSummary, StringComparison.Ordinal);
+        Assert.Contains(RelayValidationCodes.MachineBlockMissing, vm.PaImportValidationSummary, StringComparison.Ordinal);
         Assert.False(vm.CanPrepareEngineeringHandover);
+        Assert.NotEmpty(vm.Diagnostics);
+        Assert.Contains(RelayValidationCodes.MachineBlockMissing, vm.Diagnostics[0], StringComparison.Ordinal);
     }
 
     private static (RelayWorkflowViewModel Vm, IProjectWorkspaceService Workspace, ProjectConcordProjectId ProjectId, ProjectRoot Root) CreateRelayViewModel(

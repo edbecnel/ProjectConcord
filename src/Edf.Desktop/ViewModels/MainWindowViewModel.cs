@@ -40,6 +40,7 @@ public sealed class MainWindowViewModel : ViewModelBase
         OpenProjectFolderCommand = new AsyncRelayCommand(OpenProjectFolderAsync);
         CloseProjectCommand = new RelayCommand(CloseProject, () => HasActiveProject);
         CopyActivePathCommand = new AsyncRelayCommand(CopyActivePathAsync, () => HasActiveProject && !string.IsNullOrWhiteSpace(ProjectRootPath));
+        CopyProjectIdCommand = new AsyncRelayCommand(CopyProjectIdAsync, () => HasActiveProject && !string.IsNullOrWhiteSpace(CurrentProjectId));
 
         Relay = relayWorkflow is null
             ? null
@@ -57,6 +58,8 @@ public sealed class MainWindowViewModel : ViewModelBase
     public ICommand CloseProjectCommand { get; }
 
     public ICommand CopyActivePathCommand { get; }
+
+    public ICommand CopyProjectIdCommand { get; }
 
     public bool HasRecentProjects => RecentProjects.Count > 0;
 
@@ -82,6 +85,7 @@ public sealed class MainWindowViewModel : ViewModelBase
         {
             if (SetProperty(ref _currentProjectId, value))
             {
+                (CopyProjectIdCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
                 RaisePropertyChanged(nameof(ActiveProjectSummary));
             }
         }
@@ -112,6 +116,7 @@ public sealed class MainWindowViewModel : ViewModelBase
             {
                 (CloseProjectCommand as RelayCommand)?.RaiseCanExecuteChanged();
                 (CopyActivePathCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
+                (CopyProjectIdCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
                 RaisePropertyChanged(nameof(ActiveProjectSummary));
             }
         }
@@ -233,6 +238,17 @@ public sealed class MainWindowViewModel : ViewModelBase
 
         await _copyTextAsync(ProjectRootPath).ConfigureAwait(true);
         StatusMessage = "Active project path copied to clipboard.";
+    }
+
+    private async Task CopyProjectIdAsync()
+    {
+        if (string.IsNullOrWhiteSpace(CurrentProjectId))
+        {
+            return;
+        }
+
+        await _copyTextAsync(CurrentProjectId).ConfigureAwait(true);
+        StatusMessage = "Project ID copied to clipboard.";
     }
 
     private static string? SuggestPickerStartPath(string? registeredPath)

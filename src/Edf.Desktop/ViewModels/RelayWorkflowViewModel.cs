@@ -477,8 +477,17 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
         }
     }
 
-    private static string FormatValidationHeading(string context, RelayValidationResult validation) =>
-        $"{context}: {validation.State}";
+    private static string FormatValidationHeading(string context, RelayValidationResult validation)
+    {
+        if (validation.Diagnostics.Count == 0)
+        {
+            return $"{context}: {validation.State}";
+        }
+
+        var diagnosticLines = validation.Diagnostics
+            .Select(d => $"  • {d.Code} — {d.Message}");
+        return $"{context}: {validation.State}\n{string.Join('\n', diagnosticLines)}";
+    }
 
     private static string DescribeEngineeringHandoverEligibility(PaHandoverImportResult import)
     {

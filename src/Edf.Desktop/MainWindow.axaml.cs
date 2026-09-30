@@ -77,7 +77,7 @@ public partial class MainWindow : Window
             Spacing = 12,
             Children =
             {
-                new TextBlock
+                new SelectableTextBlock
                 {
                     Text = "Enter the absolute path to a Project Root folder:",
                     TextWrapping = Avalonia.Media.TextWrapping.Wrap,
