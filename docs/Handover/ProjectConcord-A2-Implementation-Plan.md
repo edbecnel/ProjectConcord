@@ -6,7 +6,7 @@
 
 > **A2 implementation:** **IN PROGRESS** — **A2-T1** through **A2-T5 closed / PA accepted**; see [T1](ProjectConcord-A2-T1-Implementation-Notes.md) through [T5](ProjectConcord-A2-T5-Implementation-Notes.md) implementation notes.
 >
-> **A2-T6 through A2-T8: NOT AUTHORIZED** (separate PA authorization per tranche).
+> **A2-T7 through A2-T8: NOT AUTHORIZED** (separate PA authorization per tranche). **A2-T6 PA accepted** (2026-09-30).
 
 **Mode:** **CLOSED** — A2 **implementation plan** accepted and published (2026-09-29); **A2 `src/` implementation in progress** (T1–T5 published; A2 not complete)
 
@@ -18,7 +18,7 @@
 
 **Architecture basis:** [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) (**Accepted** 2026-09-29), [ADR-0016](../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md), [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md), [ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md), [PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md) (A0), [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)
 
-**Governance inputs:** A2 Readiness and Implementation-Scope Analysis — **ACCEPTED WITH PA QUALIFICATIONS**; **A2-T1 PA accepted** (2026-09-29); **A2-T2 PA accepted** (2026-09-30); **A2-T3 PA accepted** (2026-09-30); **A2-T4 PA accepted** (2026-09-30); **A2-T5 PA accepted** (2026-09-30); **A2-T6–T8 NOT AUTHORIZED**; **A3 / A4 NOT AUTHORIZED**; **PCON-0002** remains **Proposed** / deferred.
+**Governance inputs:** A2 Readiness and Implementation-Scope Analysis — **ACCEPTED WITH PA QUALIFICATIONS**; **A2-T1 PA accepted** (2026-09-29); **A2-T2 PA accepted** (2026-09-30); **A2-T3 PA accepted** (2026-09-30); **A2-T4 PA accepted** (2026-09-30); **A2-T5 PA accepted** (2026-09-30); **A2-T6 PA accepted** (2026-09-30); **A2-T7–T8 NOT AUTHORIZED**; **A3 / A4 NOT AUTHORIZED**; **PCON-0002** remains **Proposed** / deferred.
 
 **Published A2-T1 baseline:** [§27](#27-a2-t1-closeout-2026-09-29). **Published A2-T2 baseline:** [§28](#28-a2-t2-closeout-2026-09-30). **Published A2-T3 baseline:** [§29](#29-a2-t3-closeout-2026-09-30). **Published A2-T4 baseline:** [§30](#30-a2-t4-closeout-2026-09-30). **Published A2-T5 baseline:** [§31](#31-a2-t5-closeout-2026-09-30).
 
@@ -37,7 +37,8 @@
 | **A2-T3** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30) — [implementation notes](ProjectConcord-A2-T3-Implementation-Notes.md) |
 | **A2-T4** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30) — [implementation notes](ProjectConcord-A2-T4-Implementation-Notes.md) |
 | **A2-T5** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30) — [implementation notes](ProjectConcord-A2-T5-Implementation-Notes.md) |
-| A2-T6 … A2-T8 | **NOT AUTHORIZED** — separate PA authorization per tranche |
+| A2-T6 | **CLOSED / PA ACCEPTED** (2026-09-30) — [T6 notes](ProjectConcord-A2-T6-Implementation-Notes.md) |
+| A2-T7 … A2-T8 | **NOT AUTHORIZED** — separate PA authorization per tranche |
 | A3 / A4 | **NOT AUTHORIZED** |
 | STOP-2 (MVR execution instances) | **Binding** — out of relay scope |
 
@@ -650,16 +651,17 @@ No A3 workflow management UI (DWA editor, submission inbox).
 
 | | |
 |---|---|
-| **Authorization** | **NOT AUTHORIZED** |
+| **Authorization** | **CLOSED / PA ACCEPTED** (2026-09-30) |
 | **Objective** | `ICursorRelayBridge` manual implementation; PC-PAR-014 seam |
 | **Scope** | Render validated handover; optional result parse |
 | **Non-goals** | Automation hooks implementation; A4 |
 | **Prerequisites** | T1, T3, T5 |
 | **Owners** | E, A |
 | **PC-PAR** | 014, 022 |
-| **Tests** | Gating tests; mode routing intent |
-| **Acceptance** | Cannot export handover when Incomplete |
-| **STOP** | End T6 → PA review |
+| **Tests** | 17+ focused T6 bridge tests; T5/T4 regression green at closeout |
+| **Acceptance** | PA accepted — [T6 implementation notes](ProjectConcord-A2-T6-Implementation-Notes.md) |
+| **Active STOP** | Blocks Cursor handover preparation when `RelayStopState.Active` even if boundary validation is **Valid**; bridge diagnostic `relay.cursor.handover.stop_active` — does **not** reclassify package as Incomplete/RejectedMalformed |
+| **STOP** | T6 closed — **await PA authorization for A2-T7 only** |
 
 ---
 
@@ -836,7 +838,28 @@ flowchart TD
 | Persistence | T3 only; **no Migration003** |
 | Publication commit | Recorded on `main` at T5 closeout commit SHA (see git log) |
 
-**Next governance decision:** Whether to authorize **A2-T6 only** (Cursor P0 manual bridge). **Do not** infer T7–T8 authorization.
+**Next governance decision (historical):** Whether to authorize **A2-T6 only** — **resolved** 2026-09-30 (T6 accepted; see [§32](#32-a2-t6-closeout-2026-09-30)).
+
+---
+
+## 32. A2-T6 closeout (2026-09-30)
+
+**PA disposition:** **A2-T6 CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30). Cursor P0 manual bridge (`ICursorRelayBridge` / `CursorManualRelayBridge`) published on `main`; **A2-T7 NOT AUTHORIZED**.
+
+| Item | Notes |
+|------|--------|
+| Implementation baseline | `d051cc43bee0e0d9f25f1e01f6b75399de123ef6` |
+| Evidence | [A2-T6 implementation notes](ProjectConcord-A2-T6-Implementation-Notes.md) |
+| Bridge | `CursorManualRelayBridge` — manual paste only; `SupportsAutomatedTransport: false` |
+| Eligibility | `RelayValidatedHandoverEligibility` — **Valid** only; no second readiness system |
+| Active STOP | Blocks handover preparation while **Valid** at boundary; `Valid != actionable` while STOP active |
+| Export | `CursorHandoverExport` + `SoftwareDevelopmentRelayProfileValidator.Instance` before render |
+| Format | Reuses `projectconcord-relay-v1` (T5 renderer/importer) |
+| Focused tests | `FullyQualifiedName~CursorManualRelayBridge` |
+| Persistence | T3 only; **no Migration003** |
+| Publication commit | Recorded on `main` at T6 closeout commit SHA (see git log) |
+
+**Next governance decision:** Whether to authorize **A2-T7 only** (Desktop P0 relay workflow). **Do not** infer T8 authorization.
 
 ---
 
