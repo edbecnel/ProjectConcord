@@ -55,7 +55,7 @@
 | **A — Core** | Transport-neutral package identity/correlation; assembly; structural validation; **INCOMPLETE**; provenance chain; relay-boundary **STOP** behavior; **Tier-0** relay-safe context; provider-neutral session abstractions |
 | **B — Software Development** | Minimum **PA Review Package** profile; boundary validation (handover vs **DevelopmentWorkAuthorization** conflation; planning vs implementation); STOP/work/tranche context; thin result/evidence correlation |
 | **D — Working Environment** | Optional policy reference hook only — **no** facet persistence |
-| **E — Adapters** | `IProjectArchitectProvider`; manual Project Architect adapter; manual P0 **Cursor** handover boundary |
+| **E — Adapters** | `IProjectArchitectProvider`; manual Project Architect adapter; manual P0 **Engineering Agent** handover boundary |
 | **F — EDF** | Canonical references/correlation in packages only — ProjectConcord does **not** close gates or replace Git authority |
 
 Historical **PAR** terminology remains umbrella/provenance only ([SPEC-006 §1](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)).
@@ -68,7 +68,7 @@ A2 **MUST NOT** implement:
 
 - A3 governed-workflow MVP breadth; full **DevelopmentWorkAuthorization** lifecycle/store/UI; **HumanInitiatedWorkItem** workflow; full **ArchitecturalReviewSubmission** lifecycle
 - Baseline drift enforcement (PC-AIGOV-009), scope conformance engine (PC-AIGOV-010), inter-project Software Development (PC-AIGOV-021–028)
-- A4 automated **CursorBridge** transport; Cursor extension; MCP; ACP; OpenAI API automation
+- A4 automated provider transport ([AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)); provider extension/CLI; MCP; ACP; OpenAI API automation
 - M2+ **Edf.Engine** EDF discovery, parsing, profile resolution, conformance validation
 - **ProjectWorkRecord** implementation; **AuthorityGrant** schema; **PCON-0002** Actor/Role; Working Environment persistence/facets
 - Multi-project application shell UX architecture (PC-AIGOV-022)
@@ -157,7 +157,7 @@ Generic Core types **MUST NOT** embed DWA or other B-layer semantics. Use an opa
 |---------|-------|---------|
 | `GovernedPackageId` | A | Stable id per package instance |
 | `GovernedCorrelationId` | A | Links export → import → downstream handover in one user cycle |
-| `GovernedPackageKind` | A | e.g. `PaReviewExport`, `PaHandoverImport`, `CursorHandoverExport`, `EngineeringResultImport` |
+| `GovernedPackageKind` | A | e.g. `PaReviewExport`, `PaHandoverImport`, `EngineeringAgentHandoverExport`, `EngineeringResultImport` |
 | `RelaySchemaVersion` | A | Internal DTO schema version (distinct from rendering version) |
 | `RelayRenderVersion` | A/E | Serialization v1 marker in rendered text |
 | `RelayValidationState` | A | `Valid`, `Incomplete`, `RejectedMalformed` |
@@ -234,14 +234,14 @@ Example shape (outer document is Markdown; inner fence uses language tag `projec
 
 - Line 1: `ProjectConcord-Relay-Render: 1`
 - Fenced block `projectconcord-relay-v1` containing a single JSON object (the authoritative envelope)
-- Below: `## Governance-Critical` with key-value lines that **project** the same values as the JSON (e.g. `Cursor-Mode: PLAN`)
+- Below: `## Governance-Critical` with key-value lines that **project** the same values as the JSON (e.g. `Engineering-Agent-Mode: PLAN`)
 
 | Element | Rule |
 |---------|------|
 | Version marker | First line: `ProjectConcord-Relay-Render: 1` |
 | Machine block | Fenced block ` ```projectconcord-relay-v1 ` … ` ``` ` containing **valid JSON** of the full envelope (pretty-print or minified — either is acceptable if JSON-valid) |
 | Human sections | Markdown headings for PA readability below machine block |
-| Governance-critical fields | **Projected duplicates** in `## Governance-Critical` and related B sections (`## Authorization-Disposition`, `## STOP`, `## Work-Context`): `Cursor-Mode`, `Cursor-Chat`, `ChatGPT-Chat`, `Cursor-Mode-Transition` (when applicable), plus disposition/STOP/tranche fields |
+| Governance-critical fields | **Projected duplicates** in `## Governance-Critical` and related B sections (`## Authorization-Disposition`, `## STOP`, `## Work-Context`): `Engineering-Agent-Mode`, `Engineering-Agent-Chat`, `ChatGPT-Chat`, `Engineering-Agent-Mode-Transition` (when applicable), plus disposition/STOP/tranche fields |
 
 The human-readable projection is **not** a second independent source of governance truth.
 
@@ -283,10 +283,10 @@ On import:
 
 | Field | Internal (A) | Rendered (E) | Required when |
 |-------|--------------|--------------|---------------|
-| Cursor mode | `EngineeringAgentMode` enum | `Cursor-Mode` | Always |
-| Cursor chat continuity | `AgentSessionIntent` | `Cursor-Chat` | Always |
+| Engineering agent mode | `EngineeringAgentMode` enum | `Engineering-Agent-Mode` | Always |
+| Engineering agent chat continuity | `AgentSessionIntent` | `Engineering-Agent-Chat` | Always |
 | PA chat continuity | `AgentSessionIntent` | `ChatGPT-Chat` | Manual adapter always |
-| Mode transition | prior + new mode | `Cursor-Mode-Transition` | When mode changes |
+| Mode transition | prior + new mode | `Engineering-Agent-Mode-Transition` | When mode changes |
 | Authorization disposition | B structured block | `## Authorization-Disposition` | When directing implementation work |
 | STOP | `RelayStopState` | `## STOP` | When STOP active or acknowledged |
 | Tranche/work context | B structured block | `## Work-Context` | When package directs tranche work |
@@ -318,7 +318,7 @@ Missing governance-critical (with agreeing machine + projections) → **`Incompl
 |------|-------|--------|-----------|
 | 1 | Human | Select Project Root (A1) | — |
 | 2 | Core (A) | Capture Tier-0 snapshot | Tier-0 in next package |
-| 3 | Human | Set PA + Cursor session NEW/CONTINUE | `relay_continuity` |
+| 3 | Human | Set PA + Engineering Agent session NEW/CONTINUE | `relay_continuity` |
 | 4 | Core (A) | Assemble PA Review Package | — |
 | 5 | B | Attach profile payload | profile JSON |
 | 6 | Core (A) | Pre-export validation | — |
@@ -327,10 +327,10 @@ Missing governance-critical (with agreeing machine + projections) → **`Incompl
 | 9 | Human | Paste PA response into ProjectConcord | — |
 | 10 | E | Parse import | — |
 | 11 | A+B | Validate → Valid / Incomplete / RejectedMalformed | `relay_package`, events |
-| 12a | Core | If **Incomplete** or **RejectedMalformed** → diagnostics; **no** validated Cursor handover | event |
+| 12a | Core | If **Incomplete** or **RejectedMalformed** → diagnostics; **no** validated Engineering Agent handover | event |
 | 12b | Core | If **Valid** → record consume event | event |
-| 13 | E | Render Cursor handover from validated import | package export |
-| 14 | Human | Copy → paste into Cursor | — |
+| 13 | E | Render Engineering Agent handover from validated import | package export |
+| 14 | Human | Copy → paste into engineering agent tool | — |
 | 15 | Human | (Optional) paste thin result/evidence | import package |
 | 16 | Core | Correlate provenance | events |
 
@@ -353,27 +353,27 @@ Missing governance-critical (with agreeing machine + projections) → **`Incompl
 ### 12.2 `ProjectArchitectManualAdapter`
 
 - ChatGPT-oriented field labels per SPEC-006 §9
-- Reminder text in outbound PA package: next Cursor handover must include `Cursor-Mode` (+ transition when applicable)
+- Reminder text in outbound PA package: next Engineering Agent handover must include `Engineering-Agent-Mode` (+ transition when applicable)
 
 ---
 
-## 13. Cursor P0 boundary (E + A)
+## 13. Engineering Agent P0 boundary (E + A)
 
-### 13.1 `ICursorRelayBridge` (name tentative)
+### 13.1 `IEngineeringAgentRelayBridge`
 
 | Method | A2 behavior |
 |--------|-------------|
-| `RenderValidatedHandover` | Produce Cursor-directed Markdown from **Valid** PA import only |
+| `TryRenderValidatedHandover` | Produce Engineering-Agent-directed Markdown from **Valid** PA import only |
 | `TryParseEngineeringResult` | Optional thin import for evidence/result paste |
 
-**MUST NOT:** invoke Cursor, control IDE, use extension/MCP/ACP, manufacture authorization.
+**MUST NOT:** invoke external IDE automation, control provider tooling, use extension/MCP/ACP, manufacture authorization.
 
 ### 13.2 PC-PAR-014 (PA qualification)
 
 | Scope | Behavior |
 |-------|----------|
-| **A2-active** | **Incomplete** (or malformed) input **cannot** produce a **validated/ready** Cursor handover export |
-| **Future automation (A4)** | Same validation state **blocks automated forwarding** on `ICursorRelayBridge` automation hook — seam defined in T6, **not implemented** in A2 |
+| **A2-active** | **Incomplete** (or malformed) input **cannot** produce a **validated/ready** Engineering Agent handover export |
+| **Future automation (A4)** | Same validation state **blocks automated forwarding** on `IEngineeringAgentRelayBridge` automation hook — seam defined in T6, **not implemented** in A2 |
 
 **No fake automation** to satisfy PC-PAR-014. Unit tests assert handover generation gated on `RelayValidationState.Valid` only.
 
@@ -390,13 +390,13 @@ Missing governance-critical (with agreeing machine + projections) → **`Incompl
 | Produce/consume package | `relay_package` + event | — |
 | Full chat transcripts | **Not** canonical (PC-AIGOV-002) | Discard / do not require |
 
-**Correlation:** `GovernedCorrelationId` ties PA export, PA import, Cursor export, optional result import. Provider conversation IDs optional in E-layer only.
+**Correlation:** `GovernedCorrelationId` ties PA export, PA import, Engineering Agent export, optional result import. Provider conversation IDs optional in E-layer only.
 
 ---
 
 ## 15. Trust boundary
 
-Imported PA/Cursor text is **untrusted**:
+Imported PA / Engineering Agent relay text is **untrusted**:
 
 - Malformed → `RejectedMalformed` — never `Valid`
 - Machine vs projected governance-critical mismatch → `RejectedMalformed` — never `Incomplete` or `Valid`
@@ -419,9 +419,9 @@ Extend [MainWindowViewModel](src/Edf.Desktop/ViewModels/MainWindowViewModel.cs) 
 | Paste import PA response | Yes |
 | Show validation result + INCOMPLETE / RejectedMalformed diagnostics | Yes |
 | PA session NEW/CONTINUE | Yes |
-| Cursor session NEW/CONTINUE | Yes |
-| Generate Cursor handover (only when Valid) | Yes |
-| Copy Cursor handover | Yes |
+| Engineering Agent session NEW/CONTINUE | Yes |
+| Generate Engineering Agent handover (only when Valid) | Yes |
+| Copy Engineering Agent handover | Yes |
 | Minimal provenance/history list (last N packages/events) | Yes |
 | Thin evidence/result import | Yes (if included in T6 scope) |
 
@@ -443,7 +443,7 @@ No A3 workflow management UI (DWA editor, submission inbox).
 | PC-PAR-019 capabilities | Unit | Static declaration smoke |
 | PC-PAR-020 fields | Round-trip unit | Application + manual adapter |
 | PC-PAR-021 provenance | Integration | `Edf.ProjectServices.Tests` (SQLite) |
-| PC-PAR-022 P0 export | Unit | Cursor manual bridge |
+| PC-PAR-022 P0 export | Unit | Engineering Agent manual bridge |
 | Tier-0 boundaries | Unit | ProjectServices — temp git repo |
 | PC-AIGOV-003/004/007 | Unit | B profile validator |
 | Persistence / restart | Integration | ProjectServices |
@@ -458,7 +458,7 @@ No A3 workflow management UI (DWA editor, submission inbox).
 | Valid machine block + matching human governance projection | Proceed to boundary checks → **`Valid`** or **`Incomplete`** as appropriate |
 | Structurally valid package; required governance-critical field missing (machine + projections agree on absence) | **`Incomplete`** |
 | Malformed machine JSON / missing machine block | **`RejectedMalformed`** |
-| Machine/human governance-field mismatch (e.g. `Cursor-Mode`, sessions, STOP, authorization disposition, work context) | **`RejectedMalformed`** |
+| Machine/human governance-field mismatch (e.g. `Engineering-Agent-Mode`, sessions, STOP, authorization disposition, work context) | **`RejectedMalformed`** |
 | STOP mismatch between machine block and projected `## STOP` representation | **`RejectedMalformed`** |
 | Authorization-disposition mismatch between machine payload and `## Authorization-Disposition` | **`RejectedMalformed`** |
 | Surrounding prose contradicts structured/projected governance | **No inference / no override**; treat as **`RejectedMalformed`** when contradiction involves authoritative vs required projections |
@@ -481,7 +481,7 @@ No A3 workflow management UI (DWA editor, submission inbox).
 | Location | `docs/Verification/Records/MVR-0002-a2-p0-manual-governed-relay-workflow.md` |
 | Template | Follow [MVR-0001](../Verification/Records/MVR-0001-a1c-desktop-project-root-recent-workflow.md) structure |
 | **Environment (binding — PA Amendment 1)** | A2 MVR execution **SHALL** use a **disposable test Project Root** consistent with EDF [DVW-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/DVW-0001-Disposable-Verification-Workspaces.md). Acceptable examples: `~/tmp/ProjectConcord-A2-MVR/Root-A` or another clearly disposable temporary path. A **disposable clone or fixture** of ProjectConcord **may** be used when realistic EDF content is required, provided it is **explicitly disposable** and is **not** relied upon for real work. **MUST NOT** use as MVR subject: the **active ProjectConcord development repository** (the repo used for ProjectConcord product/engineering work); any **production EDF repository**; any repository the operator relies upon for real work. Verification must not risk mutation of canonical working repositories. |
-| Steps | Open **disposable** Project Root in Desktop → set sessions → generate PA package → copy → simulate PA response paste (fixture file) → **Incomplete** case → **Valid** case → **at least one visible malformed/divergent import** (machine/human governance mismatch → RejectedMalformed diagnostics) if feasible without undue MVR expansion → generate Cursor handover (Valid path only) → optional result paste → verify provenance list |
+| Steps | Open **disposable** Project Root in Desktop → set sessions → generate PA package → copy → simulate PA response paste (fixture file) → **Incomplete** case → **Valid** case → **at least one visible malformed/divergent import** (machine/human governance mismatch → RejectedMalformed diagnostics) if feasible without undue MVR expansion → generate Engineering Agent handover (Valid path only) → optional result paste → verify provenance list |
 | Evidence | Screenshots or pasted diagnostics; correlation ids recorded; record disposable root path used |
 | PASS/FAIL | Operator attestation; FAIL blocks A2 closeout (see T8 — FAIL does not authorize `src/` remediation) |
 | STOP-2 | No execution MVR instance creation through relay |
@@ -647,12 +647,12 @@ No A3 workflow management UI (DWA editor, submission inbox).
 
 ---
 
-### A2-T6 — Cursor P0 manual bridge
+### A2-T6 — Engineering Agent P0 manual bridge
 
 | | |
 |---|---|
-| **Authorization** | **CLOSED / PA ACCEPTED** (2026-09-30) |
-| **Objective** | `ICursorRelayBridge` manual implementation; PC-PAR-014 seam |
+| **Authorization** | **CLOSED / PA ACCEPTED** (2026-09-30); provider-neutral remediation **CLOSED / PA ACCEPTED** (2026-09-30) — see [§33](#33-a2-t6-provider-neutral-remediation-closeout-2026-09-30) |
+| **Objective** | `IEngineeringAgentRelayBridge` manual implementation; PC-PAR-014 seam |
 | **Scope** | Render validated handover; optional result parse |
 | **Non-goals** | Automation hooks implementation; A4 |
 | **Prerequisites** | T1, T3, T5 |
@@ -660,7 +660,7 @@ No A3 workflow management UI (DWA editor, submission inbox).
 | **PC-PAR** | 014, 022 |
 | **Tests** | 17+ focused T6 bridge tests; T5/T4 regression green at closeout |
 | **Acceptance** | PA accepted — [T6 implementation notes](ProjectConcord-A2-T6-Implementation-Notes.md) |
-| **Active STOP** | Blocks Cursor handover preparation when `RelayStopState.Active` even if boundary validation is **Valid**; bridge diagnostic `relay.cursor.handover.stop_active` — does **not** reclassify package as Incomplete/RejectedMalformed |
+| **Active STOP** | Blocks Engineering Agent handover preparation when `RelayStopState.Active` even if boundary validation is **Valid**; bridge diagnostic `relay.engineering_agent.handover.stop_active` — does **not** reclassify package as Incomplete/RejectedMalformed |
 | **STOP** | T6 closed — **await PA authorization for A2-T7 only** |
 
 ---
@@ -709,7 +709,7 @@ flowchart TD
   T3[A2_T3_orchestration_persistence]
   T4[A2_T4_B_profile]
   T5[A2_T5_PA_adapter]
-  T6[A2_T6_Cursor_P0]
+  T6[A2_T6_Engineering_Agent_P0]
   T7[A2_T7_desktop]
   T8[A2_T8_MVR_closeout]
   Plan --> T1 --> T2 --> T3 --> T4 --> T5 --> T6 --> T7 --> T8
@@ -726,7 +726,7 @@ flowchart TD
 | PWR | No A2 dependency |
 | Working Environment | Reference hook only |
 | A3 / M7a | Full governed workflow |
-| A4 / AWI-0006 | Automated Cursor transport |
+| A4 / AWI-0006 | Automated provider transport (watch item) |
 | M2 EDF engine | Discovery/parsing/conformance |
 
 ---
@@ -844,7 +844,7 @@ flowchart TD
 
 ## 32. A2-T6 closeout (2026-09-30)
 
-**PA disposition:** **A2-T6 CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30). Cursor P0 manual bridge (`ICursorRelayBridge` / `CursorManualRelayBridge`) published on `main`; **A2-T7 NOT AUTHORIZED**.
+**Historical record (original publication):** **A2-T6 CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30). First publication on `main` used product-specific source names and v1 rendered labels; publication commit `f9d0360ad5a93862798f31f5baacf0f6ef6dd26f`. **Current canonical architecture** is provider-neutral Engineering Agent (see [§33](#33-a2-t6-provider-neutral-remediation-closeout-2026-09-30)). **A2-T7 NOT AUTHORIZED** at original closeout.
 
 | Item | Notes |
 |------|--------|
@@ -858,6 +858,27 @@ flowchart TD
 | Focused tests | `FullyQualifiedName~CursorManualRelayBridge` |
 | Persistence | T3 only; **no Migration003** |
 | Publication commit | Recorded on `main` at T6 closeout commit SHA (see git log) |
+
+**Next governance decision:** Whether to authorize **A2-T7 only** (Desktop P0 relay workflow). **Do not** infer T8 authorization.
+
+---
+
+## 33. A2-T6 provider-neutral remediation closeout (2026-09-30)
+
+**PA disposition:** **PROVIDER-NEUTRAL REMEDIATION CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30).
+
+| Item | Current canonical state |
+|------|-------------------------|
+| Original T6 publication | `f9d0360ad5a93862798f31f5baacf0f6ef6dd26f` (preserved in history; not amended) |
+| Bridge | `IEngineeringAgentRelayBridge` / `EngineeringAgentManualRelayBridge` under `Edf.Application.Relay.EngineeringAgent` |
+| Export kind | `GovernedPackageKind.EngineeringAgentHandoverExport` (= **2**) |
+| Machine JSON kind | `engineeringAgentHandoverExport` |
+| v1 rendered fields | `Engineering-Agent-Mode`, `Engineering-Agent-Chat`, `Engineering-Agent-Mode-Transition` |
+| Bridge diagnostics | `relay.engineering_agent.*` |
+| Source invariant | Production and test `*.cs` contain **zero** references to any specific engineering-agent commercial product name |
+| Format | `projectconcord-relay-v1` (unchanged fence) |
+| Focused tests | `FullyQualifiedName~EngineeringAgentManualRelayBridge` |
+| Persistence | T3 only; **no Migration003** |
 
 **Next governance decision:** Whether to authorize **A2-T7 only** (Desktop P0 relay workflow). **Do not** infer T8 authorization.
 

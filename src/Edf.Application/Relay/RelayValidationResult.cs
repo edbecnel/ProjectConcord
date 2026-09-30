@@ -6,8 +6,8 @@ public sealed record RelayValidationResult(
     RelayValidationState State,
     IReadOnlyList<RelayValidationDiagnostic> Diagnostics)
 {
-    public bool IsEligibleForValidatedCursorHandover =>
-        RelayValidatedHandoverEligibility.IsEligibleForValidatedCursorHandover(State);
+    public bool IsEligibleForValidatedEngineeringAgentHandover =>
+        RelayValidatedHandoverEligibility.IsEligibleForValidatedEngineeringAgentHandover(State);
 
     public static RelayValidationResult Valid(IReadOnlyList<RelayValidationDiagnostic>? diagnostics = null) =>
         new(RelayValidationState.Valid, diagnostics ?? Array.Empty<RelayValidationDiagnostic>());

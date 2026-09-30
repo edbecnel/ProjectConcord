@@ -1,33 +1,33 @@
-namespace Edf.Application.Relay.Cursor;
+namespace Edf.Application.Relay.EngineeringAgent;
 
 using Edf.Application.Relay.Serialization;
 using Edf.Application.Relay.SoftwareDevelopment;
 using Edf.Domain.Relay;
 
 /// <summary>
-/// P0 manual Cursor bridge (PC-PAR-014, PC-PAR-022). Reuses <c>projectconcord-relay-v1</c>; no automated transport.
+/// P0 manual engineering-agent bridge (PC-PAR-014, PC-PAR-022). Reuses <c>projectconcord-relay-v1</c>; no automated transport.
 /// </summary>
-public sealed class CursorManualRelayBridge : ICursorRelayBridge
+public sealed class EngineeringAgentManualRelayBridge : IEngineeringAgentRelayBridge
 {
     private readonly GovernedRelayV1Renderer _renderer = new();
     private readonly GovernedRelayV1Importer _importer = new();
     private readonly GovernedRelayPackageValidator _validator =
         new(SoftwareDevelopmentRelayProfileValidator.Instance);
 
-    public CursorRelayBridgeCapabilities DeclareCapabilities() =>
+    public EngineeringAgentRelayBridgeCapabilities DeclareCapabilities() =>
         new(
             SupportsManualPaste: true,
             SupportsAutomatedTransport: false,
             SupportedRenderVersionMajor: RelayRenderVersion.V1.Major);
 
-    public CursorHandoverPreparationResult TryRenderValidatedHandover(
+    public EngineeringAgentHandoverPreparationResult TryRenderValidatedHandover(
         GovernedRelayPackage package,
         RelayValidationResult boundaryValidation)
     {
         ArgumentNullException.ThrowIfNull(package);
         ArgumentNullException.ThrowIfNull(boundaryValidation);
 
-        if (!boundaryValidation.IsEligibleForValidatedCursorHandover)
+        if (!boundaryValidation.IsEligibleForValidatedEngineeringAgentHandover)
         {
             return Blocked(null, boundaryValidation);
         }
@@ -39,8 +39,8 @@ public sealed class CursorManualRelayBridge : ICursorRelayBridge
                 RelayValidationResult.Incomplete(
                 [
                     new RelayValidationDiagnostic(
-                        RelayValidationCodes.CursorHandoverPackageKindUnsupported,
-                        "Validated Cursor handover preparation requires a PA handover import or prior Cursor export package kind.",
+                        RelayValidationCodes.EngineeringAgentHandoverPackageKindUnsupported,
+                        "Validated engineering-agent handover preparation requires a PA handover import or prior engineering-agent export package kind.",
                         RelayValidationDiagnosticSeverity.Incomplete),
                 ]));
         }
@@ -52,21 +52,21 @@ public sealed class CursorManualRelayBridge : ICursorRelayBridge
                 RelayValidationResult.Valid(
                 [
                     new RelayValidationDiagnostic(
-                        RelayValidationCodes.CursorHandoverBlockedByActiveStop,
-                        "Active STOP blocks Cursor handover preparation; package validity is unchanged (Valid != actionable while STOP is active).",
+                        RelayValidationCodes.EngineeringAgentHandoverBlockedByActiveStop,
+                        "Active STOP blocks engineering-agent handover preparation; package validity is unchanged (Valid != actionable while STOP is active).",
                         RelayValidationDiagnosticSeverity.Information),
                 ]));
         }
 
-        var exportPackage = package with { Kind = GovernedPackageKind.CursorHandoverExport };
+        var exportPackage = package with { Kind = GovernedPackageKind.EngineeringAgentHandoverExport };
         var substantiveValidation = _validator.Validate(exportPackage);
-        if (!substantiveValidation.IsEligibleForValidatedCursorHandover)
+        if (!substantiveValidation.IsEligibleForValidatedEngineeringAgentHandover)
         {
             return Blocked(exportPackage, substantiveValidation);
         }
 
         var rendered = _renderer.Render(exportPackage);
-        return new CursorHandoverPreparationResult(
+        return new EngineeringAgentHandoverPreparationResult(
             IsReadyForManualTransfer: true,
             RenderedHandover: rendered,
             ExportPackage: exportPackage,
@@ -104,9 +104,9 @@ public sealed class CursorManualRelayBridge : ICursorRelayBridge
     }
 
     private static bool IsHandoverSourceKind(GovernedPackageKind kind) =>
-        kind is GovernedPackageKind.PaHandoverImport or GovernedPackageKind.CursorHandoverExport;
+        kind is GovernedPackageKind.PaHandoverImport or GovernedPackageKind.EngineeringAgentHandoverExport;
 
-    private static CursorHandoverPreparationResult Blocked(
+    private static EngineeringAgentHandoverPreparationResult Blocked(
         GovernedRelayPackage? exportPackage,
         RelayValidationResult validation) =>
         new(

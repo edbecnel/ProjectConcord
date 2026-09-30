@@ -1,11 +1,11 @@
-namespace Edf.Application.Relay.Cursor;
+namespace Edf.Application.Relay.EngineeringAgent;
 
 using Edf.Domain.Relay;
 
 /// <summary>
-/// Outcome of attempting to prepare a manual Cursor handover artifact.
+/// Outcome of attempting to prepare a manual engineering-agent handover artifact.
 /// </summary>
-public sealed record CursorHandoverPreparationResult(
+public sealed record EngineeringAgentHandoverPreparationResult(
     bool IsReadyForManualTransfer,
     string? RenderedHandover,
     GovernedRelayPackage? ExportPackage,

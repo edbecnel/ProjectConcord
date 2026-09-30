@@ -38,7 +38,7 @@ public static class RelayValidationCodes
     public const string HumanInitiatedWorkItemAuthorityConflation = "relay.profile.hiw_authority.conflation";
     public const string AuthorityGrantNotSupported = "relay.profile.authority_grant.not_supported";
 
-    public const string CursorHandoverBlockedByActiveStop = "relay.cursor.handover.stop_active";
-    public const string CursorHandoverPackageKindUnsupported = "relay.cursor.handover.package_kind.unsupported";
-    public const string EngineeringResultPackageKindMismatch = "relay.cursor.engineering_result.kind.mismatch";
+    public const string EngineeringAgentHandoverBlockedByActiveStop = "relay.engineering_agent.handover.stop_active";
+    public const string EngineeringAgentHandoverPackageKindUnsupported = "relay.engineering_agent.handover.package_kind.unsupported";
+    public const string EngineeringResultPackageKindMismatch = "relay.engineering_agent.engineering_result.kind.mismatch";
 }

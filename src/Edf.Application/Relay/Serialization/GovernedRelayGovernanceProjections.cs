@@ -32,14 +32,18 @@ internal static class GovernedRelayGovernanceProjections
         var builder = new StringBuilder();
 
         builder.AppendLine(GovernedRelayV1Format.GovernanceCriticalHeading);
-        builder.AppendLine(FormatKeyValue("Cursor-Mode", FormatMode(governance.EngineeringAgentMode)));
-        builder.AppendLine(FormatKeyValue("Cursor-Chat", FormatSessionIntent(session.EngineeringAgentSessionIntent)));
+        builder.AppendLine(FormatKeyValue(
+            GovernedRelayV1Format.EngineeringAgentModeField,
+            FormatMode(governance.EngineeringAgentMode)));
+        builder.AppendLine(FormatKeyValue(
+            GovernedRelayV1Format.EngineeringAgentChatField,
+            FormatSessionIntent(session.EngineeringAgentSessionIntent)));
         builder.AppendLine(FormatKeyValue("ChatGPT-Chat", FormatSessionIntent(session.ProjectArchitectSessionIntent)));
 
         if (governance.ModeTransition is not null)
         {
             builder.AppendLine(FormatKeyValue(
-                "Cursor-Mode-Transition",
+                GovernedRelayV1Format.EngineeringAgentModeTransitionField,
                 FormatModeTransition(governance.ModeTransition)));
         }
 
@@ -118,12 +122,12 @@ internal static class GovernedRelayGovernanceProjections
         var workSection = ExtractSection(renderedBody, GovernedRelayV1Format.WorkContextHeading);
         var edfSection = ExtractSection(renderedBody, GovernedRelayV1Format.EdfCorrelationHeading);
 
-        if (!TryParseMode(ReadKey(governanceSection, "Cursor-Mode"), out var mode, out error))
+        if (!TryParseMode(ReadKey(governanceSection, GovernedRelayV1Format.EngineeringAgentModeField), out var mode, out error))
         {
             return false;
         }
 
-        if (!TryParseSessionIntent(ReadKey(governanceSection, "Cursor-Chat"), out var eaIntent, out error))
+        if (!TryParseSessionIntent(ReadKey(governanceSection, GovernedRelayV1Format.EngineeringAgentChatField), out var eaIntent, out error))
         {
             return false;
         }
@@ -134,7 +138,7 @@ internal static class GovernedRelayGovernanceProjections
         }
 
         EngineeringAgentModeTransition? transition = null;
-        var transitionText = ReadKey(governanceSection, "Cursor-Mode-Transition");
+        var transitionText = ReadKey(governanceSection, GovernedRelayV1Format.EngineeringAgentModeTransitionField);
         if (!string.IsNullOrWhiteSpace(transitionText))
         {
             if (!TryParseModeTransition(transitionText, out transition, out error))

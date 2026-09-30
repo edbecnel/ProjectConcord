@@ -33,7 +33,7 @@ public sealed class GovernedRelayV1Renderer
         builder.Append(GovernedRelayGovernanceProjections.Render(envelope));
         builder.AppendLine();
         builder.AppendLine();
-        builder.AppendLine(GovernedRelayV1Format.PaCursorReminder);
+        builder.AppendLine(GovernedRelayV1Format.PaEngineeringAgentReminder);
 
         return builder.ToString().TrimEnd() + Environment.NewLine;
     }

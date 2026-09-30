@@ -179,5 +179,5 @@ public sealed class GovernedRelayPackageValidator
     /// values must be deliberately classified here — they must not silently bypass governance validation.
     /// </summary>
     private static bool RequiresGovernanceCriticalFields(GovernedPackageKind kind) =>
-        kind is GovernedPackageKind.PaHandoverImport or GovernedPackageKind.CursorHandoverExport;
+        kind is GovernedPackageKind.PaHandoverImport or GovernedPackageKind.EngineeringAgentHandoverExport;
 }

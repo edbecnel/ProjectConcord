@@ -13,7 +13,7 @@
 | **Normative** | Yes — Project identity/session (**A**), Core Governed Interaction Relay (**A**), per-user operational state (**A**), Software Development governance at relay boundary (**B**), provider/tool adapters (**E**); historical **Project Architect Relay (PAR)** track terminology |
 | **Last Reviewed** | 2026-09-29 (reconciliation tranche; Project Architect acceptance) |
 | **Target release** | Historical PAR track A1–A4 (separately authorized); not part of M1 |
-| **Implementation** | **A1** (identity + per-user state): **published** 2026-09-28 — see [Implementation Roadmap](../../Development/Implementation_Roadmap.md). **A2–A4** (governed interaction relay, workflow MVP, Cursor bridge automation): **not authorized**. Accepted SPEC-006 satisfies the specification/governance prerequisite for Project Architect **consideration** of **A2**; acceptance does **not** authorize A2. |
+| **Implementation** | **A1** (identity + per-user state): **published** 2026-09-28 — see [Implementation Roadmap](../../Development/Implementation_Roadmap.md). **A2–A4** (governed interaction relay, workflow MVP, automated provider transport per AWI-0006): **not authorized** except tranches separately accepted. Accepted SPEC-006 satisfies the specification/governance prerequisite for Project Architect **consideration** of **A2**; acceptance does **not** authorize A2. |
 | **Architecture baseline** | Accepted [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md), [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md), [ADR-0015](../../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) — repository baseline at reconciliation `084c6f043e27db2c9bdca558f14216de596f3c8d` |
 
 ## Parent
@@ -57,7 +57,7 @@ Define normative ProjectConcord product behavior across accepted component bound
 **E — Provider / tool adapters**
 
 - Provider-neutral **Project Architect** exchange; human-mediated and future automated providers;
-- **Engineering Agent** relay to Cursor via a **CursorBridge** abstraction;
+- **Engineering Agent** relay via an **Engineering Agent relay bridge** abstraction (`IEngineeringAgentRelayBridge` / provider automation seam);
 - adapter rendering and parsing (for example ChatGPT field names); not governance semantics.
 
 **F — EDF canonical governance**
@@ -96,7 +96,7 @@ Define normative ProjectConcord product behavior across accepted component bound
 - Governed interaction package export/import and validation (**A** + **B** + **E**)
 - P0 manual transport (copy/export, paste/import) (**E**)
 - Tier 0 shallow canonical awareness (**A**; inputs for **B** package profiles)
-- Cursor handover validation and mode routing intent (**A** + **E**; P0: human delivers to Cursor — no automated bridge required)
+- Engineering Agent handover validation and mode routing intent (**A** + **E**; P0: human manual delivery — no automated bridge required)
 - Software Development evidence/result ingestion correlation when extension enabled (**B** — see [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) PC-AIGOV-008, PC-AIGOV-016)
 - Provisional transport attribution labels (**E**; [PCON-0002](../../Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) deferred)
 
@@ -120,7 +120,7 @@ Normative requirements (PC-PAR-001–022) map to owners per [ADR-0016](../../Arc
 | **A — Core Governed Interaction Relay** | Package/correlation identity; structural validation pipeline; provenance chain (PC-PAR-021); relay-boundary STOP hooks; INCOMPLETE gate; provider-neutral relay host (capability negotiation where Core) |
 | **B — Software Development extension** | Governance package/profile content; handoff vs **DevelopmentWorkAuthorization**; authorization/planning/implementation semantics at boundary — **semantic source:** [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) / [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) |
 | **D — Working Environment / policy** | Supervision, checkpoint, escalation **where configured** — reference only; no new facets |
-| **E — Provider adapters** | `IProjectArchitectProvider`, manual ChatGPT formatting, `CursorBridge`, transport field rendering/parsing |
+| **E — Provider adapters** | `IProjectArchitectProvider`, manual ChatGPT formatting, `IEngineeringAgentRelayBridge`, transport field rendering/parsing |
 | **F — EDF canonical governance** | Authoritative artifacts in Git; gates, AAR/MVR, architectural acceptance — referenced/correlated, not owned by relay operational store |
 
 **A2 governance:** Accepted SPEC-006 satisfies the specification/governance prerequisite for Project Architect **consideration** of **A2** authorization. **A2 is not authorized** by this specification.
@@ -172,7 +172,7 @@ Historical PAR track sections map here to **Core Governed Interaction Relay** (*
 |---|---|
 | **PC-PAR-012** | The **Core Governed Interaction Relay** SHALL assemble governed interaction packages as follows: **[A]** transport-neutral package assembly; package and correlation identity; incorporation of authorized operational inputs and Tier 0 relay-safe context ([§12](#12-canonical-markdown-awareness--tier-0)). **[B]** When the Software Development extension is in scope, **PA Review Package** profile and content — including **DevelopmentWorkAuthorization**-related context, submissions, and Software Development workflow payload — per [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) and [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md); such content is **not** universal Core semantics. **[D]** Where Working Environment policy is configured, supervision, checkpoint, or escalation information MAY be included by reference to configured policy — without defining new Working Environment facets. |
 | **PC-PAR-013** | Imported **PA handover responses** SHALL be validated as follows: **[A]** structural validation, required relay fields, validation pipeline, and **INCOMPLETE** disposition when governance-critical metadata is missing ([§9](#9-pa-handover-schema--governance-critical-fields-pc-par-020)). **[B]** Software Development semantic rules — including handover vs **DevelopmentWorkAuthorization** separation — per [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) (for example PC-AIGOV-003, PC-AIGOV-005); this spec does not duplicate the complete semantic model. **[E]** Provider-specific serialization parsing (delimited blocks, Markdown sections, or equivalent). |
-| **PC-PAR-014** | **Cursor-directed handovers** SHALL be validated before **automated** Cursor relay: **[A]** Core validation and **INCOMPLETE** status MUST block **automated** Cursor relay. **[E]** Automated relay path is a **CursorBridge** / provider automation concern ([AWI-0006](../../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)). **P0 manual** copy/export and human paste to Cursor MUST NOT be described as requiring an implemented automated bridge. |
+| **PC-PAR-014** | **Engineering-Agent-directed handovers** SHALL be validated before **automated** Engineering Agent relay: **[A]** Core validation and **INCOMPLETE** status MUST block **automated** Engineering Agent relay. **[E]** Automated relay path is a provider automation concern ([AWI-0006](../../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)). **P0 manual** copy/export and human paste MUST NOT be described as requiring an implemented automated bridge. |
 | **PC-PAR-015** | Missing governance-critical authorization or mode metadata MUST NOT be silently inferred from free prose or model output. **[A]** Core relay validation and inference safety at the boundary. **[B]** Meaning of authorization, planning vs implementation, and governed Software Development state — semantic source [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) / [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (for example PC-AIGOV-003, PC-AIGOV-004). |
 
 ## 8. Provider separation (PC-PAR-016–019)
@@ -188,24 +188,24 @@ Historical PAR track sections map here to **Core Governed Interaction Relay** (*
 
 ## 9. PA handover schema — governance-critical fields (PC-PAR-020)
 
-For handovers intended to direct Cursor work, the following are **governance-critical**:
+For handovers intended to direct Engineering Agent work, the following are **governance-critical**:
 
 | Field | Owner | Required when |
 |---|---|---|
-| `Cursor-Mode` | **E** (rendering) | Always (PLAN, AGENT, DEBUG, or documented enum) |
-| `Cursor-Chat` | **E** (rendering) | Always (NEW or CONTINUE — user-selected lifecycle) |
+| `Engineering-Agent-Mode` | **E** (rendering) | Always (PLAN, AGENT, DEBUG, or documented enum) |
+| `Engineering-Agent-Chat` | **E** (rendering) | Always (NEW or CONTINUE — user-selected lifecycle) |
 | `ChatGPT-Chat` | **E** (rendering) | Always for current manual adapter (maps from core `ProjectArchitectSession` intent) |
-| `Cursor-Mode-Transition` | **E** (rendering) | When mode changes from prior authorized state (for example `AGENT -> PLAN`) |
+| `Engineering-Agent-Mode-Transition` | **E** (rendering) | When mode changes from prior authorized state (for example `AGENT -> PLAN`) |
 
 **[B]** Authorization disposition, applicable STOP markers, and Software Development tranche/work context SHALL be represented explicitly in structured or delimited blocks (exact serialization is implementation-defined; validation rules are normative) per [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md).
 
 **[F]** Operational correlation to canonical EDF governance artifacts (for example gate or tranche identifiers) MAY appear in packages for traceability. Such correlation MUST NOT mean ProjectConcord locally accepts, closes, or replaces canonical governance in Git.
 
-**[A]** If governance-critical metadata is missing, status is **INCOMPLETE** — the relay MAY surface for human correction; **automated** Cursor relay is forbidden.
+**[A]** If governance-critical metadata is missing, status is **INCOMPLETE** — the relay MAY surface for human correction; **automated** Engineering Agent relay is forbidden.
 
-**Advisory fields** (for example `Cursor-Chat-Advisory`, `ChatGPT-Chat-Advisory`) are optional recommendations; they MUST NOT override user-selected lifecycle actions.
+**Advisory fields** (for example `Engineering-Agent-Chat-Advisory`, `ChatGPT-Chat-Advisory`) are optional recommendations; they MUST NOT override user-selected lifecycle actions.
 
-Outbound PA packages SHALL remind the Project Architect that the next Cursor handover must include `Cursor-Mode` (and transition when applicable).
+Outbound PA packages SHALL remind the Project Architect that the next Engineering Agent handover must include `Engineering-Agent-Mode` (and transition when applicable).
 
 ## 10. Work-session and conversation provenance (PC-PAR-021)
 
@@ -219,7 +219,7 @@ Core concepts (provider-neutral):
 
 - `ProjectArchitectSession` — user-selected continuity intent for Project Architect interaction
 - `ProjectArchitectSessionAdvisory` — relay recommendation (not a substitute for user decision)
-- `EngineeringAgentSession` / advisory — parallel concepts for Cursor (**E** may render as `Cursor-Chat` / `Cursor-Chat-Advisory`)
+- `EngineeringAgentSession` / advisory — parallel concepts for the Engineering Agent (**E** may render as `Engineering-Agent-Chat` / `Engineering-Agent-Chat-Advisory`)
 
 **[E]** Provider-specific conversation IDs (for example ChatGPT thread IDs) MUST NOT be required in core provenance.
 
@@ -227,13 +227,13 @@ Core concepts (provider-neutral):
 
 Provisional transport attribution ([§13](#13-provisional-attribution-pre-pcon-0002)) does not resolve Actor/Role ([PCON-0002](../../Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md)).
 
-## 11. Engineering agent / Cursor bridge (PC-PAR-022)
+## 11. Engineering agent bridge (PC-PAR-022)
 
 | ID | Requirement |
 |---|---|
-| **PC-PAR-022** | **[E]** Cursor integration SHALL use a **CursorBridge** abstraction. First implementation target is **P0 manual transport** (package generation, validation, copy/export, evidence import) unless later PA disposition changes it. P1 (extension/CLI) and P2 (MCP/ACP) are future investigations ([AWI-0006](../../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)). |
+| **PC-PAR-022** | **[E]** Engineering Agent integration SHALL use an **Engineering Agent relay bridge** abstraction (`IEngineeringAgentRelayBridge`). First implementation target is **P0 manual transport** (package generation, validation, copy/export, evidence import) unless later PA disposition changes it. P1 (extension/CLI) and P2 (MCP/ACP) are future investigations ([AWI-0006](../../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)). |
 
-**[A]** The relay SHALL map **validated** handovers to Cursor PLAN / AGENT / DEBUG routing intent.
+**[A]** The relay SHALL map **validated** handovers to Engineering Agent PLAN / AGENT / DEBUG routing intent.
 
 **[B]** The bridge MUST NOT escalate modes or **authorize implementation** without governed Software Development workflow state per [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) (for example PC-AIGOV-004, PC-AIGOV-007).
 
@@ -254,7 +254,7 @@ Tier 0 MUST NOT become an EDF parser, EDF validator, conformance engine, profile
 
 ## 13. Provisional attribution (pre–PCON-0002)
 
-Minimal labels such as **Project Architect** and **Engineering Agent / Cursor** MAY appear in packages for routing and provenance.
+Minimal labels such as **Project Architect** and **Engineering Agent** MAY appear in packages for routing and provenance.
 
 They are **provisional transport attribution**, not normative Actor/Role assignments. Implementation that materially depends on Actor/Role semantics MUST wait for [PCON-0002](../../Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) disposition (**Proposed**). [ADR-0015](../../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) §7 records that unresolved PCON-0002 did not block ADR-0015 acceptance; **PCON-0002 did not block SPEC-006 acceptance** (Project Architect, 2026-09-29). Provisional attribution remains in effect until PCON-0002 disposition.
 
@@ -272,7 +272,7 @@ When a relay implementation tranche (for example **A2**) is authorized by the Pr
 - Open/select does not create `.projectconcord/`
 - Recent roots stored per-user only
 - INCOMPLETE PA handover blocks **automated** relay
-- Complete handover routes correct Cursor mode intent on P0 manual path
+- Complete handover routes correct Engineering Agent mode intent on P0 manual path
 - Advisory does not override user NEW/CONTINUE
 - Package provenance links export to import without provider-specific IDs
 - Manual ChatGPT adapter path works without API

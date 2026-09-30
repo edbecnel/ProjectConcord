@@ -27,7 +27,7 @@ public class GovernedRelayPackageValidatorTests
         var result = _validator.Validate(package);
 
         Assert.Equal(RelayValidationState.Valid, result.State);
-        Assert.True(result.IsEligibleForValidatedCursorHandover);
+        Assert.True(result.IsEligibleForValidatedEngineeringAgentHandover);
     }
 
     [Fact]
@@ -40,7 +40,7 @@ public class GovernedRelayPackageValidatorTests
 
         Assert.Equal(RelayValidationState.Incomplete, result.State);
         Assert.NotEqual(RelayValidationState.RejectedMalformed, result.State);
-        Assert.False(result.IsEligibleForValidatedCursorHandover);
+        Assert.False(result.IsEligibleForValidatedEngineeringAgentHandover);
     }
 
     [Fact]
@@ -174,11 +174,11 @@ public class GovernedRelayPackageValidatorTests
     }
 
     [Fact]
-    public void OnlyValidState_IsEligibleForValidatedCursorHandover()
+    public void OnlyValidState_IsEligibleForValidatedEngineeringAgentHandover()
     {
-        Assert.False(RelayValidatedHandoverEligibility.IsEligibleForValidatedCursorHandover(RelayValidationState.Incomplete));
-        Assert.False(RelayValidatedHandoverEligibility.IsEligibleForValidatedCursorHandover(RelayValidationState.RejectedMalformed));
-        Assert.True(RelayValidatedHandoverEligibility.IsEligibleForValidatedCursorHandover(RelayValidationState.Valid));
+        Assert.False(RelayValidatedHandoverEligibility.IsEligibleForValidatedEngineeringAgentHandover(RelayValidationState.Incomplete));
+        Assert.False(RelayValidatedHandoverEligibility.IsEligibleForValidatedEngineeringAgentHandover(RelayValidationState.RejectedMalformed));
+        Assert.True(RelayValidatedHandoverEligibility.IsEligibleForValidatedEngineeringAgentHandover(RelayValidationState.Valid));
     }
 
     [Fact]

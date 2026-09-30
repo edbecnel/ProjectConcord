@@ -4,6 +4,6 @@ public enum GovernedPackageKind
 {
     PaReviewExport = 0,
     PaHandoverImport = 1,
-    CursorHandoverExport = 2,
+    EngineeringAgentHandoverExport = 2,
     EngineeringResultImport = 3,
 }

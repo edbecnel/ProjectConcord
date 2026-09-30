@@ -12,6 +12,11 @@ public static class GovernedRelayV1Format
     public const string AuthorizationDispositionHeading = "## Authorization-Disposition";
     public const string WorkContextHeading = "## Work-Context";
     public const string EdfCorrelationHeading = "## EDF-Correlation";
-    public const string PaCursorReminder =
-        "Reminder: the next Cursor handover must include Cursor-Mode (and Cursor-Mode-Transition when mode changes).";
+
+    public const string EngineeringAgentModeField = "Engineering-Agent-Mode";
+    public const string EngineeringAgentChatField = "Engineering-Agent-Chat";
+    public const string EngineeringAgentModeTransitionField = "Engineering-Agent-Mode-Transition";
+
+    public const string PaEngineeringAgentReminder =
+        "Reminder: the next Engineering Agent handover must include Engineering-Agent-Mode (and Engineering-Agent-Mode-Transition when mode changes).";
 }

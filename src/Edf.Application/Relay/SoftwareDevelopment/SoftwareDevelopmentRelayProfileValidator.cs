@@ -47,7 +47,7 @@ public sealed class SoftwareDevelopmentRelayProfileValidator : ISoftwareDevelopm
 
     private static bool RequiresProfileValidation(GovernedPackageKind kind) =>
         kind is GovernedPackageKind.PaHandoverImport
-            or GovernedPackageKind.CursorHandoverExport
+            or GovernedPackageKind.EngineeringAgentHandoverExport
             or GovernedPackageKind.PaReviewExport
             or GovernedPackageKind.EngineeringResultImport;
 

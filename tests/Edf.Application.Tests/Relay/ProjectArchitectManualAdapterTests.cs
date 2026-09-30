@@ -43,7 +43,7 @@ public class ProjectArchitectManualAdapterTests
 
         Assert.Equal(RelayValidationState.Valid, result.Validation.State);
         Assert.NotNull(result.Package);
-        Assert.True(result.Validation.IsEligibleForValidatedCursorHandover);
+        Assert.True(result.Validation.IsEligibleForValidatedEngineeringAgentHandover);
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class ProjectArchitectManualAdapterTests
             ProjectConcord-Relay-Render: 1
 
             ## Governance-Critical
-            Cursor-Mode: AGENT
+            Engineering-Agent-Mode: AGENT
             """;
 
         var result = _adapter.TryParsePaHandoverImport(rendered);
@@ -106,7 +106,10 @@ public class ProjectArchitectManualAdapterTests
     {
         var package = RelaySerializationFixtures.ValidImplementationHandover();
         var rendered = _adapter.RenderPaReviewPackage(package);
-        rendered = rendered.Replace("Cursor-Mode: AGENT", "Cursor-Mode: PLAN", StringComparison.Ordinal);
+        rendered = rendered.Replace(
+            $"{GovernedRelayV1Format.EngineeringAgentModeField}: AGENT",
+            $"{GovernedRelayV1Format.EngineeringAgentModeField}: PLAN",
+            StringComparison.Ordinal);
 
         var result = _adapter.TryParsePaHandoverImport(rendered);
 
@@ -337,12 +340,12 @@ public class ProjectArchitectManualAdapterTests
     }
 
     [Fact]
-    public void ValidPackage_RemainsEligibleForValidatedCursorHandover()
+    public void ValidPackage_RemainsEligibleForValidatedEngineeringAgentHandover()
     {
         var result = _adapter.TryParsePaHandoverImport(
             _adapter.RenderPaReviewPackage(RelaySerializationFixtures.ValidImplementationHandover()));
 
-        Assert.True(result.Validation.IsEligibleForValidatedCursorHandover);
+        Assert.True(result.Validation.IsEligibleForValidatedEngineeringAgentHandover);
     }
 
     [Fact]
@@ -355,7 +358,7 @@ public class ProjectArchitectManualAdapterTests
 
         var result = _adapter.TryParsePaHandoverImport(_adapter.RenderPaReviewPackage(package));
 
-        Assert.False(result.Validation.IsEligibleForValidatedCursorHandover);
+        Assert.False(result.Validation.IsEligibleForValidatedEngineeringAgentHandover);
     }
 
     [Fact]
@@ -363,7 +366,7 @@ public class ProjectArchitectManualAdapterTests
     {
         var result = _adapter.TryParsePaHandoverImport("not a relay package");
 
-        Assert.False(result.Validation.IsEligibleForValidatedCursorHandover);
+        Assert.False(result.Validation.IsEligibleForValidatedEngineeringAgentHandover);
     }
 }
 

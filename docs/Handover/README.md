@@ -23,7 +23,7 @@ Inbound architectural and integration handovers from external frameworks, progra
 | [ProjectConcord A2-T3 Implementation Notes](ProjectConcord-A2-T3-Implementation-Notes.md) | A2-T3 **closed / PA accepted** (2026-09-30) — relay continuity, persistence, provenance | Active |
 | [ProjectConcord A2-T4 Implementation Notes](ProjectConcord-A2-T4-Implementation-Notes.md) | A2-T4 **closed / PA accepted** (2026-09-30) — Software Development relay profile + boundary rules | Active |
 | [ProjectConcord A2-T5 Implementation Notes](ProjectConcord-A2-T5-Implementation-Notes.md) | A2-T5 **closed / PA accepted** (2026-09-30) — manual PA adapter + relay serialization v1 | Active |
-| [ProjectConcord A2-T6 Implementation Notes](ProjectConcord-A2-T6-Implementation-Notes.md) | A2-T6 **closed / PA accepted** (2026-09-30) — Cursor P0 manual bridge | Active |
+| [ProjectConcord A2-T6 Implementation Notes](ProjectConcord-A2-T6-Implementation-Notes.md) | A2-T6 **closed / PA accepted** (2026-09-30) — Engineering Agent P0 manual bridge (+ provider-neutral source remediation) | Active |
 | [Stage 1 Documentation Tranche Plan](ProjectConcord-Stage-1-Documentation-Tranche-Plan.md) | Stage 1 architecture — **CLOSED / PA ACCEPTED** (2026-09-29) | Active |
 | [Stage 2 Documentation Tranche Plan](ProjectConcord-Stage-2-Documentation-Tranche-Plan.md) | Stage 2 — **CLOSED / PA ACCEPTED / PUBLISHED** (2026-09-29; `c968a88`) | Active |
 | [SPEC-006 Reconciliation Documentation Tranche Plan](ProjectConcord-SPEC-006-Reconciliation-Documentation-Tranche-Plan.md) | SPEC-006 reconciliation + acceptance — **CLOSED / PA ACCEPTED** (2026-09-29) | Active |

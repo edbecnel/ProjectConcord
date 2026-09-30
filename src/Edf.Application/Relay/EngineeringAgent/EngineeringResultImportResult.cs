@@ -1,4 +1,4 @@
-namespace Edf.Application.Relay.Cursor;
+namespace Edf.Application.Relay.EngineeringAgent;
 
 using Edf.Domain.Relay;
 

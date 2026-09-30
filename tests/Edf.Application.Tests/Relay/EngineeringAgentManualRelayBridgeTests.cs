@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 using Edf.Application.Relay;
-using Edf.Application.Relay.Cursor;
+using Edf.Application.Relay.EngineeringAgent;
 using Edf.Application.Relay.ProjectArchitect;
 using Edf.Application.Relay.Serialization;
 using Edf.Application.Relay.SoftwareDevelopment;
@@ -8,12 +8,11 @@ using Edf.Domain.Relay;
 
 namespace Edf.Application.Tests.Relay;
 
-public class CursorManualRelayBridgeTests
+public class EngineeringAgentManualRelayBridgeTests
 {
-    private readonly CursorManualRelayBridge _bridge = new();
+    private readonly EngineeringAgentManualRelayBridge _bridge = new();
     private readonly ProjectArchitectManualAdapter _paAdapter = new();
     private readonly GovernedRelayV1Renderer _renderer = new();
-
     [Fact]
     public void DeclareCapabilities_ReportsManualP0WithoutAutomation()
     {
@@ -27,7 +26,7 @@ public class CursorManualRelayBridgeTests
     [Fact]
     public void BridgeAssembly_DoesNotReferenceClipboardOrAutomationSurfaces()
     {
-        var assembly = typeof(CursorManualRelayBridge).Assembly;
+        var assembly = typeof(EngineeringAgentManualRelayBridge).Assembly;
         var typeNames = assembly.GetTypes().Select(t => t.FullName).Where(n => n is not null).ToList();
 
         Assert.DoesNotContain(typeNames, n => n!.Contains("Clipboard", StringComparison.Ordinal));
@@ -36,7 +35,7 @@ public class CursorManualRelayBridgeTests
     }
 
     [Fact]
-    public void ValidPaImport_CanBePreparedForManualCursorHandover()
+    public void ValidPaImport_CanBePreparedForManualEngineeringAgentHandover()
     {
         var (package, validation) = ImportValidPaHandover();
 
@@ -45,9 +44,9 @@ public class CursorManualRelayBridgeTests
         Assert.True(result.IsReadyForManualTransfer);
         Assert.NotNull(result.RenderedHandover);
         Assert.NotNull(result.ExportPackage);
-        Assert.Equal(GovernedPackageKind.CursorHandoverExport, result.ExportPackage!.Kind);
+        Assert.Equal(GovernedPackageKind.EngineeringAgentHandoverExport, result.ExportPackage!.Kind);
         Assert.Equal(RelayValidationState.Valid, result.Validation.State);
-        Assert.True(result.Validation.IsEligibleForValidatedCursorHandover);
+        Assert.True(result.Validation.IsEligibleForValidatedEngineeringAgentHandover);
     }
 
     [Fact]
@@ -57,13 +56,21 @@ public class CursorManualRelayBridgeTests
         var result = _bridge.TryRenderValidatedHandover(package, validation);
 
         Assert.Matches(
-            new Regex("```projectconcord-relay-v1\\s*\\{", RegexOptions.Multiline),
+            new Regex($"```{GovernedRelayV1Format.MachineBlockFenceLanguage}\\s*\\{{", RegexOptions.Multiline),
             result.RenderedHandover!);
-        Assert.DoesNotContain("projectconcord-cursor", result.RenderedHandover!, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]
-    public void IncompleteBoundaryValidation_CannotPrepareCursorHandover()
+    public void PreparedHandover_SerializesProviderNeutralEngineeringAgentExportKind()
+    {
+        var (package, validation) = ImportValidPaHandover();
+        var result = _bridge.TryRenderValidatedHandover(package, validation);
+
+        Assert.Contains("engineeringAgentHandoverExport", result.RenderedHandover!, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public void IncompleteBoundaryValidation_CannotPrepareEngineeringAgentHandover()
     {
         var package = RelaySerializationFixtures.ValidImplementationHandover();
         var incomplete = RelayValidationResult.Incomplete(
@@ -78,11 +85,11 @@ public class CursorManualRelayBridgeTests
 
         Assert.False(result.IsReadyForManualTransfer);
         Assert.Null(result.RenderedHandover);
-        Assert.False(result.Validation.IsEligibleForValidatedCursorHandover);
+        Assert.False(result.Validation.IsEligibleForValidatedEngineeringAgentHandover);
     }
 
     [Fact]
-    public void RejectedMalformedBoundaryValidation_CannotPrepareCursorHandover()
+    public void RejectedMalformedBoundaryValidation_CannotPrepareEngineeringAgentHandover()
     {
         var package = RelaySerializationFixtures.ValidImplementationHandover();
         var rejected = RelayValidationResult.RejectedMalformed(
@@ -104,7 +111,7 @@ public class CursorManualRelayBridgeTests
     {
         foreach (var state in Enum.GetValues<RelayValidationState>())
         {
-            var expected = RelayValidatedHandoverEligibility.IsEligibleForValidatedCursorHandover(state);
+            var expected = RelayValidatedHandoverEligibility.IsEligibleForValidatedEngineeringAgentHandover(state);
             var validation = state switch
             {
                 RelayValidationState.Valid => RelayValidationResult.Valid(),
@@ -121,7 +128,7 @@ public class CursorManualRelayBridgeTests
     }
 
     [Fact]
-    public void ActiveStop_BlocksCursorHandoverPreparation()
+    public void ActiveStop_BlocksEngineeringAgentHandoverPreparation()
     {
         var (package, validation) = ImportValidPaHandover();
         var stopped = package with
@@ -141,11 +148,11 @@ public class CursorManualRelayBridgeTests
         Assert.NotEqual(RelayValidationState.RejectedMalformed, result.Validation.State);
         Assert.Contains(
             result.Validation.Diagnostics,
-            d => d.Code == RelayValidationCodes.CursorHandoverBlockedByActiveStop);
+            d => d.Code == RelayValidationCodes.EngineeringAgentHandoverBlockedByActiveStop);
     }
 
     [Fact]
-    public void RoundTrip_PreservesExplicitCursorPlanMode()
+    public void RoundTrip_PreservesExplicitEngineeringAgentPlanMode()
     {
         var package = RelaySerializationFixtures.ValidImplementationHandover() with
         {
@@ -164,7 +171,7 @@ public class CursorManualRelayBridgeTests
     }
 
     [Fact]
-    public void RoundTrip_PreservesExplicitCursorAgentMode()
+    public void RoundTrip_PreservesExplicitEngineeringAgentAgentMode()
     {
         var (package, validation) = ImportValidPaHandover();
         var prepared = _bridge.TryRenderValidatedHandover(package, validation);
@@ -203,11 +210,14 @@ public class CursorManualRelayBridgeTests
         var validation = ValidatePaImport(package);
         var prepared = _bridge.TryRenderValidatedHandover(package, validation);
 
-        Assert.DoesNotContain("Cursor-Mode-Transition:", prepared.RenderedHandover!, StringComparison.Ordinal);
+        Assert.DoesNotContain(
+            $"{GovernedRelayV1Format.EngineeringAgentModeTransitionField}:",
+            prepared.RenderedHandover!,
+            StringComparison.Ordinal);
     }
 
     [Fact]
-    public void RoundTrip_PreservesCursorNewAndContinueIntents()
+    public void RoundTrip_PreservesEngineeringAgentNewAndContinueIntents()
     {
         var continuity = new RelaySessionContinuity(
             ProjectArchitectSessionIntent: AgentSessionIntent.Continue,
@@ -231,7 +241,7 @@ public class CursorManualRelayBridgeTests
     }
 
     [Fact]
-    public void AdvisoryDoesNotOverrideExplicitSessionIntent_AfterCursorExport()
+    public void AdvisoryDoesNotOverrideExplicitSessionIntent_AfterEngineeringAgentExport()
     {
         var continuity = new RelaySessionContinuity(
             ProjectArchitectSessionIntent: AgentSessionIntent.Continue,
@@ -250,7 +260,7 @@ public class CursorManualRelayBridgeTests
         var prepared = _bridge.TryRenderValidatedHandover(package, validation);
         prepared = prepared with
         {
-            RenderedHandover = prepared.RenderedHandover + "\n\nCursor-Chat-Advisory: CONTINUE\n",
+            RenderedHandover = prepared.RenderedHandover + "\n\nEngineering-Agent-Chat-Advisory: CONTINUE\n",
         };
         var imported = _paAdapter.TryParsePaHandoverImport(prepared.RenderedHandover!);
 
@@ -274,7 +284,7 @@ public class CursorManualRelayBridgeTests
     }
 
     [Fact]
-    public void ProseCannotManufactureCursorMode_OnEngineeringResultImport()
+    public void ProseCannotManufactureEngineeringAgentMode_OnEngineeringResultImport()
     {
         var rendered = RenderEngineeringResultPackage(
             RelaySerializationFixtures.ValidImplementationHandover() with
@@ -288,7 +298,7 @@ public class CursorManualRelayBridgeTests
                 },
             });
 
-        rendered += "\n\nCursor-Mode: AGENT\n";
+        rendered += $"\n\n{GovernedRelayV1Format.EngineeringAgentModeField}: AGENT\n";
 
         var result = _bridge.TryParseEngineeringResult(rendered);
 

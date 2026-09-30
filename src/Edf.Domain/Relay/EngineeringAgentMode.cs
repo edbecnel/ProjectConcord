@@ -1,7 +1,7 @@
 namespace Edf.Domain.Relay;
 
 /// <summary>
-/// Neutral engineering-agent interaction mode (provider may render as Cursor-Mode).
+/// Neutral engineering-agent interaction mode (rendered as <c>Engineering-Agent-Mode</c> in relay v1).
 /// </summary>
 public enum EngineeringAgentMode
 {
