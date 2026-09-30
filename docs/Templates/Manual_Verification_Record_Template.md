@@ -47,7 +47,7 @@ _Use when manual verification requires disposable filesystem subjects, fixtures,
 
 _Executable operator checklist. Do not bury tests in narrative prose._
 
-- [ ] **MVT-1** — [Short test name]
+- [ ] [[#^mvt-1-record|MVT-1]] — [Short test name]
 
   **Procedure:**  
   [What the human does — concise steps]
@@ -55,7 +55,7 @@ _Executable operator checklist. Do not bury tests in narrative prose._
   **Expected result:**  
   [Explicit pass condition]
 
-- [ ] **MVT-2** — [Short test name]
+- [ ] [[#^mvt-2-record|MVT-2]] — [Short test name]
 
   **Procedure:**  
   [Steps]
@@ -63,14 +63,31 @@ _Executable operator checklist. Do not bury tests in narrative prose._
   **Expected result:**  
   [Pass condition]
 
-_Add one MVT block per test in the governed obligation. Checkbox is a usability aid; the execution record below is authoritative._
+_Add one MVT block per test in the governed obligation. In **Obsidian**, link each checklist item with `[[#^mvt-n-record|MVT-n]]` and place `^mvt-n-record` on the matching execution-record block (table or field list). Checkbox is a usability aid; the execution record below is authoritative._
 
 ## Execution record
 
-| MVT ID | Result | Executor | Date | Evidence |
-|---|---|---|---|---|
-| MVT-1 | Pending / Pass / Fail / Blocked | | | [links] |
-| MVT-2 | Pending / Pass / Fail / Blocked | | | |
+### MVT-1 — [Short test name]
+
+| Field | Value |
+| --- | --- |
+| **Result** | Pending / Pass / Fail / Blocked |
+| **Executor** | |
+| **Date** | |
+| **Evidence** | |
+
+^mvt-1-record
+
+### MVT-2 — [Short test name]
+
+| Field | Value |
+| --- | --- |
+| **Result** | Pending / Pass / Fail / Blocked |
+| **Executor** | |
+| **Date** | |
+| **Evidence** | |
+
+^mvt-2-record
 
 **MVT Result** MUST be **Pending**, **Pass**, **Fail**, or **Blocked** only. **Waived** is not an MVT result. Keep checkbox state consistent with **Result**; on conflict, **Result** governs.
 

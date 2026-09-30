@@ -1,0 +1,4 @@
+ProjectConcord-Relay-Render: 1
+
+## Governance-Critical
+Engineering-Agent-Mode: AGENT

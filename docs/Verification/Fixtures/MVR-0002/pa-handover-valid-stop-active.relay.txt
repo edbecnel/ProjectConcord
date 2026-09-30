@@ -1,0 +1,108 @@
+ProjectConcord-Relay-Render: 1
+
+```projectconcord-relay-v1
+{
+  "packageId": "34ed41c1-d515-4e2d-a794-461dc9cb1e67",
+  "correlationId": "786373c5-ae7b-4851-b851-773cf4a02f33",
+  "kind": "paHandoverImport",
+  "schemaVersionMajor": 1,
+  "schemaVersionMinor": 0,
+  "projectId": "f4f11783-2c48-44f0-9e24-50df4ab51e02",
+  "createdUtc": "2026-09-30T06:18:09.382788+00:00",
+  "updatedUtc": "2026-09-30T06:18:09.382788+00:00",
+  "governanceCritical": {
+    "engineeringAgentMode": "agent",
+    "priorEngineeringAgentMode": "plan",
+    "modeTransition": {
+      "from": "plan",
+      "to": "agent"
+    },
+    "sessionContinuity": {
+      "projectArchitectSessionIntent": "continue",
+      "projectArchitectSessionAdvisory": {
+        "kind": "none"
+      },
+      "engineeringAgentSessionIntent": "new",
+      "engineeringAgentSessionAdvisory": {
+        "kind": "none"
+      }
+    },
+    "stop": {
+      "state": "active",
+      "explicitLabel": "STOP"
+    },
+    "authorizationDispositionPresent": true,
+    "workContextPresent": true,
+    "directiveFlags": {
+      "directsImplementationWork": true,
+      "directsTrancheWork": true
+    },
+    "edfCorrelation": {
+      "artifactReferences": [
+        "ADR-0013",
+        "SPEC-004"
+      ]
+    }
+  },
+  "tier0Snapshot": {
+    "gitHeadCommit": "abc123",
+    "knownPathsPresent": [
+      "docs/Program/Gate_Reviews/"
+    ],
+    "narrowMetadata": {
+      "gate": "G1"
+    }
+  },
+  "softwareDevelopmentProfile": {
+    "payloadVersion": 1,
+    "authorizationDisposition": {
+      "dispositionSummary": "IMPLEMENTATION AUTHORIZED",
+      "planningAuthorized": false,
+      "implementationAuthorized": true,
+      "authorizedTrancheId": "A2-MVR"
+    },
+    "workContext": {
+      "requestedTrancheId": "A2-MVR",
+      "requestedWorkSummary": "MVR disposable verification tranche"
+    },
+    "developmentWorkAuthorization": {
+      "kind": "implementation",
+      "authorizedTrancheId": "A2-MVR",
+      "authorizedScopeMarkers": [
+        "A2-MVR-scope"
+      ],
+      "authorizationReference": "dwa-projection-ref",
+      "authorizedByStopAcknowledgment": false
+    }
+  }
+}
+```
+
+## Governance-Critical
+Engineering-Agent-Mode: AGENT
+Engineering-Agent-Chat: NEW
+ChatGPT-Chat: CONTINUE
+Engineering-Agent-Mode-Transition: PLAN -> AGENT
+Authorization-Disposition-Present: true
+Work-Context-Present: true
+Directs-Implementation-Work: true
+Directs-Tranche-Work: true
+
+## STOP
+State: Active
+Label: STOP
+
+## Authorization-Disposition
+Planning-Authorized: false
+Implementation-Authorized: true
+Authorized-Tranche-Id: A2-MVR
+Disposition-Summary: IMPLEMENTATION AUTHORIZED
+
+## Work-Context
+Requested-Tranche-Id: A2-MVR
+Requested-Work-Summary: MVR disposable verification tranche
+
+## EDF-Correlation
+Artifact-References: ADR-0013, SPEC-004
+
+Reminder: the next Engineering Agent handover must include Engineering-Agent-Mode (and Engineering-Agent-Mode-Transition when mode changes).

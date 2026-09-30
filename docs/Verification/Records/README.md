@@ -33,6 +33,7 @@ Copy [Manual_Verification_Record_Template.md](../../Templates/Manual_Verificatio
 | Record ID | Title | Human execution status |
 |---|---|---|
 | [MVR-0001](MVR-0001-a1c-desktop-project-root-recent-workflow.md) | A1c Desktop Project Root and Recent Projects workflow | Complete (2026-09-28) |
+| [MVR-0002](MVR-0002-a2-p0-manual-governed-relay-workflow.md) | **A2 P0 manual governed relay workflow** — executable operator procedure + execution record | **Complete** (2026-09-30; MVT-1–MVT-19 Pass; PA accepted for A2 closeout) |
 
 ## Parent
 

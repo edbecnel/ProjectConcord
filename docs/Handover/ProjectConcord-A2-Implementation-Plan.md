@@ -4,11 +4,11 @@
 
 **Tranche:** PAR track **A2** — Manual P0 Governed Interaction Relay
 
-> **A2-T1** through **A2-T7 closed / PA accepted**; **A2-T8 NOT AUTHORIZED** — see [T1](ProjectConcord-A2-T1-Implementation-Notes.md) through [T7](ProjectConcord-A2-T7-Implementation-Notes.md) implementation notes.
+> **A2-T1** through **A2-T8 closed / PROJECT ARCHITECT ACCEPTED** (2026-09-30) — see [§35](#35-a2-t8-closeout-2026-09-30) and [§36](#36-a2-overall-closeout-2026-09-30).
 >
-> **A2-T8: NOT AUTHORIZED** (separate PA authorization per tranche). **A2-T6–T7 PA accepted** (2026-09-30).
+> **A2 overall:** **CLOSED / PROJECT ARCHITECT ACCEPTED** — closeout documentation reconciled 2026-09-30; **not yet published** on `origin/main` until PA authorizes commit/push. **A3 / A4 NOT AUTHORIZED**.
 
-**Mode:** **CLOSED** — A2 **implementation plan** accepted and published (2026-09-29); **A2 `src/` implementation in progress** (T1–T7 published; await T8 for MVR/closeout)
+**Mode:** **CLOSED** — A2 **implementation plan** accepted and published (2026-09-29); **A2 P0 manual governed relay tranche complete** (T1–T8 PA accepted; publication pending)
 
 **Planning baseline (pre-plan tranche):** `1098a336569b2f0d7e0af347788b25d8d7e877b3` — *Accept reconciled SPEC-006 governed relay specification.*
 
@@ -18,7 +18,7 @@
 
 **Architecture basis:** [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) (**Accepted** 2026-09-29), [ADR-0016](../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md), [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md), [ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md), [PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md) (A0), [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)
 
-**Governance inputs:** A2 Readiness and Implementation-Scope Analysis — **ACCEPTED WITH PA QUALIFICATIONS**; **A2-T1 PA accepted** (2026-09-29); **A2-T2 PA accepted** (2026-09-30); **A2-T3 PA accepted** (2026-09-30); **A2-T4 PA accepted** (2026-09-30); **A2-T5 PA accepted** (2026-09-30); **A2-T6 PA accepted** (2026-09-30); **A2-T7 PA accepted** (2026-09-30); **A2-T8 NOT AUTHORIZED**; **A3 / A4 NOT AUTHORIZED**; **PCON-0002** remains **Proposed** / deferred.
+**Governance inputs:** A2 Readiness and Implementation-Scope Analysis — **ACCEPTED WITH PA QUALIFICATIONS**; **A2-T1 PA accepted** (2026-09-29); **A2-T2 PA accepted** (2026-09-30); **A2-T3 PA accepted** (2026-09-30); **A2-T4 PA accepted** (2026-09-30); **A2-T5 PA accepted** (2026-09-30); **A2-T6 PA accepted** (2026-09-30); **A2-T7 PA accepted** (2026-09-30); **A2-T8 PA accepted** (2026-09-30); **A2 overall PA accepted** (2026-09-30); **A3 / A4 NOT AUTHORIZED**; **PCON-0002** remains **Proposed** / deferred.
 
 **Published A2-T1 baseline:** [§27](#27-a2-t1-closeout-2026-09-29). **Published A2-T2 baseline:** [§28](#28-a2-t2-closeout-2026-09-30). **Published A2-T3 baseline:** [§29](#29-a2-t3-closeout-2026-09-30). **Published A2-T4 baseline:** [§30](#30-a2-t4-closeout-2026-09-30). **Published A2-T5 baseline:** [§31](#31-a2-t5-closeout-2026-09-30).
 
@@ -31,7 +31,7 @@
 | A2 readiness analysis | **ACCEPTED WITH PA QUALIFICATIONS** |
 | A2 plan documentation tranche | **CLOSED** (draft + binding amendments incorporated 2026-09-29) |
 | **This A2 plan** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-09-29) — binding amendments 1–3 preserved in §8, §18, §22 (T8) |
-| A2 implementation (`src/`) | **IN PROGRESS** — T1–T5 published; A2 not complete |
+| A2 implementation (`src/`) | **COMPLETE** for A2 scope — T1–T7 published on `main`; T8 verification/MVR **PA accepted** (2026-09-30); closeout docs pending publication commit |
 | **A2-T1** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-29) — [implementation notes](ProjectConcord-A2-T1-Implementation-Notes.md) |
 | **A2-T2** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30) — [implementation notes](ProjectConcord-A2-T2-Implementation-Notes.md) |
 | **A2-T3** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30) — [implementation notes](ProjectConcord-A2-T3-Implementation-Notes.md) |
@@ -39,7 +39,8 @@
 | **A2-T5** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30) — [implementation notes](ProjectConcord-A2-T5-Implementation-Notes.md) |
 | A2-T6 | **CLOSED / PA ACCEPTED** (2026-09-30) — [T6 notes](ProjectConcord-A2-T6-Implementation-Notes.md) |
 | A2-T7 | **CLOSED / PA ACCEPTED** (2026-09-30) |
-| A2-T8 | **NOT AUTHORIZED** — separate PA authorization per tranche |
+| A2-T8 | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30) — [T8 verification evidence](ProjectConcord-A2-T8-Verification-Evidence.md); [MVR-0002](../Verification/Records/MVR-0002-a2-p0-manual-governed-relay-workflow.md) **Complete** |
+| **A2 overall** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30) — see [§36](#36-a2-overall-closeout-2026-09-30); publication **pending** |
 | A3 / A4 | **NOT AUTHORIZED** |
 | STOP-2 (MVR execution instances) | **Binding** — out of relay scope |
 
@@ -687,7 +688,7 @@ No A3 workflow management UI (DWA editor, submission inbox).
 
 | | |
 |---|---|
-| **Authorization** | **NOT AUTHORIZED** — T8 authorization **does not** authorize `src/` changes |
+| **Authorization** | **AUTHORIZED** (2026-09-30) — verification/MVR/docs only; **does not** authorize `src/` changes |
 | **Objective** | **Verification** + **MVR** + **documentation** + **closeout** (§20) |
 | **Scope** | Execute scoped P0 MVR (§18 disposable root); complete MVR record; update GAP/roadmap/plan closeout sections in `docs/` only |
 | **Non-goals** | Feature implementation; **`src/` remediation without separate PA authorization** |
@@ -906,6 +907,74 @@ flowchart TD
 | MVR | macOS Avalonia session UX smoke deferred to **A2-T8** — not a T7 defect |
 
 **Next governance decision:** Whether to authorize **A2-T8 only** (verification, MVR, documentation closeout). **A2-T8 NOT AUTHORIZED** until explicit PA authorization.
+
+---
+
+## 35. A2-T8 closeout (2026-09-30)
+
+**PA disposition:** **A2-T8 CLOSED / PROJECT ARCHITECT ACCEPTED** — machine verification **PASS**; **MVR-0002 human execution Complete** (MVT-1–MVT-19 **Pass**); **no `src/` remediation** under T8.
+
+| Item | Notes |
+|------|--------|
+| Verification baseline | `673aa8b767e4371f22da35acdc54d2e6c014bc7d` |
+| Machine evidence | [A2-T8 verification evidence](ProjectConcord-A2-T8-Verification-Evidence.md) |
+| MVR | [MVR-0002](../Verification/Records/MVR-0002-a2-p0-manual-governed-relay-workflow.md) — verification date **2026-09-30**; fixtures [MVR-0002/Fixtures](../Verification/Fixtures/MVR-0002/) |
+| Automated Release build/test | **PASS** — 143 tests |
+| Provider-neutral EA invariant | **PASS** (commercial EA product-name audit) |
+| GAP-030 / AWI-0006 | Unchanged; plugin architecture **deferred**; A4 reconciliation **required** before A4 authorization |
+| GAP-045 / NU1903 SQLite | Unchanged — tracked; not a T8 blocker |
+| Migration003 | **None** |
+| `src/` under T8 closeout | **No remediation authorized** — documentation reconciliation only |
+| Follow-on UX (not defects) | [AWI-0008](../Architecture/Watch_Items/AWI-0008-Governed-Operator-Experience-and-Product-Shell.md) |
+| Publication | **Pending** separate PA commit/push authorization |
+
+---
+
+## 36. A2 overall closeout (2026-09-30)
+
+**PA disposition:** **A2 CLOSED / PROJECT ARCHITECT ACCEPTED** — manual P0 governed interaction relay tranche (SPEC-006 P0 slice) complete per plan §1–§22; T1–T8 **PA accepted**.
+
+### Implementation and verification chain (published on `main` through T7)
+
+| Stage | Baseline (representative) | Subject |
+|-------|---------------------------|---------|
+| A2 plan | 2026-09-29 publication | Binding amendments; disposable MVR; T8 remediation STOP |
+| A2-T1–T7 | See §27–§34 | Domain relay through Desktop P0 workflow |
+| A2-T8 | `673aa8b` | Verification, [MVR-0002](../Verification/Records/MVR-0002-a2-p0-manual-governed-relay-workflow.md), documentation closeout |
+
+### Acceptance criteria reconciliation (A2 scope)
+
+| Criterion | Evidence | Result |
+|-----------|----------|--------|
+| P0 manual relay (PA review, import, EA handover, result import) | T5–T7 + MVR-0002 MVT-1–MVT-19 **Pass** | **Satisfied** |
+| Provider-neutral Engineering Agent source | T6/T7 + T8 audits | **Satisfied** |
+| Per-user relay continuity/provenance (T3) | Automated tests + MVR MVT-16, MVT-19 | **Satisfied** (P0 scope) |
+| No `.projectconcord/` on disposable root | MVR MVT-18 **Pass** | **Satisfied** |
+| Engineering Agent plugin / automated transport | **Deferred** — GAP-030, AWI-0006; **A4 NOT AUTHORIZED** | **Out of A2 scope** |
+| A3 scope | **NOT AUTHORIZED** | **Not started** |
+
+**No unresolved A2 finding blocks closeout** per PA disposition 2026-09-30. Post-MVR product/UX requirements are **follow-on** ([AWI-0008](../Architecture/Watch_Items/AWI-0008-Governed-Operator-Experience-and-Product-Shell.md)) — **not** A2 implementation defects.
+
+### GAP / watch disposition (A2 closeout)
+
+| Item | A2 closeout disposition |
+|------|-------------------------|
+| **GAP-043** | **Further addressed** — P0 PAR relay runtime, validation, Desktop workflow, MVR-0002; automated bridge **deferred** (A4) |
+| **GAP-030 / AWI-0006** | Unchanged — plugin contract + transport reconciliation before A4 |
+| **GAP-045 / AWI-0007** | Unchanged — watch |
+| **AWI-0008** | **Opened** — governed operator experience / product shell (prospective) |
+
+**Closeout publication:** **Pending PA authorization** — governed docs commit only; **no** `src/` changes in this tranche. Do **not** claim `origin/main` contains closeout until commit/push succeeds.
+
+---
+
+## 37. STOP
+
+**STOP** after A2 overall closeout documentation reconciliation — **A2 CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30). **Await explicit PA authorization** for publication commit/push.
+
+- **No** A3 or A4 implementation unless separately authorized
+- **No** T8 `src/` remediation inferred from MVR or closeout
+- **No** Engineering Agent plugin implementation under A2 closeout
 
 ---
 

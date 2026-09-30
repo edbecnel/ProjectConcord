@@ -17,7 +17,8 @@ Inbound architectural and integration handovers from external frameworks, progra
 | [ProjectConcord M1 / EGR-G1 Implementation Plan](ProjectConcord-M1-EGR-G1-Implementation-Plan.md) | PA-accepted M1 skeleton, AAR, and G1 sequence; pre-M1 doc reconciliation complete 2026-09-28 | Active |
 | [ProjectConcord PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md) | PA-amended PAR / Project Root / governed workflow architecture (A0 **PA accepted** 2026-09-28); A1–A4 implementation not authorized | Active |
 | [ProjectConcord A1 Implementation Plan](ProjectConcord-A1-Implementation-Plan.md) | A1 **closed / published** (2026-09-28; `fba5be5` on `main`); A2 not authorized | Active |
-| [ProjectConcord A2 Implementation Plan](ProjectConcord-A2-Implementation-Plan.md) | A2 plan **closed / PA accepted / published** (2026-09-29); A2 **in progress** (T1–T7 accepted); A2-T8 **not authorized** | Active |
+| [ProjectConcord A2 Implementation Plan](ProjectConcord-A2-Implementation-Plan.md) | A2 **closed / PA accepted** (2026-09-30); T1–T8; closeout docs **pending publication** | Active |
+| [ProjectConcord A2-T8 verification evidence](ProjectConcord-A2-T8-Verification-Evidence.md) | A2-T8 **closed / PA accepted** (2026-09-30); MVR-0002 Complete | Active |
 | [ProjectConcord A2-T1 Implementation Notes](ProjectConcord-A2-T1-Implementation-Notes.md) | A2-T1 **closed / PA accepted** (2026-09-29) — core relay domain + validation | Active |
 | [ProjectConcord A2-T2 Implementation Notes](ProjectConcord-A2-T2-Implementation-Notes.md) | A2-T2 **closed / PA accepted** (2026-09-30) — Tier-0 snapshot capability | Active |
 | [ProjectConcord A2-T3 Implementation Notes](ProjectConcord-A2-T3-Implementation-Notes.md) | A2-T3 **closed / PA accepted** (2026-09-30) — relay continuity, persistence, provenance | Active |

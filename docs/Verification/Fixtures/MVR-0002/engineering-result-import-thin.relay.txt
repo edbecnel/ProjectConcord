@@ -1,0 +1,57 @@
+ProjectConcord-Relay-Render: 1
+
+```projectconcord-relay-v1
+{
+  "packageId": "08fd5726-df42-4b5e-8f21-60708eaf0a80",
+  "correlationId": "0a387ed4-627b-4ef6-8ca5-347f58b4555f",
+  "kind": "engineeringResultImport",
+  "schemaVersionMajor": 1,
+  "schemaVersionMinor": 0,
+  "projectId": "f24ead74-aa45-4b1c-9768-9968d554854e",
+  "createdUtc": "2026-09-30T06:18:09.435379+00:00",
+  "updatedUtc": "2026-09-30T06:18:09.435379+00:00",
+  "governanceCritical": {
+    "engineeringAgentMode": "plan",
+    "sessionContinuity": {
+      "projectArchitectSessionIntent": "continue",
+      "projectArchitectSessionAdvisory": {
+        "kind": "none"
+      },
+      "engineeringAgentSessionIntent": "new",
+      "engineeringAgentSessionAdvisory": {
+        "kind": "none"
+      }
+    },
+    "stop": {
+      "state": "none"
+    },
+    "authorizationDispositionPresent": false,
+    "workContextPresent": false,
+    "directiveFlags": {
+      "directsImplementationWork": false,
+      "directsTrancheWork": false
+    }
+  },
+  "tier0Snapshot": {
+    "knownPathsPresent": [],
+    "narrowMetadata": {}
+  },
+  "softwareDevelopmentProfile": {
+    "payloadVersion": 1
+  }
+}
+```
+
+## Governance-Critical
+Engineering-Agent-Mode: PLAN
+Engineering-Agent-Chat: NEW
+ChatGPT-Chat: CONTINUE
+Authorization-Disposition-Present: false
+Work-Context-Present: false
+Directs-Implementation-Work: false
+Directs-Tranche-Work: false
+
+## STOP
+State: None
+
+Reminder: the next Engineering Agent handover must include Engineering-Agent-Mode (and Engineering-Agent-Mode-Transition when mode changes).
