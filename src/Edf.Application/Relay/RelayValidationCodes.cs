@@ -4,7 +4,11 @@ public static class RelayValidationCodes
 {
     public const string PackageIdentityInvalid = "relay.package.identity.invalid";
     public const string MachineBlockMissing = "relay.structural.machine_block.missing";
+    public const string MachineBlockInvalidJson = "relay.structural.machine_block.invalid_json";
     public const string GovernanceProjectionMismatch = "relay.structural.governance_projection.mismatch";
+    public const string RenderVersionMissing = "relay.render.version.missing";
+    public const string RenderVersionUnsupported = "relay.render.version.unsupported";
+    public const string SchemaVersionUnsupported = "relay.schema.version.unsupported";
     public const string ModeTransitionContradictory = "relay.governance.mode_transition.contradictory";
     public const string EngineeringAgentModeMissing = "relay.governance.engineering_agent_mode.missing";
     public const string EngineeringAgentSessionIntentMissing = "relay.governance.engineering_agent_session_intent.missing";

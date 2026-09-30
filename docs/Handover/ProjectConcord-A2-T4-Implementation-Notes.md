@@ -96,4 +96,6 @@ No T5 provider/serialization, T6 Cursor bridge, T7 relay UI, MVR, full DWA entit
 
 ## Authorization boundary
 
-**A2-T5 through A2-T8:** NOT AUTHORIZED. **A3 / A4:** NOT AUTHORIZED. **A2 overall:** not complete.
+*At T4 closeout (2026-09-30), T5 was not yet authorized. T5 was accepted separately — see [A2-T5 implementation notes](ProjectConcord-A2-T5-Implementation-Notes.md).*
+
+**A2-T6 through A2-T8:** NOT AUTHORIZED. **A3 / A4:** NOT AUTHORIZED. **A2 overall:** not complete.
