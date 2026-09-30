@@ -4,11 +4,11 @@
 
 **Tranche:** PAR track **A2** — Manual P0 Governed Interaction Relay
 
-> **A2 implementation:** **IN PROGRESS** — **A2-T1** through **A2-T5 closed / PA accepted**; see [T1](ProjectConcord-A2-T1-Implementation-Notes.md) through [T5](ProjectConcord-A2-T5-Implementation-Notes.md) implementation notes.
+> **A2-T1** through **A2-T7 closed / PA accepted**; **A2-T8 NOT AUTHORIZED** — see [T1](ProjectConcord-A2-T1-Implementation-Notes.md) through [T7](ProjectConcord-A2-T7-Implementation-Notes.md) implementation notes.
 >
-> **A2-T7 through A2-T8: NOT AUTHORIZED** (separate PA authorization per tranche). **A2-T6 PA accepted** (2026-09-30).
+> **A2-T8: NOT AUTHORIZED** (separate PA authorization per tranche). **A2-T6–T7 PA accepted** (2026-09-30).
 
-**Mode:** **CLOSED** — A2 **implementation plan** accepted and published (2026-09-29); **A2 `src/` implementation in progress** (T1–T5 published; A2 not complete)
+**Mode:** **CLOSED** — A2 **implementation plan** accepted and published (2026-09-29); **A2 `src/` implementation in progress** (T1–T7 published; await T8 for MVR/closeout)
 
 **Planning baseline (pre-plan tranche):** `1098a336569b2f0d7e0af347788b25d8d7e877b3` — *Accept reconciled SPEC-006 governed relay specification.*
 
@@ -18,7 +18,7 @@
 
 **Architecture basis:** [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) (**Accepted** 2026-09-29), [ADR-0016](../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md), [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md), [ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md), [PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md) (A0), [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)
 
-**Governance inputs:** A2 Readiness and Implementation-Scope Analysis — **ACCEPTED WITH PA QUALIFICATIONS**; **A2-T1 PA accepted** (2026-09-29); **A2-T2 PA accepted** (2026-09-30); **A2-T3 PA accepted** (2026-09-30); **A2-T4 PA accepted** (2026-09-30); **A2-T5 PA accepted** (2026-09-30); **A2-T6 PA accepted** (2026-09-30); **A2-T7–T8 NOT AUTHORIZED**; **A3 / A4 NOT AUTHORIZED**; **PCON-0002** remains **Proposed** / deferred.
+**Governance inputs:** A2 Readiness and Implementation-Scope Analysis — **ACCEPTED WITH PA QUALIFICATIONS**; **A2-T1 PA accepted** (2026-09-29); **A2-T2 PA accepted** (2026-09-30); **A2-T3 PA accepted** (2026-09-30); **A2-T4 PA accepted** (2026-09-30); **A2-T5 PA accepted** (2026-09-30); **A2-T6 PA accepted** (2026-09-30); **A2-T7 PA accepted** (2026-09-30); **A2-T8 NOT AUTHORIZED**; **A3 / A4 NOT AUTHORIZED**; **PCON-0002** remains **Proposed** / deferred.
 
 **Published A2-T1 baseline:** [§27](#27-a2-t1-closeout-2026-09-29). **Published A2-T2 baseline:** [§28](#28-a2-t2-closeout-2026-09-30). **Published A2-T3 baseline:** [§29](#29-a2-t3-closeout-2026-09-30). **Published A2-T4 baseline:** [§30](#30-a2-t4-closeout-2026-09-30). **Published A2-T5 baseline:** [§31](#31-a2-t5-closeout-2026-09-30).
 
@@ -38,7 +38,8 @@
 | **A2-T4** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30) — [implementation notes](ProjectConcord-A2-T4-Implementation-Notes.md) |
 | **A2-T5** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30) — [implementation notes](ProjectConcord-A2-T5-Implementation-Notes.md) |
 | A2-T6 | **CLOSED / PA ACCEPTED** (2026-09-30) — [T6 notes](ProjectConcord-A2-T6-Implementation-Notes.md) |
-| A2-T7 … A2-T8 | **NOT AUTHORIZED** — separate PA authorization per tranche |
+| A2-T7 | **CLOSED / PA ACCEPTED** (2026-09-30) |
+| A2-T8 | **NOT AUTHORIZED** — separate PA authorization per tranche |
 | A3 / A4 | **NOT AUTHORIZED** |
 | STOP-2 (MVR execution instances) | **Binding** — out of relay scope |
 
@@ -669,7 +670,7 @@ No A3 workflow management UI (DWA editor, submission inbox).
 
 | | |
 |---|---|
-| **Authorization** | **NOT AUTHORIZED** |
+| **Authorization** | **CLOSED / PA ACCEPTED** (2026-09-30) |
 | **Objective** | UI §16 wired to relay service |
 | **Scope** | `Edf.Desktop` ViewModels/AXAML |
 | **Non-goals** | A3 workflow UI |
@@ -880,7 +881,31 @@ flowchart TD
 | Focused tests | `FullyQualifiedName~EngineeringAgentManualRelayBridge` |
 | Persistence | T3 only; **no Migration003** |
 
-**Next governance decision:** Whether to authorize **A2-T7 only** (Desktop P0 relay workflow). **Do not** infer T8 authorization.
+**Next governance decision:** Whether to authorize **A2-T8 only** (verification, MVR, A2 closeout). **Do not** infer T8 `src/` remediation authority.
+
+---
+
+## 34. A2-T7 closeout (2026-09-30)
+
+**PA disposition:** **A2-T7 CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30).
+
+| Item | Notes |
+|------|--------|
+| Implementation baseline | `3a3a239f7d0da8941046cc39206d3cd414b84f20` |
+| Evidence | [A2-T7 implementation notes](ProjectConcord-A2-T7-Implementation-Notes.md) |
+| Desktop | `RelayWorkflowViewModel`, MainWindow P0 relay panel, explicit Copy commands |
+| Application | `IGovernedRelayP0WorkflowService` / `GovernedRelayP0WorkflowService` |
+| Eligibility | Valid-only Engineering Agent handover; STOP blocks readiness without reclassifying Valid |
+| Transport | Manual P0 only; no automated provider integration |
+| Source invariant | Zero commercial engineering-agent product names in Core/Extension/Desktop/test `*.cs` |
+| Plugin architecture | Requirement **identified** — [GAP-030](../Development/EDF_Gap_Register.md#gap-030--engineering-agent-provider-adapter-and-plugin-boundary); **not implemented** |
+| Focused tests | `RelayWorkflowViewModelTests`, `GovernedRelayP0WorkflowServiceTests` |
+| Release tests | 143 passed at publication validation |
+| Persistence | T3 only; **no Migration003** |
+| Publication commit | Recorded on `main` at T7 closeout commit SHA (see git log) |
+| MVR | macOS Avalonia session UX smoke deferred to **A2-T8** — not a T7 defect |
+
+**Next governance decision:** Whether to authorize **A2-T8 only** (verification, MVR, documentation closeout). **A2-T8 NOT AUTHORIZED** until explicit PA authorization.
 
 ---
 

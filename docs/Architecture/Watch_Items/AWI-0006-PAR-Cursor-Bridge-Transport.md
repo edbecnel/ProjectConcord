@@ -40,6 +40,19 @@ Investigate **CursorBridge** transport options for PAR after **P0 manual** relay
 - Transport choice embedded in governance semantics (forbidden).
 - Automated relay before INCOMPLETE handover rules are tested on P0.
 - CursorBridge bypassing PAR validation.
+- Concrete Engineering Agent provider logic embedded in **Core** or **Software Engineering Extension** (forbidden — see [GAP-030](../../Development/EDF_Gap_Register.md#gap-030--engineering-agent-provider-adapter-and-plugin-boundary)).
+
+## PA disposition — A2-T7 closeout (2026-09-30)
+
+Historical watch-item text may reference specific tools; **current normative implementation** (A2-T6/T7) is provider-neutral **Engineering Agent** source with P0 manual relay only.
+
+Before **A4** implementation authorization:
+
+- Reconcile automated transport plans against **GAP-030** (provider-neutral plugin contract + separately bounded concrete Engineering Agent plugins).
+- Do **not** interpret A4 or this watch item as authorization to hard-code a concrete provider bridge inside Core or the Software Engineering Extension.
+- Intended direction: generic Engineering Agent automation semantics + provider-neutral plugin contract + bounded provider plugins — **not** Extension → single hard-coded provider integration.
+
+**No** plugin interfaces, loaders, registries, manifests, discovery, or provider SDK integration is authorized by T7 closeout.
 
 ## Parent
 

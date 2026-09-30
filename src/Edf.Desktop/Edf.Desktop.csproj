@@ -35,6 +35,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Edf.Desktop.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <AvaloniaResource Include="..\..\docs\Branding\ProjectConcord-Icon-WhiteBackground.png" Link="Assets\ProjectConcord-Icon-WhiteBackground.png" />
     <Content Include="..\..\docs\Branding\ProjectConcord-Icon-WhiteBackground.png" Link="Assets\ProjectConcord-Icon-WhiteBackground.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

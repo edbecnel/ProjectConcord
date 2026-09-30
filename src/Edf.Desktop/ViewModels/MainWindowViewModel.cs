@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Edf.Application.Projects;
+using Edf.Application.Relay;
 using Edf.Domain.Projects;
 
 namespace Edf.Desktop.ViewModels;
@@ -20,6 +21,15 @@ public sealed class MainWindowViewModel : ViewModelBase
         IProjectWorkspaceService workspace,
         Func<string, string?, Task<string?>> pickFolderAsync,
         Func<string, Task>? copyTextAsync = null)
+        : this(workspace, null, pickFolderAsync, copyTextAsync)
+    {
+    }
+
+    public MainWindowViewModel(
+        IProjectWorkspaceService workspace,
+        IGovernedRelayP0WorkflowService? relayWorkflow,
+        Func<string, string?, Task<string?>> pickFolderAsync,
+        Func<string, Task>? copyTextAsync = null)
     {
         _workspace = workspace ?? throw new ArgumentNullException(nameof(workspace));
         _pickFolderAsync = pickFolderAsync ?? throw new ArgumentNullException(nameof(pickFolderAsync));
@@ -31,8 +41,14 @@ public sealed class MainWindowViewModel : ViewModelBase
         CloseProjectCommand = new RelayCommand(CloseProject, () => HasActiveProject);
         CopyActivePathCommand = new AsyncRelayCommand(CopyActivePathAsync, () => HasActiveProject && !string.IsNullOrWhiteSpace(ProjectRootPath));
 
+        Relay = relayWorkflow is null
+            ? null
+            : new RelayWorkflowViewModel(relayWorkflow, workspace, _copyTextAsync);
+
         InitializeFromWorkspace();
     }
+
+    public RelayWorkflowViewModel? Relay { get; }
 
     public ObservableCollection<RecentProjectItemViewModel> RecentProjects { get; }
 
@@ -264,6 +280,7 @@ public sealed class MainWindowViewModel : ViewModelBase
         ActorDisplayName = _workspace.CurrentActor.DisplayName;
         HasActiveProject = true;
         RefreshRecentProjects();
+        NotifyRelayProjectChanged(result.ProjectId);
     }
 
     private void RefreshActiveSessionFromWorkspace()
@@ -273,12 +290,19 @@ public sealed class MainWindowViewModel : ViewModelBase
             ProjectRootPath = root.AbsolutePath;
             CurrentProjectId = id.ToString();
             HasActiveProject = true;
+            NotifyRelayProjectChanged(id);
             return;
         }
 
         ProjectRootPath = null;
         CurrentProjectId = null;
         HasActiveProject = false;
+        NotifyRelayProjectChanged(null);
+    }
+
+    private void NotifyRelayProjectChanged(ProjectConcordProjectId? projectId)
+    {
+        Relay?.OnActiveProjectChanged(projectId, HasActiveProject);
     }
 
     private void RefreshRecentProjects()

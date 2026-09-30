@@ -1,28 +1,43 @@
 using Edf.Application.Projects;
 using Edf.Application.Projects.InMemory;
+using Edf.Application.Relay;
 using Edf.Engine.Projects;
 using Edf.Identity.Actors;
 using Edf.ProjectServices.Local;
 
 namespace Edf.Application.Composition;
 
+public sealed record DesktopApplicationServices(
+    IProjectWorkspaceService Workspace,
+    IGovernedRelayP0WorkflowService RelayWorkflow);
+
 public static class ApplicationCompositionRoot
 {
-    public static IProjectWorkspaceService CreateDefaultWorkspaceService()
+    public static DesktopApplicationServices CreateDefaultDesktopServices()
     {
-        var actor = new DegenerateAdministratorActor();
-        var resolver = new ProjectRootResolver();
-        var runtime = new LocalProjectRuntime();
         var persistence = UserApplicationStatePersistenceFactory.CreateDefaultSqlite();
-        return new ProjectWorkspaceService(resolver, actor, persistence, runtime);
+        return CreateDesktopServices(persistence);
     }
 
-    public static IProjectWorkspaceService CreateInMemoryWorkspaceService()
+    public static DesktopApplicationServices CreateInMemoryDesktopServices()
+    {
+        var persistence = new InMemoryUserApplicationStatePersistence();
+        return CreateDesktopServices(persistence);
+    }
+
+    public static IProjectWorkspaceService CreateDefaultWorkspaceService() =>
+        CreateDefaultDesktopServices().Workspace;
+
+    public static IProjectWorkspaceService CreateInMemoryWorkspaceService() =>
+        CreateInMemoryDesktopServices().Workspace;
+
+    private static DesktopApplicationServices CreateDesktopServices(IUserApplicationStatePersistence persistence)
     {
         var actor = new DegenerateAdministratorActor();
         var resolver = new ProjectRootResolver();
         var runtime = new LocalProjectRuntime();
-        var persistence = new InMemoryUserApplicationStatePersistence();
-        return new ProjectWorkspaceService(resolver, actor, persistence, runtime);
+        var workspace = new ProjectWorkspaceService(resolver, actor, persistence, runtime);
+        var relayWorkflow = GovernedRelayP0WorkflowService.Create(persistence);
+        return new DesktopApplicationServices(workspace, relayWorkflow);
     }
 }

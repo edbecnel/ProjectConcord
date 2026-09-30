@@ -60,7 +60,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-027 | DevelopmentWorkAuthorization schema and identity | High | [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md); operational per [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md); M7+ |
 | GAP-028 | Handover vs authorization rendering / rollover | Medium | Derived packages; [PCON-0001](../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) §23–24 |
 | GAP-029 | HumanInitiatedWorkItem vs AWI / backlog / PWR | Medium | HIW = intake/triage (SPEC-004 normative name); vs **ProjectWorkRecord** ([ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) **Accepted** — architectural boundary only); **OperationalIntakeRecord** = working terminology only; final intake name/ownership deferred |
-| GAP-030 | Provider adapter interface and security | Medium | Manual clipboard first; PC-AIGOV-005–006 |
+| GAP-030 | Provider adapter interface, security, and Engineering Agent plugin boundary | Medium | P0 manual first (A2-T7 published); provider-neutral Core + Software Engineering Extension; concrete products via deferred bounded plugins — [GAP-030 detail](#gap-030--engineering-agent-provider-adapter-and-plugin-boundary); A4 reconciliation required |
 | GAP-031 | Commit ↔ DevelopmentWorkAuthorization correlation | High | Scope conformance PC-AIGOV-010; M7b |
 | GAP-032 | Multi-project workspace / managed project identity | High | **Partial policy:** stable ProjectConcord Project ID per [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md); path = locator; PC-AIGOV-022–023 workspace UI OPEN |
 | GAP-033 | InterProjectHandover operational schema | High | Materialization to destination EDF; unloaded target behavior OPEN |
@@ -359,14 +359,23 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | Field | Content |
 |---|---|
 | **Question** | How does ProjectConcord assign stable Project IDs, persist per-user SQLite state (recent roots, session provenance, workflow partitions), implement PAR package validation (including INCOMPLETE handover rules), and Tier 0 awareness without creating `.projectconcord/` on open or depending on ChatGPT/API? |
-| **Interim policy** | Architecture in [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md), [PAR plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md); **A1 closed** (Project ID, per-user SQLite, recent roots — [A1 plan §20](../Handover/ProjectConcord-A1-Implementation-Plan.md#20-a1-overall-closeout-2026-09-28)); PAR package validation and relay remain for separately authorized A2–A3. |
+| **Interim policy** | Architecture in [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md), [PAR plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md); **A1 closed**; **A2-T7 closed** (Desktop P0 relay UI — [T7 notes](../Handover/ProjectConcord-A2-T7-Implementation-Notes.md)); remaining PAR workflow UI for separately authorized A3; MVR A2-T8. |
+
+### GAP-030 — Engineering Agent provider adapter and plugin boundary
+
+| Field | Content |
+|---|---|
+| **Identified** | 2026-09-30 — A2-T7 Project Architect closeout |
+| **Question** | How does ProjectConcord support multiple concrete Engineering Agent products without embedding product-specific integration in Core or the Software Engineering Extension? |
+| **Architectural requirement (binding direction, not implemented)** | (1) Multiple concrete Engineering Agent products must be supportable. (2) **Core** remains provider-neutral. (3) **Software Engineering Extension** remains provider-neutral (generic Engineering Agent concepts only — not proprietary APIs, transport, auth, or IDE coupling). (4) Concrete integrations live in **separately bounded Engineering Agent plugins** (product-specific names only inside a plugin and its tooling/docs). (5) Software Engineering domain requires a **provider-neutral Engineering Agent plugin contract/capability boundary** (semantics deferred). (6) **Generic** plugin hosting ownership remains **deferred** — do not conflate with (5). (7) Physical plugin architecture and discovery/loading/security/versioning/isolation remain **deferred**. (8) **A4** must reconcile against this requirement **before** A4 implementation authorization. (9) **No** plugin implementation authorized by this record. |
+| **Interim policy** | A2 P0 manual relay + Desktop workflow (T7 published); `IEngineeringAgentRelayBridge` manual boundary; explicit clipboard; zero product-name invariant in Core/Extension/Desktop/test `*.cs`; see [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md). |
 
 ### GAP-044 — CursorBridge automated transport
 
 | Field | Content |
 |---|---|
 | **Question** | What Cursor integration transport (extension, CLI, MCP, ACP) satisfies security, mode routing, and evidence return without redefining governance semantics? |
-| **Interim policy** | P0 manual first per SPEC-006; investigation [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md); A4 not authorized. |
+| **Interim policy** | P0 manual first per SPEC-006; investigation [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md); A4 not authorized; **before A4 authorization**, reconcile automated transport against [GAP-030](#gap-030--engineering-agent-provider-adapter-and-plugin-boundary) (bounded concrete Engineering Agent plugins — no hard-coded provider in Core or Software Engineering Extension). |
 
 ### GAP-045 — Third-party NuGet dependency advisories (SQLite transitive)
 

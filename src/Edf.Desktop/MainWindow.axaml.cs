@@ -15,8 +15,12 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        var workspace = ApplicationCompositionRoot.CreateDefaultWorkspaceService();
-        DataContext = new MainWindowViewModel(workspace, PickFolderAsync, CopyTextToClipboardAsync);
+        var services = ApplicationCompositionRoot.CreateDefaultDesktopServices();
+        DataContext = new MainWindowViewModel(
+            services.Workspace,
+            services.RelayWorkflow,
+            PickFolderAsync,
+            CopyTextToClipboardAsync);
     }
 
     private void FileOpenProjectFolder_OnClick(object? sender, EventArgs e)
