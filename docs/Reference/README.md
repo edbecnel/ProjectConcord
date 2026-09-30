@@ -8,7 +8,9 @@ Glossaries, standards, terminology, conventions, and external references.
 
 ## Authoritative Documents
 
-- Add links to authoritative documents in this domain.
+- [Glossary](Glossary.md) — ProjectConcord adopter terminology policy (consumes EDF TGR-0001)
+- [EDF Terminology Governance handover](../Handover/EDF-Terminology-Governance-Architecture-Handover.md) — pinned EDF baselines
+- [ADR-0018 — Adopter terminology policy and projection architecture](../Architecture/ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md)
 
 ## What Belongs Here
 

@@ -27,6 +27,7 @@ This directory contains individual Architecture Decision Records.
 | [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) | Project identity, Project Root, per-user operational state | Accepted | 2026-09-29 |
 | [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) | Core, domain extension, and working environment boundary | Accepted | 2026-09-29 |
 | [ADR-0017](ADR-0017-Project-Work-Record-Core-Boundary.md) | Project Work Record Core boundary (Stage 2) | Accepted | 2026-09-29 |
+| [ADR-0018](ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) | Adopter terminology policy and projection architecture (AWI-0008 terminology) | Accepted | 2026-10-01 |
 
 ## Navigation
 

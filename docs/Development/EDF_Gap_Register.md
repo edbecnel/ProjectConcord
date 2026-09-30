@@ -77,6 +77,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-044 | CursorBridge transport (P1 extension/CLI, P2 MCP/ACP) | Medium | P0 manual per SPEC-006; [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md); PAR track A4; **not implemented** |
 | GAP-045 | Third-party NuGet dependency advisories (SQLite transitive) | Low | A1b: `NU1903` on `SQLitePCLRaw.lib.e_sqlite3` 2.1.10 via `Microsoft.Data.Sqlite` 9.0.3; [GHSA-2m69-gcr7-jv3q](https://github.com/advisories/GHSA-2m69-gcr7-jv3q); [AWI-0007](../Architecture/Watch_Items/AWI-0007-SQLite-Transitive-NuGet-Advisory.md); watch only — no mandatory A1b remediation |
 | GAP-046 | Project Work Record — implementation, persistence, lifecycle states, relationship types, intake ownership | Medium | Core ownership **resolved** architecturally ([ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) **Accepted**, [AMD-0004](../Architecture/AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md)); **not implemented** — persistence/APIs/lifecycle/relationship schemas deferred; effective-configuration provenance mechanism OPEN |
+| GAP-047 | Terminology projection and optional enforcement | Medium | EDF TGR dependency **resolved** ([EDF Terminology handover](../Handover/EDF-Terminology-Governance-Architecture-Handover.md), [ADR-0018](../Architecture/ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) **Accepted** 2026-10-01); **not implemented** — presentation resolver, search aliases, enforcement/lint, living-doc SI migration separately governed |
 
 ---
 
@@ -384,6 +385,15 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | **Source** | A1b `dotnet build -c Release` / `dotnet list package --vulnerable` on `Edf.ProjectServices` |
 | **Question** | When and how should ProjectConcord remediate or accept transitive NuGet security advisories on infrastructure packages without expanding unrelated tranches? |
 | **Interim policy** | Recorded in [AWI-0007](../Architecture/Watch_Items/AWI-0007-SQLite-Transitive-NuGet-Advisory.md): `NU1903`, `SQLitePCLRaw.lib.e_sqlite3` 2.1.10, [GHSA-2m69-gcr7-jv3q](https://github.com/advisories/GHSA-2m69-gcr7-jv3q), via `Microsoft.Data.Sqlite` 9.0.3; monitor upstream; no A1b package change unless PA/security gate requires. |
+
+### GAP-047 — Terminology projection and optional enforcement
+
+| Field | Content |
+|---|---|
+| **Identified** | 2026-10-01 — AWI-0008 terminology reconciliation and canonical documentation tranche |
+| **Question** | How does ProjectConcord implement generic terminology projection (EDF glossary term reference + PC policy overlay), derived search aliases, and optional future enforcement — without duplicating EDF, hard-coding AI/SI, or rewriting historical records? |
+| **Resolved dependency** | EDF [TGR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/49d6b805af5f4a557c526a5c8f08e43fbab38601/docs/Specifications/TGR-0001-Terminology-Governance.md) pins in [EDF Terminology handover](../Handover/EDF-Terminology-Governance-Architecture-Handover.md); PC **Preferred** SI policy in [ADR-0018](../Architecture/ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) |
+| **Interim policy** | Architecture **Accepted**; `src/` projection, UI labels, search index, lint/CI enforcement, and living-document SI migration **not authorized** |
 
 ---
 

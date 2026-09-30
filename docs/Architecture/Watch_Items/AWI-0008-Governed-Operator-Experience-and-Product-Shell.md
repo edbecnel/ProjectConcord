@@ -9,7 +9,8 @@
 | **Created** | 2026-09-30 |
 | **Revisit Trigger** | Before post-A2 product-shell or governed-workflow UX tranche authorization; PA request to analyze ownership |
 | **Discovery source** | [MVR-0002](../../Verification/Records/MVR-0002-a2-p0-manual-governed-relay-workflow.md) human execution (2026-09-30); A2-T8 documentation closeout — **not** A2 implementation defects |
-| **Related ADRs** | [ADR-0016](../ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md); [ADR-0014](../ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md) (Proposed) |
+| **Related ADRs** | [ADR-0016](../ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md); [ADR-0015](../ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md); [ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) (**Accepted** 2026-10-01); [ADR-0014](../ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md) (**Proposed** — attestation direction only, not acceptance) |
+| **Last architecture update** | 2026-10-01 — terminology policy + governed context-transfer architecture (documentation only) |
 | **Related specs** | [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md); [SPEC-005](../../Specifications/features/SPEC-005-manual-verification-record-consumption.md) |
 | **Cross-reference** | [AWI-0003](AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md); [AWI-0005](AWI-0005-Manual-Verification-Records.md); [PCON-0004](../PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md) |
 
@@ -29,6 +30,8 @@ This watch item:
 - **Does not** commit ProjectConcord to a general-purpose Markdown editor without separate architectural analysis.
 
 While **Active**, requirements here are **prospective** unless promoted by PA into specifications or ADRs.
+
+**Partial promotion (2026-10-01):** Terminology policy and projection architecture are **Accepted** in [ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md). Governed **context-transfer minimization**, work-package/review-package direction, and state-source model are documented in §**Architectural disposition** below. Shell **implementation** (UI, persistence, package generation, terminology projection in `src/`) remains **not authorized**. This watch item stays **Active** until remaining requirements (orientation, navigation, Markdown, form runtime, implementation) are promoted or closed.
 
 ## Requirements (PA disposition — A2-T8 closeout 2026-09-30)
 
@@ -92,18 +95,78 @@ Do not commit ProjectConcord to becoming a general-purpose Markdown editor witho
 
 Avoid unnecessary acronyms in the ProjectConcord user interface. In particular, display **Project Architect** rather than **PA** where the term is presented to the user. Repository and internal architectural documentation may retain established acronyms where appropriate and unambiguous.
 
-## Architectural ownership (deferred)
+**Disposition (2026-10-01):** Layered terminology architecture and ProjectConcord **Preferred** Super Intelligence (SI) for EDF `super-intelligence` are **Accepted** in [ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md). EDF **recommends**; ProjectConcord **prefers**; **enforcement not authorized**. Presentation projection in UI remains future work. See [EDF Terminology Governance handover](../../Handover/EDF-Terminology-Governance-Architecture-Handover.md).
 
-Do **not** use this watch item to decide:
+## Architectural disposition (PA — 2026-10-01)
 
-- whether generic Markdown viewing belongs to Core or product shell;
-- whether governed form runtime belongs to Core;
-- whether EDF-specific forms belong to EDF integration;
-- whether Software Engineering-specific forms belong to that extension;
-- whether constrained Markdown editing belongs to Core or an extension;
-- whether workflow navigation is generic or extension-owned.
+The following records **accepted architecture** for operator experience and governed interaction. It **does not** authorize implementation.
 
-Subsequent PA-governed analysis is required before implementation authorization.
+### Governed context-transfer minimization
+
+**Requirement:** ProjectConcord SHALL minimize repeated conversational context transfer between governed actors (Project Architect ↔ Engineering Agent) by deriving **Engineering Agent work packages** and **Project Architect review packages**, where practicable, from **canonical project state** plus **persisted governed operational state**.
+
+Human-readable handovers remain required for transport, inspection, fallback, copy/paste, and audit-friendly projection — but their role shifts from **manually reconstructed container of nearly all context** toward **concise projection of already-governed state**.
+
+Human authority and explicit authorization boundaries are preserved. ProjectConcord is the **governed intermediary** for relevant state; it is **not** the architectural decision maker.
+
+### Target governed interaction model
+
+```text
+Project Architect  ↔  ProjectConcord  ↔  Engineering Agent
+```
+
+ProjectConcord supplies (when implemented): canonical context retrieval; governed operational continuity; work-package and review-package construction; authorization representation; STOP boundaries; provenance; evidence intake/projection. Authority remains with applicable human governance roles.
+
+Provider-neutral concepts only: Project Architect, Engineering Agent, provider adapter, session, work package, review package, governed interaction, transport ([SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md); [ADR-0016](../ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md)). Concrete provider products remain in **E** adapters.
+
+### Governed state sources
+
+| Source | Examples | Canonical? |
+|---|---|---|
+| **A — Canonical project state** | Accepted ADRs, specs, MVRs, EGRs, plans, gaps/watch items, terminology policy, Project ID, Git Markdown ([ADR-0002](../ADRs/ADR-0002-EDF-Canonical-Source-of-Truth.md)) | **Yes** (Git) |
+| **B — Persisted governed operational state** | Relay/package records, continuity, provenance events, validation/STOP, workflow position, pending review/evidence ([ADR-0015](../ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md); A2 `Migration002`) | **Operational** (per-user SQLite by Project ID) |
+| **C — External provider state** | Provider chat threads, session handles | **Not** ProjectConcord canonical; full transcripts **must not** become canonical to avoid handover effort |
+
+### Engineering Agent work package (conceptual)
+
+Future derivation from **A + B** (not from full **C**). May conceptually include: ProjectConcord Project ID; operation/work identity; canonical baseline pointers; relevant accepted decisions; explicit scope and exclusions; mode/capability; authorization; STOP condition; evidence/result contract; continuity/provenance references.
+
+Aligns with existing **Governed Interaction Relay** packages ([SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)) without mandating a new provider-specific schema in this tranche.
+
+### Project Architect review package (conceptual)
+
+Future derivation from **A + B + Engineering Agent result/evidence** (structured operational intake, not raw provider transcript). Must support understanding: what was authorized; baseline used; what was investigated or changed; evidence; deviations; open questions; authorization boundaries; STOP state; proposed next action.
+
+### Human-readable handovers
+
+Handovers remain **valid** as projection/transport representations. They are **not** obsolete. Increasing concision is enabled when authoritative context is recoverable from **A** and **B**.
+
+### Ownership summary (accepted direction)
+
+| Concern | Owner |
+|---|---|
+| Product shell, navigation surfaces, orientation projection | **Core (A)** |
+| Relay validation, packages, provenance | **Core Governed Interaction Relay (A)** |
+| Software authorization, profile payloads | **Software Development (B)** |
+| EDF artifact semantics | **F** — consume only |
+| Provider sessions and transport rendering | **E** |
+| Terminology policy | [ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) |
+| MVR attestation write path | [ADR-0014](../ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md) (**Proposed** — dependency direction for form runtime; not Accepted) |
+
+## Architectural ownership (remaining open items)
+
+**Resolved at architecture level (2026-10-01):** terminology layers and policy ([ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md)); context-transfer requirement; state-source model; work/review package direction.
+
+**Still requires promotion or implementation authorization:**
+
+- generic Markdown viewing — Core vs shell detail;
+- governed form runtime placement;
+- EDF-specific vs extension-specific forms;
+- constrained Markdown editing boundary;
+- workflow navigation pattern (wizard vs workspace);
+- durable paste/draft working state persistence rules beyond A2 relay tables.
+
+Subsequent PA-governed tranches are required before `src/` implementation.
 
 ## Signals to watch
 
@@ -122,3 +185,4 @@ Subsequent PA-governed analysis is required before implementation authorization.
 - [A2-T8 verification evidence](../../Handover/ProjectConcord-A2-T8-Verification-Evidence.md)
 - [MVR-0002](../../Verification/Records/MVR-0002-a2-p0-manual-governed-relay-workflow.md)
 - [GAP-030](../../Development/EDF_Gap_Register.md#gap-030--engineering-agent-provider-adapter-and-plugin-boundary) / [AWI-0006](AWI-0006-PAR-Cursor-Bridge-Transport.md) — Engineering Agent plugin boundary unchanged
+- [ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md); [EDF Terminology Governance handover](../../Handover/EDF-Terminology-Governance-Architecture-Handover.md); [GAP-047](../../Development/EDF_Gap_Register.md#gap-047--terminology-projection-and-optional-enforcement)

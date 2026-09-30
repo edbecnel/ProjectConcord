@@ -161,6 +161,22 @@ Phasing: PAR track A0–A4 in [Implementation Roadmap](../Development/Implementa
 
 ---
 
+## Governed operator experience and terminology (AWI-0008)
+
+**Status:** Architecture documented 2026-10-01 ([AWI-0008](Watch_Items/AWI-0008-Governed-Operator-Experience-and-Product-Shell.md), [ADR-0018](ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) **Accepted**). **Not implemented** in `src/`.
+
+| Concern | Rule |
+|---|---|
+| Context-transfer minimization | Derive **work packages** and **review packages** from canonical Git state (**A**) + persisted operational relay state (**B**); concise handovers are **projections/transport**, not the sole continuity store |
+| Governed intermediary | Project Architect ↔ ProjectConcord ↔ Engineering Agent; PC holds governed state, not decision authority |
+| External provider state (**C**) | Not canonical; full chat transcripts must not substitute for **A**/**B** |
+| Terminology layers | EDF **recommends** → ProjectConcord **prefers** ([ADR-0018](ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md)) → presentation (deferred) → enforcement (**not authorized**) |
+| SI Preferred scope | EDF `super-intelligence` only; **not** `ai-assisted-engineering`; identifiers/history/external wording protected |
+| EDF consumption | [EDF Terminology Governance handover](../Handover/EDF-Terminology-Governance-Architecture-Handover.md); qualify **EDF ADR-0011** vs **ProjectConcord ADR-0011** |
+| MVR forms / attestation | [ADR-0014](ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md) remains **Proposed** — direction for form runtime, not Accepted authority |
+
+---
+
 ## Solution Structure
 
 Illustrative .NET layout (assemblies may be merged if boundaries stay clear):

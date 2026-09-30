@@ -16,7 +16,7 @@ System architecture, technical design, diagrams, and architecture decisions.
 
 ## Inbound handovers
 
-Framework- or program-sourced architecture handovers (Active consumption guides; EDF retains normative gate semantics): [Handover](../Handover/README.md) — including [EDF Governed Dependency Override](../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md).
+Framework- or program-sourced architecture handovers (Active consumption guides; EDF retains normative gate semantics): [Handover](../Handover/README.md) — including [EDF Governed Dependency Override](../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md) and [EDF Terminology Governance](../Handover/EDF-Terminology-Governance-Architecture-Handover.md).
 
 ## Architectural Discovery Records
 

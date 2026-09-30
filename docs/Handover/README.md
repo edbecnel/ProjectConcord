@@ -13,6 +13,8 @@ Inbound architectural and integration handovers from external frameworks, progra
 | [EDF Governed Dependency Override — Architecture Handover](EDF-Governed-Dependency-Override-Architecture-Handover.md) | Incorporate EDF GDO into gate/dependency architecture | Active |
 | [EDF Governed Maintenance Fast Path — Architecture Handover](EDF-Governed-Maintenance-Fast-Path-Architecture-Handover.md) | Incorporate EDF GMFP/GMR into workflow-profile and maintenance-record consumption | Active |
 | [EDF Manual Verification Records — Architecture Handover](EDF-Manual-Verification-Record-Architecture-Handover.md) | Incorporate EDF MVR into consumption, attestation, and pending-QA architecture | Active |
+| [EDF Terminology Governance — Architecture Handover](EDF-Terminology-Governance-Architecture-Handover.md) | EDF TGR-0001 / ADR-0011 consumption; SI recommendation pins | Active |
+| [AWI-0008 Architecture Documentation Tranche Plan](ProjectConcord-AWI-0008-Architecture-Documentation-Tranche-Plan.md) | Terminology ADR + context-transfer architecture docs — **CLOSED / PA ACCEPTED** (2026-10-01) | Closed |
 | [ProjectConcord MVR Adoption Architecture Plan](ProjectConcord-MVR-Adoption-Architecture-Plan.md) | Accepted architecture plan (STOP-1 closed); S0 executed 2026-09-28 | Active |
 | [ProjectConcord M1 / EGR-G1 Implementation Plan](ProjectConcord-M1-EGR-G1-Implementation-Plan.md) | PA-accepted M1 skeleton, AAR, and G1 sequence; pre-M1 doc reconciliation complete 2026-09-28 | Active |
 | [ProjectConcord PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md) | PA-amended PAR / Project Root / governed workflow architecture (A0 **PA accepted** 2026-09-28); A1–A4 implementation not authorized | Active |
