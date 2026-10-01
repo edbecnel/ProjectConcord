@@ -10,10 +10,11 @@
 | **Project Architect disposition** | **ACCEPT WITH BINDING AMENDMENTS** (2026-09-28) |
 | **Final architecture acceptance (A0)** | **CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-28) |
 | **A1 implementation plan** | [ProjectConcord-A1-Implementation-Plan.md](ProjectConcord-A1-Implementation-Plan.md) — **CLOSED / PA ACCEPTED / PUBLISHED** (2026-09-28; `fba5be5`) |
-| **A2 implementation plan** | [ProjectConcord-A2-Implementation-Plan.md](ProjectConcord-A2-Implementation-Plan.md) — **CLOSED / PA ACCEPTED / PUBLISHED** (2026-09-29); A2 implementation **not authorized** |
+| **A2 implementation plan** | [ProjectConcord-A2-Implementation-Plan.md](ProjectConcord-A2-Implementation-Plan.md) — **CLOSED / PA ACCEPTED / PUBLISHED** (A2 P0 manual relay on `main`) |
+| **Engineering Agent plugin architecture** | [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md) — **Accepted** 2026-10-01 (documentation only) |
 | **M1 / EGR-G1** | Closed / Satisfied — unchanged |
 | **M2+** | **Not authorized** |
-| **A2–A4** | **Not authorized for implementation** |
+| **A3–A4** | **Not authorized for implementation** |
 | **Stage 1 architecture** | [AMD-0003](../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md) integrated 2026-09-29; [ADR-0016](../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) Accepted — PAR decomposed; A2 reframed in place |
 | **ADR-0014** | **Proposed** |
 | **STOP-2** | **Binding** |
@@ -74,10 +75,14 @@ Governance semantics (Concord/PAR)
         |         +-- OpenAIProjectArchitectAdapter (future)
         |         +-- Other providers (future)
         |
-        +--> CursorBridge (P0 manual; P1/P2 future)
+        +--> Engineering Agent relay bridge (P0 manual published)
+        |         +-- EngineeringAgentManualRelayBridge (interim reference)
+        |         +-- Future: bounded Engineering Agent provider plugins (P1/P2 automated)
 ```
 
 Core semantics MUST NOT depend on ChatGPT or OpenAI API.
+
+**Architecture reconciliation (2026-10-01):** Normative Engineering Agent integration is defined in [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §11 and [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md). Historical **CursorBridge** references below are **provenance** for A0 planning; automated transport mechanism investigation continues under [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md) with Cursor as a **reference P1 candidate** only.
 
 ### PCON-0002 / PCR-0001
 
@@ -90,23 +95,25 @@ Shallow pre-M2 scope only — see [SPEC-006 §12](../Specifications/features/SPE
 
 ### PA handover schema (binding)
 
-Governance-critical: `Cursor-Mode`, `Cursor-Chat`, `ChatGPT-Chat`; plus `Cursor-Mode-Transition` when mode changes; explicit authorization and STOP representation.
+**Historical (A0 plan text):** Governance-critical field names included `Cursor-Mode`, `Cursor-Chat`, `ChatGPT-Chat`, and `Cursor-Mode-Transition`.
 
-Missing critical metadata → **INCOMPLETE** → **no automated Cursor relay**; no silent inference.
+**Normative (SPEC-006 §9 as implemented in A2):** `Engineering-Agent-Mode`, `Engineering-Agent-Chat`, `ChatGPT-Chat`, `Engineering-Agent-Mode-Transition`; explicit authorization and STOP representation.
+
+Missing critical metadata → **INCOMPLETE** → **no automated Engineering Agent relay**; no silent inference.
 
 ### Chat / session provenance (binding)
 
 Core: `ProjectArchitectSession` + `ProjectArchitectSessionAdvisory` (and engineering-agent parallels).
 
-Manual adapter renders `ChatGPT-Chat` / `ChatGPT-Chat-Advisory` and `Cursor-Chat` / `Cursor-Chat-Advisory` for current workflow.
+Manual adapter renders `ChatGPT-Chat` / `ChatGPT-Chat-Advisory` (PA) and `Engineering-Agent-Chat` / `Engineering-Agent-Chat-Advisory` (Engineering Agent) for the published P0 workflow.
 
 Provenance chain: observed context → advisory → user decision → requested action → package event. NEW/CONTINUE alone is insufficient.
 
-### Cursor transport
+### Engineering Agent transport
 
-**P0 manual** first: generate, validate, export, import evidence.
+**P0 manual** — **published** (A2): generate, validate, export, import evidence via `IEngineeringAgentRelayBridge`.
 
-`CursorBridge` preserved; P1/P2 not implemented in this tranche.
+**P1/P2 automated** — not implemented; mechanism under [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md) / [GAP-044](../Development/EDF_Gap_Register.md#gap-044--engineering-agent-automated-transport); plugin contract [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md).
 
 ### Roadmap
 
@@ -133,7 +140,8 @@ flowchart TB
   subgraph providers [ProviderLayer]
     PAProvider[IProjectArchitectProvider]
     ManualPA[ManualChatGPTAdapter]
-    CursorBridge[CursorBridge_P0_manual]
+    EABridge[EngineeringAgentRelayBridge_P0_manual]
+    EAPlugins[EngineeringAgentProviderPlugins_future]
   end
 
   subgraph git [Git_Canonical]
@@ -150,7 +158,8 @@ flowchart TB
   Par --> StopEnf
   Par --> PAProvider
   PAProvider --> ManualPA
-  Par --> CursorBridge
+  Par --> EABridge
+  EABridge --> EAPlugins
 ```
 
 ## Workflow state (planning model)
@@ -177,9 +186,9 @@ stateDiagram-v2
 |---|---|---|
 | **A0** | Architecture / canonical documentation | **Complete** — PA accepted |
 | **A1** | Per-user app state + Recent Project Roots | **Complete** — published A1a/A1b/A1c; closeout [A1 plan §20](ProjectConcord-A1-Implementation-Plan.md#20-a1-overall-closeout-2026-09-28) |
-| **A2** | Manual P0 **governed interaction relay** (Core relay + software package profile + provider transport; historical PAR packaging) | **No** |
+| **A2** | Manual P0 **governed interaction relay** (Core relay + software package profile + provider transport; historical PAR packaging) | **Complete** — published on `main` |
 | **A3** | Governed workflow MVP (manual) | **No** |
-| **A4** | Cursor bridge P1 | **No** |
+| **A4** | Engineering Agent automated transport P1+ ([ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md)) | **No** |
 | **M2** | EDF discovery (SPEC-001) | **No** — separate track; feeds Tier 0+ later |
 
 Dependencies: A2+ may consume Tier 0 before M2; deep awareness requires M2+.
@@ -227,13 +236,13 @@ PAR track delivers **relay and identity foundation** earlier than M7a UI breadth
 | 5 | Governed workflow state | SPEC-004 PC-AIGOV-002–004 | ADR-0013 (**Accepted** 2026-09-29) | Operational partition by Project ID | A3 / M7a overlap |
 | 6 | Canonical Markdown awareness | PC-PAR-T0 §12 | ADR-0015 §5 | Tier 0 snapshots | A2+; deep M2+ |
 | 7 | PAR | PC-PAR-012–015 | ADR-0015 §4 | Package records | A2 |
-| 8 | Cursor integration / bridge | PC-PAR-022 | AWI-0006 | P0 manual artifacts | A2 P0; A4 P1 |
+| 8 | Engineering Agent relay / provider plugins | PC-PAR-022 | ADR-0021; AWI-0006 | P0 manual artifacts | A2 P0 **published**; A4 P1+ **not authorized** |
 | 9 | PLAN/AGENT/DEBUG routing | §9 schema + PC-PAR-022 | — | Validated handover fields | A2 |
 | 10 | Evidence/result ingestion | PC-PAR-012; PC-AIGOV-008 | — | Submission correlation IDs | A2–A3 |
 | 11 | PA package preparation | PC-PAR-012 | Provider boundary §8 | Export bundles | A2 |
-| 12 | PA-to-Cursor relay | PC-PAR-014, 022 | CursorBridge | P0 human relay | A2 |
+| 12 | PA-to-Engineering Agent relay | PC-PAR-014, 022 | Relay bridge + plugins | P0 human relay | A2 **published** |
 | 13 | STOP enforcement | PC-AIGOV-007; SPEC-006 §14 | — | Relay boundary flags | A2–A3 |
-| 14 | Independent Cursor chat lifecycle | PC-PAR-021 | Core session model | EngineeringAgentSession | A1–A2 |
+| 14 | Independent Engineering Agent session lifecycle | PC-PAR-021 | Core session model | EngineeringAgentSession | A1–A2 |
 | 15 | Independent ChatGPT chat lifecycle | PC-PAR-021; §8 | Manual adapter rendering | ProjectArchitectSession | A1–A2 |
 | 16 | NEW/CONTINUE advisory | §9 advisories | — | Advisory records | A1 |
 | 17 | New-chat context packaging | PC-AIGOV-015; PC-PAR-021 | Tier 0 bounds | Package bundles | A2 |

@@ -34,6 +34,7 @@ Individual ADRs live in [docs/Architecture/ADRs/](docs/Architecture/ADRs/README.
 | [ADR-0018](docs/Architecture/ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) | Adopter terminology policy and projection architecture | Accepted | 2026-10-01 |
 | [ADR-0019](docs/Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) | Local-first operational persistence, service boundary, synchronization, and concurrency | Accepted | 2026-10-01 |
 | [ADR-0020](docs/Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) | Operator projections, product shell, and workspace navigation (AWI-0008 A+C) | Accepted | 2026-10-01 |
+| [ADR-0021](docs/Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md) | Engineering Agent provider plugin contract (A4 / GAP-030 / AWI-0006) | Accepted | 2026-10-01 |
 
 ## Related Documents
 

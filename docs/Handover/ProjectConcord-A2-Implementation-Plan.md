@@ -6,9 +6,9 @@
 
 > **A2-T1** through **A2-T8 closed / PROJECT ARCHITECT ACCEPTED** (2026-09-30) — see [§35](#35-a2-t8-closeout-2026-09-30) and [§36](#36-a2-overall-closeout-2026-09-30).
 >
-> **A2 overall:** **CLOSED / PROJECT ARCHITECT ACCEPTED** — closeout documentation reconciled 2026-09-30; **not yet published** on `origin/main` until PA authorizes commit/push. **A3 / A4 NOT AUTHORIZED**.
+> **A2 overall:** **CLOSED / PROJECT ARCHITECT ACCEPTED** — A2 P0 manual governed relay **published** on `main` (see [Implementation Roadmap](../Development/Implementation_Roadmap.md)). **A3 / A4 NOT AUTHORIZED**.
 
-**Mode:** **CLOSED** — A2 **implementation plan** accepted and published (2026-09-29); **A2 P0 manual governed relay tranche complete** (T1–T8 PA accepted; publication pending)
+**Mode:** **CLOSED** — A2 **implementation plan** accepted and published (2026-09-29); **A2 P0 manual governed relay tranche complete** (T1–T8 PA accepted; published on `main`)
 
 **Planning baseline (pre-plan tranche):** `1098a336569b2f0d7e0af347788b25d8d7e877b3` — *Accept reconciled SPEC-006 governed relay specification.*
 
@@ -375,7 +375,7 @@ Missing governance-critical (with agreeing machine + projections) → **`Incompl
 | Scope | Behavior |
 |-------|----------|
 | **A2-active** | **Incomplete** (or malformed) input **cannot** produce a **validated/ready** Engineering Agent handover export |
-| **Future automation (A4)** | Same validation state **blocks automated forwarding** on `IEngineeringAgentRelayBridge` automation hook — seam defined in T6, **not implemented** in A2 |
+| **Future automation (A4)** | Same validation state **blocks automated forward** per PC-PAR-014; automated transport is a separate **Engineering Agent provider plugin** concern ([ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md)) — **not implemented** in A2 |
 
 **No fake automation** to satisfy PC-PAR-014. Unit tests assert handover generation gated on `RelayValidationState.Valid` only.
 
@@ -899,7 +899,7 @@ flowchart TD
 | Eligibility | Valid-only Engineering Agent handover; STOP blocks readiness without reclassifying Valid |
 | Transport | Manual P0 only; no automated provider integration |
 | Source invariant | Zero commercial engineering-agent product names in Core/Extension/Desktop/test `*.cs` |
-| Plugin architecture | Requirement **identified** — [GAP-030](../Development/EDF_Gap_Register.md#gap-030--engineering-agent-provider-adapter-and-plugin-boundary); **not implemented** |
+| Plugin architecture | Contract **Accepted** — [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md); loader/plugins **not implemented** ([GAP-030](../Development/EDF_Gap_Register.md#gap-030--engineering-agent-provider-adapter-and-plugin-boundary)) |
 | Focused tests | `RelayWorkflowViewModelTests`, `GovernedRelayP0WorkflowServiceTests` |
 | Release tests | 143 passed at publication validation |
 | Persistence | T3 only; **no Migration003** |
@@ -921,12 +921,12 @@ flowchart TD
 | MVR | [MVR-0002](../Verification/Records/MVR-0002-a2-p0-manual-governed-relay-workflow.md) — verification date **2026-09-30**; fixtures [MVR-0002/Fixtures](../Verification/Fixtures/MVR-0002/) |
 | Automated Release build/test | **PASS** — 143 tests |
 | Provider-neutral EA invariant | **PASS** (commercial EA product-name audit) |
-| GAP-030 / AWI-0006 | Unchanged; plugin architecture **deferred**; A4 reconciliation **required** before A4 authorization |
+| GAP-030 / AWI-0006 | [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md) (2026-10-01); GAP-030 **closed / resolved**; AWI-0006 **Active** (transport); A4 **not authorized** |
 | GAP-045 / NU1903 SQLite | Unchanged — tracked; not a T8 blocker |
 | Migration003 | **None** |
 | `src/` under T8 closeout | **No remediation authorized** — documentation reconciliation only |
 | Follow-on UX (not defects) | [AWI-0008](../Architecture/Watch_Items/AWI-0008-Governed-Operator-Experience-and-Product-Shell.md) |
-| Publication | **Pending** separate PA commit/push authorization |
+| Publication | **Published** on `main` (A2 closeout; see [Implementation Roadmap](../Development/Implementation_Roadmap.md)) |
 
 ---
 
@@ -960,17 +960,17 @@ flowchart TD
 | Item | A2 closeout disposition |
 |------|-------------------------|
 | **GAP-043** | **Further addressed** — P0 PAR relay runtime, validation, Desktop workflow, MVR-0002; automated bridge **deferred** (A4) |
-| **GAP-030 / AWI-0006** | Unchanged — plugin contract + transport reconciliation before A4 |
+| **GAP-030 / AWI-0006** | GAP-030 **closed / resolved** (ADR-0021); AWI-0006 **Active** (GAP-044 transport); A4 **not authorized** |
 | **GAP-045 / AWI-0007** | Unchanged — watch |
 | **AWI-0008** | **Opened** — governed operator experience / product shell (prospective) |
 
-**Closeout publication:** **Pending PA authorization** — governed docs commit only; **no** `src/` changes in this tranche. Do **not** claim `origin/main` contains closeout until commit/push succeeds.
+**Closeout publication:** **Published** on `main` per [Implementation Roadmap](../Development/Implementation_Roadmap.md) (A2 overall closed 2026-09-30).
 
 ---
 
 ## 37. STOP
 
-**STOP** after A2 overall closeout documentation reconciliation — **A2 CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30). **Await explicit PA authorization** for publication commit/push.
+**STOP** — **A2 CLOSED / PROJECT ARCHITECT ACCEPTED** (2026-09-30); P0 implementation **published** on `main`.
 
 - **No** A3 or A4 implementation unless separately authorized
 - **No** T8 `src/` remediation inferred from MVR or closeout

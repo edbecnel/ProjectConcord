@@ -73,9 +73,9 @@ Explicit track for Project Root, stable Project ID, per-user application state, 
 |---|---|---|
 | **A0** | Architecture / canonical docs | **Complete** (2026-09-28) — [PAR plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md) PA-amended |
 | **A1** | Per-user app state + Recent Project Roots (SQLite direction) | **Closed / published** (2026-09-28) — [A1 Implementation Plan](../Handover/ProjectConcord-A1-Implementation-Plan.md); baseline `fba5be5` |
-| **A2** | Manual P0 **governed interaction relay** (reframed in place): Core relay/validation/provenance + Software Development governance package profile + provider manual transport — historical label “PAR manual packages”; see [AMD-0003](../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §2a | **In progress** — T1–T7 **closed / PA accepted**; T8 **not authorized**; A2 not complete |
+| **A2** | Manual P0 **governed interaction relay** (reframed in place): Core relay/validation/provenance + Software Development governance package profile + provider manual transport — historical label “PAR manual packages”; see [AMD-0003](../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §2a | **Closed / published** — T1–T8 **PA accepted** (2026-09-30); see [A2 plan](../Handover/ProjectConcord-A2-Implementation-Plan.md) |
 | **A3** | Governed workflow MVP (manual), overlaps M7a subset | **Not authorized** |
-| **A4** | Cursor bridge P1+ ([AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)) | **Not authorized** |
+| **A4** | Engineering Agent automated transport P1+ ([ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md), [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)) | **Not authorized** |
 
 **M2** (EDF discovery) remains a **separately governed** track. Tier 0 PAR awareness may run before M2; deep Canonical Markdown awareness follows M2+.
 
@@ -114,7 +114,8 @@ Explicit track for Project Root, stable Project ID, per-user application state, 
 | PAR A2-T6 | **Closed / PA accepted / published** (2026-09-30) — [T6 implementation notes](../Handover/ProjectConcord-A2-T6-Implementation-Notes.md); baseline `d051cc4` |
 | PAR A2-T7 | **Closed / PA accepted / published** (2026-09-30) — [T7 implementation notes](../Handover/ProjectConcord-A2-T7-Implementation-Notes.md); baseline `3a3a239` |
 | PAR A2-T8 | **Closed / PA accepted** (2026-09-30) — [T8 evidence](../Handover/ProjectConcord-A2-T8-Verification-Evidence.md); [MVR-0002](../Verification/Records/MVR-0002-a2-p0-manual-governed-relay-workflow.md) **Complete** |
-| PAR A2 overall | **Closed / PA accepted** (2026-09-30) — see [A2 plan §36](../Handover/ProjectConcord-A2-Implementation-Plan.md#36-a2-overall-closeout-2026-09-30); closeout docs **pending publication** on `main` |
+| PAR A2 overall | **Closed / PA accepted / published** (2026-09-30) — see [A2 plan §36](../Handover/ProjectConcord-A2-Implementation-Plan.md#36-a2-overall-closeout-2026-09-30) |
+| PAR A4 plugin architecture (docs) | [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md) **Accepted** (2026-10-01) — **A4 implementation not authorized** |
 | PAR A3–A4 implementation | **Not started** — **not authorized** (no material dependency on Project Work Record ontology per [ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md)) |
 | Stage 2 architecture | **PA accepted** (2026-09-29) — [AMD-0004](../Architecture/AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md), [ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) **Accepted**; pre-publication closeout; **not implemented** in `src/` |
 | M2–M5 | **Not started** — G1 satisfied; implementation in earnest requires separate PA authorization per milestone |

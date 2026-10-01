@@ -11,7 +11,7 @@
 | **Accepted** | Project Architect — **2026-09-29** |
 | **Owner** | ProjectConcord |
 | **Normative** | Yes — Project identity/session (**A**), Core Governed Interaction Relay (**A**), per-user operational state (**A**), Software Development governance at relay boundary (**B**), provider/tool adapters (**E**); historical **Project Architect Relay (PAR)** track terminology |
-| **Last Reviewed** | 2026-10-01 (operator-stage presentation binding; [ADR-0020](../../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) **Accepted**) |
+| **Last Reviewed** | 2026-10-01 (Engineering Agent provider plugin contract; [ADR-0021](../../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md) **Accepted**) |
 | **Target release** | Historical PAR track A1–A4 (separately authorized); not part of M1 |
 | **Implementation** | **A1** (identity + per-user state): **published** 2026-09-28 — see [Implementation Roadmap](../../Development/Implementation_Roadmap.md). **A2–A4** (governed interaction relay, workflow MVP, automated provider transport per AWI-0006): **not authorized** except tranches separately accepted. Accepted SPEC-006 satisfies the specification/governance prerequisite for Project Architect **consideration** of **A2**; acceptance does **not** authorize A2. |
 | **Architecture baseline** | Accepted [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md), [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md), [ADR-0015](../../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) — repository baseline at reconciliation `084c6f043e27db2c9bdca558f14216de596f3c8d` |
@@ -34,6 +34,7 @@
 - [AMD-0003](../../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md)
 - [SPEC-006 Reconciliation Documentation Tranche Plan](../../Handover/ProjectConcord-SPEC-006-Reconciliation-Documentation-Tranche-Plan.md)
 - [ADR-0020 — Operator projections, product shell, and workspace navigation](../../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) (**Accepted** 2026-10-01)
+- [ADR-0021 — Engineering Agent provider plugin contract](../../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md) (**Accepted** 2026-10-01)
 
 ---
 
@@ -58,7 +59,7 @@ Define normative ProjectConcord product behavior across accepted component bound
 **E — Provider / tool adapters**
 
 - Provider-neutral **Project Architect** exchange; human-mediated and future automated providers;
-- **Engineering Agent** relay via an **Engineering Agent relay bridge** abstraction (`IEngineeringAgentRelayBridge` / provider automation seam);
+- **Engineering Agent** relay via an **Engineering Agent relay bridge** (`IEngineeringAgentRelayBridge`) for governed render/parse, and a separate **Engineering Agent provider plugin contract** for automated transport per [ADR-0021](../../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md);
 - adapter rendering and parsing (for example ChatGPT field names); not governance semantics.
 
 **F — EDF canonical governance**
@@ -122,7 +123,7 @@ Normative requirements (PC-PAR-001–022) map to owners per [ADR-0016](../../Arc
 | **A — Core Governed Interaction Relay** | Package/correlation identity; structural validation pipeline; provenance chain (PC-PAR-021); relay-boundary STOP hooks; INCOMPLETE gate; provider-neutral relay host (capability negotiation where Core) |
 | **B — Software Development extension** | Governance package/profile content; handoff vs **DevelopmentWorkAuthorization**; authorization/planning/implementation semantics at boundary — **semantic source:** [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) / [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) |
 | **D — Working Environment / policy** | Supervision, checkpoint, escalation **where configured** — reference only; no new facets |
-| **E — Provider adapters** | `IProjectArchitectProvider`, manual ChatGPT formatting, `IEngineeringAgentRelayBridge`, transport field rendering/parsing |
+| **E — Provider adapters** | `IProjectArchitectProvider`, manual ChatGPT formatting, `IEngineeringAgentRelayBridge` (render/parse), Engineering Agent provider plugin contract (automated transport), transport field rendering/parsing |
 | **F — EDF canonical governance** | Authoritative artifacts in Git; gates, AAR/MVR, architectural acceptance — referenced/correlated, not owned by relay operational store |
 
 **A2 governance:** Accepted SPEC-006 satisfies the specification/governance prerequisite for Project Architect **consideration** of **A2** authorization. **A2 is not authorized** by this specification.
@@ -174,7 +175,7 @@ Historical PAR track sections map here to **Core Governed Interaction Relay** (*
 |---|---|
 | **PC-PAR-012** | The **Core Governed Interaction Relay** SHALL assemble governed interaction packages as follows: **[A]** transport-neutral package assembly; package and correlation identity; incorporation of authorized operational inputs and Tier 0 relay-safe context ([§12](#12-canonical-markdown-awareness--tier-0)). **[B]** When the Software Development extension is in scope, **PA Review Package** profile and content — including **DevelopmentWorkAuthorization**-related context, submissions, and Software Development workflow payload — per [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) and [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md); such content is **not** universal Core semantics. **[D]** Where Working Environment policy is configured, supervision, checkpoint, or escalation information MAY be included by reference to configured policy — without defining new Working Environment facets. |
 | **PC-PAR-013** | Imported **PA handover responses** SHALL be validated as follows: **[A]** structural validation, required relay fields, validation pipeline, and **INCOMPLETE** disposition when governance-critical metadata is missing ([§9](#9-pa-handover-schema--governance-critical-fields-pc-par-020)). **[B]** Software Development semantic rules — including handover vs **DevelopmentWorkAuthorization** separation — per [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) (for example PC-AIGOV-003, PC-AIGOV-005); this spec does not duplicate the complete semantic model. **[E]** Provider-specific serialization parsing (delimited blocks, Markdown sections, or equivalent). |
-| **PC-PAR-014** | **Engineering-Agent-directed handovers** SHALL be validated before **automated** Engineering Agent relay: **[A]** Core validation and **INCOMPLETE** status MUST block **automated** Engineering Agent relay. **[E]** Automated relay path is a provider automation concern ([AWI-0006](../../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)). **P0 manual** copy/export and human paste MUST NOT be described as requiring an implemented automated bridge. |
+| **PC-PAR-014** | **Engineering-Agent-directed handovers** SHALL be validated before **automated** Engineering Agent relay: **[A]** Core validation and **INCOMPLETE** status MUST block **automated** Engineering Agent relay; **RejectedMalformed** MUST block automated forward; active relay **STOP** and **Valid != actionable** rules MUST be preserved. **[E]** Automated forward is performed only by an **Engineering Agent provider plugin** that declares automated transport capability per [ADR-0021](../../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md) and MUST use the same governed render/parse semantics as P0 manual. **P0 manual** copy/export and human paste MUST NOT be described as requiring an implemented automated bridge or plugin. |
 | **PC-PAR-015** | Missing governance-critical authorization or mode metadata MUST NOT be silently inferred from free prose or model output. **[A]** Core relay validation and inference safety at the boundary. **[B]** Meaning of authorization, planning vs implementation, and governed Software Development state — semantic source [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) / [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (for example PC-AIGOV-003, PC-AIGOV-004). |
 
 ## 8. Provider separation (PC-PAR-016–019)
@@ -229,17 +230,22 @@ Core concepts (provider-neutral):
 
 Provisional transport attribution ([§13](#13-provisional-attribution-pre-pcon-0002)) does not resolve Actor/Role ([PCON-0002](../../Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md)).
 
-## 11. Engineering agent bridge (PC-PAR-022)
+## 11. Engineering agent bridge and provider plugins (PC-PAR-022)
 
 | ID | Requirement |
 |---|---|
-| **PC-PAR-022** | **[E]** Engineering Agent integration SHALL use an **Engineering Agent relay bridge** abstraction (`IEngineeringAgentRelayBridge`). First implementation target is **P0 manual transport** (package generation, validation, copy/export, evidence import) unless later PA disposition changes it. P1 (extension/CLI) and P2 (MCP/ACP) are future investigations ([AWI-0006](../../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)). |
+| **PC-PAR-022** | **[E]** Engineering Agent integration SHALL use an **Engineering Agent relay bridge** (`IEngineeringAgentRelayBridge`) for governed **render** and **parse** of `EngineeringAgentHandoverExport` and `EngineeringResultImport` over `projectconcord-relay-v1`. P0 manual transport (package generation after Core validation, copy/export, evidence import) is the **published** baseline unless later PA disposition changes it. |
+| **PC-PAR-022a** | **[E]** **Automated** Engineering Agent transport SHALL use a separate **Engineering Agent provider plugin contract** per [ADR-0021](../../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md). The relay bridge MUST NOT be the permanent catch-all provider interface. Concrete provider products implement bounded plugins; application/infrastructure owns provider-neutral registration, lifecycle, capability exposure, and selection — without placing provider hosting in **Core (A)** or **Software Development (B)**. |
+| **PC-PAR-022b** | **[E]** Automated forward eligibility SHALL match PC-PAR-014: automated relay is forbidden when governance-critical metadata is **INCOMPLETE**, when structural validation is **RejectedMalformed**, or when relay rules forbid action (including active STOP while **Valid != actionable**). Plugins MUST NOT bypass these rules. |
+| **PC-PAR-022c** | **[E]** P1 (extension/CLI) and P2 (MCP/ACP) transport mechanism investigations remain under [AWI-0006](../../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md) / [GAP-044](../../Development/EDF_Gap_Register.md#gap-044--engineering-agent-automated-transport) — **not normative** until PA disposition. A concrete product MAY be the first **reference P1** candidate without defining the contract. |
 
 **[A]** The relay SHALL map **validated** handovers to Engineering Agent PLAN / AGENT / DEBUG routing intent.
 
-**[B]** The bridge MUST NOT escalate modes or **authorize implementation** without governed Software Development workflow state per [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) (for example PC-AIGOV-004, PC-AIGOV-007).
+**[B]** The bridge and provider plugins MUST NOT escalate modes or **authorize implementation** without governed Software Development workflow state per [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) (for example PC-AIGOV-004, PC-AIGOV-007).
 
-**A2 / A4** implementation remains **not authorized**.
+**Provider invariants (E):** Provider chats and transcripts are not canonical Project records; provider storage is not ProjectConcord source of truth; provider transport cannot issue DWA, override STOP, bypass relay validation, manufacture package authority, or infer governance-critical state from prose.
+
+**A2** P0 manual relay is **published**. **A4** automated provider transport and plugin hosting implementation remain **not authorized**.
 
 ## 12. Canonical Markdown awareness — Tier 0
 
