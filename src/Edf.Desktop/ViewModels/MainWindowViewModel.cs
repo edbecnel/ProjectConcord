@@ -1,7 +1,9 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Edf.Application.Operator.Relay;
 using Edf.Application.Projects;
 using Edf.Application.Relay;
+using Edf.Application.Relay.EngineeringAgent.Transport;
 using Edf.Domain.Projects;
 
 namespace Edf.Desktop.ViewModels;
@@ -29,7 +31,9 @@ public sealed class MainWindowViewModel : ViewModelBase
         IProjectWorkspaceService workspace,
         IGovernedRelayP0WorkflowService? relayWorkflow,
         Func<string, string?, Task<string?>> pickFolderAsync,
-        Func<string, Task>? copyTextAsync = null)
+        Func<string, Task>? copyTextAsync = null,
+        IEngineeringAgentAutomatedTransportService? automatedTransport = null,
+        RelayWorkflowOperatorProjectionService? relayOperatorProjections = null)
     {
         _workspace = workspace ?? throw new ArgumentNullException(nameof(workspace));
         _pickFolderAsync = pickFolderAsync ?? throw new ArgumentNullException(nameof(pickFolderAsync));
@@ -44,7 +48,12 @@ public sealed class MainWindowViewModel : ViewModelBase
 
         Relay = relayWorkflow is null
             ? null
-            : new RelayWorkflowViewModel(relayWorkflow, workspace, _copyTextAsync);
+            : new RelayWorkflowViewModel(
+                relayWorkflow,
+                workspace,
+                _copyTextAsync,
+                automatedTransport,
+                relayOperatorProjections);
 
         InitializeFromWorkspace();
     }

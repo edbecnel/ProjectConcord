@@ -1,3 +1,4 @@
+using Edf.Application.Operator.Relay;
 using Edf.Application.Projects;
 using Edf.Application.Projects.InMemory;
 using Edf.Application.Relay;
@@ -15,7 +16,8 @@ public sealed record DesktopApplicationServices(
     ITransportOperationStore TransportOperations,
     EngineeringAgentPluginHostingServices EngineeringAgentPluginHosting,
     IEngineeringAgentAutomatedTransportService AutomatedTransport,
-    IEngineeringAgentTransportRecoveryService TransportRecovery);
+    IEngineeringAgentTransportRecoveryService TransportRecovery,
+    RelayWorkflowOperatorProjectionService RelayOperatorProjections);
 
 public static class ApplicationCompositionRoot
 {
@@ -57,12 +59,17 @@ public static class ApplicationCompositionRoot
             pluginHosting.Catalog,
             pluginHosting.Host,
             pluginHosting.Preferences);
+        var relayOperatorProjections = new RelayWorkflowOperatorProjectionService(
+            new EngineeringAgentTransportOperatorAttentionContributor(
+                pluginHosting.Selection,
+                persistence.TransportOperations));
         return new DesktopApplicationServices(
             workspace,
             relayWorkflow,
             persistence.TransportOperations,
             pluginHosting,
             automatedTransport,
-            transportRecovery);
+            transportRecovery,
+            relayOperatorProjections);
     }
 }

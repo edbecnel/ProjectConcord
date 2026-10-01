@@ -20,7 +20,9 @@ public partial class MainWindow : Window
             services.Workspace,
             services.RelayWorkflow,
             PickFolderAsync,
-            CopyTextToClipboardAsync);
+            CopyTextToClipboardAsync,
+            services.AutomatedTransport,
+            services.RelayOperatorProjections);
     }
 
     private void FileOpenProjectFolder_OnClick(object? sender, EventArgs e)

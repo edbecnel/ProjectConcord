@@ -8,7 +8,7 @@
 >
 > **EACH A4 IMPLEMENTATION TRANCHE REQUIRES EXPLICIT PROJECT ARCHITECT AUTHORIZATION.**
 
-> **A4 implementation plan:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01). **A4-T0–T4 CLOSED / PA ACCEPTED / PUBLISHED** (2026-10-01). **A4-T5–T7 NOT AUTHORIZED.**
+> **A4 implementation plan:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01). **A4-T0–T5 CLOSED / PA ACCEPTED / PUBLISHED** (2026-10-01). **A4-T6–T7 NOT AUTHORIZED.**
 
 **Mode:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01)
 
@@ -18,7 +18,7 @@
 
 **Architecture basis:** [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md), [ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md), [ADR-0023](../Architecture/ADRs/ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md), [ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md), [ADR-0020](../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), published [A2 P0 governed relay](ProjectConcord-A2-Implementation-Plan.md) implementation on `main`, [PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md)
 
-**Governance inputs:** **PA accepted** A4 implementation plan (2026-10-01); **A4-T0–T4 PA accepted / published** (2026-10-01); **A4-T5–T7 NOT AUTHORIZED**; **A3 NOT AUTHORIZED**.
+**Governance inputs:** **PA accepted** A4 implementation plan (2026-10-01); **A4-T0–T5 PA accepted / published** (2026-10-01); **A4-T6–T7 NOT AUTHORIZED**; **A3 NOT AUTHORIZED**.
 
 ---
 
@@ -28,13 +28,13 @@
 |------|--------|
 | A4 architecture (ADR-0021/0022/0023) | **Accepted** (2026-10-01) |
 | **This A4 implementation plan** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) |
-| A4 implementation (`src/`, tests) | **T0–T4 published** on `main` — [T4 notes](ProjectConcord-A4-T4-Implementation-Notes.md) |
+| A4 implementation (`src/`, tests) | **T0–T5 published** on `main` — [T5 notes](ProjectConcord-A4-T5-Implementation-Notes.md) |
 | **A4-T0** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T0 notes](ProjectConcord-A4-T0-Implementation-Notes.md); [§27](#27-a4-t0-closeout-2026-10-01) |
 | **A4-T1** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T1 notes](ProjectConcord-A4-T1-Implementation-Notes.md); [§28](#28-a4-t1-closeout-2026-10-01) |
 | **A4-T2** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T2 notes](ProjectConcord-A4-T2-Implementation-Notes.md); [§29](#29-a4-t2-closeout-2026-10-01) |
 | **A4-T3** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T3 notes](ProjectConcord-A4-T3-Implementation-Notes.md); [§30](#30-a4-t3-closeout-2026-10-01) |
 | **A4-T4** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T4 notes](ProjectConcord-A4-T4-Implementation-Notes.md); [§31](#31-a4-t4-closeout-2026-10-01) |
-| **A4-T5** | **NOT AUTHORIZED** |
+| **A4-T5** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T5 notes](ProjectConcord-A4-T5-Implementation-Notes.md); [§32](#32-a4-t5-closeout-2026-10-01) |
 | **A4-T6** | **NOT AUTHORIZED** |
 | **A4-T7** | **NOT AUTHORIZED** |
 | A3 | **NOT AUTHORIZED** |
@@ -262,7 +262,7 @@ Provider permission is **operational only** — not DWA, STOP override, package 
 
 ## 15. Operator projections ([ADR-0020](../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md))
 
-**Current code:** no `Attention` implementation types in `src/` — A4-T5 introduces **minimum** Application-level contributors/DTOs suitable for future shell, plus Desktop surfacing where needed.
+**Current code (A4-T5 published):** minimum Application-level Attention / Next Action contributors and DTOs under `Edf.Application/Operator/`; relay-workflow Desktop surfacing in `RelayWorkflowViewModel`.
 
 | Failure / condition | Projection |
 |---------------------|------------|
@@ -462,14 +462,16 @@ Reuse existing P0 path unchanged in semantics: eligibility, renderer, parser, va
 
 | | |
 |---|---|
-| **Authorization** | **NOT AUTHORIZED** |
+| **Authorization** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) |
 | **Objective** | Attention contributors; Recommended P0 action; minimal Desktop automated commands + status; **P0 regression** |
 | **Architecture basis** | ADR-0020; ADR-0022 §14 |
-| **Likely areas** | Application projections; `RelayWorkflowViewModel` |
+| **Implementation** | `Edf.Application/Operator/`; `RelayWorkflowOperatorProjectionService`; `RelayWorkflowViewModel` + `MainWindow.axaml` |
 | **Dependencies** | T4 |
-| **Tests** | Desktop VM tests; Application attention derivation; **all A2 relay tests still pass** |
-| **Acceptance** | Manual path works with automation disabled |
-| **STOP** | Await **PA authorization for A4-T6 only** |
+| **Tests** | `EngineeringAgentA4T5OperatorProjectionTests` (**6**); `RelayWorkflowViewModelAutomatedTransportTests` (**2**); A2 relay regression green |
+| **Validation** | SDK **10.0.401**; **233** tests **PASS** |
+| **Acceptance** | Manual path works with automation disabled; transport failure does not mutate package validation |
+| **Evidence** | Publication commit on `main` — [§32](#32-a4-t5-closeout-2026-10-01) |
+| **STOP** | T5 closed — **await PA authorization for A4-T6 only** |
 
 ---
 
@@ -541,13 +543,14 @@ flowchart TB
 | Item | Disposition |
 |------|-------------|
 | Canonical plan | This document on `main` (publication commit — see [Implementation Roadmap](../Development/Implementation_Roadmap.md)) |
-| A4 implementation | **T0–T4 published** on `main`; **T5–T7 NOT AUTHORIZED** |
+| A4 implementation | **T0–T5 published** on `main`; **T6–T7 NOT AUTHORIZED** |
 | A4-T0 | **Published** on `main` |
 | A4-T1 | **Published** on `main` (2026-10-01) |
 | A4-T2 | **Published** on `main` (2026-10-01) |
 | A4-T3 | **Published** on `main` (2026-10-01) |
 | A4-T4 | **Published** on `main` (2026-10-01) — [§31](#31-a4-t4-closeout-2026-10-01) |
-| A4-T5 … A4-T7 | **NOT AUTHORIZED** — separate PA authorization required per tranche |
+| A4-T5 | **Published** on `main` (2026-10-01) — [§32](#32-a4-t5-closeout-2026-10-01) |
+| A4-T6 … A4-T7 | **NOT AUTHORIZED** — separate PA authorization required per tranche |
 | A3 | **NOT AUTHORIZED** |
 | MVR-0003 | **Not created** at plan publication; **reconfirm scope at T7 authorization** (§18) |
 | AAR-0002 | **Not created**; not required merely for A4 (§19) |
@@ -664,6 +667,30 @@ Details: [ProjectConcord-A4-T3-Implementation-Notes.md](ProjectConcord-A4-T3-Imp
 Details: [ProjectConcord-A4-T4-Implementation-Notes.md](ProjectConcord-A4-T4-Implementation-Notes.md).
 
 **Next governance decision:** Whether to authorize **A4-T5 only**. **A4-T5 NOT AUTHORIZED** until explicit PA disposition.
+
+---
+
+## 32. A4-T5 closeout (2026-10-01)
+
+**PA disposition:** **A4-T5 CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01).
+
+| Item | Disposition |
+|------|-------------|
+| Pre-T5 baseline | `12aa29924897f565ac3c670503495d114da22c6f` (A4-T4 publication) |
+| T5 publication commit | Recorded on `main` (2026-10-01 tranche) |
+| Operator projections | `Edf.Application/Operator/` — derived Attention / Recommended Next Action (ADR-0020); import-rejection Attention is non-authoritative reporting only |
+| Desktop | `RelayWorkflowViewModel` — forward/cancel automated transport commands; status/attention surfacing; **no** orchestration duplication |
+| P0 manual relay | Prepare / Copy / Import unchanged; **Recommended** (not Required) manual fallback when eligible |
+| Recovery | T4 explicit recovery only — no startup/background automation in Desktop |
+| Production providers | **0** |
+| Cursor / ACP / MCP | **Not in T5** — deferred to A4-T6 when authorized |
+| **A4-T6 … A4-T7** | **NOT AUTHORIZED** |
+| **A3** | **NOT AUTHORIZED** |
+| MVR-0003 / AAR-0002 | **Not created** (§18, §19) |
+
+Details: [ProjectConcord-A4-T5-Implementation-Notes.md](ProjectConcord-A4-T5-Implementation-Notes.md).
+
+**Next governance decision:** Whether to authorize **A4-T6 only** (Cursor reference provider). **A4-T6 NOT AUTHORIZED** until explicit PA disposition.
 
 ---
 

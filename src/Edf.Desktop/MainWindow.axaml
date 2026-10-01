@@ -214,6 +214,37 @@
                    MinHeight="80"
                    PlaceholderText="Prepared handover appears here when Valid and actionable" />
 
+          <SelectableTextBlock Text="Engineering Agent automated transport (P1+)"
+                               FontWeight="SemiBold"
+                               IsVisible="{Binding HasAutomatedTransportIntegration}" />
+          <SelectableTextBlock Text="{Binding AutomatedTransportStatus}"
+                               TextWrapping="Wrap"
+                               Foreground="#444"
+                               IsVisible="{Binding HasAutomatedTransportIntegration}" />
+          <SelectableTextBlock Text="{Binding RecommendedManualRelaySummary}"
+                               TextWrapping="Wrap"
+                               Foreground="#0066CC"
+                               IsVisible="{Binding HasRecommendedManualRelay}" />
+          <SelectableTextBlock Text="Attention (derived)"
+                               FontWeight="SemiBold"
+                               FontSize="12"
+                               IsVisible="{Binding AttentionItems.Count}" />
+          <ItemsControl ItemsSource="{Binding AttentionItems}"
+                        IsVisible="{Binding AttentionItems.Count}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:OperatorAttentionItemViewModel">
+                <SelectableTextBlock Text="{Binding DisplayLine}" TextWrapping="Wrap" FontSize="12" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <StackPanel Orientation="Horizontal" Spacing="8"
+                      IsVisible="{Binding HasAutomatedTransportIntegration}">
+            <Button Content="Forward handover (automated)"
+                    Command="{Binding ForwardAutomatedHandoverCommand}" />
+            <Button Content="Cancel automated transport"
+                    Command="{Binding CancelAutomatedTransportCommand}" />
+          </StackPanel>
+
           <SelectableTextBlock Text="Engineering result import (optional)" FontWeight="SemiBold" />
           <TextBox Text="{Binding EngineeringResultText}"
                    AcceptsReturn="True"

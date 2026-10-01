@@ -2,8 +2,11 @@ namespace Edf.Desktop.ViewModels;
 
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Edf.Application.Operator;
+using Edf.Application.Operator.Relay;
 using Edf.Application.Projects;
 using Edf.Application.Relay;
+using Edf.Application.Relay.EngineeringAgent.Transport;
 using Edf.Application.Relay.ProjectArchitect;
 using Edf.Application.Relay.Serialization;
 using Edf.Domain.Projects;
@@ -16,6 +19,8 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
     private readonly IGovernedRelayP0WorkflowService _workflow;
     private readonly IProjectWorkspaceService _workspace;
     private readonly Func<string, Task> _copyTextAsync;
+    private readonly IEngineeringAgentAutomatedTransportService? _automatedTransport;
+    private readonly RelayWorkflowOperatorProjectionService? _operatorProjections;
 
     private AgentSessionIntent? _projectArchitectSessionIntent;
     private AgentSessionIntent? _engineeringAgentSessionIntent;
@@ -33,18 +38,36 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
     private GovernedRelayPackage? _lastPaHandoverImport;
     private RelayValidationResult? _lastPaHandoverValidation;
     private bool _isRelaySectionEnabled;
+    private EngineeringAgentAutomatedTransportResult? _lastAutomatedTransportResult;
+    private string? _automatedTransportStatus;
+    private string? _recommendedManualRelaySummary;
+    private bool _hasAutomatedTransportIntegration;
 
     public RelayWorkflowViewModel(
         IGovernedRelayP0WorkflowService workflow,
         IProjectWorkspaceService workspace,
         Func<string, Task> copyTextAsync)
+        : this(workflow, workspace, copyTextAsync, null, null)
+    {
+    }
+
+    public RelayWorkflowViewModel(
+        IGovernedRelayP0WorkflowService workflow,
+        IProjectWorkspaceService workspace,
+        Func<string, Task> copyTextAsync,
+        IEngineeringAgentAutomatedTransportService? automatedTransport,
+        RelayWorkflowOperatorProjectionService? operatorProjections)
     {
         _workflow = workflow ?? throw new ArgumentNullException(nameof(workflow));
         _workspace = workspace ?? throw new ArgumentNullException(nameof(workspace));
         _copyTextAsync = copyTextAsync ?? throw new ArgumentNullException(nameof(copyTextAsync));
+        _automatedTransport = automatedTransport;
+        _operatorProjections = operatorProjections;
+        _hasAutomatedTransportIntegration = automatedTransport is not null && operatorProjections is not null;
 
         Diagnostics = new ObservableCollection<string>();
         ProvenanceEvents = new ObservableCollection<RelayProvenanceItemViewModel>();
+        AttentionItems = new ObservableCollection<OperatorAttentionItemViewModel>();
 
         GeneratePaReviewCommand = new AsyncRelayCommand(GeneratePaReviewAsync, () => IsRelaySectionEnabled);
         CopyPaReviewCommand = new AsyncRelayCommand(CopyPaReviewAsync, () => HasPaReviewRendered);
@@ -58,9 +81,17 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
         ImportEngineeringResultCommand = new AsyncRelayCommand(
             ImportEngineeringResultAsync,
             () => IsRelaySectionEnabled);
+        ForwardAutomatedHandoverCommand = new AsyncRelayCommand(
+            ForwardAutomatedHandoverAsync,
+            () => IsRelaySectionEnabled && CanForwardAutomatedHandover);
+        CancelAutomatedTransportCommand = new AsyncRelayCommand(
+            CancelAutomatedTransportAsync,
+            () => IsRelaySectionEnabled && CanCancelAutomatedTransport);
     }
 
     public ObservableCollection<string> Diagnostics { get; }
+
+    public ObservableCollection<OperatorAttentionItemViewModel> AttentionItems { get; }
 
     public ObservableCollection<RelayProvenanceItemViewModel> ProvenanceEvents { get; }
 
@@ -75,6 +106,12 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
     public ICommand CopyEngineeringHandoverCommand { get; }
 
     public ICommand ImportEngineeringResultCommand { get; }
+
+    public ICommand ForwardAutomatedHandoverCommand { get; }
+
+    public ICommand CancelAutomatedTransportCommand { get; }
+
+    public bool HasAutomatedTransportIntegration => _hasAutomatedTransportIntegration;
 
     public bool IsRelaySectionEnabled
     {
@@ -119,7 +156,13 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
     public EngineeringAgentMode EngineeringAgentMode
     {
         get => _engineeringAgentMode;
-        set => SetProperty(ref _engineeringAgentMode, value);
+        set
+        {
+            if (SetProperty(ref _engineeringAgentMode, value))
+            {
+                RefreshOperatorProjections();
+            }
+        }
     }
 
     public EngineeringAgentMode? PriorEngineeringAgentMode
@@ -213,6 +256,30 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
         private set => SetProperty(ref _relayStatusMessage, value);
     }
 
+    public string? AutomatedTransportStatus
+    {
+        get => _automatedTransportStatus;
+        private set => SetProperty(ref _automatedTransportStatus, value);
+    }
+
+    public string? RecommendedManualRelaySummary
+    {
+        get => _recommendedManualRelaySummary;
+        private set
+        {
+            if (SetProperty(ref _recommendedManualRelaySummary, value))
+            {
+                RaisePropertyChanged(nameof(HasRecommendedManualRelay));
+            }
+        }
+    }
+
+    public bool HasRecommendedManualRelay => !string.IsNullOrWhiteSpace(RecommendedManualRelaySummary);
+
+    public bool CanForwardAutomatedHandover { get; private set; }
+
+    public bool CanCancelAutomatedTransport { get; private set; }
+
     public string SessionIntentHint =>
         "Session intents are explicit user choices (NEW/CONTINUE). They are not inferred from package prose.";
 
@@ -246,6 +313,7 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
         RaisePropertyChanged(nameof(ProjectArchitectSessionIntent));
         RaisePropertyChanged(nameof(EngineeringAgentSessionIntent));
         RefreshProvenance(activeProjectId);
+        RefreshOperatorProjections();
     }
 
     private void ApplySessionIntentIfProjectActive(bool isProjectArchitect, AgentSessionIntent? intent)
@@ -358,6 +426,7 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
         RaisePropertyChanged(nameof(CanPrepareEngineeringHandover));
         (PrepareEngineeringHandoverCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
         RefreshProvenance(projectId);
+        RefreshOperatorProjections();
         await Task.CompletedTask.ConfigureAwait(true);
     }
 
@@ -394,6 +463,7 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
         EngineeringHandoverRendered = preparation.RenderedHandover;
         RelayStatusMessage = "Engineering Agent handover prepared. Use Copy for manual transfer only.";
         RefreshProvenance(projectId);
+        RefreshOperatorProjections();
         await Task.CompletedTask.ConfigureAwait(true);
     }
 
@@ -436,7 +506,94 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
         ApplyValidationPresentation(result.Import.Validation);
         EngineeringResultValidationSummary = FormatValidationHeading("Engineering result import", result.Import.Validation);
         RefreshProvenance(projectId);
+        RefreshOperatorProjections();
         await Task.CompletedTask.ConfigureAwait(true);
+    }
+
+    private async Task ForwardAutomatedHandoverAsync()
+    {
+        if (_automatedTransport is null || _workspace.CurrentProjectId is not { } projectId)
+        {
+            return;
+        }
+
+        if (_lastPaHandoverImport is null)
+        {
+            RelayStatusMessage = "Import a validated PA handover before automated forward.";
+            return;
+        }
+
+        RelayStatusMessage = null;
+        var result = await _automatedTransport.ForwardGovernedHandoverAsync(
+            new EngineeringAgentAutomatedForwardRequest(
+                projectId,
+                _lastPaHandoverImport.PackageId,
+                EngineeringAgentMode)).ConfigureAwait(true);
+
+        _lastAutomatedTransportResult = result;
+        if (result.GovernanceValidation is not null)
+        {
+            ApplyValidationPresentation(result.GovernanceValidation);
+        }
+
+        RelayStatusMessage = $"Automated transport completed with outcome {result.Outcome}.";
+        RefreshProvenance(projectId);
+        RefreshOperatorProjections();
+    }
+
+    private async Task CancelAutomatedTransportAsync()
+    {
+        if (_automatedTransport is null
+            || _workspace.CurrentProjectId is not { } projectId
+            || _lastAutomatedTransportResult?.Operation is not { } operation)
+        {
+            return;
+        }
+
+        var result = await _automatedTransport.CancelTransportOperationAsync(
+            new EngineeringAgentAutomatedCancelRequest(projectId, operation.OperationId)).ConfigureAwait(true);
+        _lastAutomatedTransportResult = result;
+        RelayStatusMessage = $"Automated transport cancel completed with outcome {result.Outcome}.";
+        RefreshOperatorProjections();
+    }
+
+    private void RefreshOperatorProjections()
+    {
+        if (_operatorProjections is null)
+        {
+            AttentionItems.Clear();
+            AutomatedTransportStatus = null;
+            RecommendedManualRelaySummary = null;
+            CanForwardAutomatedHandover = false;
+            CanCancelAutomatedTransport = false;
+            RaiseAutomatedTransportCommandCanExecuteChanged();
+            return;
+        }
+
+        var input = new RelayWorkflowOperatorProjectionInput(
+            _workspace.CurrentProjectId,
+            EngineeringAgentMode,
+            _lastPaHandoverImport,
+            _lastPaHandoverValidation,
+            _lastAutomatedTransportResult);
+
+        var projection = _operatorProjections.Project(input);
+        AttentionItems.Clear();
+        foreach (var item in projection.AttentionItems)
+        {
+            AttentionItems.Add(new OperatorAttentionItemViewModel(item));
+        }
+
+        AutomatedTransportStatus = projection.AutomatedTransportStatusSummary;
+        RecommendedManualRelaySummary = projection.NextActions
+            .FirstOrDefault(a => a.ActionClass == OperatorNextActionClass.Recommended)
+            ?.Message;
+        CanForwardAutomatedHandover = projection.CanAttemptAutomatedForward;
+        CanCancelAutomatedTransport = _lastAutomatedTransportResult?.Operation?.LifecycleState
+            is TransportOperationLifecycleState.ForwardAcknowledged
+            or TransportOperationLifecycleState.AwaitingResult
+            or TransportOperationLifecycleState.ForwardInProgress;
+        RaiseAutomatedTransportCommandCanExecuteChanged();
     }
 
     private void RefreshProvenance(ProjectConcordProjectId projectId)
@@ -462,8 +619,13 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
         _lastPaHandoverValidation = null;
         ClearDiagnostics();
         ProvenanceEvents.Clear();
+        _lastAutomatedTransportResult = null;
+        AttentionItems.Clear();
+        AutomatedTransportStatus = null;
+        RecommendedManualRelaySummary = null;
         RaisePropertyChanged(nameof(CanPrepareEngineeringHandover));
         RaiseRelayCommandCanExecuteChanged();
+        RefreshOperatorProjections();
     }
 
     private void ClearDiagnostics() => Diagnostics.Clear();
@@ -538,5 +700,14 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
         (ImportPaHandoverCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
         (PrepareEngineeringHandoverCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
         (ImportEngineeringResultCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
+        RaiseAutomatedTransportCommandCanExecuteChanged();
+    }
+
+    private void RaiseAutomatedTransportCommandCanExecuteChanged()
+    {
+        (ForwardAutomatedHandoverCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
+        (CancelAutomatedTransportCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
+        RaisePropertyChanged(nameof(CanForwardAutomatedHandover));
+        RaisePropertyChanged(nameof(CanCancelAutomatedTransport));
     }
 }

@@ -22,9 +22,10 @@ Inbound architectural and integration handovers from external frameworks, progra
 | [ProjectConcord PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md) | PA-amended PAR / Project Root / governed workflow architecture (A0 **PA accepted** 2026-09-28); A1–A4 implementation not authorized | Active |
 | [ProjectConcord A1 Implementation Plan](ProjectConcord-A1-Implementation-Plan.md) | A1 **closed / published** (2026-09-28; `fba5be5` on `main`); A2 not authorized | Active |
 | [ProjectConcord A2 Implementation Plan](ProjectConcord-A2-Implementation-Plan.md) | A2 **closed / PA accepted** (2026-09-30); T1–T8; closeout docs **pending publication** | Active |
-| [ProjectConcord A4 Implementation Plan](ProjectConcord-A4-Implementation-Plan.md) | A4 automated transport — plan **PA accepted / published**; **A4-T0–T4 published** (2026-10-01); **A4-T5–T7 not authorized** | Active |
+| [ProjectConcord A4 Implementation Plan](ProjectConcord-A4-Implementation-Plan.md) | A4 automated transport — plan **PA accepted / published**; **A4-T0–T5 published** (2026-10-01); **A4-T6–T7 not authorized** | Active |
 | [ProjectConcord A4-T3 Implementation Notes](ProjectConcord-A4-T3-Implementation-Notes.md) | A4-T3 **closed / PA accepted / published** (2026-10-01) — transport orchestration, preflight/readiness | Active |
 | [ProjectConcord A4-T4 Implementation Notes](ProjectConcord-A4-T4-Implementation-Notes.md) | A4-T4 **closed / PA accepted / published** (2026-10-01) — restart recovery, idempotency, reconciliation | Active |
+| [ProjectConcord A4-T5 Implementation Notes](ProjectConcord-A4-T5-Implementation-Notes.md) | A4-T5 **closed / PA accepted / published** (2026-10-01) — operator projections, minimal Desktop automated transport | Active |
 | [ProjectConcord A4-T2 Implementation Notes](ProjectConcord-A4-T2-Implementation-Notes.md) | A4-T2 **closed / PA accepted / published** (2026-10-01) — transport persistence / Migration003 | Active |
 | [ProjectConcord A4-T0 Implementation Notes](ProjectConcord-A4-T0-Implementation-Notes.md) | A4-T0 **closed / PA accepted / published** (2026-10-01) | Active |
 | [ProjectConcord A4-T1 Implementation Notes](ProjectConcord-A4-T1-Implementation-Notes.md) | A4-T1 **closed / PA accepted / published** (2026-10-01) — catalog, hosting, selection, lifecycle | Active |
