@@ -1,0 +1,560 @@
+[Home](../../README.md) › [Project Index](../../PROJECT_INDEX.md) › [Handover](README.md) › ProjectConcord A4 Implementation Plan
+
+# ProjectConcord A4 — Implementation Plan
+
+**Tranche:** PAR track **A4** — Engineering Agent automated transport (P1+)
+
+> **PLAN ACCEPTANCE DOES NOT AUTHORIZE A4 IMPLEMENTATION.**
+>
+> **EACH A4 IMPLEMENTATION TRANCHE REQUIRES EXPLICIT PROJECT ARCHITECT AUTHORIZATION.**
+
+> **A4 implementation plan:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01). **A4-T0 through A4-T7 NOT AUTHORIZED.** **A4 implementation NOT AUTHORIZED.**
+
+**Mode:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01)
+
+**Planning baseline:** `a7b6552ab2f05a0c8d1d4a063e0846d5d27888bf` — *Accept ADR-0023 Engineering Agent plugin hosting architecture.*
+
+**Publication:** Recorded in [§26 A4 plan closeout](#26-a4-plan-closeout-2026-10-01) (governed docs commit on `main`).
+
+**Architecture basis:** [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md), [ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md), [ADR-0023](../Architecture/ADRs/ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md), [ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md), [ADR-0020](../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), published [A2 P0 governed relay](ProjectConcord-A2-Implementation-Plan.md) implementation on `main`, [PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md)
+
+**Governance inputs:** **PA accepted** A4 implementation plan (2026-10-01); mandatory refinements preserved in §5–§8, §18–§19; **A4-T0 through A4-T7 NOT AUTHORIZED**; **A3 NOT AUTHORIZED**.
+
+---
+
+## Project Architect disposition
+
+| Item | Status |
+|------|--------|
+| A4 architecture (ADR-0021/0022/0023) | **Accepted** (2026-10-01) |
+| **This A4 implementation plan** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) |
+| A4 implementation (`src/`, tests) | **NOT AUTHORIZED** |
+| **A4-T0** | **NOT AUTHORIZED** |
+| **A4-T1** | **NOT AUTHORIZED** |
+| **A4-T2** | **NOT AUTHORIZED** |
+| **A4-T3** | **NOT AUTHORIZED** |
+| **A4-T4** | **NOT AUTHORIZED** |
+| **A4-T5** | **NOT AUTHORIZED** |
+| **A4-T6** | **NOT AUTHORIZED** |
+| **A4-T7** | **NOT AUTHORIZED** |
+| A3 | **NOT AUTHORIZED** |
+
+No implementation tranche inherits authority from plan publication.
+
+---
+
+## 1. Reconciled A4 definition
+
+**A4** delivers the first **automated** slice of the **Governed Interaction Relay** Engineering Agent path while preserving permanent **P0 manual** fallback:
+
+| Layer | A4 minimum |
+|-------|------------|
+| **A — Core** | Unchanged governed package semantics, validation, eligibility, STOP, provenance; **transport failure MUST NOT mutate package governance validity** |
+| **B — Software Development** | Unchanged relay profile boundary; consume existing validators |
+| **Application / infrastructure** | Static plugin catalog/hosting; transport-operation operational persistence; provider-neutral orchestration; recovery/idempotency; minimal ADR-0020 projections |
+| **E — Provider plugin contract** | Automated forward, result candidate retrieval, cancel, health, routing-intent mapping (provider-specific mechanics inside plugin) |
+| **E — Relay bridge** | `IEngineeringAgentRelayBridge` — **render / parse only** (no ACP/CLI in bridge) |
+| **E — Cursor reference plugin** | First-party provider: ACP client → Cursor CLI `agent acp` (non-normative reference path per ADR-0022 §16) |
+
+**Transport lifecycle ≠ governance lifecycle.** Transport-operation state is **operational** ([ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) §5); relay package validation dispositions remain owned by Core relay rules.
+
+---
+
+## 2. Explicit non-goals (binding)
+
+A4 **MUST NOT** implement:
+
+- **A3** governed-workflow MVP breadth; full **DevelopmentWorkAuthorization** lifecycle/store/UI
+- **M2+** EDF engine discovery, parsing, profile resolution
+- **MCP** as primary governed relay transport ([ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) §12)
+- Generalized **loadable-plugin** framework; filesystem/assembly **discovery**; marketplace; signing PKI; auto-update; enterprise plugin distribution
+- Dynamic third-party plugin installation without explicit registration and enablement
+- **AWI-0009** structured authoring form runtime
+- Architecture redesign of ADR-0021/0022/0023 boundaries
+- Multi-process local operational-store concurrency resolution ([GAP-048](../Development/EDF_Gap_Register.md#gap-048--same-project-id--multiple-local-application-processes), [GAP-052](../Development/EDF_Gap_Register.md#gap-052--multi-process-local-operational-store-concurrency-strategy-and-validation))
+- MVR **execution** or verification **record** creation during this planning/documentation tranche (STOP-2 pattern from [A2 plan §18](ProjectConcord-A2-Implementation-Plan.md#18-mvr-plan-not-executed-in-planning-tranche))
+
+---
+
+## 3. Authorization model
+
+**Acceptance or publication of this plan does NOT authorize A4 implementation or any tranche automatically.**
+
+```mermaid
+flowchart LR
+  Draft[A4_plan_drafted] --> Stop0[STOP_PA_plan_acceptance]
+  Stop0 --> Accepted[Plan_accepted_published]
+  Accepted --> Stop1[STOP]
+  Stop1 --> AuthT0[PA_authorizes_A4_T0_only]
+  AuthT0 --> ImplT0[T0_implementation]
+  ImplT0 --> Stop2[STOP_PA_review]
+  Stop2 --> AuthTn[PA_authorizes_next_tranche]
+  AuthTn --> ImplTn[Tn_implementation]
+  ImplTn --> Stop3[STOP_PA_review]
+  Stop3 --> AuthT7[PA_authorizes_A4_T7]
+  AuthT7 --> Verify[T7_verification_closeout]
+  Verify --> Stop4[STOP_PA_A4_closeout]
+```
+
+**Authorization chain (binding):**
+
+1. **A4 plan DRAFT** → **PA plan acceptance** (publication commit) — **does not** authorize implementation  
+2. **PA authorizes A4-T0** → T0 execution → **PA review**  
+3. **PA authorizes A4-T1** → … → **PA authorizes A4-T7**  
+4. **T7** verification + closeout evidence → **PA A4 overall closeout** — **does not** authorize A3 or follow-on without separate PA decision  
+
+No tranche inherits authorization because a prior tranche completed.
+
+---
+
+## 4. A2 reuse (no redesign)
+
+| A2 component | Location | A4 use |
+|--------------|----------|--------|
+| `IGovernedRelayP0WorkflowService` / `GovernedRelayP0WorkflowService` | `Edf.Application/Relay/` | Eligibility, produce/consume, import pipeline — **reuse**; add separate automated transport service |
+| `IGovernedInteractionRelayService` / `GovernedInteractionRelayService` | `Edf.Application/Relay/` | `RecordProducedPackage`, `RecordConsumedPackage`, session continuity |
+| `IEngineeringAgentRelayBridge` / `EngineeringAgentManualRelayBridge` | `Edf.Application/Relay/EngineeringAgent/` | `TryRenderValidatedHandover`, `TryParseEngineeringResult` — **unchanged role** |
+| `RelayValidatedHandoverEligibility` | `Edf.Application/Relay/` | Same automated forward gate as P0 manual |
+| `IRelayOperationalStore` + Migration002 | Application port / `Edf.ProjectServices` | Relay packages, continuity, provenance — **extend** with separate transport-operation store |
+| `EngineeringAgentMode` | `Edf.Domain/Relay/` | Neutral routing intent (`Plan`, `Agent`, `Debug`) |
+| `RelayWorkflowViewModel` | `Edf.Desktop/ViewModels/` | Extend for automated actions + status; preserve manual Copy/Import |
+| `ApplicationCompositionRoot` | `Edf.Application/Composition/` | Register catalog, host, orchestrator, **production** providers only |
+| A2 automated tests | `tests/Edf.Application.Tests/Relay/` etc. | Regression baseline — must stay green |
+
+**Layering (unchanged):** Domain has no SQLite; Application has no `Microsoft.Data.Sqlite`; persistence implementations in **ProjectServices** behind Application ports.
+
+---
+
+## 5. Transport-operation model placement (PA refinement)
+
+[ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) defines transport-operation semantics as **operational** state distinct from governed package lifecycle.
+
+| Placement | Rule |
+|-----------|------|
+| **Transport-operation lifecycle, state machine, attempt policy, recovery semantics** | **`Edf.Application`** — operational semantics (e.g. `Edf.Application/Relay/EngineeringAgent/Transport/`) |
+| **Neutral identity value** | A small **`TransportOperationId`** (or equivalent) **MAY** live in **`Edf.Domain`** **only if** T0 repository inspection confirms an existing pattern for opaque operational ids **without** importing transport lifecycle into Core governance — **T0 finalizes placement** |
+| **Forbidden** | Treating transport state as package validation state; persisting transport lifecycle rules in Core validators |
+
+**Invariants (binding):**
+
+- `TransportOperationId` ≠ `GovernedPackageId` / `PackageId` ([ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) §4)  
+- Provider session handles are **noncanonical** hints ([ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) §11)  
+- Forward/transport failure **MUST NOT** change relay `RelayValidationState` except optional non-authoritative operator facets ([ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md) §6)
+
+---
+
+## 6. Provider Plugin Identity (PA refinement)
+
+[ADR-0023](../Architecture/ADRs/ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md) §5 defines a stable conceptual **Provider Plugin Identity** for registration, configuration, selection, and attribution.
+
+This plan **does not** prescribe string slug, GUID, concrete class name, or serialization format. **Authorized implementation tranches** choose a stable representation consistent with ADR-0023.
+
+**Must remain distinct from:** ProjectConcord Project ID, `PackageId`, `GovernedCorrelationId`, `TransportOperationId`, provider session handles.
+
+*Non-normative example only:* a catalog entry might be labeled in tests as `"cursor-acp-reference"` — **not** architectural prescription.
+
+---
+
+## 7. Fake provider (PA refinement)
+
+`FakeEngineeringAgentProviderPlugin` (or equivalent) is **test infrastructure only**.
+
+| Context | Rule |
+|---------|------|
+| **Production** `ApplicationCompositionRoot` / catalog | Register **only** real provider implementations that are actually available and enabled (initially: **Cursor reference plugin** when authorized, or **no** automated provider → manual P0 only) |
+| **Tests** | Use fake plugin via **test-specific** composition, test doubles, or test catalog builders — **never** ship fake provider in production catalog |
+
+---
+
+## 8. Normal vs recovered result intake (PA refinement)
+
+| Path | Behavior |
+|------|----------|
+| **Normal automated flow** | Result candidate → `TryParseEngineeringResult` → structural/profile validation → **`RecordConsumedPackage`** per existing governed import flow — **no** universal operator confirmation step added for every successful in-session candidate unless an **existing** governing requirement already applies |
+| **Recovery flow** | After restart/recovery, when persisted transport state is **result candidate received** ([ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) §10, AF-1): **operator confirmation required by default** before invoking governed import — transport recovery **MUST NOT** imply governance acceptance |
+
+Tests **MUST** cover both paths explicitly (T4 integration; T7 regression).
+
+---
+
+## 9. Provider-neutral orchestration sequence
+
+Binding sequence ([ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) §2–3):
+
+1. Governed package at relay boundary; **PC-PAR-014** / eligibility — same blocks as P0 automated forward  
+2. `IEngineeringAgentRelayBridge.TryRenderValidatedHandover`  
+3. `IGovernedInteractionRelayService.RecordProducedPackage`  
+4. Create/update **transport operation** (operational ledger)  
+5. Selected plugin: forward rendered handover + neutral routing metadata + session continuity from `RelaySessionContinuity`  
+6. Result candidate → `TryParseEngineeringResult` → validation → consume (normal vs recovery confirmation per §8)  
+7. On transport failure: update transport state + operator projections; **package validation unchanged**
+
+New presentation-free service (planned name — T0 may refine): **`IEngineeringAgentAutomatedTransportService`** alongside **`IGovernedRelayP0WorkflowService`** — avoids bloating P0 API with automation.
+
+---
+
+## 10. Plugin hosting / catalog ([ADR-0023](../Architecture/ADRs/ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md))
+
+| Concern | A4 approach |
+|---------|-------------|
+| Registration | **Explicit / static** catalog populated at composition (built-in Cursor plugin when enabled) |
+| Enablement / trust | Explicit enablement before invocation; no mandatory trust-tier taxonomy |
+| Selection | Configuration + availability + **three compatibility dimensions** (host/plugin contract, relay/render protocol, capability/routing adequacy) |
+| Discovery | **Not required** — no filesystem scanning or reflection discovery |
+| Process model | No generalized out-of-process plugin host; subprocess/stdio **inside** Cursor plugin only |
+
+---
+
+## 11. Persistence and GAP-048 / GAP-052
+
+| Item | Disposition |
+|------|-------------|
+| **A4 MVP assumption** | **Single desktop application process** per user installation writing **`user-state.db`** — same coordination model as published A2 relay persistence |
+| **GAP-048 / GAP-052** | **Implementation coordination only** — **not** architecture blockers for A4 MVP; **do not** implement multi-process locking, shared-write policy, or sync reconciliation in A4 |
+| **Migration** | Additive **`Migration003*`** (name T2) — transport-operation tables only; **preserve** Migration002 relay tables and existing Project state |
+| **Port** | `ITransportOperationStore` (Application); SQLite adapter in ProjectServices (align with [GAP-051](../Development/EDF_Gap_Register.md#gap-051--application-layer-persistence--service-port-isolation) direction — new store behind port) |
+| **STOP rule** | If implementation **requires** cross-process transport recovery semantics → **STOP to PA** before proceeding |
+
+**Semantic fields (minimum per ADR-0022 §4–5):** `TransportOperationId`, `SourcePackageId`, `GovernedCorrelationId`, attempt, selected Provider Plugin Identity, lifecycle state, optional provider session hint, optional result import linkage, audit timestamps.
+
+---
+
+## 12. Routing intent ([ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) §9)
+
+Neutral ProjectConcord routing intent: **PLAN**, **AGENT**, **DEBUG** (mapped from `EngineeringAgentMode` where applicable).
+
+| Intent | Cursor reference (non-normative) |
+|--------|----------------------------------|
+| PLAN | Cursor **Plan** |
+| AGENT | Cursor **Agent** |
+| DEBUG | **No** adequate Cursor mapping — **automated DEBUG unsupported**; **MUST NOT** silently map to Agent or Ask |
+
+When automated DEBUG unsupported: report neutral failure + preserve **P0 manual** where eligible.
+
+---
+
+## 13. Cursor provider and ACP (reference realization)
+
+Non-normative reference stack ([ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) §16):
+
+```text
+Application/infrastructure orchestration
+  → Cursor provider plugin (Edf.Application …/Providers/Cursor/ or authorized layout)
+  → ACP adapter/client (stdio JSON-RPC)
+  → Cursor CLI `agent acp`
+```
+
+Headless `agent -p` **MAY** be used only as **provider-internal** secondary/fallback/diagnostic behavior — **not** provider-neutral architecture.
+
+**ACP scope (inside plugin):** process lifecycle; initialize; authentication; session/new|load; session/prompt; session/update; permission requests; session/cancel; result candidate extraction; session hint persistence; timeout/crash handling.
+
+---
+
+## 14. Permission policy ([ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) §15)
+
+- **Deny-by-default** for scope/authority expansion  
+- **`allow-once`** **MAY** apply to an explicitly eligible operation under orchestration/operator policy  
+- **`allow-always`** **MUST NOT** be the ProjectConcord architectural default  
+
+Provider permission is **operational only** — not DWA, STOP override, package acceptance, or governance authority.
+
+---
+
+## 15. Operator projections ([ADR-0020](../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md))
+
+**Current code:** no `Attention` implementation types in `src/` — A4-T5 introduces **minimum** Application-level contributors/DTOs suitable for future shell, plus Desktop surfacing where needed.
+
+| Failure / condition | Projection |
+|---------------------|------------|
+| Plugin unavailable, incompatible, auth failure, init failure | **Attention** |
+| Forward failure, result retrieval failure, ambiguous transport state | **Attention** |
+| P0 manual relay still eligible | **Recommended** Next Action → manual governed relay — **not Required** |
+
+No parallel provider workflow lifecycle.
+
+---
+
+## 16. P0 fallback (permanent)
+
+Reuse existing P0 path unchanged in semantics: eligibility, renderer, parser, validator, provenance ([ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) §13).
+
+**Regression (T5, T7):** Automated transport and plugin hosting **disabled or failed** → manual Prepare/Copy/Import still work; package validity unaffected by transport failures.
+
+---
+
+## 17. Environment and validation tooling
+
+| Requirement | Value |
+|---------------|--------|
+| .NET SDK | **10.0.401** per [global.json](../../global.json) — **do not** downgrade project targets for older local SDKs |
+| Automated tests | `dotnet test -c Release` on authorized tranches |
+| Cursor CLI | Required only for **Cursor provider integration tests** (optional trait) and **human MVR** steps in T7 — not for provider-independent unit/integration tests |
+| Disposable MVR workspace | EDF [DVW-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/DVW-0001-Disposable-Verification-Workspaces.md) — same binding pattern as [A2 plan §18](ProjectConcord-A2-Implementation-Plan.md#18-mvr-plan-not-executed-in-planning-tranche) |
+
+---
+
+## 18. MVR plan (not executed in this documentation tranche)
+
+**Governance basis (canonical — not analogy alone):**
+
+| Source | Requirement |
+|--------|-------------|
+| EDF [MVR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/192fe5c1c6254c51e257d24aefc09e127ce72464/docs/Specifications/MVR-0001-Manual-Verification-Records.md) | Human manual verification obligations are declared in **MVR instance** procedures with MVTs |
+| [SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md) | Planning/implementation artifacts declare **what** must be verified; MVR Markdown under `docs/Verification/Records/` is canonical for human execution |
+| [A2 closeout pattern](ProjectConcord-A2-Implementation-Plan.md#20-a2-closeout-criteria) | Operator-visible PAR Desktop workflow used **scoped MVR** ([MVR-0002](../Verification/Records/MVR-0002-a2-p0-manual-governed-relay-workflow.md)) before PA A2 overall closeout |
+
+**A4 determination:**
+
+- A4 introduces **operator-visible** automated transport behavior (T5–T6 Desktop integration) in addition to existing P0 manual paths. **Planned verification artifact:** **`MVR-0003`** (next sequential id after [MVR-0002](../Verification/Records/MVR-0002-a2-p0-manual-governed-relay-workflow.md) per [Verification Records README](../Verification/Records/README.md)).  
+- **PA qualification (2026-10-01):** The exact **MVR-0003** required scope, procedures, and completion criteria **SHALL be reconfirmed when A4-T7 is authorized** — before drafting or executing the MVR instance.  
+- **Plan publication and A4 overall closeout (§20):** Target closeout expects scoped MVR **Complete** with applicable MVT **Pass** when T7 completes — consistent with [SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md) and the A2 PAR precedent.  
+- **This tranche:** **Does not** create MVR-0003; **does not** mark any MVR **Complete**.  
+- **STOP-2:** No MVR execution during plan publication or unauthorized tranches.
+
+**T7 scope (when authorized):** Draft/execute MVR-0003 covering automated forward (where enabled), recovery confirmation path, P0 fallback smoke, and regression checks — using disposable Project Root; **MUST NOT** use ProjectConcord development repo as MVR subject.
+
+---
+
+## 19. AAR and gate records
+
+| Artifact | A4 applicability | Basis |
+|----------|------------------|--------|
+| **AAR** | **No AAR-0002 is required merely because A4 is being implemented** (PA determination 2026-10-01) | [ADR-0012](../Architecture/ADRs/ADR-0012-Adopt-EDF-Architectural-Audit-Records.md); [AAR-0001](../Architecture/Audits/AAR-0001-m1-solution-skeleton-conformance.md) already satisfied **EGR-G1** prerequisite |
+| **Optional scoped AAR** | **PA MAY later require** a scoped conformance audit if implementation materially crosses, challenges, or requires verification against an accepted architecture boundary | **Not** characterized as permanently inapplicable |
+| **Plan publication** | **Does not** create AAR-0002 | — |
+| **Per-tranche AAR** | **Not automatic** (A2 precedent) | — |
+| **EGR-G0 / EGR-G1** | **Not replayed** for A4 | PA tranche authorization → T7 verification → PA A4 closeout → publication |
+| **PA tranche acceptance** | **Required** after each authorized Tn | §3 |
+| **PA A4 overall closeout** | **Required** after authorized T7 | §20 |
+
+---
+
+## 20. A4 closeout criteria (target — when T7 authorized)
+
+1. All **authorized** A4-T0 … A4-T7 tranches accepted by PA  
+2. `dotnet test -c Release` passes for affected projects on **SDK 10.0.401**  
+3. Scoped **MVR-0003** **Human execution status Complete** with applicable MVT **Pass** — scope/procedures **reconfirmed at A4-T7 authorization** (§18); instance created only in authorized T7  
+4. P0 manual relay regression satisfied (automated suite + MVR where applicable)  
+5. [Implementation Roadmap](../Development/Implementation_Roadmap.md) updated — A4 **implementation complete** only after PA closeout — **not** implied by plan acceptance  
+6. No accidental A3 scope in `src/`  
+7. Final PA **accept/publish** disposition on this plan closeout section  
+
+**Do not** create MVR or verification evidence files during this documentation tranche.
+
+---
+
+## 21. ADR implementation mapping summary
+
+| ADR | Implementation focus |
+|-----|----------------------|
+| **ADR-0021** | `IEngineeringAgentProviderPlugin` + neutral failure/capability types; plugin owns auth/config/secrets scope; no governance mutation |
+| **ADR-0022** | Orchestrator + transport operation ledger + idempotency/recovery/cancel; routing intent rules; P0 parity; permission policy |
+| **ADR-0023** | Static catalog, host, enablement, selection, compatibility checks — **no** generalized loader |
+
+---
+
+## 22. Test strategy
+
+| Layer | Focus |
+|-------|--------|
+| **Unit** | Catalog/compatibility/selection; transport state transitions; routing adequacy; duplicate forward/result; substitution; permission policy adapter |
+| **Integration** | Orchestrator + **fake provider (tests only)** + in-memory/SQLite store; normal vs recovery import paths |
+| **Provider** | ACP framing fixtures; optional `[Trait("RequiresCursor")]` tests |
+| **Regression** | Full A2 relay tests; P0 without production fake plugin; package validity after transport failures |
+
+**Projects:** Prefer **`Edf.Application.Tests`**, **`Edf.ProjectServices.Tests`**, **`Edf.Desktop.Tests`** — no new test project unless T0 evidence warrants.
+
+---
+
+## 23. Future per-tranche documentation (paths only — do not create now)
+
+| Tranche | Expected notes / evidence (create only when authorized) |
+|---------|-----------------------------------------------------------|
+| T0–T6 | `ProjectConcord-A4-Tn-Implementation-Notes.md` |
+| T7 | `ProjectConcord-A4-T7-Verification-Evidence.md`; `docs/Verification/Records/MVR-0003-*.md` when governance requires |
+
+---
+
+## 24. Implementation tranches
+
+### A4-T0 — Contracts and neutral implementation skeleton
+
+| | |
+|---|---|
+| **Authorization** | **NOT AUTHORIZED** |
+| **Objective** | Provider plugin contract interfaces; hosting ports; transport operation **Application** model; orchestrator port skeleton; confirm `TransportOperationId` placement per §5 |
+| **Architecture basis** | ADR-0021 §2; ADR-0022 §4–5; ADR-0023 §2–7 |
+| **Likely areas** | `Edf.Application/Relay/EngineeringAgent/Plugins/`; `…/Transport/`; optional minimal id type in Domain **only if justified** |
+| **Dependencies** | Published A2 on `main`; **this plan PA accepted** |
+| **Boundaries** | No SQLite; no Cursor/ACP; no Desktop automation UI |
+| **Tests** | State machine / identity inequality unit tests |
+| **Acceptance** | Types compile; layering documented in T0 notes |
+| **Validation** | `dotnet build` Release |
+| **Doc effects** | T0 implementation notes when authorized |
+| **STOP** | Await **PA authorization for A4-T1 only** |
+
+---
+
+### A4-T1 — Static catalog, hosting, selection
+
+| | |
+|---|---|
+| **Authorization** | **NOT AUTHORIZED** |
+| **Objective** | Plugin catalog + host; static registration of **production** providers only; enablement; compatibility triad |
+| **Architecture basis** | ADR-0023 §3–9 |
+| **Likely areas** | `EngineeringAgentPluginCatalog`, `EngineeringAgentPluginHost`; `ApplicationCompositionRoot` |
+| **Dependencies** | T0 |
+| **Boundaries** | **No** `FakeEngineeringAgentProviderPlugin` in production catalog |
+| **Tests** | Selection, disabled plugin, incompatible render major |
+| **Acceptance** | Catalog selects Cursor stub or empty catalog per config |
+| **Validation** | Unit tests green |
+| **STOP** | Await **PA authorization for A4-T2 only** |
+
+---
+
+### A4-T2 — Transport-operation persistence
+
+| | |
+|---|---|
+| **Authorization** | **NOT AUTHORIZED** |
+| **Objective** | `Migration003*` + `ITransportOperationStore` + SQLite adapter |
+| **Architecture basis** | ADR-0022 §4–5; ADR-0019 local-first |
+| **Likely areas** | `Edf.ProjectServices/Persistence/Migrations/`; `Sqlite*Transport*` adapter |
+| **Dependencies** | T1 |
+| **Boundaries** | Additive schema only; single-process assumption §11 |
+| **Tests** | Mirror [RelayOperationalPersistenceTests](../../tests/Edf.ProjectServices.Tests/Relay/RelayOperationalPersistenceTests.cs) patterns |
+| **Acceptance** | CRUD + restart reload of transport rows |
+| **STOP** | Await **PA authorization for A4-T3 only** |
+
+---
+
+### A4-T3 — Orchestration with test fake provider
+
+| | |
+|---|---|
+| **Authorization** | **NOT AUTHORIZED** |
+| **Objective** | `TransportOrchestrator` + `IEngineeringAgentAutomatedTransportService`; E2E with **test-only** fake plugin |
+| **Architecture basis** | ADR-0022 §2–3; §8 normal flow |
+| **Likely areas** | `Edf.Application/Relay/EngineeringAgent/Transport/` |
+| **Dependencies** | T2; existing bridge + relay service |
+| **Boundaries** | No Cursor binary; fake via test composition |
+| **Tests** | Integration: render → produce → forward → parse → consume (**normal** path, no recovery confirm) |
+| **Acceptance** | Fake plugin path completes governed consume |
+| **STOP** | Await **PA authorization for A4-T4 only** |
+
+---
+
+### A4-T4 — Recovery, idempotency, cancellation
+
+| | |
+|---|---|
+| **Authorization** | **NOT AUTHORIZED** |
+| **Objective** | ADR-0022 §6–8, §10; duplicate/stale/ambiguous; cancel/timeout; **recovery confirmation** before import |
+| **Architecture basis** | ADR-0022 §6–8, §10 |
+| **Likely areas** | Orchestrator policy + store reload scenarios |
+| **Dependencies** | T3 |
+| **Tests** | Table-driven restart tests; explicit **recovery vs normal** cases |
+| **Acceptance** | Ambiguous → operator confirm before retry/import default |
+| **STOP** | Await **PA authorization for A4-T5 only** |
+
+---
+
+### A4-T5 — Operator projections, P0 regression, minimal Desktop
+
+| | |
+|---|---|
+| **Authorization** | **NOT AUTHORIZED** |
+| **Objective** | Attention contributors; Recommended P0 action; minimal Desktop automated commands + status; **P0 regression** |
+| **Architecture basis** | ADR-0020; ADR-0022 §14 |
+| **Likely areas** | Application projections; `RelayWorkflowViewModel` |
+| **Dependencies** | T4 |
+| **Tests** | Desktop VM tests; Application attention derivation; **all A2 relay tests still pass** |
+| **Acceptance** | Manual path works with automation disabled |
+| **STOP** | Await **PA authorization for A4-T6 only** |
+
+---
+
+### A4-T6 — Cursor provider and ACP adapter
+
+| | |
+|---|---|
+| **Authorization** | **NOT AUTHORIZED** |
+| **Objective** | `CursorEngineeringAgentProviderPlugin` + `CursorAcpClient`; PLAN/AGENT mapping; DEBUG unsupported |
+| **Architecture basis** | ADR-0022 §9, §16; ADR-0021 plugin boundary |
+| **Likely areas** | `Edf.Application/.../Providers/Cursor/` |
+| **Dependencies** | T5 |
+| **Tests** | NDJSON fixtures; optional real CLI tests |
+| **Acceptance** | Reference path forwards and retrieves candidates behind plugin boundary |
+| **STOP** | Await **PA authorization for A4-T7 only** |
+
+---
+
+### A4-T7 — End-to-end validation, verification, closeout
+
+| | |
+|---|---|
+| **Authorization** | **NOT AUTHORIZED** |
+| **Objective** | Full regression; **MVR-0003** draft/execute per §18; T7 evidence doc; plan/roadmap closeout sections (**docs only** in T7 unless PA authorized remediation STOP) |
+| **Architecture basis** | §20 closeout criteria |
+| **Dependencies** | T6 |
+| **Remediation rule** | Mirror [A2-T8](ProjectConcord-A2-Implementation-Plan.md#a2-t8--verification-mvr-documentation-closeout): MVR FAIL or defect requiring `src/` change → **STOP** — separate PA remediation authorization |
+| **Tests** | Full Release suite |
+| **Acceptance** | PA A4 overall closeout disposition recorded |
+| **STOP** | **A4 complete** — await PA for A3 or other tracks |
+
+---
+
+## 25. Layer diagram (reference)
+
+```mermaid
+flowchart TB
+  subgraph coreA [Core A]
+    PKG[GovernedRelayPackage]
+    VAL[RelayValidationState]
+  end
+  subgraph app [Application Infrastructure]
+    ORCH[TransportOrchestrator]
+    CAT[PluginCatalog]
+    LEDGER[TransportOperationStore]
+  end
+  subgraph bridge [Relay Bridge E]
+    BR[IEngineeringAgentRelayBridge]
+  end
+  subgraph plugin [Provider Plugin E]
+    PLG[ProviderPlugin]
+    ACP[AcpClient in Cursor plugin]
+  end
+  PKG --> ORCH
+  VAL --> ORCH
+  ORCH --> BR
+  ORCH --> CAT
+  ORCH --> LEDGER
+  CAT --> PLG
+  PLG --> ACP
+```
+
+---
+
+## 26. A4 plan closeout (2026-10-01)
+
+**PA disposition:** **A4 IMPLEMENTATION PLAN CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01).
+
+| Item | Disposition |
+|------|-------------|
+| Canonical plan | This document on `main` (publication commit — see [Implementation Roadmap](../Development/Implementation_Roadmap.md)) |
+| A4 implementation | **NOT AUTHORIZED** |
+| A4-T0 … A4-T7 | **NOT AUTHORIZED** — separate PA authorization required per tranche |
+| A3 | **NOT AUTHORIZED** |
+| MVR-0003 | **Not created** at plan publication; **reconfirm scope at T7 authorization** (§18) |
+| AAR-0002 | **Not created**; not required merely for A4 (§19) |
+
+**Next governance decision:** Whether to authorize **A4-T0 only** (contracts / neutral implementation skeleton). **Do not** infer T0 or any implementation authority from plan publication.
+
+---
+
+## Related Documents
+
+- [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md), [ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md), [ADR-0023](../Architecture/ADRs/ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md)
+- [A2 Implementation Plan](ProjectConcord-A2-Implementation-Plan.md), [MVR-0002](../Verification/Records/MVR-0002-a2-p0-manual-governed-relay-workflow.md)
+- [Implementation Roadmap](../Development/Implementation_Roadmap.md), [EDF Gap Register](../Development/EDF_Gap_Register.md)
+- [SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md), [ADR-0012](../Architecture/ADRs/ADR-0012-Adopt-EDF-Architectural-Audit-Records.md)
