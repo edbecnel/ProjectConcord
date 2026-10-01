@@ -11,7 +11,7 @@
 | **Accepted** | Project Architect — **2026-09-29** |
 | **Owner** | ProjectConcord |
 | **Normative** | Yes — Project identity/session (**A**), Core Governed Interaction Relay (**A**), per-user operational state (**A**), Software Development governance at relay boundary (**B**), provider/tool adapters (**E**); historical **Project Architect Relay (PAR)** track terminology |
-| **Last Reviewed** | 2026-09-29 (reconciliation tranche; Project Architect acceptance) |
+| **Last Reviewed** | 2026-10-01 (operator-stage presentation binding; [ADR-0020](../../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) **Accepted**) |
 | **Target release** | Historical PAR track A1–A4 (separately authorized); not part of M1 |
 | **Implementation** | **A1** (identity + per-user state): **published** 2026-09-28 — see [Implementation Roadmap](../../Development/Implementation_Roadmap.md). **A2–A4** (governed interaction relay, workflow MVP, automated provider transport per AWI-0006): **not authorized** except tranches separately accepted. Accepted SPEC-006 satisfies the specification/governance prerequisite for Project Architect **consideration** of **A2**; acceptance does **not** authorize A2. |
 | **Architecture baseline** | Accepted [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md), [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md), [ADR-0015](../../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) — repository baseline at reconciliation `084c6f043e27db2c9bdca558f14216de596f3c8d` |
@@ -33,6 +33,7 @@
 - [AWI-0006](../../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)
 - [AMD-0003](../../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md)
 - [SPEC-006 Reconciliation Documentation Tranche Plan](../../Handover/ProjectConcord-SPEC-006-Reconciliation-Documentation-Tranche-Plan.md)
+- [ADR-0020 — Operator projections, product shell, and workspace navigation](../../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) (**Accepted** 2026-10-01)
 
 ---
 
@@ -283,7 +284,22 @@ When a relay implementation tranche (for example **A2**) is authorized by the Pr
 
 - Exact PA handover serialization (Markdown blocks vs structured file)
 - Project ID generation algorithm (UUID vs ULID)
-- Single-Project Focus launcher/recent UX and multi-instance launch policy (**A**; [ADR-0019](../../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md); cross-project flows PC-AIGOV-021–028 in [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md)) — detailed UX deferred; **ADR-0013** does not own product shell instance model
+- Single-Project Focus launcher/recent UX and multi-instance launch policy (**A**; [ADR-0019](../../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md); [ADR-0020](../../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) **Accepted** — replaceable active Project context); cross-project flows PC-AIGOV-021–028 in [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) — detailed UX deferred; **ADR-0013** does not own product shell instance model
+
+## 17. Operator-stage presentation binding (PC-PAR-023)
+
+This section defines **presentation/workflow projection** binding between the Core Governed Interaction Relay and the operator-stage model ([ADR-0020](../../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md)). It **does not** alter authoritative relay semantics, package kinds, validation outcomes, provenance rules, or **B**-layer authorization semantics.
+
+| ID | Requirement |
+|---|---|
+| **PC-PAR-023** | When the product shell presents a **workflow-local** governed relay interaction, it **SHALL** bind operator-visible stages to the existing **GovernedPackageKind** legs and relay validation state **without** introducing new package kinds for UI convenience. |
+| **PC-PAR-023a** | For the P0 manual intra-project Project Architect ↔ Engineering Agent relay track, operator stages **SHALL** map conceptually as follows (completion/eligibility derived from persisted packages, continuity, and last validation — not from UI control order alone): **(1)** PA review export (`PaReviewExport` produced/valid); **(2)** PA handover import (`PaHandoverImport` consumed — `Valid`, `Incomplete`, or `RejectedMalformed` relay validation disposition); **(3)** Engineering Agent handover export (`EngineeringAgentHandoverExport` prepared when eligible); **(4)** Engineering result import (`EngineeringResultImport` optional leg when used). |
+| **PC-PAR-023b** | **STOP**, **INCOMPLETE** governance-critical metadata, **RejectedMalformed** imports, and active **DevelopmentWorkAuthorization** / handover separation rules **SHALL** constrain stage eligibility and **Next Action** presentation exactly as at the relay boundary — the shell **MUST NOT** present a stage as complete or an action as required when relay validation forbids it. |
+| **PC-PAR-023c** | Raw package transport (including machine JSON in `projectconcord-relay-v1` fences) **MAY** be shown only through **progressive disclosure**; it **MUST NOT** be the primary operator workflow surface in production UX. |
+| **PC-PAR-023d** | Uncommitted import paste or equivalent operator input **MAY** be persisted as **noncanonical operational draft state** per [ADR-0020](../../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §9; draft persistence **MUST NOT** create package provenance as successful import and **MUST NOT** weaken malformed rejection or inference-safety rules at import. |
+| **PC-PAR-023e** | Operator-stage binding **MUST** remain **provider-neutral** and **MUST NOT** imply implementation authorization beyond governed **B**-layer state and relay governance-critical flags. |
+
+**Non-goals (PC-PAR-023):** new relay package kinds; weakening machine JSON authority; bypassing STOP; substituting free prose for governance-critical fields; collapsing **Required**, **Available**, and **Recommended** actions.
 
 ## Maintenance
 

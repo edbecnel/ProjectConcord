@@ -21,7 +21,8 @@ EDF convention: `docs/Architecture/Watch_Items/AWI-NNNN-Short-Title.md` ([EDF Ga
 | [AWI-0005](AWI-0005-Manual-Verification-Records.md) | EDF Manual Verification Records (MVR) consumption, attestation boundary, and deferred implementation | Active |
 | [AWI-0006](AWI-0006-PAR-Cursor-Bridge-Transport.md) | PAR CursorBridge transport (P1/P2) after P0 manual relay | Active |
 | [AWI-0007](AWI-0007-SQLite-Transitive-NuGet-Advisory.md) | `Microsoft.Data.Sqlite` transitive `SQLitePCLRaw.lib.e_sqlite3` NU1903 / GHSA-2m69-gcr7-jv3q (A1b) | Active |
-| [AWI-0008](AWI-0008-Governed-Operator-Experience-and-Product-Shell.md) | Governed operator shell, context-transfer minimization, packages; terminology → ADR-0018; implementation deferred | Active (partial promotion 2026-10-01) |
+| [AWI-0008](AWI-0008-Governed-Operator-Experience-and-Product-Shell.md) | Governed operator shell; A+C → ADR-0020 **Accepted**; terminology → ADR-0018; structured authoring → AWI-0009; `src/` shell deferred | Active (partial promotion 2026-10-01) |
+| [AWI-0009](AWI-0009-Governed-Structured-Authoring-Form-Runtime-and-Form-Editor.md) | Governed structured authoring, Form Runtime, form definitions, Form Editor (future) | Active — **deferred**, **capture-only** (2026-10-01) |
 
 ## Lifecycle
 

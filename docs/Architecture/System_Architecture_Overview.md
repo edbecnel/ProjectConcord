@@ -182,10 +182,16 @@ Phasing: PAR track A0–A4 in [Implementation Roadmap](../Development/Implementa
 
 ## Governed operator experience and terminology (AWI-0008)
 
-**Status:** Architecture documented 2026-10-01 ([AWI-0008](Watch_Items/AWI-0008-Governed-Operator-Experience-and-Product-Shell.md), [ADR-0018](ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) **Accepted**, [ADR-0019](ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) **Accepted** 2026-10-01). Shell UX and sync **not fully implemented** in `src/`.
+**Status:** Architecture documented 2026-10-01 ([AWI-0008](Watch_Items/AWI-0008-Governed-Operator-Experience-and-Product-Shell.md), [ADR-0018](ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) **Accepted**, [ADR-0019](ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) **Accepted**, [ADR-0020](ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) **Accepted** 2026-10-01). Shell UX and sync **not implemented** in `src/` beyond A1/A2 baseline.
 
 | Concern | Rule |
 |---|---|
+| Operator projections | **Overview**, **Current Work**, **Attention**, **Next Action** are **derived** read models — not new work entities or a hidden workflow engine ([ADR-0020](ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md)) |
+| Navigation | Project-level vs workflow-local vs artifact navigation; semantic IA — not filesystem-as-primary ([ADR-0020](ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §6; [PCON-0000](PCON-0000-EDF-Project-Management-System-Architectural-Vision-and-Bootstrap-Handover.md) §37–38 reconciled) |
+| Relay operator stages | [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §17 (PC-PAR-023) binds presentation to existing package kinds — raw transport via progressive disclosure only |
+| Capability grading | Projections defined for full target; populated only from authoritative sources available — **unknown/absent** when not derivable |
+| Operational draft | Uncommitted import-pending input = noncanonical draft; may be durable operational — not a package, not provenance ([ADR-0020](ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §9) |
+| Replaceable active Project | Single-Project Focus per instance; active Project may change within process lifetime when authorized — explicit Project scoping + reconstructibility ([ADR-0020](ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §10) |
 | Context-transfer minimization | Derive **work packages** and **review packages** from canonical Git state (**A**) + persisted operational relay state (**B**); concise handovers are **projections/transport**, not the sole continuity store |
 | Instance-scoped packages | Packages default to the instance **active Project** unless explicitly inter-project transport |
 | Governed intermediary | Project Architect ↔ ProjectConcord ↔ Engineering Agent; PC holds governed state, not decision authority |
@@ -193,7 +199,8 @@ Phasing: PAR track A0–A4 in [Implementation Roadmap](../Development/Implementa
 | Terminology layers | EDF **recommends** → ProjectConcord **prefers** ([ADR-0018](ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md)) → presentation (deferred) → enforcement (**not authorized**) |
 | SI Preferred scope | EDF `super-intelligence` only; **not** `ai-assisted-engineering`; identifiers/history/external wording protected |
 | EDF consumption | [EDF Terminology Governance handover](../Handover/EDF-Terminology-Governance-Architecture-Handover.md); qualify **EDF ADR-0011** vs **ProjectConcord ADR-0011** |
-| MVR forms / attestation | [ADR-0014](ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md) remains **Proposed** — direction for form runtime, not Accepted authority |
+| Structured authoring | [AWI-0009](Watch_Items/AWI-0009-Governed-Structured-Authoring-Form-Runtime-and-Form-Editor.md) — deferred; shell accommodates **Form \| Rendered \| Source** on artifact host ([AWI-0008](Watch_Items/AWI-0008-Governed-Operator-Experience-and-Product-Shell.md) §D) |
+| MVR attestation | [ADR-0014](ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md) remains **Proposed** |
 
 ---
 

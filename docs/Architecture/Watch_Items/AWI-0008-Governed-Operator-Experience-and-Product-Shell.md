@@ -9,10 +9,10 @@
 | **Created** | 2026-09-30 |
 | **Revisit Trigger** | Before post-A2 product-shell or governed-workflow UX tranche authorization; PA request to analyze ownership |
 | **Discovery source** | [MVR-0002](../../Verification/Records/MVR-0002-a2-p0-manual-governed-relay-workflow.md) human execution (2026-09-30); A2-T8 documentation closeout — **not** A2 implementation defects |
-| **Related ADRs** | [ADR-0016](../ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md); [ADR-0015](../ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md); [ADR-0019](../ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) (**Accepted** 2026-10-01); [ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) (**Accepted** 2026-10-01); [ADR-0014](../ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md) (**Proposed** — attestation direction only, not acceptance) |
-| **Last architecture update** | 2026-10-01 — terminology + context-transfer; single-Project Focus, inter-project continuity, local-first/sync/concurrency ([ADR-0019](../ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) **Accepted**) |
+| **Related ADRs** | [ADR-0020](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) (**Accepted** 2026-10-01 — operator projections, shell, navigation); [ADR-0016](../ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md); [ADR-0015](../ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md); [ADR-0019](../ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) (**Accepted** 2026-10-01); [ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) (**Accepted** 2026-10-01); [ADR-0014](../ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md) (**Proposed** — attestation direction only, not acceptance) |
+| **Last architecture update** | 2026-10-01 — A+C operator/shell/navigation **Accepted** in [ADR-0020](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md); structured authoring → [AWI-0009](AWI-0009-Governed-Structured-Authoring-Form-Runtime-and-Form-Editor.md) |
 | **Related specs** | [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md); [SPEC-005](../../Specifications/features/SPEC-005-manual-verification-record-consumption.md) |
-| **Cross-reference** | [AWI-0003](AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md); [AWI-0005](AWI-0005-Manual-Verification-Records.md); [PCON-0004](../PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md) |
+| **Cross-reference** | [AWI-0009](AWI-0009-Governed-Structured-Authoring-Form-Runtime-and-Form-Editor.md) (structured authoring — deferred); [AWI-0003](AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md); [AWI-0005](AWI-0005-Manual-Verification-Records.md); [PCON-0004](../PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md) |
 
 ---
 
@@ -24,7 +24,7 @@ Capture **follow-on product and operator-experience requirements** identified du
 
 This watch item:
 
-- **Does not** authorize `src/` changes, UI redesign, persistence changes, Markdown rendering, form runtime, or plugin work.
+- **Does not** authorize `src/` changes, UI redesign, persistence changes, Markdown rendering, or plugin work (structured authoring → [AWI-0009](AWI-0009-Governed-Structured-Authoring-Form-Runtime-and-Form-Editor.md)).
 - **Does not** decide whether capabilities belong to Core, a domain extension, EDF integration, or Software Engineering extension — see **Architectural ownership (deferred)** below.
 - **Does not** authorize storing full external chat/provider transcripts as canonical ProjectConcord content.
 - **Does not** commit ProjectConcord to a general-purpose Markdown editor without separate architectural analysis.
@@ -35,7 +35,9 @@ While **Active**, requirements here are **prospective** unless promoted by PA in
 
 **Partial promotion (2026-10-01, persistence tranche):** **Single-Project Focus**, **Concurrent Project Work**, **inter-project governed handover continuity**, local-first operational persistence, service boundary, and future sync/concurrency direction are **Accepted** in [ADR-0019](../ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) and §**Product shell instance and continuity** below.
 
-Shell **implementation** (UI, package generation, sync, terminology projection in `src/`) remains **not authorized**. This watch item stays **Active** until remaining requirements (orientation, navigation, Markdown, form runtime, implementation) are promoted or closed.
+**Partial promotion (2026-10-01, A+C tranche):** Operator projections (Overview, Current Work, Attention, Next Action), workspace/navigation separation, progressive disclosure, capability-graded projections, operational draft state, replaceable active Project context, inter-project operator UX direction, and relay operator-stage binding are **Accepted** in [ADR-0020](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) and [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §17 (PC-PAR-023). Closeout: [A+C tranche plan](../../Handover/ProjectConcord-AWI-0008-A+C-Documentation-Tranche-Plan.md).
+
+Shell **implementation** (UI, Markdown rendering, sync, terminology projection in `src/`) remains **not authorized**. Structured authoring (Form Runtime, form definitions, Form Editor) is tracked in [AWI-0009](AWI-0009-Governed-Structured-Authoring-Form-Runtime-and-Form-Editor.md) — **not** here. This watch item stays **Active** until shell implementation is authorized and delivered or explicitly closed.
 
 ## Requirements (PA disposition — A2-T8 closeout 2026-09-30)
 
@@ -57,7 +59,7 @@ Workflow stages must not be assumed to be universally hard-coded Core semantics.
 
 The P0 long vertically scrollable relay panel is **not** an acceptable target production UX.
 
-Future architecture should evaluate wizard-style workflow navigation, tabbed/workspace navigation, or a combination. The UI should guide the user through governed work rather than expose the entire workflow as one long form.
+**Disposition (2026-10-01, A+C tranche):** Workflow-local **staged/stepper** presentation within a broader Project **workspace** — not a modal linear wizard requirement ([ADR-0020](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §5; [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §17). Raw relay transport remains progressive disclosure only.
 
 ### C. Durable governed relay/package working state
 
@@ -73,29 +75,15 @@ Future architecture must distinguish at least:
 
 This requirement does **not** authorize storing full external chat transcripts as canonical ProjectConcord content.
 
-### D. Markdown rendered / source view
+### D. Artifact detail host — Markdown and future structured views
 
-ProjectConcord needs native Markdown viewing. For applicable Markdown/governed content, the UI should support a clear user-facing toggle such as **Rendered | Source**. Rendered Markdown should be available without requiring an external Markdown application. This does **not** yet authorize a general Markdown editor.
+ProjectConcord needs native Markdown viewing. For applicable Markdown/governed content, the artifact detail host should support a clear user-facing toggle such as **Rendered | Source**. Rendered Markdown should be available without requiring an external Markdown application. This does **not** yet authorize a general Markdown editor.
 
-### E. Governed form runtime
+The artifact detail host must be architecturally capable of accommodating future **Form | Rendered | Source** interaction ([ADR-0020](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §12) without assuming manual Markdown source editing is the primary human interaction.
 
-Future architecture should evaluate a reusable runtime-generated Avalonia form capability for governed structured user input.
+**Structured authoring** (form definitions, Form Runtime, round-trip behavior, external editing, built-in forms, Form Editor, AI/SI interoperability, canonicality rules for forms) is owned by [AWI-0009](AWI-0009-Governed-Structured-Authoring-Form-Runtime-and-Form-Editor.md) — **deferred**, **capture-only**. Do not duplicate that architecture here.
 
-MVR execution is an initial motivating use case. Instead of requiring manual editing of MVR Markdown tables, ProjectConcord could present purpose-built controls (for example Result: Pending / Pass / Fail / Blocked; Executor; Date; Test data / fixture; Evidence) and write governed results to canonical Markdown.
-
-Initial forms should be purpose-built / ProjectConcord-defined. Do **not** assume arbitrary user-defined form design in the initial architecture. Potential future extension-defined forms may be analyzed separately.
-
-### F. Future project-aware constrained Markdown editing
-
-Retain as a future architectural possibility: **project-aware constrained Markdown editing**. For recognized governed artifacts, editing could understand artifact type, permitted values, known actors, references, validation constraints, and governed state transitions.
-
-Do not commit ProjectConcord to becoming a general-purpose Markdown editor without architectural analysis.
-
-### G. Canonicality invariant
-
-**Canonical Markdown remains primary.** Rendered views, structured forms, and constrained editing interfaces must be projections over canonical governed artifacts and must not silently create competing sources of truth.
-
-### H. User-facing terminology
+### E. User-facing terminology
 
 Avoid unnecessary acronyms in the ProjectConcord user interface. In particular, display **Project Architect** rather than **PA** where the term is presented to the user. Repository and internal architectural documentation may retain established acronyms where appropriate and unambiguous.
 
@@ -169,20 +157,17 @@ Handovers remain **valid** as projection/transport representations. They are **n
 | EDF artifact semantics | **F** — consume only |
 | Provider sessions and transport rendering | **E** |
 | Terminology policy | [ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) |
-| MVR attestation write path | [ADR-0014](../ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md) (**Proposed** — dependency direction for form runtime; not Accepted) |
+| MVR attestation write path | [ADR-0014](../ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md) (**Proposed**); form/attestation UI direction → [AWI-0009](AWI-0009-Governed-Structured-Authoring-Form-Runtime-and-Form-Editor.md) |
 
 ## Architectural ownership (remaining open items)
 
-**Resolved at architecture level (2026-10-01):** terminology layers and policy ([ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md)); context-transfer requirement; state-source model; work/review package direction; single-Project Focus; multi-instance model; inter-project continuity; local-first/service/sync/concurrency principles ([ADR-0019](../ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) **Accepted**).
+**Resolved at architecture level (2026-10-01):** terminology layers and policy ([ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md)); context-transfer requirement; state-source model; work/review package direction; single-Project Focus; multi-instance model; inter-project continuity; local-first/service/sync/concurrency principles ([ADR-0019](../ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) **Accepted**); operator projections, shell IA, workflow-local progression, attention/next-action model, operational draft state, replaceable active Project context ([ADR-0020](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) **Accepted**); relay operator-stage binding ([SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §17).
 
-**Still requires promotion or implementation authorization:**
+**Still requires implementation authorization:**
 
-- generic Markdown viewing — Core vs shell detail;
-- governed form runtime placement;
-- EDF-specific vs extension-specific forms;
-- constrained Markdown editing boundary;
-- workflow navigation pattern (wizard vs workspace);
-- durable paste/draft working state persistence rules beyond A2 relay tables.
+- `src/` product shell, navigation, projections, Markdown rendering, terminology projection;
+- operational draft persistence schema and behavior;
+- structured authoring per [AWI-0009](AWI-0009-Governed-Structured-Authoring-Form-Runtime-and-Form-Editor.md).
 
 Subsequent PA-governed tranches are required before `src/` implementation.
 
@@ -203,4 +188,4 @@ Subsequent PA-governed tranches are required before `src/` implementation.
 - [A2-T8 verification evidence](../../Handover/ProjectConcord-A2-T8-Verification-Evidence.md)
 - [MVR-0002](../../Verification/Records/MVR-0002-a2-p0-manual-governed-relay-workflow.md)
 - [GAP-030](../../Development/EDF_Gap_Register.md#gap-030--engineering-agent-provider-adapter-and-plugin-boundary) / [AWI-0006](AWI-0006-PAR-Cursor-Bridge-Transport.md) — Engineering Agent plugin boundary unchanged
-- [ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md); [ADR-0019](../ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md); [AWI-0008 Persistence documentation tranche](../../Handover/ProjectConcord-AWI-0008-Persistence-Sync-Documentation-Tranche-Plan.md); [EDF Terminology Governance handover](../../Handover/EDF-Terminology-Governance-Architecture-Handover.md); [GAP-047](../../Development/EDF_Gap_Register.md#gap-047--terminology-projection-and-optional-enforcement); [GAP-048](../../Development/EDF_Gap_Register.md#gap-048--same-project-id-multiple-local-application-processes)–[GAP-052](../../Development/EDF_Gap_Register.md#gap-052--multi-process-local-operational-store-concurrency-strategy-and-validation)
+- [ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md); [ADR-0019](../ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md); [ADR-0020](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md); [AWI-0009](AWI-0009-Governed-Structured-Authoring-Form-Runtime-and-Form-Editor.md); [AWI-0008 A+C documentation tranche](../../Handover/ProjectConcord-AWI-0008-A+C-Documentation-Tranche-Plan.md); [AWI-0008 Persistence documentation tranche](../../Handover/ProjectConcord-AWI-0008-Persistence-Sync-Documentation-Tranche-Plan.md); [EDF Terminology Governance handover](../../Handover/EDF-Terminology-Governance-Architecture-Handover.md); [GAP-047](../../Development/EDF_Gap_Register.md#gap-047--terminology-projection-and-optional-enforcement); [GAP-048](../../Development/EDF_Gap_Register.md#gap-048--same-project-id-multiple-local-application-processes)–[GAP-052](../../Development/EDF_Gap_Register.md#gap-052--multi-process-local-operational-store-concurrency-strategy-and-validation)

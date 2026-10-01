@@ -1301,6 +1301,8 @@ Cursor should propose an approach consistent with EDF principles.
 
 # 37. Project Dashboard
 
+> **Reconciliation (2026-10-01):** This section records long-horizon product intent. Normative operator projections, **Single-Project Focus**, replaceable active Project context, and workspace/navigation separation are canonicalized in [ADR-0020](ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) (**Accepted** 2026-10-01). The diagram below is **illustrative**, not a literal multi-project workspace: one application instance maintains **one active Project** at a time ([ADR-0019](ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)); the left **PROJECT** column is **semantic navigation within that Project**, not simultaneous multi-project tabs. **ATTENTION** aligns with the derived Attention projection in ADR-0020.
+
 The desktop application should provide an operational project dashboard.
 
 Conceptually:
@@ -1331,6 +1333,8 @@ The dashboard should expose engineering state, not merely file counts.
 ---
 
 # 38. Semantic Document Navigation
+
+> **Reconciliation (2026-10-01):** Semantic navigation intent is preserved. Primary information architecture **must not** reduce to a filesystem tree ([ADR-0020](ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §6). Artifact detail should distinguish canonical, derived, computed, cached, and AI-proposed content; future **Form | Rendered | Source** modes are shell integration requirements ([AWI-0008](Watch_Items/AWI-0008-Governed-Operator-Experience-and-Product-Shell.md) §D); structured authoring architecture is deferred in [AWI-0009](Watch_Items/AWI-0009-Governed-Structured-Authoring-Form-Runtime-and-Form-Editor.md).
 
 Users should navigate the project semantically.
 

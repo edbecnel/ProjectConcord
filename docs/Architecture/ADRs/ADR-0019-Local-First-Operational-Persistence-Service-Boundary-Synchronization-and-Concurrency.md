@@ -22,7 +22,7 @@ This ADR records **architecture only**. It does **not** authorize synchronizatio
 
 **Single-Project Focus:** A running ProjectConcord application instance SHALL maintain **one active Project context** at a time (one **ProjectConcord Project ID** and its bound **Project Root** session locator). This constraint is **intentional** — it preserves operator focus, workflow continuity, implementation simplicity, and clear Project-scoped governance boundaries. ProjectConcord SHALL **not** require a single application instance to host **multiple simultaneously active** Project contexts (for example project tabs or a multi-project workspace shell).
 
-**Simultaneous active contexts** is the invariant; it does **not** prohibit closing a Project, returning to a launcher-like state, or opening a **different** Project **after** the prior active context has been cleared.
+**Simultaneous active contexts** is the invariant; it does **not** prohibit closing a Project, returning to a launcher-like state, or opening a **different** Project **after** the prior active context has been cleared. **Replaceable active Project context** within a process lifetime (explicit deactivate/activate, Project-scoped state, reconstructible derived projections) is specified in [ADR-0020](ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §10 — accommodation only; implementation not authorized here.
 
 **Concurrent Project Work:** ProjectConcord SHALL support **multiple concurrently running application instances**. Each instance independently maintains the active context of **one** Project.
 
