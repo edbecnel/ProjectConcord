@@ -194,7 +194,7 @@ Redesign of the **Project Architect** provider path ([`IProjectArchitectProvider
 ## Consequences
 
 - [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §11 and PC-PAR-014 are reconciled to reference this contract for automated paths.
-- [GAP-030](../../Development/EDF_Gap_Register.md#gap-030--engineering-agent-provider-adapter-and-plugin-boundary) is **closed / resolved** by this ADR (architectural boundary and contract). Physical plugin hosting, loaders, and concrete provider implementations are **deferred implementation** concerns — not unresolved GAP-030 deficiencies — and require separate PA authorization.
+- [GAP-030](../../Development/EDF_Gap_Register.md#gap-030--engineering-agent-provider-adapter-and-plugin-boundary) is **closed / resolved** by this ADR (architectural boundary and contract). Plugin hosting **architecture** **Accepted** in [ADR-0023](ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md) (2026-10-01); physical loaders, catalog implementation, and concrete provider implementations remain **deferred implementation** — require separate PA authorization.
 - [GAP-044](../../Development/EDF_Gap_Register.md#gap-044--engineering-agent-automated-transport) **closed / resolved** by [ADR-0022](ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) (2026-10-01). Transport architecture is **Accepted**; **A4** implementation remains **not authorized**.
 - [AWI-0006](../Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md) **closed / satisfied** (2026-10-01).
 - Future `src/` work requires separate PA authorization for plugin hosting, provider plugins, and A4.
@@ -206,5 +206,6 @@ Redesign of the **Project Architect** provider path ([`IProjectArchitectProvider
 - [ADR-0013](ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md), [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0017](ADR-0017-Project-Work-Record-Core-Boundary.md), [ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md), [ADR-0020](ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md)
 - [GAP-030](../../Development/EDF_Gap_Register.md#gap-030--engineering-agent-provider-adapter-and-plugin-boundary), [GAP-044](../../Development/EDF_Gap_Register.md#gap-044--engineering-agent-automated-transport), [AWI-0006](../Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)
 - [ADR-0022 — Engineering Agent automated transport architecture](ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) (**Accepted** 2026-10-01)
+- [ADR-0023 — Engineering Agent plugin hosting and registration architecture](ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md) (**Accepted** 2026-10-01)
 - [PAR Workflow Architecture Plan](../../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md) (historical provenance)
 - [A2 Implementation Plan](../../Handover/ProjectConcord-A2-Implementation-Plan.md) (P0 delivered; automation deferred)

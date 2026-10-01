@@ -242,7 +242,7 @@ Transport mechanisms **do not** redefine artifact ownership. Large payloads **SH
 - [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §11 reconciled (PC-PAR-022c, PC-PAR-022d).
 - [GAP-044](../../Development/EDF_Gap_Register.md#gap-044--engineering-agent-automated-transport) **closed / resolved** by this ADR (architecture only — not implementation).
 - [AWI-0006](../Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md) **closed / satisfied**.
-- Future implementation requires separate PA authorization for plugin hosting, transport persistence, provider plugins, and A4.
+- Future implementation requires separate PA authorization for plugin hosting **implementation**, transport persistence, provider plugins, and A4.
 
 ## Related Documents
 
@@ -251,3 +251,4 @@ Transport mechanisms **do not** redefine artifact ownership. Large payloads **SH
 - [ADR-0020](ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md), [ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)
 - [GAP-044](../../Development/EDF_Gap_Register.md#gap-044--engineering-agent-automated-transport), [AWI-0006](../Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)
 - [A2 Implementation Plan](../../Handover/ProjectConcord-A2-Implementation-Plan.md) (P0 published)
+- [ADR-0023 — Engineering Agent plugin hosting and registration architecture](ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md) (**Accepted** 2026-10-01)

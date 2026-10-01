@@ -32,6 +32,7 @@ This directory contains individual Architecture Decision Records.
 | [ADR-0020](ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) | Operator projections, product shell, and workspace navigation (AWI-0008 A+C) | Accepted | 2026-10-01 |
 | [ADR-0021](ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md) | Engineering Agent provider plugin contract (A4 / GAP-030 / AWI-0006 reconciliation) | Accepted | 2026-10-01 |
 | [ADR-0022](ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) | Engineering Agent automated transport architecture (GAP-044 / AWI-0006) | Accepted | 2026-10-01 |
+| [ADR-0023](ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md) | Engineering Agent plugin hosting and registration architecture | Accepted | 2026-10-01 |
 
 ## Navigation
 

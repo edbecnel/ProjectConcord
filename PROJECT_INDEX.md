@@ -31,6 +31,7 @@ This is the primary documentation hub for humans and AI assistants.
 - [AWI-0006 — Engineering Agent automated transport (Closed / Satisfied 2026-10-01)](docs/Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)
 - [ADR-0021 — Engineering Agent provider plugin contract (Accepted 2026-10-01)](docs/Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md)
 - [ADR-0022 — Engineering Agent automated transport architecture (Accepted 2026-10-01)](docs/Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md)
+- [ADR-0023 — Engineering Agent plugin hosting and registration architecture (Accepted 2026-10-01)](docs/Architecture/ADRs/ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md)
 - [PAR Workflow Architecture Plan](docs/Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md)
 - [A1 Implementation Plan](docs/Handover/ProjectConcord-A1-Implementation-Plan.md) (closed / published)
 - [A2 Implementation Plan](docs/Handover/ProjectConcord-A2-Implementation-Plan.md) (A2 **closed / PA accepted** 2026-09-30 — T1–T8; **published** on `main`)

@@ -113,7 +113,7 @@ Provenance chain: observed context → advisory → user decision → requested 
 
 **P0 manual** — **published** (A2): generate, validate, export, import evidence via `IEngineeringAgentRelayBridge`.
 
-**Automated transport** — architecture **Accepted** in [ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) (2026-10-01); **not implemented**; [GAP-044](../Development/EDF_Gap_Register.md#gap-044--engineering-agent-automated-transport) **closed / resolved**; [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md) **closed / satisfied**; plugin contract [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md); **A4 not authorized**.
+**Automated transport and plugin hosting** — architecture **Accepted** in [ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) and [ADR-0023](../Architecture/ADRs/ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md) (2026-10-01); **not implemented**; [GAP-044](../Development/EDF_Gap_Register.md#gap-044--engineering-agent-automated-transport) **closed / resolved**; [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md) **closed / satisfied**; plugin contract [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md); **A4 not authorized**.
 
 ### Roadmap
 
@@ -188,7 +188,7 @@ stateDiagram-v2
 | **A1** | Per-user app state + Recent Project Roots | **Complete** — published A1a/A1b/A1c; closeout [A1 plan §20](ProjectConcord-A1-Implementation-Plan.md#20-a1-overall-closeout-2026-09-28) |
 | **A2** | Manual P0 **governed interaction relay** (Core relay + software package profile + provider transport; historical PAR packaging) | **Complete** — published on `main` |
 | **A3** | Governed workflow MVP (manual) | **No** |
-| **A4** | Engineering Agent automated transport P1+ ([ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md)) | **No** |
+| **A4** | Engineering Agent automated transport P1+ ([ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md), [ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md), [ADR-0023](../Architecture/ADRs/ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md)) | **No** |
 | **M2** | EDF discovery (SPEC-001) | **No** — separate track; feeds Tier 0+ later |
 
 Dependencies: A2+ may consume Tier 0 before M2; deep awareness requires M2+.
