@@ -1,6 +1,7 @@
 namespace Edf.Application.Projects;
 
 using Edf.Application.Relay;
+using Edf.Application.Relay.EngineeringAgent.Transport;
 
 /// <summary>
 /// Coordinates project registry and user preferences persistence (A1b: SQLite; A1a: in-memory).
@@ -12,6 +13,8 @@ public interface IUserApplicationStatePersistence
     IUserPreferencesStore UserPreferences { get; }
 
     IRelayOperationalStore RelayOperational { get; }
+
+    ITransportOperationStore TransportOperations { get; }
 
     void ExecuteInTransaction(Action work);
 }

@@ -2,6 +2,7 @@ using Edf.Application.Projects;
 using Edf.Application.Projects.InMemory;
 using Edf.Application.Relay;
 using Edf.Application.Relay.EngineeringAgent.Hosting;
+using Edf.Application.Relay.EngineeringAgent.Transport;
 using Edf.Engine.Projects;
 using Edf.Identity.Actors;
 using Edf.ProjectServices.Local;
@@ -11,6 +12,7 @@ namespace Edf.Application.Composition;
 public sealed record DesktopApplicationServices(
     IProjectWorkspaceService Workspace,
     IGovernedRelayP0WorkflowService RelayWorkflow,
+    ITransportOperationStore TransportOperations,
     EngineeringAgentPluginHostingServices EngineeringAgentPluginHosting);
 
 public static class ApplicationCompositionRoot
@@ -41,6 +43,10 @@ public static class ApplicationCompositionRoot
         var workspace = new ProjectWorkspaceService(resolver, actor, persistence, runtime);
         var relayWorkflow = GovernedRelayP0WorkflowService.Create(persistence);
         var pluginHosting = EngineeringAgentPluginHostingFactory.Create(persistence);
-        return new DesktopApplicationServices(workspace, relayWorkflow, pluginHosting);
+        return new DesktopApplicationServices(
+            workspace,
+            relayWorkflow,
+            persistence.TransportOperations,
+            pluginHosting);
     }
 }

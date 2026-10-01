@@ -1,20 +1,25 @@
 namespace Edf.Application.Projects.InMemory;
 
 using Edf.Application.Relay;
+using Edf.Application.Relay.EngineeringAgent.Transport;
 
 public sealed class InMemoryUserApplicationStatePersistence : IUserApplicationStatePersistence
 {
     private readonly object _sync = new();
 
     public InMemoryUserApplicationStatePersistence()
-        : this(new InMemoryProjectRegistry(), new InMemoryUserPreferencesStore(), new InMemoryRelayOperationalStore())
+        : this(
+            new InMemoryProjectRegistry(),
+            new InMemoryUserPreferencesStore(),
+            new InMemoryRelayOperationalStore(),
+            new InMemoryTransportOperationStore())
     {
     }
 
     public InMemoryUserApplicationStatePersistence(
         InMemoryProjectRegistry projectRegistry,
         InMemoryUserPreferencesStore userPreferences)
-        : this(projectRegistry, userPreferences, new InMemoryRelayOperationalStore())
+        : this(projectRegistry, userPreferences, new InMemoryRelayOperationalStore(), new InMemoryTransportOperationStore())
     {
     }
 
@@ -22,10 +27,20 @@ public sealed class InMemoryUserApplicationStatePersistence : IUserApplicationSt
         InMemoryProjectRegistry projectRegistry,
         InMemoryUserPreferencesStore userPreferences,
         InMemoryRelayOperationalStore relayOperational)
+        : this(projectRegistry, userPreferences, relayOperational, new InMemoryTransportOperationStore())
+    {
+    }
+
+    public InMemoryUserApplicationStatePersistence(
+        InMemoryProjectRegistry projectRegistry,
+        InMemoryUserPreferencesStore userPreferences,
+        InMemoryRelayOperationalStore relayOperational,
+        InMemoryTransportOperationStore transportOperations)
     {
         ProjectRegistry = projectRegistry ?? throw new ArgumentNullException(nameof(projectRegistry));
         UserPreferences = userPreferences ?? throw new ArgumentNullException(nameof(userPreferences));
         RelayOperational = relayOperational ?? throw new ArgumentNullException(nameof(relayOperational));
+        TransportOperations = transportOperations ?? throw new ArgumentNullException(nameof(transportOperations));
     }
 
     public IProjectRegistry ProjectRegistry { get; }
@@ -33,6 +48,8 @@ public sealed class InMemoryUserApplicationStatePersistence : IUserApplicationSt
     public IUserPreferencesStore UserPreferences { get; }
 
     public IRelayOperationalStore RelayOperational { get; }
+
+    public ITransportOperationStore TransportOperations { get; }
 
     public void ExecuteInTransaction(Action work)
     {

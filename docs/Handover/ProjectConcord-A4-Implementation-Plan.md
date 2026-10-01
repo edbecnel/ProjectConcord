@@ -8,7 +8,7 @@
 >
 > **EACH A4 IMPLEMENTATION TRANCHE REQUIRES EXPLICIT PROJECT ARCHITECT AUTHORIZATION.**
 
-> **A4 implementation plan:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01). **A4-T0 CLOSED / PA ACCEPTED / PUBLISHED** (2026-10-01). **A4-T1 CLOSED / PA ACCEPTED / PUBLISHED** (2026-10-01). **A4-T2–T7 NOT AUTHORIZED.**
+> **A4 implementation plan:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01). **A4-T0–T2 CLOSED / PA ACCEPTED / PUBLISHED** (2026-10-01). **A4-T3–T7 NOT AUTHORIZED.**
 
 **Mode:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01)
 
@@ -18,7 +18,7 @@
 
 **Architecture basis:** [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md), [ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md), [ADR-0023](../Architecture/ADRs/ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md), [ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md), [ADR-0020](../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), published [A2 P0 governed relay](ProjectConcord-A2-Implementation-Plan.md) implementation on `main`, [PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md)
 
-**Governance inputs:** **PA accepted** A4 implementation plan (2026-10-01); **A4-T0 PA accepted / published** (2026-10-01); **A4-T1 PA accepted / published** (2026-10-01); **A4-T2–T7 NOT AUTHORIZED**; **A3 NOT AUTHORIZED**.
+**Governance inputs:** **PA accepted** A4 implementation plan (2026-10-01); **A4-T0–T2 PA accepted / published** (2026-10-01); **A4-T3–T7 NOT AUTHORIZED**; **A3 NOT AUTHORIZED**.
 
 ---
 
@@ -28,10 +28,10 @@
 |------|--------|
 | A4 architecture (ADR-0021/0022/0023) | **Accepted** (2026-10-01) |
 | **This A4 implementation plan** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) |
-| A4 implementation (`src/`, tests) | **T0–T1 published** on `main` — [T1 notes](ProjectConcord-A4-T1-Implementation-Notes.md) |
+| A4 implementation (`src/`, tests) | **T0–T2 published** on `main` — [T2 notes](ProjectConcord-A4-T2-Implementation-Notes.md) |
 | **A4-T0** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T0 notes](ProjectConcord-A4-T0-Implementation-Notes.md); [§27](#27-a4-t0-closeout-2026-10-01) |
 | **A4-T1** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T1 notes](ProjectConcord-A4-T1-Implementation-Notes.md); [§28](#28-a4-t1-closeout-2026-10-01) |
-| **A4-T2** | **NOT AUTHORIZED** |
+| **A4-T2** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T2 notes](ProjectConcord-A4-T2-Implementation-Notes.md); [§29](#29-a4-t2-closeout-2026-10-01) |
 | **A4-T3** | **NOT AUTHORIZED** |
 | **A4-T4** | **NOT AUTHORIZED** |
 | **A4-T5** | **NOT AUTHORIZED** |
@@ -416,15 +416,14 @@ Reuse existing P0 path unchanged in semantics: eligibility, renderer, parser, va
 
 | | |
 |---|---|
-| **Authorization** | **NOT AUTHORIZED** |
-| **Objective** | `Migration003*` + `ITransportOperationStore` + SQLite adapter |
-| **Architecture basis** | ADR-0022 §4–5; ADR-0019 local-first |
-| **Likely areas** | `Edf.ProjectServices/Persistence/Migrations/`; `Sqlite*Transport*` adapter |
+| **Authorization** | **CLOSED / PA ACCEPTED / PUBLISHED** (2026-10-01) |
+| **Objective** | `Migration003TransportOperations` + SQLite `ITransportOperationStore` |
+| **Implementation** | `transport_operation` table; `PersistedTransportOperation`; store partial + adapters; composition wiring |
 | **Dependencies** | T1 |
-| **Boundaries** | Additive schema only; single-process assumption §11 |
-| **Tests** | Mirror [RelayOperationalPersistenceTests](../../tests/Edf.ProjectServices.Tests/Relay/RelayOperationalPersistenceTests.cs) patterns |
-| **Acceptance** | CRUD + restart reload of transport rows |
-| **STOP** | Await **PA authorization for A4-T3 only** |
+| **Boundaries** | **No** orchestration, Forward, polling, import, recovery |
+| **Tests** | `TransportOperationPersistenceTests` (**12**); schema test reconciliation for v**3** |
+| **Validation** | SDK **10.0.401**; **187** tests **PASS** |
+| **STOP** | T2 closed — **await PA authorization for A4-T3 only** |
 
 ---
 
@@ -545,7 +544,8 @@ flowchart TB
 | A4 implementation | **NOT AUTHORIZED** |
 | A4-T0 | **Published** on `main` |
 | A4-T1 | **Published** on `main` (2026-10-01) |
-| A4-T2 … A4-T7 | **NOT AUTHORIZED** — separate PA authorization required per tranche |
+| A4-T2 | **Published** on `main` (2026-10-01) |
+| A4-T3 … A4-T7 | **NOT AUTHORIZED** — separate PA authorization required per tranche |
 | A3 | **NOT AUTHORIZED** |
 | MVR-0003 | **Not created** at plan publication; **reconfirm scope at T7 authorization** (§18) |
 | AAR-0002 | **Not created**; not required merely for A4 (§19) |
@@ -590,7 +590,31 @@ flowchart TB
 
 Details: [ProjectConcord-A4-T1-Implementation-Notes.md](ProjectConcord-A4-T1-Implementation-Notes.md).
 
-**Next governance decision:** Whether to authorize **A4-T2 only**. **A4-T2 NOT AUTHORIZED** until explicit PA disposition.
+**Next governance decision:** **PA review of A4-T2** (implemented locally). **A4-T3 NOT AUTHORIZED** until T2 accepted/published.
+
+---
+
+**Next governance decision:** Whether to authorize **A4-T3 only** (orchestration). **A4-T3 NOT AUTHORIZED** until explicit PA disposition.
+
+---
+
+## 29. A4-T2 closeout (2026-10-01)
+
+**PA disposition:** **A4-T2 CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01).
+
+| Item | Disposition |
+|------|-------------|
+| Pre-T2 baseline | `2656d93a1e94b307bcb93655673d7b542b365747` (A4-T1 publication) |
+| T2 publication commit | Recorded on `main` (2026-10-01 tranche) |
+| Migration | **`Migration003TransportOperations`** — **`SchemaVersions.Current = 3`** |
+| Store | **`ITransportOperationStore`** via persistence + **`DesktopApplicationServices`** |
+| Project scoping | No **`ProjectConcordProjectId`** on **`TransportOperation`** — acceptable for Save/Get; later discovery requires PA in responsible tranche |
+| Orchestration / recovery / Cursor / UI | **Not in T2** — T3+ |
+| **A4-T3 … A4-T7** | **NOT AUTHORIZED** |
+
+Details: [ProjectConcord-A4-T2-Implementation-Notes.md](ProjectConcord-A4-T2-Implementation-Notes.md).
+
+**Next governance decision:** Whether to authorize **A4-T3 only**. **A4-T3 NOT AUTHORIZED** until explicit PA disposition.
 
 ---
 

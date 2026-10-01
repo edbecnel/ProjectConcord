@@ -1,5 +1,6 @@
 using Edf.Application.Relay;
 using Edf.Application.Relay.EngineeringAgent.Hosting;
+using Edf.Application.Relay.EngineeringAgent.Transport;
 using Edf.Domain.Projects;
 using Edf.ProjectServices.Persistence;
 
@@ -11,6 +12,7 @@ public sealed class SqliteUserApplicationStatePersistence : IUserApplicationStat
     private readonly SqliteProjectRegistryAdapter _registry;
     private readonly SqliteUserPreferencesStoreAdapter _preferences;
     private readonly SqliteRelayOperationalStoreAdapter _relay;
+    private readonly SqliteTransportOperationStoreAdapter _transportOperations;
 
     public SqliteUserApplicationStatePersistence(SqliteUserApplicationStateStore store)
     {
@@ -18,6 +20,7 @@ public sealed class SqliteUserApplicationStatePersistence : IUserApplicationStat
         _registry = new SqliteProjectRegistryAdapter(store);
         _preferences = new SqliteUserPreferencesStoreAdapter(store);
         _relay = new SqliteRelayOperationalStoreAdapter(store);
+        _transportOperations = new SqliteTransportOperationStoreAdapter(store);
     }
 
     public IProjectRegistry ProjectRegistry => _registry;
@@ -25,6 +28,8 @@ public sealed class SqliteUserApplicationStatePersistence : IUserApplicationStat
     public IUserPreferencesStore UserPreferences => _preferences;
 
     public IRelayOperationalStore RelayOperational => _relay;
+
+    public ITransportOperationStore TransportOperations => _transportOperations;
 
     public void ExecuteInTransaction(Action work) => _store.ExecuteInTransaction(work);
 

@@ -37,6 +37,12 @@ internal static class SchemaMigrationRunner
         if (fromVersion < Migration002RelayOperational.Version)
         {
             Migration002RelayOperational.Apply(connection, null);
+            fromVersion = Migration002RelayOperational.Version;
+        }
+
+        if (fromVersion < Migration003TransportOperations.Version)
+        {
+            Migration003TransportOperations.Apply(connection, null);
         }
     }
 
