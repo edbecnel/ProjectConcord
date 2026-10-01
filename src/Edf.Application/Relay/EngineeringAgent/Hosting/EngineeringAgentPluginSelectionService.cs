@@ -26,6 +26,17 @@ public sealed record EngineeringAgentPluginSelectionEvaluation(
     EngineeringAgentProviderHealth? Health,
     string? Detail);
 
+/// <summary>
+/// Stage A — static provider preflight before host initialization (A4-T3 bounded T1 refinement).
+/// </summary>
+public sealed record EngineeringAgentPluginPreflightEvaluation(
+    bool CanProceedToInitialization,
+    EngineeringAgentProviderPluginId? SelectedPluginId,
+    IEngineeringAgentProviderPlugin? ResolvedPlugin,
+    EngineeringAgentPluginSelectionUnavailableReason UnavailableReason,
+    EngineeringAgentPluginCompatibilityAssessment? Compatibility,
+    string? Detail);
+
 public sealed class EngineeringAgentPluginSelectionService
 {
     private readonly IEngineeringAgentPluginCatalog _catalog;
@@ -42,7 +53,7 @@ public sealed class EngineeringAgentPluginSelectionService
         _preferences = preferences ?? throw new ArgumentNullException(nameof(preferences));
     }
 
-    public EngineeringAgentPluginSelectionEvaluation EvaluateForAutomatedTransport(
+    public EngineeringAgentPluginPreflightEvaluation EvaluatePreflightForAutomatedTransport(
         ProjectConcordProjectId projectId,
         EngineeringAgentMode routingIntent,
         int requiredRenderProtocolMajor = 0)
@@ -55,7 +66,7 @@ public sealed class EngineeringAgentPluginSelectionService
         var prefs = _preferences.GetPreferences(projectId);
         if (prefs.SelectedPluginId is not { } selectedId)
         {
-            return Unavailable(
+            return PreflightUnavailable(
                 EngineeringAgentPluginSelectionUnavailableReason.NoProviderSelected,
                 selectedId: null,
                 detail: "No Engineering Agent provider plugin is selected for this Project.");
@@ -63,7 +74,7 @@ public sealed class EngineeringAgentPluginSelectionService
 
         if (!_catalog.TryGetPlugin(selectedId, out var plugin) || plugin is null)
         {
-            return Unavailable(
+            return PreflightUnavailable(
                 EngineeringAgentPluginSelectionUnavailableReason.ProviderNotRegistered,
                 selectedId,
                 detail: "Selected plugin is not registered in the catalog.");
@@ -71,7 +82,7 @@ public sealed class EngineeringAgentPluginSelectionService
 
         if (!prefs.EnabledPluginIds.Contains(selectedId))
         {
-            return Unavailable(
+            return PreflightUnavailable(
                 EngineeringAgentPluginSelectionUnavailableReason.ProviderDisabled,
                 selectedId,
                 plugin,
@@ -85,7 +96,7 @@ public sealed class EngineeringAgentPluginSelectionService
 
         if (!compatibility.HostContract.IsCompatible)
         {
-            return Unavailable(
+            return PreflightUnavailable(
                 EngineeringAgentPluginSelectionUnavailableReason.HostContractIncompatible,
                 selectedId,
                 plugin,
@@ -95,7 +106,7 @@ public sealed class EngineeringAgentPluginSelectionService
 
         if (!compatibility.RenderProtocol.IsCompatible)
         {
-            return Unavailable(
+            return PreflightUnavailable(
                 EngineeringAgentPluginSelectionUnavailableReason.RenderProtocolIncompatible,
                 selectedId,
                 plugin,
@@ -105,13 +116,41 @@ public sealed class EngineeringAgentPluginSelectionService
 
         if (!compatibility.RoutingIntent.IsCompatible)
         {
-            return Unavailable(
+            return PreflightUnavailable(
                 EngineeringAgentPluginSelectionUnavailableReason.RoutingIntentUnsupported,
                 selectedId,
                 plugin,
                 compatibility,
                 compatibility.RoutingIntent.Reason);
         }
+
+        return new EngineeringAgentPluginPreflightEvaluation(
+            CanProceedToInitialization: true,
+            SelectedPluginId: selectedId,
+            ResolvedPlugin: plugin,
+            UnavailableReason: EngineeringAgentPluginSelectionUnavailableReason.None,
+            Compatibility: compatibility,
+            Detail: null);
+    }
+
+    public EngineeringAgentPluginSelectionEvaluation EvaluateRuntimeReadinessForAutomatedTransport(
+        ProjectConcordProjectId projectId,
+        EngineeringAgentMode routingIntent,
+        int requiredRenderProtocolMajor = 0)
+    {
+        var preflight = EvaluatePreflightForAutomatedTransport(
+            projectId,
+            routingIntent,
+            requiredRenderProtocolMajor);
+        if (!preflight.CanProceedToInitialization
+            || preflight.SelectedPluginId is not { } selectedId
+            || preflight.ResolvedPlugin is null)
+        {
+            return FromPreflight(preflight);
+        }
+
+        var plugin = preflight.ResolvedPlugin;
+        var compatibility = preflight.Compatibility!;
 
         if (!_host.IsInitialized(selectedId))
         {
@@ -143,6 +182,37 @@ public sealed class EngineeringAgentPluginSelectionService
             Health: health,
             Detail: null);
     }
+
+    public EngineeringAgentPluginSelectionEvaluation EvaluateForAutomatedTransport(
+        ProjectConcordProjectId projectId,
+        EngineeringAgentMode routingIntent,
+        int requiredRenderProtocolMajor = 0) =>
+        EvaluateRuntimeReadinessForAutomatedTransport(projectId, routingIntent, requiredRenderProtocolMajor);
+
+    private static EngineeringAgentPluginSelectionEvaluation FromPreflight(
+        EngineeringAgentPluginPreflightEvaluation preflight) =>
+        new(
+            CanUseForAutomatedTransport: false,
+            SelectedPluginId: preflight.SelectedPluginId,
+            ResolvedPlugin: preflight.ResolvedPlugin,
+            UnavailableReason: preflight.UnavailableReason,
+            Compatibility: preflight.Compatibility,
+            Health: preflight.ResolvedPlugin?.GetHealth(),
+            Detail: preflight.Detail);
+
+    private static EngineeringAgentPluginPreflightEvaluation PreflightUnavailable(
+        EngineeringAgentPluginSelectionUnavailableReason reason,
+        EngineeringAgentProviderPluginId? selectedId,
+        IEngineeringAgentProviderPlugin? plugin = null,
+        EngineeringAgentPluginCompatibilityAssessment? compatibility = null,
+        string? detail = null) =>
+        new(
+            CanProceedToInitialization: false,
+            SelectedPluginId: selectedId,
+            ResolvedPlugin: plugin,
+            UnavailableReason: reason,
+            Compatibility: compatibility,
+            Detail: detail);
 
     private static EngineeringAgentPluginSelectionEvaluation Unavailable(
         EngineeringAgentPluginSelectionUnavailableReason reason,

@@ -39,6 +39,16 @@ internal sealed class FakeEngineeringAgentProviderPlugin : IEngineeringAgentProv
 
     public int ShutdownAsyncCallCount { get; private set; }
 
+    public int ForwardCallCount { get; private set; }
+
+    public int CancelCallCount { get; private set; }
+
+    public Func<EngineeringAgentForwardRequest, EngineeringAgentForwardResult>? ForwardHandler { get; set; }
+
+    public Func<TransportOperationId, EngineeringAgentResultCandidateResult>? CandidateHandler { get; set; }
+
+    public Func<TransportOperationId, EngineeringAgentCancelResult>? CancelHandler { get; set; }
+
     public EngineeringAgentProviderPluginId PluginId { get; }
 
     public EngineeringAgentProviderCapabilities DeclareCapabilities() => _capabilities;
@@ -112,6 +122,12 @@ internal sealed class FakeEngineeringAgentProviderPlugin : IEngineeringAgentProv
         CancellationToken cancellationToken = default)
     {
         _ = cancellationToken;
+        ForwardCallCount++;
+        if (ForwardHandler is not null)
+        {
+            return ForwardHandler(request);
+        }
+
         return new EngineeringAgentForwardResult(
             IsAcknowledged: true,
             UpdatedSessionHint: EngineeringAgentProviderSessionHandle.FromOpaque("fake-session"),
@@ -123,6 +139,11 @@ internal sealed class FakeEngineeringAgentProviderPlugin : IEngineeringAgentProv
         CancellationToken cancellationToken = default)
     {
         _ = cancellationToken;
+        if (CandidateHandler is not null)
+        {
+            return CandidateHandler(transportOperationId);
+        }
+
         return new EngineeringAgentResultCandidateResult(
             HasCandidate: false,
             Candidate: null,
@@ -134,6 +155,12 @@ internal sealed class FakeEngineeringAgentProviderPlugin : IEngineeringAgentProv
         CancellationToken cancellationToken = default)
     {
         _ = cancellationToken;
+        CancelCallCount++;
+        if (CancelHandler is not null)
+        {
+            return CancelHandler(transportOperationId);
+        }
+
         return new EngineeringAgentCancelResult(IsAcknowledged: true, Failure: null);
     }
 }

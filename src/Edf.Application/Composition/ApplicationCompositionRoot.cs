@@ -13,7 +13,8 @@ public sealed record DesktopApplicationServices(
     IProjectWorkspaceService Workspace,
     IGovernedRelayP0WorkflowService RelayWorkflow,
     ITransportOperationStore TransportOperations,
-    EngineeringAgentPluginHostingServices EngineeringAgentPluginHosting);
+    EngineeringAgentPluginHostingServices EngineeringAgentPluginHosting,
+    IEngineeringAgentAutomatedTransportService AutomatedTransport);
 
 public static class ApplicationCompositionRoot
 {
@@ -43,10 +44,17 @@ public static class ApplicationCompositionRoot
         var workspace = new ProjectWorkspaceService(resolver, actor, persistence, runtime);
         var relayWorkflow = GovernedRelayP0WorkflowService.Create(persistence);
         var pluginHosting = EngineeringAgentPluginHostingFactory.Create(persistence);
+        var automatedTransport = new EngineeringAgentTransportOrchestrator(
+            persistence,
+            relayWorkflow,
+            pluginHosting.Catalog,
+            pluginHosting.Host,
+            pluginHosting.Selection);
         return new DesktopApplicationServices(
             workspace,
             relayWorkflow,
             persistence.TransportOperations,
-            pluginHosting);
+            pluginHosting,
+            automatedTransport);
     }
 }
