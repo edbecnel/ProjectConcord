@@ -13,6 +13,12 @@ public interface IEngineeringAgentProviderPlugin
 
     EngineeringAgentProviderHealth GetHealth();
 
+    Task<EngineeringAgentProviderInitializeResult> InitializeAsync(
+        CancellationToken cancellationToken = default);
+
+    Task<EngineeringAgentProviderShutdownResult> ShutdownAsync(
+        CancellationToken cancellationToken = default);
+
     EngineeringAgentForwardResult Forward(
         EngineeringAgentForwardRequest request,
         CancellationToken cancellationToken = default);

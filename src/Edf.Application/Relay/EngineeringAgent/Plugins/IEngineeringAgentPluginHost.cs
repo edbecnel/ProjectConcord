@@ -5,7 +5,11 @@ namespace Edf.Application.Relay.EngineeringAgent.Plugins;
 /// </summary>
 public interface IEngineeringAgentPluginHost
 {
-    EngineeringAgentProviderHealth InitializePlugin(EngineeringAgentProviderPluginId pluginId);
+    Task<EngineeringAgentProviderInitializeResult> InitializePluginAsync(
+        EngineeringAgentProviderPluginId pluginId,
+        CancellationToken cancellationToken = default);
 
-    void ShutdownPlugin(EngineeringAgentProviderPluginId pluginId);
+    Task<EngineeringAgentProviderShutdownResult> ShutdownPluginAsync(
+        EngineeringAgentProviderPluginId pluginId,
+        CancellationToken cancellationToken = default);
 }

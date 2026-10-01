@@ -8,20 +8,104 @@ internal sealed class FakeEngineeringAgentProviderPlugin : IEngineeringAgentProv
 {
     public FakeEngineeringAgentProviderPlugin(
         EngineeringAgentProviderPluginId pluginId,
-        EngineeringAgentProviderCapabilities capabilities)
+        EngineeringAgentProviderCapabilities? capabilities = null,
+        bool initializeSucceeds = true,
+        bool shutdownSucceeds = true,
+        bool reportsAuthenticatedWhenInitialized = true,
+        bool supportsDebug = false,
+        int renderProtocolMajor = 1)
     {
         PluginId = pluginId;
-        _capabilities = capabilities;
+        _initializeSucceeds = initializeSucceeds;
+        _shutdownSucceeds = shutdownSucceeds;
+        _reportsAuthenticatedWhenInitialized = reportsAuthenticatedWhenInitialized;
+        _capabilities = capabilities ?? new EngineeringAgentProviderCapabilities(
+            SupportsAutomatedTransport: true,
+            SupportedRenderProtocolMajor: renderProtocolMajor,
+            RoutingIntentSupport: new EngineeringAgentRoutingIntentSupport(
+                SupportsPlan: true,
+                SupportsAgent: true,
+                SupportsDebugSemantically: supportsDebug),
+            IsAvailableForSelection: true);
     }
 
     private readonly EngineeringAgentProviderCapabilities _capabilities;
+    private readonly bool _initializeSucceeds;
+    private readonly bool _shutdownSucceeds;
+    private readonly bool _reportsAuthenticatedWhenInitialized;
+    private volatile bool _lifecycleInitialized;
+
+    public int InitializeAsyncCallCount { get; private set; }
+
+    public int ShutdownAsyncCallCount { get; private set; }
 
     public EngineeringAgentProviderPluginId PluginId { get; }
 
     public EngineeringAgentProviderCapabilities DeclareCapabilities() => _capabilities;
 
-    public EngineeringAgentProviderHealth GetHealth() =>
-        new(IsInitialized: true, IsAuthenticated: true, StatusMessage: null);
+    public EngineeringAgentProviderHealth GetHealth()
+    {
+        if (!_lifecycleInitialized)
+        {
+            return EngineeringAgentProviderHealth.Unavailable("Plugin lifecycle is not initialized.");
+        }
+
+        return new EngineeringAgentProviderHealth(
+            IsInitialized: true,
+            IsAuthenticated: _reportsAuthenticatedWhenInitialized,
+            StatusMessage: null);
+    }
+
+    public Task<EngineeringAgentProviderInitializeResult> InitializeAsync(
+        CancellationToken cancellationToken = default)
+    {
+        _ = cancellationToken;
+        InitializeAsyncCallCount++;
+
+        if (_lifecycleInitialized)
+        {
+            return Task.FromResult(new EngineeringAgentProviderInitializeResult(GetHealth(), Failure: null));
+        }
+
+        if (!_initializeSucceeds)
+        {
+            var failure = new EngineeringAgentProviderFailure(
+                EngineeringAgentProviderFailureKind.InitializationFailed,
+                "Fake plugin initialization failed.");
+            return Task.FromResult(
+                new EngineeringAgentProviderInitializeResult(
+                    EngineeringAgentProviderHealth.Unavailable(failure.Message),
+                    failure));
+        }
+
+        _lifecycleInitialized = true;
+        return Task.FromResult(new EngineeringAgentProviderInitializeResult(GetHealth(), Failure: null));
+    }
+
+    public Task<EngineeringAgentProviderShutdownResult> ShutdownAsync(
+        CancellationToken cancellationToken = default)
+    {
+        _ = cancellationToken;
+        ShutdownAsyncCallCount++;
+
+        if (!_lifecycleInitialized)
+        {
+            return Task.FromResult(new EngineeringAgentProviderShutdownResult(IsAcknowledged: true, Failure: null));
+        }
+
+        if (!_shutdownSucceeds)
+        {
+            return Task.FromResult(
+                new EngineeringAgentProviderShutdownResult(
+                    IsAcknowledged: false,
+                    new EngineeringAgentProviderFailure(
+                        EngineeringAgentProviderFailureKind.Unavailable,
+                        "Fake plugin shutdown failed.")));
+        }
+
+        _lifecycleInitialized = false;
+        return Task.FromResult(new EngineeringAgentProviderShutdownResult(IsAcknowledged: true, Failure: null));
+    }
 
     public EngineeringAgentForwardResult Forward(
         EngineeringAgentForwardRequest request,

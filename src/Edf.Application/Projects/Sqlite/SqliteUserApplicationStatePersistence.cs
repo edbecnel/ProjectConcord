@@ -1,4 +1,5 @@
 using Edf.Application.Relay;
+using Edf.Application.Relay.EngineeringAgent.Hosting;
 using Edf.Domain.Projects;
 using Edf.ProjectServices.Persistence;
 
@@ -26,6 +27,9 @@ public sealed class SqliteUserApplicationStatePersistence : IUserApplicationStat
     public IRelayOperationalStore RelayOperational => _relay;
 
     public void ExecuteInTransaction(Action work) => _store.ExecuteInTransaction(work);
+
+    internal IEngineeringAgentOperationalPreferenceBacking CreateEngineeringAgentPreferenceBacking() =>
+        new SqliteEngineeringAgentOperationalPreferenceBacking(_store);
 
     public void Dispose() => _store.Dispose();
 

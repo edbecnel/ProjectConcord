@@ -8,7 +8,7 @@
 >
 > **EACH A4 IMPLEMENTATION TRANCHE REQUIRES EXPLICIT PROJECT ARCHITECT AUTHORIZATION.**
 
-> **A4 implementation plan:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01). **A4-T0 CLOSED / PA ACCEPTED / PUBLISHED** (2026-10-01). **A4-T1–T7 NOT AUTHORIZED.**
+> **A4 implementation plan:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01). **A4-T0 CLOSED / PA ACCEPTED / PUBLISHED** (2026-10-01). **A4-T1 CLOSED / PA ACCEPTED / PUBLISHED** (2026-10-01). **A4-T2–T7 NOT AUTHORIZED.**
 
 **Mode:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01)
 
@@ -18,7 +18,7 @@
 
 **Architecture basis:** [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md), [ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md), [ADR-0023](../Architecture/ADRs/ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md), [ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md), [ADR-0020](../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), published [A2 P0 governed relay](ProjectConcord-A2-Implementation-Plan.md) implementation on `main`, [PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md)
 
-**Governance inputs:** **PA accepted** A4 implementation plan (2026-10-01); **A4-T0 PA accepted / published** (2026-10-01); **A4-T1–T7 NOT AUTHORIZED**; **A3 NOT AUTHORIZED**.
+**Governance inputs:** **PA accepted** A4 implementation plan (2026-10-01); **A4-T0 PA accepted / published** (2026-10-01); **A4-T1 PA accepted / published** (2026-10-01); **A4-T2–T7 NOT AUTHORIZED**; **A3 NOT AUTHORIZED**.
 
 ---
 
@@ -28,9 +28,9 @@
 |------|--------|
 | A4 architecture (ADR-0021/0022/0023) | **Accepted** (2026-10-01) |
 | **This A4 implementation plan** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) |
-| A4 implementation (`src/`, tests) | **T0 published** on `main` — **T1+ NOT AUTHORIZED** |
+| A4 implementation (`src/`, tests) | **T0–T1 published** on `main` — [T1 notes](ProjectConcord-A4-T1-Implementation-Notes.md) |
 | **A4-T0** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T0 notes](ProjectConcord-A4-T0-Implementation-Notes.md); [§27](#27-a4-t0-closeout-2026-10-01) |
-| **A4-T1** | **NOT AUTHORIZED** |
+| **A4-T1** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T1 notes](ProjectConcord-A4-T1-Implementation-Notes.md); [§28](#28-a4-t1-closeout-2026-10-01) |
 | **A4-T2** | **NOT AUTHORIZED** |
 | **A4-T3** | **NOT AUTHORIZED** |
 | **A4-T4** | **NOT AUTHORIZED** |
@@ -399,16 +399,16 @@ Reuse existing P0 path unchanged in semantics: eligibility, renderer, parser, va
 
 | | |
 |---|---|
-| **Authorization** | **NOT AUTHORIZED** |
+| **Authorization** | **CLOSED / PA ACCEPTED / PUBLISHED** (2026-10-01) |
 | **Objective** | Plugin catalog + host; static registration of **production** providers only; enablement; compatibility triad |
 | **Architecture basis** | ADR-0023 §3–9 |
-| **Likely areas** | `EngineeringAgentPluginCatalog`, `EngineeringAgentPluginHost`; `ApplicationCompositionRoot` |
+| **Implementation** | `EngineeringAgentPluginCatalog`, `EngineeringAgentPluginHost`, preferences store, compatibility evaluator, selection service; `EngineeringAgentPluginHostingFactory` |
+| **T0 contract refinement** | Bounded addition of provider `InitializeAsync` / `ShutdownAsync` (ADR-0023 lifecycle); **A4-T0 remains CLOSED** |
 | **Dependencies** | T0 |
-| **Boundaries** | **No** `FakeEngineeringAgentProviderPlugin` in production catalog |
-| **Tests** | Selection, disabled plugin, incompatible render major |
-| **Acceptance** | Catalog selects Cursor stub or empty catalog per config |
-| **Validation** | Unit tests green |
-| **STOP** | Await **PA authorization for A4-T2 only** |
+| **Boundaries** | **No** `FakeEngineeringAgentProviderPlugin` in production catalog; **no** transport orchestration or Migration003 |
+| **Tests** | `EngineeringAgentA4T1HostingTests` (**17** tests); T0 contract tests updated for lifecycle surface |
+| **Validation** | SDK **10.0.401**; `dotnet build -c Release` **PASS**; regression **174** **PASS** |
+| **STOP** | T1 closed — **await PA authorization for A4-T2 only** |
 
 ---
 
@@ -543,12 +543,14 @@ flowchart TB
 |------|-------------|
 | Canonical plan | This document on `main` (publication commit — see [Implementation Roadmap](../Development/Implementation_Roadmap.md)) |
 | A4 implementation | **NOT AUTHORIZED** |
-| A4-T0 … A4-T7 | **NOT AUTHORIZED** — separate PA authorization required per tranche |
+| A4-T0 | **Published** on `main` |
+| A4-T1 | **Published** on `main` (2026-10-01) |
+| A4-T2 … A4-T7 | **NOT AUTHORIZED** — separate PA authorization required per tranche |
 | A3 | **NOT AUTHORIZED** |
 | MVR-0003 | **Not created** at plan publication; **reconfirm scope at T7 authorization** (§18) |
 | AAR-0002 | **Not created**; not required merely for A4 (§19) |
 
-**Next governance decision:** Whether to authorize **A4-T1 only** (static catalog / hosting / selection). **Do not** infer T1 or any later tranche from T0 publication.
+**Next governance decision:** Whether to authorize **A4-T2 only** (transport-operation persistence). **A4-T2 NOT AUTHORIZED** until explicit PA disposition.
 
 ---
 
@@ -562,10 +564,33 @@ flowchart TB
 | T0 publication commit | Recorded on `main` (this tranche) |
 | Provider-neutral contracts + transport operational types | Published under `src/Edf.Application/Relay/EngineeringAgent/` |
 | Orchestrator/service interfaces | **Deferred to A4-T3** — not in T0 |
-| **A4-T1 … A4-T7** | **NOT AUTHORIZED** |
+| **A4-T1 … A4-T7** | **NOT AUTHORIZED** at T0 closeout |
 | **A3** | **NOT AUTHORIZED** |
 
-**Next governance decision:** Whether to authorize **A4-T1 only**. **A4-T1 NOT AUTHORIZED** until explicit PA disposition.
+**Historical note:** T1 was authorized and implemented after this closeout; see [§28](#28-a4-t1-closeout-2026-10-01).
+
+---
+
+## 28. A4-T1 closeout (2026-10-01)
+
+**PA disposition:** **A4-T1 CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01).
+
+| Item | Disposition |
+|------|-------------|
+| Pre-T1 baseline | `112667ef78f1ed5e123e66910d7b92891feb8d78` (A4-T0 publication) |
+| T1 publication commit | Recorded on `main` (2026-10-01 tranche) |
+| Static catalog, host, selection, compatibility | `src/Edf.Application/Relay/EngineeringAgent/Hosting/` |
+| Bounded T0 provider contract refinement | `InitializeAsync` / `ShutdownAsync` on `IEngineeringAgentProviderPlugin`; host `InitializePluginAsync` / `ShutdownPluginAsync` — required for ADR-0023 lifecycle (T0 **remains CLOSED**) |
+| Composition | `EngineeringAgentPluginHostingFactory`; `DesktopApplicationServices.EngineeringAgentPluginHosting` |
+| Production providers | **Empty catalog** (Cursor deferred to A4-T6) |
+| Selection persistence | `user_preferences` keys via `SqliteUserApplicationStateStore` |
+| Transport / Migration003 / orchestrator | **Not in T1** — T2/T3 |
+| **A4-T2 … A4-T7** | **NOT AUTHORIZED** |
+| **A3** | **NOT AUTHORIZED** |
+
+Details: [ProjectConcord-A4-T1-Implementation-Notes.md](ProjectConcord-A4-T1-Implementation-Notes.md).
+
+**Next governance decision:** Whether to authorize **A4-T2 only**. **A4-T2 NOT AUTHORIZED** until explicit PA disposition.
 
 ---
 

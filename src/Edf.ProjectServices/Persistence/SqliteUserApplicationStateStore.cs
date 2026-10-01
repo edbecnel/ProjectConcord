@@ -219,6 +219,37 @@ public sealed partial class SqliteUserApplicationStateStore : IDisposable
         command.ExecuteNonQuery();
     }
 
+    public string? GetUserPreference(string key)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(key);
+        using var command = CreateCommand(
+            "SELECT value FROM user_preferences WHERE key = $key LIMIT 1;");
+        command.Parameters.AddWithValue("$key", key);
+        return command.ExecuteScalar() as string;
+    }
+
+    public void SetUserPreference(string key, string? value)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(key);
+        if (value is null)
+        {
+            using var delete = CreateCommand("DELETE FROM user_preferences WHERE key = $key;");
+            delete.Parameters.AddWithValue("$key", key);
+            delete.ExecuteNonQuery();
+            return;
+        }
+
+        using var command = CreateCommand(
+            """
+            INSERT INTO user_preferences (key, value)
+            VALUES ($key, $value)
+            ON CONFLICT(key) DO UPDATE SET value = excluded.value;
+            """);
+        command.Parameters.AddWithValue("$key", key);
+        command.Parameters.AddWithValue("$value", value);
+        command.ExecuteNonQuery();
+    }
+
     public void Dispose()
     {
         lock (_sync)

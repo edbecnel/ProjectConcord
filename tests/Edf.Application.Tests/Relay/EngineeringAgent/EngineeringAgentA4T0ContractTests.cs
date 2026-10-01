@@ -113,18 +113,30 @@ public class EngineeringAgentA4T0ContractTests
     }
 
     [Fact]
+    public async Task FakeProvider_InitializeAndShutdownLifecycle_AreNeutral()
+    {
+        var plugin = new FakeEngineeringAgentProviderPlugin(
+            EngineeringAgentProviderPluginId.Parse("fake.test"),
+            supportsDebug: false,
+            renderProtocolMajor: 1);
+
+        Assert.False(plugin.GetHealth().IsInitialized);
+
+        var init = await plugin.InitializeAsync();
+        Assert.True(init.Succeeded);
+
+        var shutdown = await plugin.ShutdownAsync();
+        Assert.True(shutdown.IsAcknowledged);
+        Assert.Null(shutdown.Failure);
+    }
+
+    [Fact]
     public void FakeProvider_ImplementsContractWithoutProviderSpecificDependencies()
     {
         var plugin = new FakeEngineeringAgentProviderPlugin(
             EngineeringAgentProviderPluginId.Parse("fake.test"),
-            new EngineeringAgentProviderCapabilities(
-                SupportsAutomatedTransport: true,
-                SupportedRenderProtocolMajor: 1,
-                RoutingIntentSupport: new EngineeringAgentRoutingIntentSupport(
-                    SupportsPlan: true,
-                    SupportsAgent: true,
-                    SupportsDebugSemantically: false),
-                IsAvailableForSelection: true));
+            supportsDebug: false,
+            renderProtocolMajor: 1);
 
         Assert.Equal("fake.test", plugin.PluginId.Value);
         Assert.True(plugin.DeclareCapabilities().SupportsAutomatedTransport);
