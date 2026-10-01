@@ -82,7 +82,8 @@ Define normative ProjectConcord product behavior across accepted component bound
 | **Project Root** | **A** session | Currently selected filesystem **session locator** — not durable identity |
 | **Repository identity / Git remote** | VCS | Locator or network hint — not Project ID |
 | **Repository or tool label** (“workspace name” in PC-PAR-003) | Label | Human or tool display name — not authoritative identity; **not** IDE multi-root workspace hosting, **not** Working Environment |
-| **Multi-project application context** | **A** product shell | Multiple Project IDs in one application instance ([ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), PC-AIGOV-022 in [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md)) |
+| **Single-Project Focus** | **A** product shell | One **active** Project per application instance ([ADR-0019](../../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)) |
+| **Concurrent Project Work** | **A** product shell | Multiple instances; each owns one active Project ([ADR-0019](../../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)) |
 | **Working Environment** | **D** | Composable policy/methodology facets — **not** Project Root, **not** synonymous with “governed operational state” |
 | **Provider / agent session** | **E** | Adapter session state |
 | **Persona / UI workspace** | UI | UX layout — not governance identity |
@@ -282,7 +283,7 @@ When a relay implementation tranche (for example **A2**) is authorized by the Pr
 
 - Exact PA handover serialization (Markdown blocks vs structured file)
 - Project ID generation algorithm (UUID vs ULID)
-- Multi-project application context — product-shell project hosting/switching UX (**A**; architectural prerequisite PC-AIGOV-022 in [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md); identity/partitioning [ADR-0015](../../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md), [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md)) — UI design deferred; **ADR-0013** does not own generic multi-project shell
+- Single-Project Focus launcher/recent UX and multi-instance launch policy (**A**; [ADR-0019](../../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md); cross-project flows PC-AIGOV-021–028 in [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md)) — detailed UX deferred; **ADR-0013** does not own product shell instance model
 
 ## Maintenance
 

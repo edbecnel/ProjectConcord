@@ -123,17 +123,20 @@ flowchart TB
 
 ---
 
-## Project Root, relay, and PAR track (A0 / A1 architecture)
+## Project Root, relay, and PAR track (A0 / A2 architecture)
 
-**Status:** Project Root + A1 identity/SQLite **implemented**; relay packages **not implemented** ([SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) **Accepted** 2026-09-29, [ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Accepted** 2026-09-29).
+**Status:** Project Root + A1 identity/SQLite **implemented**; A2 P0 **Governed Interaction Relay** persistence, validation, and Desktop workflow **published** ([SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) **Accepted** 2026-09-29, [ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Accepted** 2026-09-29). Cloud synchronization **not implemented**.
 
 | Concern | Rule |
 |---|---|
-| Session context | User explicitly selects a **Project Root** (filesystem locator) |
+| **Single-Project Focus** | One **active** Project per application instance ([ADR-0019](ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) **Accepted** 2026-10-01) |
+| **Concurrent Project Work** | Multiple instances MAY run; each owns one active Project; cross-project awareness ≠ multi-project workspace |
+| Session context | User explicitly selects a **Project Root** (filesystem locator) for the active Project |
 | Logical identity | Stable **ProjectConcord Project ID** — path is not durable identity ([ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md)) |
-| Per-user state | Recent Project Roots, session provenance, advisories — OS app data SQLite (A1 implemented) |
+| Per-user state | Recent Project Roots, relay operational records — OS app data SQLite, partitioned by Project ID (A1/A2 subset implemented) |
 | Project-local derived | `.projectconcord/` only when an authorized feature requires it — **not** on open/select |
-| Governed Interaction Relay (Core) | Generic package/correlation, validation, provenance, relay-boundary STOP ([ADR-0016](ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md)) |
+| Governed Interaction Relay (Core) | Package/correlation, validation, provenance, relay-boundary STOP — A2 P0 subset **implemented** ([ADR-0016](ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md)) |
+| Inter-project continuity | Originating instance MAY preserve context while dependent Project work runs elsewhere ([ADR-0019](ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md); IPH/CPD **B** — not fully implemented) |
 | Historical **PAR** term | Umbrella for relay + software package + policy + adapters — see [AMD-0003](AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md) §9 |
 | Project Architect | `IProjectArchitectProvider` boundary; manual ChatGPT product is one adapter (**E**) |
 | Cursor | `CursorBridge` abstraction; P0 manual transport first ([AWI-0006](Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md)) (**E**) |
@@ -161,13 +164,30 @@ Phasing: PAR track A0–A4 in [Implementation Roadmap](../Development/Implementa
 
 ---
 
+## Local-first operational persistence and service boundary (ADR-0019)
+
+**Status:** Architecture **Accepted** 2026-10-01 ([ADR-0019](ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)). Local SQLite **implemented** (A1/A2 subset); **synchronization and cloud Service API not implemented**.
+
+| Concern | Rule |
+|---|---|
+| Service boundary | Application uses **semantic service contracts**; database technology isolated in `Edf.ProjectServices` ([GAP-051](../Development/EDF_Gap_Register.md#gap-051--application-layer-persistence--service-port-isolation)) |
+| Local-first | Operational mutations durably local through service boundary **without** requiring cloud; local-only remains fully supported |
+| Cloud (future) | Additive sync subsystem → **Cloud Service API** → cloud operational store; desktop **must not** connect to cloud DB directly |
+| Sync modes | **Routine connected synchronization** (automatic while online) distinct from **reconnection reconciliation** after partition/offline |
+| Concurrency (future) | No silent lost updates on synchronizable operational state; **optimistic versioning** default direction ([GAP-050](../Development/EDF_Gap_Register.md#gap-050--resource-level-operational-concurrency-policy-and-version-model)) |
+| Canonical vs operational | Git/EDF canonical authority unchanged; operational sync ≠ Git sync |
+| Multi-process local store | Shared per-user DB across processes — semantics **not yet governed** ([GAP-052](../Development/EDF_Gap_Register.md#gap-052--multi-process-local-operational-store-concurrency-strategy-and-validation)) |
+
+---
+
 ## Governed operator experience and terminology (AWI-0008)
 
-**Status:** Architecture documented 2026-10-01 ([AWI-0008](Watch_Items/AWI-0008-Governed-Operator-Experience-and-Product-Shell.md), [ADR-0018](ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) **Accepted**). **Not implemented** in `src/`.
+**Status:** Architecture documented 2026-10-01 ([AWI-0008](Watch_Items/AWI-0008-Governed-Operator-Experience-and-Product-Shell.md), [ADR-0018](ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) **Accepted**, [ADR-0019](ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) **Accepted** 2026-10-01). Shell UX and sync **not fully implemented** in `src/`.
 
 | Concern | Rule |
 |---|---|
 | Context-transfer minimization | Derive **work packages** and **review packages** from canonical Git state (**A**) + persisted operational relay state (**B**); concise handovers are **projections/transport**, not the sole continuity store |
+| Instance-scoped packages | Packages default to the instance **active Project** unless explicitly inter-project transport |
 | Governed intermediary | Project Architect ↔ ProjectConcord ↔ Engineering Agent; PC holds governed state, not decision authority |
 | External provider state (**C**) | Not canonical; full chat transcripts must not substitute for **A**/**B** |
 | Terminology layers | EDF **recommends** → ProjectConcord **prefers** ([ADR-0018](ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md)) → presentation (deferred) → enforcement (**not authorized**) |

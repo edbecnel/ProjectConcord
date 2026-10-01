@@ -36,6 +36,8 @@ This is the primary documentation hub for humans and AI assistants.
 - [MVR-0002 — A2 P0 governed relay workflow](docs/Verification/Records/MVR-0002-a2-p0-manual-governed-relay-workflow.md) (Complete 2026-09-30)
 - [AWI-0008 — Governed operator experience and product shell](docs/Architecture/Watch_Items/AWI-0008-Governed-Operator-Experience-and-Product-Shell.md) (Active — partial promotion 2026-10-01)
 - [ADR-0018 — Adopter terminology policy and projection (Accepted 2026-10-01)](docs/Architecture/ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md)
+- [ADR-0019 — Local-first persistence, service boundary, sync, and concurrency (Accepted 2026-10-01)](docs/Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)
+- [AWI-0008 Persistence/Sync documentation tranche plan](docs/Handover/ProjectConcord-AWI-0008-Persistence-Sync-Documentation-Tranche-Plan.md)
 - [EDF Terminology Governance handover](docs/Handover/EDF-Terminology-Governance-Architecture-Handover.md)
 - [ProjectConcord Glossary](docs/Reference/Glossary.md)
 - [A2-T1 Implementation Notes](docs/Handover/ProjectConcord-A2-T1-Implementation-Notes.md) (closed / PA accepted 2026-09-29)

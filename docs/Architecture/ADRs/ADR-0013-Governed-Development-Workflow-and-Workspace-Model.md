@@ -16,7 +16,7 @@ This ADR records **Software Development / Engineering extension (B-layer)** gove
 
 This ADR **does not** define, own, or supersede accepted **Core (A)** capabilities. Generic capabilities are defined in [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0017](ADR-0017-Project-Work-Record-Core-Boundary.md), [AMD-0003](../AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md), and [AMD-0004](../AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md). Normative product requirements remain in [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md). Relay and Project Root binding remain in [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) and [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Accepted** 2026-09-29).
 
-**Multi-project application capability** (ProjectConcord hosting multiple **ProjectConcord Project IDs**) is a **Core/product-shell** concern, independent of Software Development enablement. This ADR governs **Software Development workflow operating across projects**, not generic multi-project application architecture.
+**Single-Project Focus** and **inter-project governed continuity** ([ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)) are **Core/product-shell** concerns, independent of Software Development enablement. This ADR governs **Software Development workflow operating across projects**, not the full local-first/sync/concurrency architecture owned by ADR-0019.
 
 ## Context
 
@@ -30,7 +30,8 @@ Accepted Stage 1 and Stage 2 architecture assign **Project Work Record**, **Gove
 
 | Term | Layer | Meaning |
 |---|---|---|
-| **Multi-project application context** | **Core / product shell (A)** | One ProjectConcord application instance may host/manage multiple **ProjectConcord Project IDs**. Not defined by this ADR. See [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md). |
+| **Single-Project Focus** | **Core / product shell (A)** | One application instance maintains one **active** Project context at a time. See [ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md). |
+| **Concurrent Project Work** | **Core / product shell (A)** | Multiple instances MAY run concurrently; each owns one active Project. See [ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md). |
 | **Working Environment** | **D** | Composable capability/policy facets per [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) §5 — **not** multi-project hosting. |
 | **Project Root / session locator** | Core binding (**A**); detail [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Accepted** 2026-09-29, [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) | Currently selected filesystem locator for session context. |
 | **Git worktree / branch** | **B** execution/evidence context | Repository-scoped Software Development detail. |
@@ -90,11 +91,11 @@ When the Software Development extension is enabled, governed workflow **may** sp
 - **InterProjectHandover** and **CrossProjectDependency** are **distinct** (PC-AIGOV-027).
 - Traceability from source through target acceptance and back to dependent source work is required when implemented (PC-AIGOV-028).
 
-Generic **multi-project application context** is prerequisite infrastructure owned by **Core (A)**, not by this ADR. PC-AIGOV-022–023 product requirements are specified in [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) and assume accepted Core identity/partitioning ([ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Accepted** 2026-09-29).
+**Inter-project governed continuity** (preserving originating Project context while dependent work runs in another active Project context) is supported by **InterProjectHandover**, **CrossProjectDependency**, and Core relay/package architecture — see [ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md). PC-AIGOV-021–028 remain specified in [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) and assume Project-ID-scoped partitioning ([ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Accepted** 2026-09-29).
 
 ### 8. M1–M5 non-lock-in (cross-reference)
 
-Foundational M1–M5 code **MUST NOT** irreversibly assume one runtime ↔ one project/repository. That constraint protects future **multi-project application context (A)** and Software Development workflows alike. Mechanisms (`ProjectId`, scoping APIs, schema partitions) are **not** mandated here; see [Implementation Roadmap](../../Development/Implementation_Roadmap.md), [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md), and [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Accepted** 2026-09-29).
+Foundational M1–M5 code **MUST NOT** irreversibly assume **global** or **unscoped** operational state — APIs and persistence **MUST** remain **Project-ID-scoped** and capable of supporting **multiple concurrently running instances** and **inter-project** workflows ([ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)). That constraint does **not** require a multi-project workspace in one process. Mechanisms (`ProjectId`, scoping APIs, schema partitions) are **not** mandated here; see [Implementation Roadmap](../../Development/Implementation_Roadmap.md), [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md), and [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Accepted** 2026-09-29).
 
 ### 9. AAR vs submission review
 
@@ -116,7 +117,7 @@ This ADR **consumes** without redefining:
 |---|---|---|
 | Project Work Record | **A** | [ADR-0017](ADR-0017-Project-Work-Record-Core-Boundary.md), [AMD-0004](../AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md) |
 | Governed Interaction Relay | **A** | [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) §7, [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) |
-| Project identity / multi-project application shell | **A** | [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Accepted** 2026-09-29) |
+| Project identity / single-Project Focus shell | **A** | [ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md), [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) (**Accepted** 2026-09-29) |
 | Working Environment | **D** | [ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) §5 |
 | AuthorityGrant (conceptual) | **A** — no schema | [AMD-0003](../AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md) §10 |
 
@@ -141,7 +142,7 @@ Normative **Actor**, **Role**, and **RoleAssignment** semantics remain **deferre
 ### Retain ADR-0013 as broad “workspace model” owner
 
 - Advantages: Single document for early PAR-era narrative.
-- Disadvantages: Conflicts with accepted Stage 1/2 decomposition; conflates Working Environment, multi-project shell, and Git/provider sessions.
+- Disadvantages: Conflicts with accepted Stage 1/2 decomposition; conflates Working Environment, product shell, and Git/provider sessions.
 - Reason not selected: Post–Stage 2 PA reconciliation (2026-09-29).
 
 ### Merge HIW with AWI
@@ -202,6 +203,7 @@ Documentation-only reconciliation per [ADR-0013 Reconciliation Documentation Tra
 - [ADR-0017](ADR-0017-Project-Work-Record-Core-Boundary.md), [AMD-0004](../AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md)
 - [PCON-0002](../PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) (**Proposed**)
 - [PCR-0001](../../Development/PCR-0001-Project-Continuation-and-Pause-Record.md)
+- [ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) (**Accepted** 2026-10-01)
 
 ## Maintenance
 

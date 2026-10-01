@@ -33,7 +33,7 @@ This ADR **does not** own:
 - provider/tool governance semantics (**E** — see [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md));
 - **Actor / Role / RoleAssignment** ([PCON-0002](../PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) **Proposed**);
 - **Project Work Record** or generic work identity ([ADR-0017](ADR-0017-Project-Work-Record-Core-Boundary.md));
-- generic **multi-project application UI** (Core product shell capability — see ADR-0016, [ADR-0013](ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md)).
+- **single-Project Focus** product-shell rules and multi-instance launch (see [ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md), ADR-0016, [ADR-0013](ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md)).
 
 Normative product requirements for relay behavior remain in [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md). Software Development workflow requirements remain in [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md).
 
@@ -53,7 +53,9 @@ Subsequently, **PAR track A1** was **separately authorized, implemented, and pub
 |---|---|---|
 | **ProjectConcord Project ID** | **A** | Stable logical project identity ([ADR-0016](ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) §1); operational partition key |
 | **Project Root** | **A** session | Currently selected absolute filesystem **session locator** — not durable identity |
-| **Multi-project application context** | **A** product shell | One application instance may host multiple Project IDs ([ADR-0013](ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) terminology) |
+| **Single-Project Focus** | **A** product shell | One application instance maintains **one active** Project context at a time ([ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)) |
+| **Concurrent Project Work** | **A** product shell | Multiple application instances MAY run concurrently; each instance owns one active Project ([ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)) |
+| **Cross-project awareness** | **A** / **B** | References, dependencies, and governed inter-project handovers — **not** multi-project workspace ownership ([ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md), [ADR-0013](ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) §7) |
 | **Working Environment** | **D** | Composable policy/methodology facets — **not** Project Root or multi-project hosting |
 | **Provider / agent session** | **E** | Adapter session state ([SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)) |
 | **Persona / UI workspace** | UI | UX layout — not governance identity |
@@ -183,7 +185,7 @@ Acceptance of **this ADR** does **not** authorize A2–A4 or M2+.
 
 ### Positive
 
-- Clear **Project ID vs Project Root session locator** model for recent roots, reconciliation, and future **multi-project application context (A)**.
+- Clear **Project ID vs Project Root session locator** model for recent roots, reconciliation, **single-Project Focus**, and **multi-instance** concurrent work ([ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)).
 - Provider-neutral boundaries remain specified in SPEC-006; this ADR does not collapse them into a single PAR component.
 - Preserves PA-3 / M1 `.projectconcord/` discipline.
 
@@ -208,6 +210,7 @@ Acceptance of **this ADR** does **not** authorize A2–A4 or M2+.
 - [PCON-0002](../PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) (**Proposed**)
 - [Implementation Roadmap](../../Development/Implementation_Roadmap.md)
 - [ADR-0015 Reconciliation Documentation Tranche Plan](../../Handover/ProjectConcord-ADR-0015-Reconciliation-Documentation-Tranche-Plan.md)
+- [ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) (**Accepted** 2026-10-01 — product shell instance model, local-first/sync/concurrency; reconciles terminology with this ADR)
 
 ### ADR-0015 acceptance (2026-09-29)
 

@@ -28,7 +28,17 @@ Resolution is implemented in `Edf.ProjectServices` (`UserApplicationStatePathRes
 
 - **Not** canonical EDF Markdown, gates, ADRs, or repository content.
 - **Not** written into the opened project’s Git tree.
-- **Not** the future authoritative multi-user server database or synchronization store.
+- **Not** the future **cloud operational store** or synchronization authority (when implemented, cloud persistence is accessed via **ProjectConcord Cloud Service API** — [ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) **Accepted** 2026-10-01).
+
+## Architecture vs current behavior
+
+| Topic | Current implementation | Accepted / proposed architecture |
+|---|---|---|
+| Store location | Per-user `user-state.db` in OS app data | Unchanged ([ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md)) |
+| Partitioning | Logical **Project ID** columns in one file | Unchanged; not per-Project files in this tranche |
+| Access path | Desktop → Application ports → `Edf.ProjectServices` / SQLite | Service boundary ([ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)) |
+| Cloud / sync | **Not implemented** | Future additive layer ([GAP-049](../Development/EDF_Gap_Register.md#gap-049--operational-synchronization-architecture)) |
+| Multiple app processes | No OS single-instance guard; processes may share this file | Operational semantics **not yet governed** ([GAP-052](../Development/EDF_Gap_Register.md#gap-052--multi-process-local-operational-store-concurrency-strategy-and-validation)); same Project ID in multiple local processes **OPEN** ([GAP-048](../Development/EDF_Gap_Register.md#gap-048--same-project-id--multiple-local-application-processes)) |
 
 Locator **availability** (folder exists on disk) is **derived at runtime** and is **not** persisted in `user-state.db`.
 
@@ -56,3 +66,4 @@ If migration fails, inspect or remove `user-state.db` using the reset procedure 
 
 - [Development Environment](./01_Development_Environment.md)
 - [ProjectConcord A1 Implementation Plan](../../Handover/ProjectConcord-A1-Implementation-Plan.md)
+- [ADR-0019 — Local-first persistence and service boundary](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) (**Accepted** 2026-10-01)

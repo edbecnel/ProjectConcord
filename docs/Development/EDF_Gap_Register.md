@@ -62,7 +62,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-029 | HumanInitiatedWorkItem vs AWI / backlog / PWR | Medium | HIW = intake/triage (SPEC-004 normative name); vs **ProjectWorkRecord** ([ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) **Accepted** — architectural boundary only); **OperationalIntakeRecord** = working terminology only; final intake name/ownership deferred |
 | GAP-030 | Provider adapter interface, security, and Engineering Agent plugin boundary | Medium | P0 manual first (A2-T7 published); provider-neutral Core + Software Engineering Extension; concrete products via deferred bounded plugins — [GAP-030 detail](#gap-030--engineering-agent-provider-adapter-and-plugin-boundary); A4 reconciliation required |
 | GAP-031 | Commit ↔ DevelopmentWorkAuthorization correlation | High | Scope conformance PC-AIGOV-010; M7b |
-| GAP-032 | Multi-project workspace / managed project identity | High | **Partial policy:** stable ProjectConcord Project ID per [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md); path = locator; PC-AIGOV-022–023 workspace UI OPEN |
+| GAP-032 | Cross-project relationships, launch, and inter-project continuity | Medium | **Partial policy:** Project ID per [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md); **Single-Project Focus** + multi-instance per [ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) (**Accepted** 2026-10-01); IPH/CPD schemas [GAP-033](../Development/EDF_Gap_Register.md#gap-033--interprojecthandover-operational-schema)–[GAP-034](../Development/EDF_Gap_Register.md#gap-034--crossprojectdependency-and-source-notification); launcher/UX OPEN |
 | GAP-033 | InterProjectHandover operational schema | High | Materialization to destination EDF; unloaded target behavior OPEN |
 | GAP-034 | CrossProjectDependency and source notification | Medium | PC-AIGOV-027–028; event mechanism OPEN |
 | GAP-035 | EDF upstream candidates (PC-AIGOV-022–028) | Low | Record only; no upstream in current tranche |
@@ -78,6 +78,11 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-045 | Third-party NuGet dependency advisories (SQLite transitive) | Low | A1b: `NU1903` on `SQLitePCLRaw.lib.e_sqlite3` 2.1.10 via `Microsoft.Data.Sqlite` 9.0.3; [GHSA-2m69-gcr7-jv3q](https://github.com/advisories/GHSA-2m69-gcr7-jv3q); [AWI-0007](../Architecture/Watch_Items/AWI-0007-SQLite-Transitive-NuGet-Advisory.md); watch only — no mandatory A1b remediation |
 | GAP-046 | Project Work Record — implementation, persistence, lifecycle states, relationship types, intake ownership | Medium | Core ownership **resolved** architecturally ([ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) **Accepted**, [AMD-0004](../Architecture/AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md)); **not implemented** — persistence/APIs/lifecycle/relationship schemas deferred; effective-configuration provenance mechanism OPEN |
 | GAP-047 | Terminology projection and optional enforcement | Medium | EDF TGR dependency **resolved** ([EDF Terminology handover](../Handover/EDF-Terminology-Governance-Architecture-Handover.md), [ADR-0018](../Architecture/ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) **Accepted** 2026-10-01); **not implemented** — presentation resolver, search aliases, enforcement/lint, living-doc SI migration separately governed |
+| GAP-048 | Same Project ID — multiple local application processes (same user/installation) | High | [ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) (**Accepted** 2026-10-01); expected behavior, coordination, warnings, read/write semantics, future sync interaction — **OPEN**; does **not** prohibit future multi-client collaborative Project access |
+| GAP-049 | Operational synchronization architecture | High | Client sync subsystem; Cloud Service API contract; routine connected sync vs reconnection reconciliation — [ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md); **not implemented** |
+| GAP-050 | Resource-level operational concurrency policy and version model | High | Optimistic concurrency direction per [ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md); per-resource semantics; **not implemented** |
+| GAP-051 | Application-layer persistence / service-port isolation | Medium | Remove Application → concrete SQLite store coupling ([ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) §4); **not implemented** |
+| GAP-052 | Multi-process local operational-store concurrency strategy and validation | Medium | Shared per-user `user-state.db` across processes — semantics not yet designed/validated ([ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)); investigation OPEN — **not** a claim that SQLite shared access is inherently unsafe |
 
 ---
 
@@ -394,6 +399,54 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | **Question** | How does ProjectConcord implement generic terminology projection (EDF glossary term reference + PC policy overlay), derived search aliases, and optional future enforcement — without duplicating EDF, hard-coding AI/SI, or rewriting historical records? |
 | **Resolved dependency** | EDF [TGR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/49d6b805af5f4a557c526a5c8f08e43fbab38601/docs/Specifications/TGR-0001-Terminology-Governance.md) pins in [EDF Terminology handover](../Handover/EDF-Terminology-Governance-Architecture-Handover.md); PC **Preferred** SI policy in [ADR-0018](../Architecture/ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) |
 | **Interim policy** | Architecture **Accepted**; `src/` projection, UI labels, search index, lint/CI enforcement, and living-document SI migration **not authorized** |
+
+### GAP-032 — Cross-project relationships, launch, and inter-project continuity
+
+| Field | Content |
+|---|---|
+| **Identified** | 2026-10-01 — AWI-0008 persistence/sync documentation tranche (reframe of prior “multi-project workspace” gap) |
+| **Question** | How does ProjectConcord support Project selection/launch, **Single-Project Focus** per instance, **Concurrent Project Work** across instances, and governed **inter-project** dependencies/handovers without a multi-project workspace shell? |
+| **Interim policy** | Stable Project ID and locator model **Accepted** ([ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md)); instance and continuity model **Accepted** ([ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) 2026-10-01); IPH/CPD operational schemas remain [GAP-033](#gap-033--interprojecthandover-operational-schema) / [GAP-034](#gap-034--crossprojectdependency-and-source-notification); product UX for launcher/multi-instance launch **not implemented** |
+
+### GAP-048 — Same Project ID — multiple local application processes
+
+| Field | Content |
+|---|---|
+| **Identified** | 2026-10-01 — AWI-0008 persistence architecture investigation |
+| **Question** | When multiple ProjectConcord application processes belonging to the **same installation/user** open the **same ProjectConcord Project ID** concurrently, what are the expected behavior, coordination, warnings, read/write semantics, and interaction with future synchronization? |
+| **Interim policy** | **OPEN** — no architectural prohibition on future multi-client collaborative Project access; local policy **not selected** in [ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md); relates to [GAP-052](#gap-052--multi-process-local-operational-store-concurrency-strategy-and-validation) |
+
+### GAP-049 — Operational synchronization architecture
+
+| Field | Content |
+|---|---|
+| **Identified** | 2026-10-01 — AWI-0008 persistence/sync documentation tranche |
+| **Question** | How does ProjectConcord implement client-side synchronization (automatic routine connected sync vs reconnection reconciliation), Cloud Service API contracts, and operational-state replication without direct desktop-to-cloud-database access or conflating canonical Git sync? |
+| **Interim policy** | Architecture direction **Accepted** in [ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md); **no implementation** authorized |
+
+### GAP-050 — Resource-level operational concurrency policy and version model
+
+| Field | Content |
+|---|---|
+| **Identified** | 2026-10-01 — AWI-0008 persistence/sync documentation tranche |
+| **Question** | How are synchronizable operational resource categories assigned concurrency semantics (version-checked, append-only, governed merge, exclusivity, human resolution) and how is versioned optimistic concurrency represented at the service boundary? |
+| **Interim policy** | Default direction **Accepted** in [ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md); relay/operational schema versioning **not implemented** beyond published A2 subset |
+
+### GAP-051 — Application-layer persistence / service-port isolation
+
+| Field | Content |
+|---|---|
+| **Identified** | 2026-10-01 — AWI-0008 persistence architecture investigation |
+| **Question** | How should `Edf.Application` depend only on persistence **contracts** with SQLite construction confined to composition/`Edf.ProjectServices`? |
+| **Interim policy** | Documented as architectural debt in [ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) §4; **no refactor** until separately authorized |
+
+### GAP-052 — Multi-process local operational-store concurrency strategy and validation
+
+| Field | Content |
+|---|---|
+| **Identified** | 2026-10-01 — AWI-0008 persistence architecture investigation |
+| **Question** | What are ProjectConcord’s governed operational semantics when multiple application processes share the per-user local operational store (transaction/contention behavior, process coordination, shared preference semantics, journaling configuration, same vs different Project access, validation strategy)? |
+| **Interim policy** | ProjectConcord has **not** yet explicitly designed, validated, or governed this behavior ([ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) §13). SQLite provides inter-process locking and transactional behavior; **prescriptive** WAL/per-instance DB/process-lock architecture **not** selected in this tranche |
 
 ---
 

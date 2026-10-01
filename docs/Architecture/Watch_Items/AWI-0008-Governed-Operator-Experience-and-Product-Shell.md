@@ -9,8 +9,8 @@
 | **Created** | 2026-09-30 |
 | **Revisit Trigger** | Before post-A2 product-shell or governed-workflow UX tranche authorization; PA request to analyze ownership |
 | **Discovery source** | [MVR-0002](../../Verification/Records/MVR-0002-a2-p0-manual-governed-relay-workflow.md) human execution (2026-09-30); A2-T8 documentation closeout — **not** A2 implementation defects |
-| **Related ADRs** | [ADR-0016](../ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md); [ADR-0015](../ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md); [ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) (**Accepted** 2026-10-01); [ADR-0014](../ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md) (**Proposed** — attestation direction only, not acceptance) |
-| **Last architecture update** | 2026-10-01 — terminology policy + governed context-transfer architecture (documentation only) |
+| **Related ADRs** | [ADR-0016](../ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md); [ADR-0015](../ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md); [ADR-0019](../ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) (**Accepted** 2026-10-01); [ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) (**Accepted** 2026-10-01); [ADR-0014](../ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md) (**Proposed** — attestation direction only, not acceptance) |
+| **Last architecture update** | 2026-10-01 — terminology + context-transfer; single-Project Focus, inter-project continuity, local-first/sync/concurrency ([ADR-0019](../ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) **Accepted**) |
 | **Related specs** | [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md); [SPEC-005](../../Specifications/features/SPEC-005-manual-verification-record-consumption.md) |
 | **Cross-reference** | [AWI-0003](AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md); [AWI-0005](AWI-0005-Manual-Verification-Records.md); [PCON-0004](../PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md) |
 
@@ -31,7 +31,11 @@ This watch item:
 
 While **Active**, requirements here are **prospective** unless promoted by PA into specifications or ADRs.
 
-**Partial promotion (2026-10-01):** Terminology policy and projection architecture are **Accepted** in [ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md). Governed **context-transfer minimization**, work-package/review-package direction, and state-source model are documented in §**Architectural disposition** below. Shell **implementation** (UI, persistence, package generation, terminology projection in `src/`) remains **not authorized**. This watch item stays **Active** until remaining requirements (orientation, navigation, Markdown, form runtime, implementation) are promoted or closed.
+**Partial promotion (2026-10-01):** Terminology policy and projection architecture are **Accepted** in [ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md). Governed **context-transfer minimization**, work-package/review-package direction, and state-source model are documented in §**Architectural disposition** below.
+
+**Partial promotion (2026-10-01, persistence tranche):** **Single-Project Focus**, **Concurrent Project Work**, **inter-project governed handover continuity**, local-first operational persistence, service boundary, and future sync/concurrency direction are **Accepted** in [ADR-0019](../ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) and §**Product shell instance and continuity** below.
+
+Shell **implementation** (UI, package generation, sync, terminology projection in `src/`) remains **not authorized**. This watch item stays **Active** until remaining requirements (orientation, navigation, Markdown, form runtime, implementation) are promoted or closed.
 
 ## Requirements (PA disposition — A2-T8 closeout 2026-09-30)
 
@@ -141,6 +145,20 @@ Future derivation from **A + B + Engineering Agent result/evidence** (structured
 
 Handovers remain **valid** as projection/transport representations. They are **not** obsolete. Increasing concision is enabled when authoritative context is recoverable from **A** and **B**.
 
+### Product shell instance and continuity (PA — 2026-10-01)
+
+**Single-Project Focus:** One application instance maintains **one active** Project context at a time — intentional for operator focus, workflow clarity, and Project-scoped governance ([ADR-0019](../ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)). Closing a Project and opening another **after** clearing the active context remains compatible; simultaneous multi-Project tabs/workspace are **not** the architecture target.
+
+**Concurrent Project Work:** Multiple ProjectConcord processes MAY run concurrently; each owns one active Project.
+
+**Cross-project awareness SHALL NOT imply multi-project workspace ownership.**
+
+**Inter-Project Governed Handover:** When work in the active Project requires governed work in another Project, the originating instance SHOULD preserve operational continuity (blocked/suspended work, correlation identity, return expectation) while dependent work proceeds in another **independently active** Project context (typically another instance). Return of governed evidence/results SHOULD allow resumption **without** adopting the dependent Project as the originating instance's active context. **B-layer** semantics: **InterProjectHandover**, **CrossProjectDependency** ([ADR-0013](../ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md), [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md)); transport via governed relay/packages — not a separate ad-hoc protocol.
+
+**Package scope:** Work packages, review packages, and inter-project request/result projections are scoped to the instance's **active Project** unless explicitly identified as governed **inter-project** transport.
+
+**Persistence (architecture):** Operational state via **service contracts** → local persistence (SQLite today) → optional future **synchronization** to **Cloud Service API** — see [ADR-0019](../ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md). Implementation **not authorized** here.
+
 ### Ownership summary (accepted direction)
 
 | Concern | Owner |
@@ -155,7 +173,7 @@ Handovers remain **valid** as projection/transport representations. They are **n
 
 ## Architectural ownership (remaining open items)
 
-**Resolved at architecture level (2026-10-01):** terminology layers and policy ([ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md)); context-transfer requirement; state-source model; work/review package direction.
+**Resolved at architecture level (2026-10-01):** terminology layers and policy ([ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md)); context-transfer requirement; state-source model; work/review package direction; single-Project Focus; multi-instance model; inter-project continuity; local-first/service/sync/concurrency principles ([ADR-0019](../ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) **Accepted**).
 
 **Still requires promotion or implementation authorization:**
 
@@ -185,4 +203,4 @@ Subsequent PA-governed tranches are required before `src/` implementation.
 - [A2-T8 verification evidence](../../Handover/ProjectConcord-A2-T8-Verification-Evidence.md)
 - [MVR-0002](../../Verification/Records/MVR-0002-a2-p0-manual-governed-relay-workflow.md)
 - [GAP-030](../../Development/EDF_Gap_Register.md#gap-030--engineering-agent-provider-adapter-and-plugin-boundary) / [AWI-0006](AWI-0006-PAR-Cursor-Bridge-Transport.md) — Engineering Agent plugin boundary unchanged
-- [ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md); [EDF Terminology Governance handover](../../Handover/EDF-Terminology-Governance-Architecture-Handover.md); [GAP-047](../../Development/EDF_Gap_Register.md#gap-047--terminology-projection-and-optional-enforcement)
+- [ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md); [ADR-0019](../ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md); [AWI-0008 Persistence documentation tranche](../../Handover/ProjectConcord-AWI-0008-Persistence-Sync-Documentation-Tranche-Plan.md); [EDF Terminology Governance handover](../../Handover/EDF-Terminology-Governance-Architecture-Handover.md); [GAP-047](../../Development/EDF_Gap_Register.md#gap-047--terminology-projection-and-optional-enforcement); [GAP-048](../../Development/EDF_Gap_Register.md#gap-048--same-project-id-multiple-local-application-processes)–[GAP-052](../../Development/EDF_Gap_Register.md#gap-052--multi-process-local-operational-store-concurrency-strategy-and-validation)
