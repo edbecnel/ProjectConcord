@@ -14,7 +14,8 @@ public sealed record DesktopApplicationServices(
     IGovernedRelayP0WorkflowService RelayWorkflow,
     ITransportOperationStore TransportOperations,
     EngineeringAgentPluginHostingServices EngineeringAgentPluginHosting,
-    IEngineeringAgentAutomatedTransportService AutomatedTransport);
+    IEngineeringAgentAutomatedTransportService AutomatedTransport,
+    IEngineeringAgentTransportRecoveryService TransportRecovery);
 
 public static class ApplicationCompositionRoot
 {
@@ -50,11 +51,18 @@ public static class ApplicationCompositionRoot
             pluginHosting.Catalog,
             pluginHosting.Host,
             pluginHosting.Selection);
+        var transportRecovery = new EngineeringAgentTransportRecoveryService(
+            persistence,
+            relayWorkflow,
+            pluginHosting.Catalog,
+            pluginHosting.Host,
+            pluginHosting.Preferences);
         return new DesktopApplicationServices(
             workspace,
             relayWorkflow,
             persistence.TransportOperations,
             pluginHosting,
-            automatedTransport);
+            automatedTransport,
+            transportRecovery);
     }
 }

@@ -12,14 +12,14 @@ public sealed class InMemoryUserApplicationStatePersistence : IUserApplicationSt
             new InMemoryProjectRegistry(),
             new InMemoryUserPreferencesStore(),
             new InMemoryRelayOperationalStore(),
-            new InMemoryTransportOperationStore())
+            null)
     {
     }
 
     public InMemoryUserApplicationStatePersistence(
         InMemoryProjectRegistry projectRegistry,
         InMemoryUserPreferencesStore userPreferences)
-        : this(projectRegistry, userPreferences, new InMemoryRelayOperationalStore(), new InMemoryTransportOperationStore())
+        : this(projectRegistry, userPreferences, new InMemoryRelayOperationalStore(), null)
     {
     }
 
@@ -27,7 +27,7 @@ public sealed class InMemoryUserApplicationStatePersistence : IUserApplicationSt
         InMemoryProjectRegistry projectRegistry,
         InMemoryUserPreferencesStore userPreferences,
         InMemoryRelayOperationalStore relayOperational)
-        : this(projectRegistry, userPreferences, relayOperational, new InMemoryTransportOperationStore())
+        : this(projectRegistry, userPreferences, relayOperational, null)
     {
     }
 
@@ -35,12 +35,13 @@ public sealed class InMemoryUserApplicationStatePersistence : IUserApplicationSt
         InMemoryProjectRegistry projectRegistry,
         InMemoryUserPreferencesStore userPreferences,
         InMemoryRelayOperationalStore relayOperational,
-        InMemoryTransportOperationStore transportOperations)
+        InMemoryTransportOperationStore? transportOperations)
     {
         ProjectRegistry = projectRegistry ?? throw new ArgumentNullException(nameof(projectRegistry));
         UserPreferences = userPreferences ?? throw new ArgumentNullException(nameof(userPreferences));
         RelayOperational = relayOperational ?? throw new ArgumentNullException(nameof(relayOperational));
-        TransportOperations = transportOperations ?? throw new ArgumentNullException(nameof(transportOperations));
+        TransportOperations = transportOperations
+            ?? new InMemoryTransportOperationStore(relayOperational);
     }
 
     public IProjectRegistry ProjectRegistry { get; }

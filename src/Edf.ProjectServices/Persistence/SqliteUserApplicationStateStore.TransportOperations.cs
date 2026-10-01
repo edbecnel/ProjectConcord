@@ -87,6 +87,46 @@ public sealed partial class SqliteUserApplicationStateStore
         return reader.Read() ? ReadPersistedTransportOperation(reader) : null;
     }
 
+    public IReadOnlyList<PersistedTransportOperation> ListRecoverableTransportOperations(Guid projectId)
+    {
+        using var command = CreateCommand(
+            """
+            SELECT
+                t.transport_operation_id,
+                t.source_package_id,
+                t.correlation_id,
+                t.provider_plugin_id,
+                t.attempt,
+                t.lifecycle_state,
+                t.provider_session_hint,
+                t.result_import_package_id,
+                t.created_utc,
+                t.updated_utc
+            FROM transport_operation t
+            INNER JOIN relay_package p ON p.package_id = t.source_package_id
+            WHERE p.project_id = $project_id
+              AND t.lifecycle_state IN ($s0, $s1, $s2, $s3, $s4, $s5, $s6)
+            ORDER BY t.updated_utc DESC;
+            """);
+        command.Parameters.AddWithValue("$project_id", projectId.ToString("D"));
+        command.Parameters.AddWithValue("$s0", 0); // CreatedNotForwarded
+        command.Parameters.AddWithValue("$s1", 1); // ForwardInProgress
+        command.Parameters.AddWithValue("$s2", 2); // ForwardAcknowledged
+        command.Parameters.AddWithValue("$s3", 4); // AwaitingResult
+        command.Parameters.AddWithValue("$s4", 5); // ResultCandidateReceived
+        command.Parameters.AddWithValue("$s5", 10); // Ambiguous
+        command.Parameters.AddWithValue("$s6", 9); // TimedOut
+
+        var results = new List<PersistedTransportOperation>();
+        using var reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            results.Add(ReadPersistedTransportOperation(reader));
+        }
+
+        return results;
+    }
+
     private static PersistedTransportOperation ReadPersistedTransportOperation(SqliteDataReader reader)
     {
         var operationId = Guid.Parse(reader.GetString(0));

@@ -35,7 +35,7 @@ This is the primary documentation hub for humans and AI assistants.
 - [PAR Workflow Architecture Plan](docs/Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md)
 - [A1 Implementation Plan](docs/Handover/ProjectConcord-A1-Implementation-Plan.md) (closed / published)
 - [A2 Implementation Plan](docs/Handover/ProjectConcord-A2-Implementation-Plan.md) (A2 **closed / PA accepted** 2026-09-30 — T1–T8; **published** on `main`)
-- [A4 Implementation Plan](docs/Handover/ProjectConcord-A4-Implementation-Plan.md) (**PA accepted / published** 2026-10-01 — **A4-T0–T3 published**; **A4-T4–T7 not authorized**)
+- [A4 Implementation Plan](docs/Handover/ProjectConcord-A4-Implementation-Plan.md) (**PA accepted / published** 2026-10-01 — **A4-T0–T4 published**; **A4-T5–T7 not authorized**)
 - [A4-T3 Implementation Notes](docs/Handover/ProjectConcord-A4-T3-Implementation-Notes.md) (closed / PA accepted / published 2026-10-01)
 - [A4-T2 Implementation Notes](docs/Handover/ProjectConcord-A4-T2-Implementation-Notes.md) (closed / PA accepted / published 2026-10-01)
 - [A4-T0 Implementation Notes](docs/Handover/ProjectConcord-A4-T0-Implementation-Notes.md) (closed / PA accepted / published 2026-10-01)

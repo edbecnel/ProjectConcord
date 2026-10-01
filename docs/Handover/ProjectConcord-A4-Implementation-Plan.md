@@ -8,7 +8,7 @@
 >
 > **EACH A4 IMPLEMENTATION TRANCHE REQUIRES EXPLICIT PROJECT ARCHITECT AUTHORIZATION.**
 
-> **A4 implementation plan:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01). **A4-T0–T3 CLOSED / PA ACCEPTED / PUBLISHED** (2026-10-01). **A4-T4–T7 NOT AUTHORIZED.**
+> **A4 implementation plan:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01). **A4-T0–T4 CLOSED / PA ACCEPTED / PUBLISHED** (2026-10-01). **A4-T5–T7 NOT AUTHORIZED.**
 
 **Mode:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01)
 
@@ -18,7 +18,7 @@
 
 **Architecture basis:** [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md), [ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md), [ADR-0023](../Architecture/ADRs/ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md), [ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md), [ADR-0020](../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), published [A2 P0 governed relay](ProjectConcord-A2-Implementation-Plan.md) implementation on `main`, [PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md)
 
-**Governance inputs:** **PA accepted** A4 implementation plan (2026-10-01); **A4-T0–T3 PA accepted / published** (2026-10-01); **A4-T4–T7 NOT AUTHORIZED**; **A3 NOT AUTHORIZED**.
+**Governance inputs:** **PA accepted** A4 implementation plan (2026-10-01); **A4-T0–T4 PA accepted / published** (2026-10-01); **A4-T5–T7 NOT AUTHORIZED**; **A3 NOT AUTHORIZED**.
 
 ---
 
@@ -28,12 +28,12 @@
 |------|--------|
 | A4 architecture (ADR-0021/0022/0023) | **Accepted** (2026-10-01) |
 | **This A4 implementation plan** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) |
-| A4 implementation (`src/`, tests) | **T0–T3 published** on `main` — [T3 notes](ProjectConcord-A4-T3-Implementation-Notes.md) |
+| A4 implementation (`src/`, tests) | **T0–T4 published** on `main` — [T4 notes](ProjectConcord-A4-T4-Implementation-Notes.md) |
 | **A4-T0** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T0 notes](ProjectConcord-A4-T0-Implementation-Notes.md); [§27](#27-a4-t0-closeout-2026-10-01) |
 | **A4-T1** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T1 notes](ProjectConcord-A4-T1-Implementation-Notes.md); [§28](#28-a4-t1-closeout-2026-10-01) |
 | **A4-T2** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T2 notes](ProjectConcord-A4-T2-Implementation-Notes.md); [§29](#29-a4-t2-closeout-2026-10-01) |
 | **A4-T3** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T3 notes](ProjectConcord-A4-T3-Implementation-Notes.md); [§30](#30-a4-t3-closeout-2026-10-01) |
-| **A4-T4** | **NOT AUTHORIZED** |
+| **A4-T4** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T4 notes](ProjectConcord-A4-T4-Implementation-Notes.md); [§31](#31-a4-t4-closeout-2026-10-01) |
 | **A4-T5** | **NOT AUTHORIZED** |
 | **A4-T6** | **NOT AUTHORIZED** |
 | **A4-T7** | **NOT AUTHORIZED** |
@@ -439,7 +439,7 @@ Reuse existing P0 path unchanged in semantics: eligibility, renderer, parser, va
 | **Boundaries** | No recovery/retry/Cursor/UI; fake plugin tests only |
 | **Tests** | `EngineeringAgentA4T3OrchestrationTests` (**25**); ordering + orchestration evidence |
 | **Validation** | SDK **10.0.401**; **211** tests **PASS** |
-| **STOP** | T3 closed — **await PA authorization for A4-T4 only** |
+| **STOP** | T3 closed — T4 **published** (2026-10-01); **await PA authorization for A4-T5 only** |
 
 ---
 
@@ -447,14 +447,14 @@ Reuse existing P0 path unchanged in semantics: eligibility, renderer, parser, va
 
 | | |
 |---|---|
-| **Authorization** | **NOT AUTHORIZED** |
-| **Objective** | ADR-0022 §6–8, §10; duplicate/stale/ambiguous; cancel/timeout; **recovery confirmation** before import |
-| **Architecture basis** | ADR-0022 §6–8, §10 |
-| **Likely areas** | Orchestrator policy + store reload scenarios |
+| **Authorization** | **CLOSED / PA ACCEPTED / PUBLISHED** (2026-10-01) |
+| **Objective** | Restart recovery + idempotency; AF-1 confirmation before recovered import |
+| **Implementation** | **`IEngineeringAgentTransportRecoveryService`**; **`GetRecoverableOperations`**; explicit resume/reconcile/confirm; bounded T3 **`ForwardInProgress`** pre-dispatch boundary |
 | **Dependencies** | T3 |
-| **Tests** | Table-driven restart tests; explicit **recovery vs normal** cases |
-| **Acceptance** | Ambiguous → operator confirm before retry/import default |
-| **STOP** | Await **PA authorization for A4-T5 only** |
+| **Boundaries** | No UI/startup auto-exec/background worker; no provider substitution |
+| **Tests** | **`EngineeringAgentA4T4RecoveryTests`** (**14**); T3 orchestration durability tests updated |
+| **Validation** | SDK **10.0.401**; **225** tests **PASS** |
+| **STOP** | T4 closed — **A4-T5 NOT AUTHORIZED** |
 
 ---
 
@@ -541,12 +541,13 @@ flowchart TB
 | Item | Disposition |
 |------|-------------|
 | Canonical plan | This document on `main` (publication commit — see [Implementation Roadmap](../Development/Implementation_Roadmap.md)) |
-| A4 implementation | **NOT AUTHORIZED** |
+| A4 implementation | **T0–T4 published** on `main`; **T5–T7 NOT AUTHORIZED** |
 | A4-T0 | **Published** on `main` |
 | A4-T1 | **Published** on `main` (2026-10-01) |
 | A4-T2 | **Published** on `main` (2026-10-01) |
 | A4-T3 | **Published** on `main` (2026-10-01) |
-| A4-T4 … A4-T7 | **NOT AUTHORIZED** — separate PA authorization required per tranche |
+| A4-T4 | **Published** on `main` (2026-10-01) — [§31](#31-a4-t4-closeout-2026-10-01) |
+| A4-T5 … A4-T7 | **NOT AUTHORIZED** — separate PA authorization required per tranche |
 | A3 | **NOT AUTHORIZED** |
 | MVR-0003 | **Not created** at plan publication; **reconfirm scope at T7 authorization** (§18) |
 | AAR-0002 | **Not created**; not required merely for A4 (§19) |
@@ -633,11 +634,36 @@ Details: [ProjectConcord-A4-T2-Implementation-Notes.md](ProjectConcord-A4-T2-Imp
 | Store | T2 Save/Get only — **no** recovery queries |
 | Production providers | **0** |
 | Recovery / retry / UI / Cursor | **Not in T3** — T4+ |
-| **A4-T4 … A4-T7** | **NOT AUTHORIZED** |
+| **A4-T4** | **Published** on `main` (2026-10-01) — recovery tranche |
+| **A4-T5 … A4-T7** | **NOT AUTHORIZED** |
 
 Details: [ProjectConcord-A4-T3-Implementation-Notes.md](ProjectConcord-A4-T3-Implementation-Notes.md).
 
-**Next governance decision:** Whether to authorize **A4-T4 only** (recovery/retry). **A4-T4 NOT AUTHORIZED** until explicit PA disposition.
+**Next governance decision:** Whether to authorize **A4-T5 only** (operator projections / minimal Desktop). **A4-T5 NOT AUTHORIZED** until explicit PA disposition.
+
+---
+
+## 31. A4-T4 closeout (2026-10-01)
+
+**PA disposition:** **A4-T4 CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01).
+
+| Item | Disposition |
+|------|-------------|
+| Pre-T4 baseline | `90c29b5c0dd56900c5ba44d6cd6f9df7dd19a07a` (A4-T3 publication) |
+| T4 publication commit | Recorded on `main` (2026-10-01 tranche) |
+| Recovery service | **`EngineeringAgentTransportRecoveryService`** / **`IEngineeringAgentTransportRecoveryService`** — explicit invocation only |
+| Store query | **`GetRecoverableOperations(ProjectConcordProjectId)`** — join via **`source_package_id` → relay_package**; no history/search API |
+| Project scoping | No **`ProjectConcordProjectId`** on **`TransportOperation`** row |
+| Durability (bounded T3 refinement) | **`CreatedNotForwarded`** → **`ForwardInProgress`** → provider **`Forward`** → post-forward states; pre-dispatch save failure prevents **`Forward`** |
+| Idempotency | **`ResumeCreatedNotForwardedAsync`** only; **`Attempt`** remains **1**; no blind redispatch of **`ForwardInProgress`** / **`ForwardAcknowledged`** / **`Ambiguous`** / **`ResultCandidateReceived`** |
+| AF-1 | **`ConfirmRecoveredResultImportAsync`** only path to **`ImportEngineeringResult`** for recovered candidates |
+| Production providers | **0** |
+| Startup / background | No automatic recovery; no worker |
+| **A4-T5 … A4-T7** | **NOT AUTHORIZED** |
+
+Details: [ProjectConcord-A4-T4-Implementation-Notes.md](ProjectConcord-A4-T4-Implementation-Notes.md).
+
+**Next governance decision:** Whether to authorize **A4-T5 only**. **A4-T5 NOT AUTHORIZED** until explicit PA disposition.
 
 ---
 

@@ -166,6 +166,21 @@ public sealed class EngineeringAgentTransportOrchestrator : IEngineeringAgentTra
                 null);
         }
 
+        if (!TransportOperationPreDispatchPersistence.TryPersistForwardInProgress(
+                store,
+                created,
+                _clock,
+                out var inProgress,
+                out var preDispatchFailure))
+        {
+            return new EngineeringAgentAutomatedTransportResult(
+                EngineeringAgentAutomatedTransportOutcome.PersistenceFailed,
+                null,
+                preDispatchFailure?.Message ?? "Failed to persist pre-dispatch transport state.",
+                preparation.Validation,
+                null);
+        }
+
         var continuity = _persistence.RelayOperational.GetSessionContinuity(request.ProjectId);
         var forwardRequest = new EngineeringAgentForwardRequest(
             operationId,
@@ -183,7 +198,7 @@ public sealed class EngineeringAgentTransportOrchestrator : IEngineeringAgentTra
         }
         catch (Exception ex)
         {
-            var failed = created with
+            var failed = inProgress with
             {
                 LifecycleState = TransportOperationLifecycleState.Ambiguous,
                 UpdatedUtc = _clock.GetUtcNow(),
@@ -202,7 +217,7 @@ public sealed class EngineeringAgentTransportOrchestrator : IEngineeringAgentTra
             var lifecycle = forwardResult.Failure.Kind == EngineeringAgentProviderFailureKind.AmbiguousOutcome
                 ? TransportOperationLifecycleState.Ambiguous
                 : TransportOperationLifecycleState.ForwardFailed;
-            var failed = created with
+            var failed = inProgress with
             {
                 LifecycleState = lifecycle,
                 UpdatedUtc = _clock.GetUtcNow(),
@@ -221,7 +236,7 @@ public sealed class EngineeringAgentTransportOrchestrator : IEngineeringAgentTra
 
         if (!forwardResult.IsAcknowledged)
         {
-            var failed = created with
+            var failed = inProgress with
             {
                 LifecycleState = TransportOperationLifecycleState.ForwardFailed,
                 UpdatedUtc = _clock.GetUtcNow(),
@@ -235,7 +250,7 @@ public sealed class EngineeringAgentTransportOrchestrator : IEngineeringAgentTra
                 null);
         }
 
-        var acknowledged = created with
+        var acknowledged = inProgress with
         {
             LifecycleState = TransportOperationLifecycleState.ForwardAcknowledged,
             ProviderSessionHint = forwardResult.UpdatedSessionHint,

@@ -1,7 +1,8 @@
 namespace Edf.Application.Projects.Sqlite;
 
-using Edf.Application.Relay.EngineeringAgent.Plugins;
 using Edf.Application.Relay.EngineeringAgent.Transport;
+using Edf.Application.Relay.EngineeringAgent.Plugins;
+using Edf.Domain.Projects;
 using Edf.Domain.Relay;
 using Edf.ProjectServices.Persistence;
 using Edf.ProjectServices.Persistence.Transport;
@@ -23,6 +24,14 @@ internal sealed class SqliteTransportOperationStoreAdapter : ITransportOperation
     {
         var persisted = _store.GetTransportOperation(operationId.Value);
         return persisted is null ? null : FromPersisted(persisted);
+    }
+
+    public IReadOnlyList<TransportOperation> GetRecoverableOperations(ProjectConcordProjectId projectId)
+    {
+        ArgumentNullException.ThrowIfNull(projectId);
+        return _store.ListRecoverableTransportOperations(projectId.Value)
+            .Select(FromPersisted)
+            .ToList();
     }
 
     internal static PersistedTransportOperation ToPersisted(TransportOperation operation) =>

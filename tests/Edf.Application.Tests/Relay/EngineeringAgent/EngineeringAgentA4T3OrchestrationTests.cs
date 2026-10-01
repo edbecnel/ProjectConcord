@@ -252,15 +252,19 @@ public class EngineeringAgentA4T3OrchestrationTests
     }
 
     [Fact]
-    public async Task Forward_PersistsCreatedOperationBeforeProviderForward()
+    public async Task Forward_PersistsCreatedThenForwardInProgressBeforeProviderForward()
     {
         var projectId = ProjectConcordProjectId.New();
-        var (fake, persistence, service, sourceId) = CreateHarness(projectId);
+        var persistence = new InMemoryUserApplicationStatePersistence();
+        var saveSequence = new List<TransportOperationLifecycleState>();
+        var recording = new RecordingTransportOperationStore(persistence.TransportOperations, saveSequence);
+        var wrapped = new DelegatingUserApplicationStatePersistence(persistence, recording);
+        var (fake, _, service, sourceId) = CreateHarness(projectId, wrapped);
         fake.ForwardHandler = request =>
         {
-            var stored = persistence.TransportOperations.Get(request.TransportOperationId);
+            var stored = recording.Get(request.TransportOperationId);
             Assert.NotNull(stored);
-            Assert.Equal(TransportOperationLifecycleState.CreatedNotForwarded, stored!.LifecycleState);
+            Assert.Equal(TransportOperationLifecycleState.ForwardInProgress, stored!.LifecycleState);
             return AckForward();
         };
 
@@ -268,6 +272,28 @@ public class EngineeringAgentA4T3OrchestrationTests
             new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
 
         Assert.Equal(1, fake.ForwardCallCount);
+        Assert.Equal(
+            [
+                TransportOperationLifecycleState.CreatedNotForwarded,
+                TransportOperationLifecycleState.ForwardInProgress,
+            ],
+            saveSequence.Take(2).ToList());
+    }
+
+    [Fact]
+    public async Task Forward_PreDispatchPersistenceFailure_PreventsProviderForward()
+    {
+        var projectId = ProjectConcordProjectId.New();
+        var inner = new InMemoryUserApplicationStatePersistence();
+        var throwing = new ThrowOnSecondSaveTransportStore(inner.TransportOperations);
+        var persistence = new DelegatingUserApplicationStatePersistence(inner, throwing);
+        var (fake, _, service, sourceId) = CreateHarness(projectId, persistence);
+
+        var result = await service.ForwardGovernedHandoverAsync(
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+
+        Assert.Equal(EngineeringAgentAutomatedTransportOutcome.PersistenceFailed, result.Outcome);
+        Assert.Equal(0, fake.ForwardCallCount);
     }
 
     [Fact]
@@ -576,6 +602,46 @@ public class EngineeringAgentA4T3OrchestrationTests
         }
 
         public TransportOperation? Get(TransportOperationId operationId) => inner.Get(operationId);
+
+        public IReadOnlyList<TransportOperation> GetRecoverableOperations(ProjectConcordProjectId projectId) =>
+            inner.GetRecoverableOperations(projectId);
+    }
+
+    private sealed class ThrowOnSecondSaveTransportStore(ITransportOperationStore inner) : ITransportOperationStore
+    {
+        private int _saveCount;
+
+        public void Save(TransportOperation operation)
+        {
+            _saveCount++;
+            if (_saveCount == 2)
+            {
+                throw new InvalidOperationException("Simulated pre-dispatch persistence failure.");
+            }
+
+            inner.Save(operation);
+        }
+
+        public TransportOperation? Get(TransportOperationId operationId) => inner.Get(operationId);
+
+        public IReadOnlyList<TransportOperation> GetRecoverableOperations(ProjectConcordProjectId projectId) =>
+            inner.GetRecoverableOperations(projectId);
+    }
+
+    private sealed class RecordingTransportOperationStore(
+        ITransportOperationStore inner,
+        List<TransportOperationLifecycleState> saves) : ITransportOperationStore
+    {
+        public void Save(TransportOperation operation)
+        {
+            saves.Add(operation.LifecycleState);
+            inner.Save(operation);
+        }
+
+        public TransportOperation? Get(TransportOperationId operationId) => inner.Get(operationId);
+
+        public IReadOnlyList<TransportOperation> GetRecoverableOperations(ProjectConcordProjectId projectId) =>
+            inner.GetRecoverableOperations(projectId);
     }
 
     private sealed class DelegatingUserApplicationStatePersistence(
