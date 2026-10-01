@@ -138,10 +138,10 @@ public class EngineeringAgentA4T5OperatorProjectionTests
     }
 
     [Fact]
-    public void ProductionComposition_HasZeroProviders_AndProjectionService()
+    public void ProductionComposition_HasCursorProvider_AndProjectionService()
     {
         var services = ApplicationCompositionRoot.CreateInMemoryDesktopServices();
-        Assert.Empty(services.EngineeringAgentPluginHosting.Catalog.RegisteredPluginIds);
+        Assert.Single(services.EngineeringAgentPluginHosting.Catalog.RegisteredPluginIds);
         Assert.NotNull(services.RelayOperatorProjections);
     }
 

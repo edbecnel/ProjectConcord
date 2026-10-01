@@ -251,7 +251,7 @@ public class EngineeringAgentA4T4RecoveryTests
     {
         var services = ApplicationCompositionRoot.CreateInMemoryDesktopServices();
         Assert.NotNull(services.TransportRecovery);
-        Assert.Empty(services.EngineeringAgentPluginHosting.Catalog.RegisteredPluginIds);
+        Assert.Single(services.EngineeringAgentPluginHosting.Catalog.RegisteredPluginIds);
     }
 
     private static TransportOperation SaveOperation(

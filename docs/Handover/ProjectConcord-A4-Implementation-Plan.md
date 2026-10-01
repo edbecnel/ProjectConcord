@@ -8,7 +8,7 @@
 >
 > **EACH A4 IMPLEMENTATION TRANCHE REQUIRES EXPLICIT PROJECT ARCHITECT AUTHORIZATION.**
 
-> **A4 implementation plan:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01). **A4-T0–T5 CLOSED / PA ACCEPTED / PUBLISHED** (2026-10-01). **A4-T6–T7 NOT AUTHORIZED.**
+> **A4 implementation plan:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01). **A4-T0–T6 CLOSED / PA ACCEPTED / PUBLISHED** (2026-10-01). **A4-T7 NOT AUTHORIZED.** Overall A4 **in progress / not closed**.
 
 **Mode:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01)
 
@@ -18,7 +18,7 @@
 
 **Architecture basis:** [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md), [ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md), [ADR-0023](../Architecture/ADRs/ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md), [ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md), [ADR-0020](../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), published [A2 P0 governed relay](ProjectConcord-A2-Implementation-Plan.md) implementation on `main`, [PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md)
 
-**Governance inputs:** **PA accepted** A4 implementation plan (2026-10-01); **A4-T0–T5 PA accepted / published** (2026-10-01); **A4-T6–T7 NOT AUTHORIZED**; **A3 NOT AUTHORIZED**.
+**Governance inputs:** **PA accepted** A4 implementation plan (2026-10-01); **A4-T0–T6 PA accepted / published** (2026-10-01); **A4-T7 NOT AUTHORIZED**; **A3 NOT AUTHORIZED**. Overall A4 **not closed** (T7 pending).
 
 ---
 
@@ -28,14 +28,14 @@
 |------|--------|
 | A4 architecture (ADR-0021/0022/0023) | **Accepted** (2026-10-01) |
 | **This A4 implementation plan** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) |
-| A4 implementation (`src/`, tests) | **T0–T5 published** on `main` — [T5 notes](ProjectConcord-A4-T5-Implementation-Notes.md) |
+| A4 implementation (`src/`, tests) | **T0–T6 published** on `main` — [T6 notes](ProjectConcord-A4-T6-Implementation-Notes.md); overall A4 **not closed** |
 | **A4-T0** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T0 notes](ProjectConcord-A4-T0-Implementation-Notes.md); [§27](#27-a4-t0-closeout-2026-10-01) |
 | **A4-T1** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T1 notes](ProjectConcord-A4-T1-Implementation-Notes.md); [§28](#28-a4-t1-closeout-2026-10-01) |
 | **A4-T2** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T2 notes](ProjectConcord-A4-T2-Implementation-Notes.md); [§29](#29-a4-t2-closeout-2026-10-01) |
 | **A4-T3** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T3 notes](ProjectConcord-A4-T3-Implementation-Notes.md); [§30](#30-a4-t3-closeout-2026-10-01) |
 | **A4-T4** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T4 notes](ProjectConcord-A4-T4-Implementation-Notes.md); [§31](#31-a4-t4-closeout-2026-10-01) |
 | **A4-T5** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T5 notes](ProjectConcord-A4-T5-Implementation-Notes.md); [§32](#32-a4-t5-closeout-2026-10-01) |
-| **A4-T6** | **NOT AUTHORIZED** |
+| **A4-T6** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T6 notes](ProjectConcord-A4-T6-Implementation-Notes.md); [§33](#33-a4-t6-closeout-2026-10-01) |
 | **A4-T7** | **NOT AUTHORIZED** |
 | A3 | **NOT AUTHORIZED** |
 
@@ -479,14 +479,16 @@ Reuse existing P0 path unchanged in semantics: eligibility, renderer, parser, va
 
 | | |
 |---|---|
-| **Authorization** | **NOT AUTHORIZED** |
+| **Authorization** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) |
 | **Objective** | `CursorEngineeringAgentProviderPlugin` + `CursorAcpClient`; PLAN/AGENT mapping; DEBUG unsupported |
 | **Architecture basis** | ADR-0022 §9, §16; ADR-0021 plugin boundary |
-| **Likely areas** | `Edf.Application/.../Providers/Cursor/` |
+| **Implementation** | `Edf.Application/Relay/EngineeringAgent/Providers/Cursor/` — ACP subprocess `agent acp`; static catalog registration |
 | **Dependencies** | T5 |
-| **Tests** | NDJSON fixtures; optional real CLI tests |
-| **Acceptance** | Reference path forwards and retrieves candidates behind plugin boundary |
-| **STOP** | Await **PA authorization for A4-T7 only** |
+| **Tests** | `EngineeringAgentA4T6CursorProviderTests` (**15**); `CursorAcpNdjsonCodecTests` (**2**); optional `[Trait("RequiresCursor")]` |
+| **Validation** | SDK **10.0.401**; **249** tests **PASS** |
+| **Acceptance** | One production Cursor provider; ACP provider-internal; relay/orchestrator/recovery unchanged |
+| **Evidence** | Publication commit on `main` — [§33](#33-a4-t6-closeout-2026-10-01) |
+| **STOP** | T6 closed — **await PA authorization for A4-T7 only** |
 
 ---
 
@@ -543,14 +545,15 @@ flowchart TB
 | Item | Disposition |
 |------|-------------|
 | Canonical plan | This document on `main` (publication commit — see [Implementation Roadmap](../Development/Implementation_Roadmap.md)) |
-| A4 implementation | **T0–T5 published** on `main`; **T6–T7 NOT AUTHORIZED** |
+| A4 implementation | **T0–T6 published** on `main`; **T7 NOT AUTHORIZED**; overall A4 **not closed** |
 | A4-T0 | **Published** on `main` |
 | A4-T1 | **Published** on `main` (2026-10-01) |
 | A4-T2 | **Published** on `main` (2026-10-01) |
 | A4-T3 | **Published** on `main` (2026-10-01) |
 | A4-T4 | **Published** on `main` (2026-10-01) — [§31](#31-a4-t4-closeout-2026-10-01) |
 | A4-T5 | **Published** on `main` (2026-10-01) — [§32](#32-a4-t5-closeout-2026-10-01) |
-| A4-T6 … A4-T7 | **NOT AUTHORIZED** — separate PA authorization required per tranche |
+| A4-T6 | **Published** on `main` (2026-10-01) — [§33](#33-a4-t6-closeout-2026-10-01) |
+| A4-T7 | **NOT AUTHORIZED** — separate PA authorization required |
 | A3 | **NOT AUTHORIZED** |
 | MVR-0003 | **Not created** at plan publication; **reconfirm scope at T7 authorization** (§18) |
 | AAR-0002 | **Not created**; not required merely for A4 (§19) |
@@ -691,6 +694,32 @@ Details: [ProjectConcord-A4-T4-Implementation-Notes.md](ProjectConcord-A4-T4-Imp
 Details: [ProjectConcord-A4-T5-Implementation-Notes.md](ProjectConcord-A4-T5-Implementation-Notes.md).
 
 **Next governance decision:** Whether to authorize **A4-T6 only** (Cursor reference provider). **A4-T6 NOT AUTHORIZED** until explicit PA disposition.
+
+---
+
+## 33. A4-T6 closeout (2026-10-01)
+
+**PA disposition:** **A4-T6 CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01).
+
+| Item | Disposition |
+|------|-------------|
+| Pre-T6 baseline | `61d36a48b5e2c215a62752b540e7a45565115162` (A4-T5 publication) |
+| T6 publication commit | Recorded on `main` (2026-10-01 tranche) |
+| Cursor provider | `CursorEngineeringAgentProviderPlugin`; identity **`cursor-acp-reference`** |
+| ACP adapter | `CursorAcpClient`, NDJSON codec, subprocess `agent acp` — **provider-internal only** |
+| Routing | PLAN → plan; AGENT → agent; DEBUG **unsupported** (no silent remap) |
+| Permissions | Deny-by-default; allow-once bounded |
+| Production providers | **1** (Cursor reference); fake provider **tests-only** |
+| Neutral boundaries | Orchestrator, recovery, relay bridge, Core, Desktop **unchanged** |
+| Headless `agent -p` | **Not implemented** (not required for T6) |
+| **A4-T7** | **NOT AUTHORIZED** — MVR-0003 scope **reconfirm at T7 authorization** (§18) |
+| **A3** | **NOT AUTHORIZED** |
+| Overall A4 | **Not closed** |
+| MVR-0003 / AAR-0002 | **Not created** |
+
+Details: [ProjectConcord-A4-T6-Implementation-Notes.md](ProjectConcord-A4-T6-Implementation-Notes.md).
+
+**Next governance decision:** Whether to authorize **A4-T7 only** (verification / closeout). **A4-T7 NOT AUTHORIZED** until explicit PA disposition.
 
 ---
 

@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Edf.Application.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Edf.Domain\Edf.Domain.csproj" />
     <ProjectReference Include="..\Edf.Engine\Edf.Engine.csproj" />
     <ProjectReference Include="..\Edf.Identity\Edf.Identity.csproj" />

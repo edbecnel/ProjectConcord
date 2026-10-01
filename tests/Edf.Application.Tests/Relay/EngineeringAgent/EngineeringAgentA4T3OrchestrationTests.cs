@@ -442,10 +442,10 @@ public class EngineeringAgentA4T3OrchestrationTests
     }
 
     [Fact]
-    public void ProductionComposition_HasZeroProvidersAndExposesAutomatedTransport()
+    public void ProductionComposition_HasCursorProviderAndExposesAutomatedTransport()
     {
         var services = ApplicationCompositionRoot.CreateInMemoryDesktopServices();
-        Assert.Empty(services.EngineeringAgentPluginHosting.Catalog.RegisteredPluginIds);
+        Assert.Single(services.EngineeringAgentPluginHosting.Catalog.RegisteredPluginIds);
         Assert.NotNull(services.AutomatedTransport);
     }
 

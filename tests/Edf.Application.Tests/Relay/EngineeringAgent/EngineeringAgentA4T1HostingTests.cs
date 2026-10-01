@@ -223,21 +223,21 @@ public class EngineeringAgentA4T1HostingTests
     }
 
     [Fact]
-    public void ProductionComposition_HasEmptyCatalogAndP0StillConstructs()
+    public void ProductionComposition_HasCursorProviderAndP0StillConstructs()
     {
         var services = ApplicationCompositionRoot.CreateInMemoryDesktopServices();
-        Assert.Empty(services.EngineeringAgentPluginHosting.Catalog.RegisteredPluginIds);
+        Assert.Single(services.EngineeringAgentPluginHosting.Catalog.RegisteredPluginIds);
         Assert.NotNull(services.RelayWorkflow);
     }
 
     [Fact]
-    public void P0Workflow_UnaffectedByEmptyPluginHosting()
+    public void P0Workflow_UnaffectedByCursorPluginRegistration()
     {
         var persistence = new InMemoryUserApplicationStatePersistence();
         var hosting = EngineeringAgentPluginHostingFactory.Create(persistence);
         var workflow = GovernedRelayP0WorkflowService.Create(persistence);
 
-        Assert.Empty(hosting.Catalog.RegisteredPluginIds);
+        Assert.Single(hosting.Catalog.RegisteredPluginIds);
         Assert.NotNull(workflow);
     }
 

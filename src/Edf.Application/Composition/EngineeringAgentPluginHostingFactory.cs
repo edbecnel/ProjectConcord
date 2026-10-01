@@ -4,6 +4,7 @@ using Edf.Application.Projects;
 using Edf.Application.Projects.InMemory;
 using Edf.Application.Projects.Sqlite;
 using Edf.Application.Relay.EngineeringAgent.Hosting;
+using Edf.Application.Relay.EngineeringAgent.Providers.Cursor;
 
 public static class EngineeringAgentPluginHostingFactory
 {
@@ -15,7 +16,8 @@ public static class EngineeringAgentPluginHostingFactory
             _ => null,
         };
 
-        var catalog = EngineeringAgentPluginCatalog.CreateEmpty();
+        var catalog = EngineeringAgentPluginCatalog.FromRegistrations(
+            [new CursorEngineeringAgentProviderPlugin()]);
         var preferences = new EngineeringAgentPluginProjectPreferencesStore(backing);
         var host = new EngineeringAgentPluginHost(catalog);
         var selection = new EngineeringAgentPluginSelectionService(catalog, host, preferences);
