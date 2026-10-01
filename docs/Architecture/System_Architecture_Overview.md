@@ -139,7 +139,7 @@ flowchart TB
 | Inter-project continuity | Originating instance MAY preserve context while dependent Project work runs elsewhere ([ADR-0019](ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md); IPH/CPD **B** — not fully implemented) |
 | Historical **PAR** term | Umbrella for relay + software package + policy + adapters — see [AMD-0003](AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md) §9 |
 | Project Architect | `IProjectArchitectProvider` boundary; manual ChatGPT product is one adapter (**E**) |
-| Engineering Agent | `IEngineeringAgentRelayBridge` (render/parse); provider plugin contract for automated transport ([ADR-0021](ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md)); P0 manual **published**; P1/P2 mechanism [AWI-0006](Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md) (**E**) |
+| Engineering Agent | `IEngineeringAgentRelayBridge` (render/parse); provider plugin contract ([ADR-0021](ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md)); automated transport architecture ([ADR-0022](ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) **Accepted**); P0 manual **published**; A4 **not authorized** (**E**) |
 | Tier 0 awareness | Shallow Git/governance metadata pre-M2 — not a second EDF parser |
 | ADR-0013 / ADR-0015 | [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) **Accepted** 2026-09-29 (**B-layer** Software Development governance); [ADR-0015](ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) **Accepted** 2026-09-29 |
 

@@ -113,7 +113,7 @@ Provenance chain: observed context → advisory → user decision → requested 
 
 **P0 manual** — **published** (A2): generate, validate, export, import evidence via `IEngineeringAgentRelayBridge`.
 
-**P1/P2 automated** — not implemented; mechanism under [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md) / [GAP-044](../Development/EDF_Gap_Register.md#gap-044--engineering-agent-automated-transport); plugin contract [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md).
+**Automated transport** — architecture **Accepted** in [ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) (2026-10-01); **not implemented**; [GAP-044](../Development/EDF_Gap_Register.md#gap-044--engineering-agent-automated-transport) **closed / resolved**; [AWI-0006](../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md) **closed / satisfied**; plugin contract [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md); **A4 not authorized**.
 
 ### Roadmap
 

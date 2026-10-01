@@ -11,7 +11,7 @@
 | **Accepted** | Project Architect — **2026-09-29** |
 | **Owner** | ProjectConcord |
 | **Normative** | Yes — Project identity/session (**A**), Core Governed Interaction Relay (**A**), per-user operational state (**A**), Software Development governance at relay boundary (**B**), provider/tool adapters (**E**); historical **Project Architect Relay (PAR)** track terminology |
-| **Last Reviewed** | 2026-10-01 (Engineering Agent provider plugin contract; [ADR-0021](../../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md) **Accepted**) |
+| **Last Reviewed** | 2026-10-01 (Engineering Agent automated transport architecture; [ADR-0022](../../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) **Accepted**) |
 | **Target release** | Historical PAR track A1–A4 (separately authorized); not part of M1 |
 | **Implementation** | **A1** (identity + per-user state): **published** 2026-09-28 — see [Implementation Roadmap](../../Development/Implementation_Roadmap.md). **A2–A4** (governed interaction relay, workflow MVP, automated provider transport per AWI-0006): **not authorized** except tranches separately accepted. Accepted SPEC-006 satisfies the specification/governance prerequisite for Project Architect **consideration** of **A2**; acceptance does **not** authorize A2. |
 | **Architecture baseline** | Accepted [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md), [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md), [ADR-0015](../../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) — repository baseline at reconciliation `084c6f043e27db2c9bdca558f14216de596f3c8d` |
@@ -35,6 +35,7 @@
 - [SPEC-006 Reconciliation Documentation Tranche Plan](../../Handover/ProjectConcord-SPEC-006-Reconciliation-Documentation-Tranche-Plan.md)
 - [ADR-0020 — Operator projections, product shell, and workspace navigation](../../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) (**Accepted** 2026-10-01)
 - [ADR-0021 — Engineering Agent provider plugin contract](../../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md) (**Accepted** 2026-10-01)
+- [ADR-0022 — Engineering Agent automated transport architecture](../../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) (**Accepted** 2026-10-01)
 
 ---
 
@@ -59,7 +60,7 @@ Define normative ProjectConcord product behavior across accepted component bound
 **E — Provider / tool adapters**
 
 - Provider-neutral **Project Architect** exchange; human-mediated and future automated providers;
-- **Engineering Agent** relay via an **Engineering Agent relay bridge** (`IEngineeringAgentRelayBridge`) for governed render/parse, and a separate **Engineering Agent provider plugin contract** for automated transport per [ADR-0021](../../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md);
+- **Engineering Agent** relay via an **Engineering Agent relay bridge** (`IEngineeringAgentRelayBridge`) for governed render/parse, an **Engineering Agent provider plugin contract** for automated transport per [ADR-0021](../../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md), and automated transport architecture per [ADR-0022](../../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md);
 - adapter rendering and parsing (for example ChatGPT field names); not governance semantics.
 
 **F — EDF canonical governance**
@@ -107,7 +108,7 @@ Define normative ProjectConcord product behavior across accepted component bound
 
 - M2+ EDF discovery, parsing, validation UI ([SPEC-001](SPEC-001-mvp-edf-desktop-client.md))
 - OpenAI or other AI API integration
-- Cursor extension, CLI, MCP, ACP implementation ([AWI-0006](../../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md))
+- Concrete provider transport, MCP/ACP/CLI integration, and transport ledger **implementation** ([ADR-0022](../../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) **Accepted**; **A4 not authorized**)
 - Creating `.projectconcord/` on open/select
 - Normative Actor/Role model ([PCON-0002](../../Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) — **Proposed**)
 - **ProjectWorkRecord** schema, lifecycle, relationships, persistence, API, or UI ([ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md))
@@ -237,7 +238,8 @@ Provisional transport attribution ([§13](#13-provisional-attribution-pre-pcon-0
 | **PC-PAR-022** | **[E]** Engineering Agent integration SHALL use an **Engineering Agent relay bridge** (`IEngineeringAgentRelayBridge`) for governed **render** and **parse** of `EngineeringAgentHandoverExport` and `EngineeringResultImport` over `projectconcord-relay-v1`. P0 manual transport (package generation after Core validation, copy/export, evidence import) is the **published** baseline unless later PA disposition changes it. |
 | **PC-PAR-022a** | **[E]** **Automated** Engineering Agent transport SHALL use a separate **Engineering Agent provider plugin contract** per [ADR-0021](../../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md). The relay bridge MUST NOT be the permanent catch-all provider interface. Concrete provider products implement bounded plugins; application/infrastructure owns provider-neutral registration, lifecycle, capability exposure, and selection — without placing provider hosting in **Core (A)** or **Software Development (B)**. |
 | **PC-PAR-022b** | **[E]** Automated forward eligibility SHALL match PC-PAR-014: automated relay is forbidden when governance-critical metadata is **INCOMPLETE**, when structural validation is **RejectedMalformed**, or when relay rules forbid action (including active STOP while **Valid != actionable**). Plugins MUST NOT bypass these rules. |
-| **PC-PAR-022c** | **[E]** P1 (extension/CLI) and P2 (MCP/ACP) transport mechanism investigations remain under [AWI-0006](../../Architecture/Watch_Items/AWI-0006-PAR-Cursor-Bridge-Transport.md) / [GAP-044](../../Development/EDF_Gap_Register.md#gap-044--engineering-agent-automated-transport) — **not normative** until PA disposition. A concrete product MAY be the first **reference P1** candidate without defining the contract. |
+| **PC-PAR-022c** | **[E]** **Automated** Engineering Agent relay **SHALL** use the provider-neutral **Engineering Agent automated transport capability** per [ADR-0022](../../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md), realized by **concrete provider plugins** through **provider-specific transport realizations**. **Optional tool/context channels** (for example MCP) are distinct from governed relay transport and MUST NOT substitute for the import pipeline in §11. Reference examples (for example Cursor ACP over CLI inside a bounded plugin) are **non-normative** evidence only. |
+| **PC-PAR-022d** | **[App / infrastructure]** Application/infrastructure **SHALL** maintain **transport-operation** records distinct from governed package produce/consume provenance events. Transport-operation state **MUST NOT** alter relay validation dispositions or governance-critical package fields. Normative transport-operation semantics and invariants are defined in [ADR-0022](../../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md). |
 
 **[A]** The relay SHALL map **validated** handovers to Engineering Agent PLAN / AGENT / DEBUG routing intent.
 
