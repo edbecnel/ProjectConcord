@@ -1,5 +1,6 @@
 namespace Edf.Application.Relay.EngineeringAgent.Transport;
 
+using Edf.Application.Relay.Serialization;
 using Edf.Application.Projects;
 using Edf.Application.Relay;
 using Edf.Application.Relay.EngineeringAgent.Hosting;
@@ -224,9 +225,27 @@ public sealed class EngineeringAgentTransportRecoveryService : IEngineeringAgent
                 "Untrusted result candidate could not be reacquired for confirmed import.");
         }
 
+        if (!GovernedRelayAutomatedResultDocumentExtractor.TryExtract(
+                candidateResult.Candidate.UntrustedImportText,
+                out var extractedImportText,
+                out var extractionFailure))
+        {
+            var rejected = PersistLifecycle(
+                operation,
+                TransportOperationLifecycleState.ImportRejected);
+            return new EngineeringAgentTransportRecoveryActionResult(
+                Succeeded: false,
+                rejected,
+                EngineeringAgentTransportRecoveryDisposition.RecoveryFailed,
+                OrchestrationOutcome: EngineeringAgentAutomatedTransportOutcome.ImportRejected,
+                Detail: extractionFailure.Diagnostics.FirstOrDefault()?.Message
+                    ?? "Automated transport could not extract a governed relay document from the provider response.",
+                ImportValidation: extractionFailure);
+        }
+
         var importOperation = _workflow.ImportEngineeringResult(
             projectId,
-            candidateResult.Candidate.UntrustedImportText);
+            extractedImportText);
 
         if (importOperation.Import.Package is null
             || importOperation.Import.Validation.State != RelayValidationState.Valid
@@ -279,7 +298,9 @@ public sealed class EngineeringAgentTransportRecoveryService : IEngineeringAgent
         var preparation = _workflow.PrepareEngineeringAgentHandover(
             persistedSource.Package,
             boundaryValidation);
-        if (!preparation.IsReadyForManualTransfer || preparation.RenderedHandover is null)
+        if (!preparation.IsReadyForManualTransfer
+            || preparation.RenderedHandover is null
+            || preparation.ExportPackage is null)
         {
             return Failed(
                 operation,
@@ -317,14 +338,28 @@ public sealed class EngineeringAgentTransportRecoveryService : IEngineeringAgent
         }
 
         var continuity = _persistence.RelayOperational.GetSessionContinuity(projectId);
+        var managedProject = _persistence.ProjectRegistry.GetById(projectId);
+        if (managedProject is null)
+        {
+            return Failed(
+                operation,
+                EngineeringAgentTransportRecoveryDisposition.RecoveryFailed,
+                "Project registry entry was not found for recovery forward.");
+        }
+
+        var executionPrompt = GovernedRelayAutomatedExecutionPrompt.Compose(
+            preparation.RenderedHandover,
+            preparation.ExportPackage);
         var forwardRequest = new EngineeringAgentForwardRequest(
+            projectId,
             operation.OperationId,
             operation.SourcePackageId,
             operation.CorrelationId,
             routingIntent,
-            preparation.RenderedHandover,
+            executionPrompt,
             continuity,
-            operation.ProviderSessionHint);
+            operation.ProviderSessionHint,
+            managedProject.RegisteredLocator);
 
         var dispatchBase = operation;
         if (operation.LifecycleState == TransportOperationLifecycleState.CreatedNotForwarded)

@@ -18,6 +18,18 @@ public interface IEngineeringAgentRelayBridge
         RelayValidationResult boundaryValidation);
 
     /// <summary>
+    /// Provider-neutral instruction requiring a governed <c>engineeringResultImport</c> response (automated execution).
+    /// </summary>
+    string RenderEngineeringResultResponseInstruction(GovernedRelayPackage handoverExportPackage);
+
+    /// <summary>
+    /// Composes canonical P0 handover with the Engineering Result response instruction for automated transport.
+    /// </summary>
+    string ComposeAutomatedExecutionPrompt(
+        string canonicalRenderedHandover,
+        GovernedRelayPackage handoverExportPackage);
+
+    /// <summary>
     /// Parses optional thin engineering result / evidence pasted back from the engineering agent (untrusted input).
     /// </summary>
     EngineeringResultImportResult TryParseEngineeringResult(string renderedText);

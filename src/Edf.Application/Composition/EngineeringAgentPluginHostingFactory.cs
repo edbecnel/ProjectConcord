@@ -16,8 +16,9 @@ public static class EngineeringAgentPluginHostingFactory
             _ => null,
         };
 
+        var modelPreferences = new CursorEngineeringAgentModelPreferencesStore(backing);
         var catalog = EngineeringAgentPluginCatalog.FromRegistrations(
-            [new CursorEngineeringAgentProviderPlugin()]);
+            [new CursorEngineeringAgentProviderPlugin(static () => new CursorAcpSubprocessTransport(), modelPreferences)]);
         var preferences = new EngineeringAgentPluginProjectPreferencesStore(backing);
         var host = new EngineeringAgentPluginHost(catalog);
         var selection = new EngineeringAgentPluginSelectionService(catalog, host, preferences);

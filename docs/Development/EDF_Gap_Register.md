@@ -83,6 +83,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-050 | Resource-level operational concurrency policy and version model | High | Optimistic concurrency direction per [ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md); per-resource semantics; **not implemented** |
 | GAP-051 | Application-layer persistence / service-port isolation | Medium | Remove Application → concrete SQLite store coupling ([ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) §4); **not implemented** |
 | GAP-052 | Multi-process local operational-store concurrency strategy and validation | Medium | Shared per-user `user-state.db` across processes — semantics not yet designed/validated ([ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)); investigation OPEN — **not** a claim that SQLite shared access is inherently unsafe |
+| GAP-053 | macOS **Go to Folder…** project locator vs browse-open identity | Medium | **Observed defect** (2026-10-02, A4-T7 human MVR) — path entry for disposable Root-A opened wrong Project ID; browse-open correct; **distinct from** Cursor ACP non-fast blocker; see [GAP-053 detail](#gap-053--macos-go-to-folder-project-locator-vs-browse-open-identity) |
 
 ---
 
@@ -454,6 +455,17 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | **Identified** | 2026-10-01 — AWI-0008 persistence architecture investigation |
 | **Question** | What are ProjectConcord’s governed operational semantics when multiple application processes share the per-user local operational store (transaction/contention behavior, process coordination, shared preference semantics, journaling configuration, same vs different Project access, validation strategy)? |
 | **Interim policy** | ProjectConcord has **not** yet explicitly designed, validated, or governed this behavior ([ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) §13). SQLite provides inter-process locking and transactional behavior; **prescriptive** WAL/per-instance DB/process-lock architecture **not** selected in this tranche |
+
+### GAP-053 — macOS Go to Folder project locator vs browse-open identity
+
+| Field | Content |
+|---|---|
+| **Identified** | 2026-10-02 — A4-T7 blocker-independent human MVR setup ([MVR-0003](../Verification/Records/MVR-0003-a4-engineering-agent-automated-transport.md); [A4-T7 §O](../Handover/ProjectConcord-A4-T7-Verification-Evidence.md#o-macos-go-to-folder-locator-defect-observation-2026-10-02)) |
+| **Observed defect** | macOS folder chooser **Go to Folder…** with absolute path `/Users/edbecnel/tmp/ProjectConcord-A4-MVR/Root-A` caused ProjectConcord to display/open Project ID **`ddde280f-38ad-4bfb-abb9-86be2c939d15`**. Normal folder **browse** selection of the same Root-A opened canonical disposable ID **`a5e26be6-9769-46f6-bd94-1669764fe8af`**. Canonical Root-A Project ID on disk **unchanged**. |
+| **MVR impact** | Did **not** invalidate completed blocker-independent human MVTs (verifier used browse workflow). |
+| **Distinction** | **Not** the external **Cursor ACP Composer 2.5 non-fast** capability blocker ([A4-T7 §E2](../Handover/ProjectConcord-A4-T7-Verification-Evidence.md#e2-cursor-acp-provider-capability-blocker-2026-10-02)). |
+| **Question** | How should ProjectConcord normalize or reconcile locator paths from **Go to Folder…** vs hierarchical browse so the same physical Project Root resolves to a single stable Project ID ([ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md); relates to [GAP-043](#gap-043--par-runtime-and-per-user-operational-persistence), [MVR-0001](../Verification/Records/MVR-0001-a1c-desktop-project-root-recent-workflow.md) Go to Folder cautions)? |
+| **Interim policy** | **OPEN** — defect **recorded**; **no** root-cause investigation or `src/` remediation in A4-T7 closeout tranche; workaround: use normal browse for disposable Root-A until separately authorized fix. |
 
 ---
 

@@ -1,7 +1,9 @@
 namespace Edf.Application.Relay.EngineeringAgent.Providers.Cursor;
 
+using System.Text;
 using System.Text.Json;
 using Edf.Application.Relay.EngineeringAgent.Plugins;
+using Edf.Application.Relay.EngineeringAgent.Providers.Cursor.Models;
 
 /// <summary>
 /// Provider-internal ACP client over NDJSON JSON-RPC (Cursor CLI <c>agent acp</c>).
@@ -37,7 +39,7 @@ internal sealed class CursorAcpClient : IAsyncDisposable
             await _transport.StartAsync(cancellationToken).ConfigureAwait(false);
             var initResponse = await SendRequestAsync(
                 "initialize",
-                new { clientName = "ProjectConcord", clientVersion = "A4-T6" },
+                CursorAcpProtocol.CreateInitializeParameters(),
                 cancellationToken).ConfigureAwait(false);
             if (initResponse.HasError)
             {
@@ -46,9 +48,22 @@ internal sealed class CursorAcpClient : IAsyncDisposable
                     DescribeError(initResponse.RawLine));
             }
 
+            if (!CursorAcpProtocol.TryReadInitializeResultProtocolVersion(
+                    initResponse.RawLine,
+                    out var negotiatedVersion)
+                || negotiatedVersion != CursorAcpProtocol.ProtocolVersion)
+            {
+                return Failure(
+                    EngineeringAgentProviderFailureKind.InitializationFailed,
+                    "ACP initialize did not return the expected protocolVersion.");
+            }
+
             _initialized = true;
 
-            var authResponse = await SendRequestAsync("authenticate", new { }, cancellationToken).ConfigureAwait(false);
+            var authResponse = await SendRequestAsync(
+                "authenticate",
+                CursorAcpProtocol.CreateAuthenticateParameters(),
+                cancellationToken).ConfigureAwait(false);
             if (authResponse.HasError)
             {
                 return Failure(
@@ -74,6 +89,8 @@ internal sealed class CursorAcpClient : IAsyncDisposable
     public async Task<CursorAcpPromptResult> RunPromptAsync(
         string cursorMode,
         string promptText,
+        string governedProjectRootAbsolutePath,
+        CursorEngineeringAgentModelSelection modelSelection,
         string? existingSessionId,
         CancellationToken cancellationToken)
     {
@@ -84,41 +101,33 @@ internal sealed class CursorAcpClient : IAsyncDisposable
                 "ACP client is not initialized and authenticated.");
         }
 
-        var sessionId = existingSessionId;
-        if (string.IsNullOrWhiteSpace(sessionId))
+        if (string.IsNullOrWhiteSpace(governedProjectRootAbsolutePath))
         {
-            var sessionResponse = await SendRequestAsync(
-                "session/new",
-                new { mode = cursorMode },
-                cancellationToken).ConfigureAwait(false);
-            if (sessionResponse.HasError)
-            {
-                return CursorAcpPromptResult.FromFailure(
-                    EngineeringAgentProviderFailureKind.ForwardFailed,
-                    DescribeError(sessionResponse.RawLine));
-            }
-
-            sessionId = TryReadSessionId(sessionResponse.RawLine)
-                ?? throw new InvalidOperationException("session/new did not return a session id.");
-        }
-        else
-        {
-            var loadResponse = await SendRequestAsync(
-                "session/load",
-                new { sessionId },
-                cancellationToken).ConfigureAwait(false);
-            if (loadResponse.HasError)
-            {
-                return CursorAcpPromptResult.FromFailure(
-                    EngineeringAgentProviderFailureKind.ForwardFailed,
-                    DescribeError(loadResponse.RawLine));
-            }
+            return CursorAcpPromptResult.FromFailure(
+                EngineeringAgentProviderFailureKind.ForwardFailed,
+                "Governed Project Root path is required for ACP session/new.");
         }
 
+        var sessionPrepare = await PrepareVerifiedSessionAsync(
+                cursorMode,
+                governedProjectRootAbsolutePath,
+                modelSelection,
+                existingSessionId,
+                cancellationToken)
+            .ConfigureAwait(false);
+        if (sessionPrepare.Failure is not null)
+        {
+            return CursorAcpPromptResult.FromFailure(sessionPrepare.Failure.Kind, sessionPrepare.Failure.Message);
+        }
+
+        var sessionId = sessionPrepare.SessionId!;
+
+        var streamCollector = new CursorAcpPromptStreamCollector(sessionId!);
         var promptResponse = await SendRequestAsync(
             "session/prompt",
-            new { sessionId, prompt = promptText },
-            cancellationToken).ConfigureAwait(false);
+            CursorAcpProtocol.CreateSessionPromptParameters(sessionId!, promptText),
+            cancellationToken,
+            streamCollector).ConfigureAwait(false);
         if (promptResponse.HasError)
         {
             return CursorAcpPromptResult.FromFailure(
@@ -126,13 +135,15 @@ internal sealed class CursorAcpClient : IAsyncDisposable
                 DescribeError(promptResponse.RawLine));
         }
 
-        var collected = await CollectPromptUpdatesAsync(sessionId!, cancellationToken).ConfigureAwait(false);
-        if (collected.Failure is not null)
+        if (CursorAcpProtocol.TryReadPromptStopReason(promptResponse.RawLine, out var stopReason)
+            && CursorAcpProtocol.IsTerminalPromptStopReason(stopReason))
         {
-            return collected;
+            return CursorAcpPromptResult.FromSuccess(sessionId!, streamCollector.ResultText);
         }
 
-        return CursorAcpPromptResult.FromSuccess(sessionId!, collected.ResultText ?? string.Empty);
+        var tail = await CollectPromptUpdatesAfterRpcAsync(sessionId!, streamCollector, cancellationToken)
+            .ConfigureAwait(false);
+        return tail;
     }
 
     public async Task<EngineeringAgentCancelResult> CancelSessionAsync(
@@ -157,17 +168,26 @@ internal sealed class CursorAcpClient : IAsyncDisposable
 
     public async ValueTask DisposeAsync() => await _transport.DisposeAsync().ConfigureAwait(false);
 
-    private async Task<CursorAcpPromptResult> CollectPromptUpdatesAsync(
+    private async Task<CursorAcpPromptResult> CollectPromptUpdatesAfterRpcAsync(
         string sessionId,
+        CursorAcpPromptStreamCollector collector,
         CancellationToken cancellationToken)
     {
-        var builder = new System.Text.StringBuilder();
         using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         timeoutCts.CancelAfter(_ioTimeout);
 
         while (!timeoutCts.IsCancellationRequested)
         {
-            var line = await _transport.ReadLineAsync(timeoutCts.Token).ConfigureAwait(false);
+            string? line;
+            try
+            {
+                line = await _transport.ReadLineAsync(timeoutCts.Token).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+            {
+                break;
+            }
+
             if (line is null)
             {
                 return CursorAcpPromptResult.FromFailure(
@@ -180,12 +200,19 @@ internal sealed class CursorAcpClient : IAsyncDisposable
                 continue;
             }
 
+            if (message.IsServerRequest)
+            {
+                await HandleServerRequestAsync(message, sessionId, collector, cancellationToken)
+                    .ConfigureAwait(false);
+                continue;
+            }
+
             if (message.IsNotification)
             {
-                await HandleNotificationAsync(message, sessionId, builder, timeoutCts.Token).ConfigureAwait(false);
-                if (IsPromptComplete(message))
+                collector.TryAccumulate(message);
+                if (collector.IsComplete)
                 {
-                    return CursorAcpPromptResult.FromSuccess(sessionId, builder.ToString());
+                    return CursorAcpPromptResult.FromSuccess(sessionId, collector.ResultText);
                 }
 
                 continue;
@@ -197,46 +224,11 @@ internal sealed class CursorAcpClient : IAsyncDisposable
             "Timed out waiting for ACP prompt completion.");
     }
 
-    private async Task HandleNotificationAsync(
-        CursorAcpInboundMessage message,
-        string sessionId,
-        System.Text.StringBuilder builder,
-        CancellationToken cancellationToken)
-    {
-        if (message.Method == "session/update"
-            && TryReadSessionUpdate(message.RawLine, out var updateType, out var updateText))
-        {
-            if (!string.IsNullOrEmpty(updateText))
-            {
-                builder.Append(updateText);
-            }
-
-            return;
-        }
-
-        if (message.Method == "session/request_permission"
-            && TryReadPermissionRequest(message.RawLine, out var requestId, out var kind, out var detail))
-        {
-            var decision = _permissionPolicy.Evaluate(new CursorAcpPermissionRequest(requestId, kind, detail));
-            var wireDecision = decision.Disposition == EngineeringAgentProviderPermissionDisposition.AllowOnce
-                ? "allow-once"
-                : "deny";
-            await SendRequestAsync(
-                "session/permission_response",
-                new { sessionId, requestId, decision = wireDecision },
-                cancellationToken).ConfigureAwait(false);
-        }
-    }
-
-    private static bool IsPromptComplete(CursorAcpInboundMessage message) =>
-        message.Method == "session/update"
-        && TryReadSessionUpdate(message.RawLine, out var updateType, out _)
-        && string.Equals(updateType, "prompt_complete", StringComparison.OrdinalIgnoreCase);
-
     private async Task<CursorAcpInboundMessage> SendRequestAsync(
         string method,
         object parameters,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        CursorAcpPromptStreamCollector? streamCollector = null)
     {
         var id = _nextRequestId++;
         var payload = CursorAcpNdjsonCodec.SerializeRequest(method, parameters, id);
@@ -245,9 +237,18 @@ internal sealed class CursorAcpClient : IAsyncDisposable
         using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         timeoutCts.CancelAfter(_ioTimeout);
 
-        while (!timeoutCts.IsCancellationRequested)
+        while (!cancellationToken.IsCancellationRequested)
         {
-            var line = await _transport.ReadLineAsync(timeoutCts.Token).ConfigureAwait(false);
+            string? line;
+            try
+            {
+                line = await _transport.ReadLineAsync(timeoutCts.Token).ConfigureAwait(false);
+            }
+            catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
+            {
+                break;
+            }
+
             if (line is null)
             {
                 break;
@@ -258,8 +259,20 @@ internal sealed class CursorAcpClient : IAsyncDisposable
                 continue;
             }
 
+            if (message.IsServerRequest)
+            {
+                await HandleServerRequestAsync(
+                        message,
+                        streamCollector?.SessionId ?? string.Empty,
+                        streamCollector,
+                        cancellationToken)
+                    .ConfigureAwait(false);
+                continue;
+            }
+
             if (message.IsNotification)
             {
+                streamCollector?.TryAccumulate(message);
                 continue;
             }
 
@@ -270,6 +283,158 @@ internal sealed class CursorAcpClient : IAsyncDisposable
         }
 
         return new CursorAcpInboundMessage(null, id, true, """{"error":{"message":"timeout"}}""");
+    }
+
+    private async Task HandleServerRequestAsync(
+        CursorAcpInboundMessage message,
+        string sessionId,
+        CursorAcpPromptStreamCollector? streamCollector,
+        CancellationToken cancellationToken)
+    {
+        if (message.Method == "session/request_permission"
+            && message.Id is { } serverId
+            && TryReadPermissionRequest(message.RawLine, out var requestId, out var kind, out var detail))
+        {
+            var decision = _permissionPolicy.Evaluate(new CursorAcpPermissionRequest(requestId, kind, detail));
+            var wireDecision = decision.Disposition == EngineeringAgentProviderPermissionDisposition.AllowOnce
+                ? "allow-once"
+                : "deny";
+            if (string.IsNullOrWhiteSpace(sessionId))
+            {
+                await SendRequestAsync(
+                    "session/permission_response",
+                    new { sessionId, requestId, decision = wireDecision },
+                    cancellationToken,
+                    streamCollector).ConfigureAwait(false);
+            }
+            else
+            {
+                var response = CursorAcpNdjsonCodec.SerializeResponse(
+                    serverId,
+                    new { outcome = new { outcome = "selected", optionId = wireDecision } });
+                await _transport.WriteLineAsync(response, cancellationToken).ConfigureAwait(false);
+            }
+
+            return;
+        }
+
+        if (message.Id is { } unhandledId)
+        {
+            var response = CursorAcpNdjsonCodec.SerializeResponse(
+                unhandledId,
+                new { outcome = new { outcome = "cancelled" } });
+            await _transport.WriteLineAsync(response, cancellationToken).ConfigureAwait(false);
+        }
+    }
+
+    private async Task<(string? SessionId, EngineeringAgentProviderFailure? Failure)> PrepareVerifiedSessionAsync(
+        string cursorMode,
+        string governedProjectRootAbsolutePath,
+        CursorEngineeringAgentModelSelection modelSelection,
+        string? existingSessionId,
+        CancellationToken cancellationToken)
+    {
+        var discoveryResponse = await SendRequestAsync(
+            "session/new",
+            CursorAcpProtocol.CreateSessionNewParameters(cursorMode, governedProjectRootAbsolutePath),
+            cancellationToken).ConfigureAwait(false);
+        if (discoveryResponse.HasError)
+        {
+            return (null, new EngineeringAgentProviderFailure(
+                EngineeringAgentProviderFailureKind.ModelConfigurationFailed,
+                DescribeError(discoveryResponse.RawLine)));
+        }
+
+        if (!CursorAcpProtocol.TryParseSessionNewResult(
+                discoveryResponse.RawLine,
+                out _,
+                out _,
+                out var availableModels))
+        {
+            return (null, new EngineeringAgentProviderFailure(
+                EngineeringAgentProviderFailureKind.ModelConfigurationFailed,
+                "ACP session/new did not return advertised models for model resolution."));
+        }
+
+        if (!CursorAcpModelResolver.TryResolveWireModelId(
+                modelSelection,
+                availableModels,
+                out var resolvedWireModelId,
+                out var resolveMessage))
+        {
+            return (null, new EngineeringAgentProviderFailure(
+                EngineeringAgentProviderFailureKind.ModelConfigurationFailed,
+                resolveMessage ?? "Cursor model resolution failed."));
+        }
+
+        string sessionId;
+        if (string.IsNullOrWhiteSpace(existingSessionId))
+        {
+            var sessionResponse = await SendRequestAsync(
+                "session/new",
+                CursorAcpProtocol.CreateSessionNewParameters(
+                    cursorMode,
+                    governedProjectRootAbsolutePath,
+                    resolvedWireModelId),
+                cancellationToken).ConfigureAwait(false);
+            if (sessionResponse.HasError)
+            {
+                return (null, new EngineeringAgentProviderFailure(
+                    EngineeringAgentProviderFailureKind.ModelConfigurationFailed,
+                    DescribeError(sessionResponse.RawLine)));
+            }
+
+            if (!CursorAcpProtocol.TryParseSessionNewResult(
+                    sessionResponse.RawLine,
+                    out var newSessionId,
+                    out var currentModelId,
+                    out _)
+                || string.IsNullOrWhiteSpace(newSessionId))
+            {
+                return (null, new EngineeringAgentProviderFailure(
+                    EngineeringAgentProviderFailureKind.ModelConfigurationFailed,
+                    "ACP session/new did not return a session id for the configured model."));
+            }
+
+            sessionId = newSessionId;
+            if (!CursorAcpModelResolver.VerifyCurrentModelId(
+                    resolvedWireModelId,
+                    modelSelection,
+                    currentModelId ?? string.Empty,
+                    out var verifyMessage))
+            {
+                return (null, new EngineeringAgentProviderFailure(
+                    EngineeringAgentProviderFailureKind.ModelConfigurationFailed,
+                    verifyMessage ?? "Cursor session model verification failed."));
+            }
+        }
+        else
+        {
+            sessionId = existingSessionId;
+            var loadResponse = await SendRequestAsync(
+                "session/load",
+                CursorAcpProtocol.CreateSessionLoadParameters(sessionId),
+                cancellationToken).ConfigureAwait(false);
+            if (loadResponse.HasError)
+            {
+                return (null, new EngineeringAgentProviderFailure(
+                    EngineeringAgentProviderFailureKind.ForwardFailed,
+                    DescribeError(loadResponse.RawLine)));
+            }
+
+            var setModelResponse = await SendRequestAsync(
+                "session/set_model",
+                CursorAcpProtocol.CreateSessionSetModelParameters(sessionId, resolvedWireModelId),
+                cancellationToken).ConfigureAwait(false);
+            if (setModelResponse.HasError)
+            {
+                return (null, new EngineeringAgentProviderFailure(
+                    EngineeringAgentProviderFailureKind.ModelConfigurationFailed,
+                    DescribeError(setModelResponse.RawLine)));
+            }
+        }
+
+        return (sessionId, null);
     }
 
     private static string? TryReadSessionId(string rawLine)
@@ -286,30 +451,6 @@ internal sealed class CursorAcpClient : IAsyncDisposable
         }
 
         return null;
-    }
-
-    private static bool TryReadSessionUpdate(string rawLine, out string? updateType, out string? updateText)
-    {
-        updateType = null;
-        updateText = null;
-        using var doc = JsonDocument.Parse(rawLine);
-        if (!doc.RootElement.TryGetProperty("params", out var paramsEl)
-            || !paramsEl.TryGetProperty("update", out var updateEl))
-        {
-            return false;
-        }
-
-        if (updateEl.TryGetProperty("type", out var typeEl) && typeEl.ValueKind == JsonValueKind.String)
-        {
-            updateType = typeEl.GetString();
-        }
-
-        if (updateEl.TryGetProperty("text", out var textEl) && textEl.ValueKind == JsonValueKind.String)
-        {
-            updateText = textEl.GetString();
-        }
-
-        return true;
     }
 
     private static bool TryReadPermissionRequest(
@@ -359,6 +500,77 @@ internal sealed class CursorAcpClient : IAsyncDisposable
         new(
             EngineeringAgentProviderHealth.Unavailable(message),
             new EngineeringAgentProviderFailure(kind, message));
+
+    private sealed class CursorAcpPromptStreamCollector
+    {
+        private readonly StringBuilder _builder = new();
+
+        public CursorAcpPromptStreamCollector(string sessionId) => SessionId = sessionId;
+
+        public string SessionId { get; }
+
+        public bool IsComplete { get; private set; }
+
+        public string ResultText => _builder.ToString();
+
+        public void TryAccumulate(CursorAcpInboundMessage message)
+        {
+            if (message.Method != "session/update"
+                || !TryReadSessionUpdate(message.RawLine, out var updateType, out var updateText))
+            {
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(updateText))
+            {
+                _builder.Append(updateText);
+            }
+
+            if (IsPromptCompleteUpdate(updateType))
+            {
+                IsComplete = true;
+            }
+        }
+    }
+
+    private static bool IsPromptCompleteUpdate(string? updateType) =>
+        string.Equals(updateType, "prompt_complete", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(updateType, "end_turn", StringComparison.OrdinalIgnoreCase);
+
+    private static bool TryReadSessionUpdate(string rawLine, out string? updateType, out string? updateText)
+    {
+        updateType = null;
+        updateText = null;
+        using var doc = JsonDocument.Parse(rawLine);
+        if (!doc.RootElement.TryGetProperty("params", out var paramsEl)
+            || !paramsEl.TryGetProperty("update", out var updateEl))
+        {
+            return false;
+        }
+
+        if (updateEl.TryGetProperty("sessionUpdate", out var sessionUpdateEl)
+            && sessionUpdateEl.ValueKind == JsonValueKind.String)
+        {
+            updateType = sessionUpdateEl.GetString();
+        }
+        else if (updateEl.TryGetProperty("type", out var typeEl) && typeEl.ValueKind == JsonValueKind.String)
+        {
+            updateType = typeEl.GetString();
+        }
+
+        if (updateEl.TryGetProperty("content", out var contentEl)
+            && contentEl.TryGetProperty("text", out var contentTextEl)
+            && contentTextEl.ValueKind == JsonValueKind.String)
+        {
+            updateText = contentTextEl.GetString();
+        }
+        else if (updateEl.TryGetProperty("text", out var textEl) && textEl.ValueKind == JsonValueKind.String)
+        {
+            updateText = textEl.GetString();
+        }
+
+        return true;
+    }
 }
 
 internal sealed record CursorAcpPromptResult(

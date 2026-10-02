@@ -41,4 +41,11 @@ public static class RelayValidationCodes
     public const string EngineeringAgentHandoverBlockedByActiveStop = "relay.engineering_agent.handover.stop_active";
     public const string EngineeringAgentHandoverPackageKindUnsupported = "relay.engineering_agent.handover.package_kind.unsupported";
     public const string EngineeringResultPackageKindMismatch = "relay.engineering_agent.engineering_result.kind.mismatch";
+
+    public const string TransportExtractionStartMarkerMissing = "relay.transport.extraction.start_marker.missing";
+    public const string TransportExtractionStartMarkerAmbiguous = "relay.transport.extraction.start_marker.ambiguous";
+    public const string TransportExtractionEndBoundaryMissing = "relay.transport.extraction.end_boundary.missing";
+    public const string TransportExtractionEndBoundaryAmbiguous = "relay.transport.extraction.end_boundary.ambiguous";
+    public const string TransportExtractionMachineBlockAmbiguous = "relay.transport.extraction.machine_block.ambiguous";
+    public const string TransportExtractionBoundaryOrderInvalid = "relay.transport.extraction.boundary.order.invalid";
 }

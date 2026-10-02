@@ -7,10 +7,14 @@ public class CursorAcpNdjsonCodecTests
     [Fact]
     public void SerializeRequest_ProducesJsonRpcEnvelope()
     {
-        var line = CursorAcpNdjsonCodec.SerializeRequest("initialize", new { clientName = "ProjectConcord" }, 1);
+        var line = CursorAcpNdjsonCodec.SerializeRequest(
+            "initialize",
+            CursorAcpProtocol.CreateInitializeParameters(),
+            1);
         Assert.Contains("\"jsonrpc\":\"2.0\"", line, StringComparison.Ordinal);
         Assert.Contains("\"method\":\"initialize\"", line, StringComparison.Ordinal);
         Assert.Contains("\"id\":1", line, StringComparison.Ordinal);
+        Assert.Contains("\"protocolVersion\":1", line, StringComparison.Ordinal);
     }
 
     [Fact]

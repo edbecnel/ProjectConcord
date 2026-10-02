@@ -3,6 +3,7 @@ namespace Edf.Application.Relay.EngineeringAgent.Transport;
 using Edf.Application.Projects;
 using Edf.Application.Relay.EngineeringAgent.Hosting;
 using Edf.Application.Relay.EngineeringAgent.Plugins;
+using Edf.Application.Relay.Serialization;
 using Edf.Domain.Projects;
 using Edf.Domain.Relay;
 
@@ -39,6 +40,15 @@ public sealed class EngineeringAgentTransportOrchestrator : IEngineeringAgentTra
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
+        if (string.IsNullOrWhiteSpace(request.GovernedProjectRoot.NormalizedAbsolutePath))
+        {
+            return new EngineeringAgentAutomatedTransportResult(
+                EngineeringAgentAutomatedTransportOutcome.GovernanceIneligible,
+                null,
+                "Governed Project Root is required for automated transport.",
+                null,
+                null);
+        }
 
         var persistedSource = _persistence.RelayOperational.GetPackage(request.SourcePackageId);
         if (persistedSource is null)
@@ -182,14 +192,19 @@ public sealed class EngineeringAgentTransportOrchestrator : IEngineeringAgentTra
         }
 
         var continuity = _persistence.RelayOperational.GetSessionContinuity(request.ProjectId);
+        var executionPrompt = GovernedRelayAutomatedExecutionPrompt.Compose(
+            preparation.RenderedHandover,
+            preparation.ExportPackage);
         var forwardRequest = new EngineeringAgentForwardRequest(
+            request.ProjectId,
             operationId,
             persistedSource.Package.PackageId,
             persistedSource.Package.CorrelationId,
             request.RoutingIntent,
-            preparation.RenderedHandover,
+            executionPrompt,
             continuity,
-            ProviderSessionHint: null);
+            ProviderSessionHint: null,
+            request.GovernedProjectRoot);
 
         EngineeringAgentForwardResult forwardResult;
         try
@@ -292,9 +307,29 @@ public sealed class EngineeringAgentTransportOrchestrator : IEngineeringAgentTra
         };
         store.Save(withCandidate);
 
+        if (!GovernedRelayAutomatedResultDocumentExtractor.TryExtract(
+                candidateResult.Candidate.UntrustedImportText,
+                out var extractedImportText,
+                out var extractionFailure))
+        {
+            var rejectedExtraction = withCandidate with
+            {
+                LifecycleState = TransportOperationLifecycleState.ImportRejected,
+                UpdatedUtc = _clock.GetUtcNow(),
+            };
+            store.Save(rejectedExtraction);
+            return new EngineeringAgentAutomatedTransportResult(
+                EngineeringAgentAutomatedTransportOutcome.ImportRejected,
+                rejectedExtraction,
+                extractionFailure.Diagnostics.FirstOrDefault()?.Message
+                    ?? "Automated transport could not extract a governed relay document from the provider response.",
+                extractionFailure,
+                null);
+        }
+
         var importOperation = _workflow.ImportEngineeringResult(
             request.ProjectId,
-            candidateResult.Candidate.UntrustedImportText);
+            extractedImportText);
 
         if (importOperation.Import.Package is null
             || importOperation.Import.Validation.State != RelayValidationState.Valid

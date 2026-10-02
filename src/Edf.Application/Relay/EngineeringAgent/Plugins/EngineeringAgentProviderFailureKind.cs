@@ -15,4 +15,5 @@ public enum EngineeringAgentProviderFailureKind
     TimedOut = 7,
     AmbiguousOutcome = 8,
     RoutingIntentUnsupported = 9,
+    ModelConfigurationFailed = 10,
 }

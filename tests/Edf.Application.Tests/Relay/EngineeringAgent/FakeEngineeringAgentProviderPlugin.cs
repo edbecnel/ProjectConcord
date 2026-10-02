@@ -41,6 +41,8 @@ internal sealed class FakeEngineeringAgentProviderPlugin : IEngineeringAgentProv
 
     public int ForwardCallCount { get; private set; }
 
+    public EngineeringAgentForwardRequest? LastForwardRequest { get; private set; }
+
     public int CancelCallCount { get; private set; }
 
     public Func<EngineeringAgentForwardRequest, EngineeringAgentForwardResult>? ForwardHandler { get; set; }
@@ -123,6 +125,7 @@ internal sealed class FakeEngineeringAgentProviderPlugin : IEngineeringAgentProv
     {
         _ = cancellationToken;
         ForwardCallCount++;
+        LastForwardRequest = request;
         if (ForwardHandler is not null)
         {
             return ForwardHandler(request);

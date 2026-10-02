@@ -4,7 +4,8 @@ using Edf.Application.Relay.EngineeringAgent.Transport;
 
 /// <summary>
 /// Untrusted provider output candidate for the existing parse/validate/import pipeline (ADR-0022 §3).
-/// Does not imply valid engineering result, consumed package, or governance acceptance.
+/// <see cref="IsReadyForParse"/> means the provider has a completed candidate available for host parsing —
+/// not that the text is governed-valid or governance-accepted.
 /// </summary>
 public sealed record EngineeringAgentTransportResultCandidate(
     TransportOperationId TransportOperationId,

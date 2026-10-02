@@ -288,6 +288,19 @@ public class EngineeringAgentA4T4RecoveryTests
         IUserApplicationStatePersistence persistence,
         bool registerFake = true)
     {
+        if (persistence.ProjectRegistry is InMemoryProjectRegistry inMemoryRegistry
+            && inMemoryRegistry.GetById(projectId) is null)
+        {
+            var openedUtc = DateTimeOffset.UtcNow;
+            inMemoryRegistry.RegisterProjectForTests(
+                new ManagedProject(
+                    projectId,
+                    "t4-recovery-test",
+                    EngineeringAgentTestWorkspace.DefaultLocator,
+                    openedUtc,
+                    openedUtc));
+        }
+
         var workflow = new CountingGovernedRelayP0WorkflowService(
             GovernedRelayP0WorkflowService.Create(persistence));
         var sourceId = SeedValidPaHandover(persistence, projectId, workflow.Inner);

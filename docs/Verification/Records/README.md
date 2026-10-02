@@ -34,6 +34,7 @@ Copy [Manual_Verification_Record_Template.md](../../Templates/Manual_Verificatio
 |---|---|---|
 | [MVR-0001](MVR-0001-a1c-desktop-project-root-recent-workflow.md) | A1c Desktop Project Root and Recent Projects workflow | Complete (2026-09-28) |
 | [MVR-0002](MVR-0002-a2-p0-manual-governed-relay-workflow.md) | **A2 P0 manual governed relay workflow** — executable operator procedure + execution record | **Complete** (2026-09-30; MVT-1–MVT-19 Pass; PA accepted for A2 closeout) |
+| [MVR-0003](MVR-0003-a4-engineering-agent-automated-transport.md) | **A4 Engineering Agent automated transport** — Cursor forward, recovery, P0 fallback, boundaries | **In progress** (2026-10-02) — Groups C/D human **Pass**; Group A/B + MVT-23 **blocked** on external Cursor ACP non-fast |
 
 ## Parent
 

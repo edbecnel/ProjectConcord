@@ -23,6 +23,30 @@ public sealed class InMemoryProjectRegistry : IProjectRegistry
 
     public int MaxRecentProjects { get; }
 
+    /// <summary>
+    /// Registers a project with a caller-chosen id (in-memory test harnesses only).
+    /// </summary>
+    public void RegisterProjectForTests(ManagedProject project)
+    {
+        ArgumentNullException.ThrowIfNull(project);
+        lock (_sync)
+        {
+            if (_projectsById.ContainsKey(project.ProjectId.Value))
+            {
+                return;
+            }
+
+            if (_idByLocatorPath.ContainsKey(project.RegisteredLocator.NormalizedAbsolutePath))
+            {
+                throw new InvalidOperationException("Locator is already registered to a project.");
+            }
+
+            _projectsById[project.ProjectId.Value] = project;
+            _idByLocatorPath[project.RegisteredLocator.NormalizedAbsolutePath] = project.ProjectId;
+            TouchRecent(project.ProjectId);
+        }
+    }
+
     public ManagedProject RegisterNewProjectAtLocator(ProjectLocator locator, string displayName, DateTimeOffset openedUtc)
     {
         lock (_sync)

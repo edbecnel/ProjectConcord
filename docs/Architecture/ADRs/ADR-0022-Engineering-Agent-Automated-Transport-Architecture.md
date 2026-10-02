@@ -57,8 +57,9 @@ All provider output remains **UNTRUSTED**.
 Terminal path:
 
 1. Plugin obtains candidate import text (or explicit not-ready / failure).
-2. Application/infrastructure invokes **`TryParseEngineeringResult`** (existing workflow).
-3. Package kind **`EngineeringResultImport`**, structural and profile validation, then **`RecordConsumedPackage`**.
+2. Application/infrastructure **MAY** perform provider-neutral **governed relay document extraction** on automated transport candidates only: locate exactly one contiguous `projectconcord-relay-v1` framed artifact inside the untrusted provider response (marker-byte **START** at the first `ProjectConcord-Relay-Render:` occurrence; **END** at the canonical `GovernedRelayV1Format.PaEngineeringAgentReminder`); fail closed on ambiguity; **no** repair, synthesis, or normalization. Extraction grants **no** trust. P0 manual paste/import **MUST NOT** use this step unless separately authorized.
+3. Application/infrastructure invokes **`TryParseEngineeringResult`** on the extracted substring (or the full candidate when extraction is not applied) — existing workflow unchanged.
+4. Package kind **`EngineeringResultImport`**, structural and profile validation, then **`RecordConsumedPackage`**.
 
 Provider completion, ACP **`session/update`** streams, CLI stdout, MCP payloads, or IDE buffers **MUST NOT** bypass this path or become canonical Project records.
 

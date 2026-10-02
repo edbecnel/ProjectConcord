@@ -29,6 +29,22 @@ internal static class CursorAcpNdjsonCodec
         return Encoding.UTF8.GetString(stream.ToArray());
     }
 
+    internal static string SerializeResponse(int id, object result)
+    {
+        using var stream = new MemoryStream();
+        using (var writer = new Utf8JsonWriter(stream))
+        {
+            writer.WriteStartObject();
+            writer.WriteString("jsonrpc", "2.0");
+            writer.WriteNumber("id", id);
+            writer.WritePropertyName("result");
+            JsonSerializer.Serialize(writer, result);
+            writer.WriteEndObject();
+        }
+
+        return Encoding.UTF8.GetString(stream.ToArray());
+    }
+
     internal static bool TryParseLine(string line, out CursorAcpInboundMessage message)
     {
         message = default!;
@@ -66,5 +82,8 @@ internal readonly record struct CursorAcpInboundMessage(
     string RawLine)
 {
     public bool IsResponse => Id is not null && Method is null;
+
     public bool IsNotification => Id is null && Method is not null;
+
+    public bool IsServerRequest => Id is not null && Method is not null;
 }

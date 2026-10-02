@@ -73,6 +73,14 @@ public sealed class EngineeringAgentManualRelayBridge : IEngineeringAgentRelayBr
             Validation: substantiveValidation);
     }
 
+    public string ComposeAutomatedExecutionPrompt(
+        string canonicalRenderedHandover,
+        GovernedRelayPackage handoverExportPackage) =>
+        GovernedRelayAutomatedExecutionPrompt.Compose(canonicalRenderedHandover, handoverExportPackage);
+
+    public string RenderEngineeringResultResponseInstruction(GovernedRelayPackage handoverExportPackage) =>
+        GovernedRelayEngineeringResultResponseInstruction.Render(handoverExportPackage);
+
     public EngineeringResultImportResult TryParseEngineeringResult(string renderedText)
     {
         var import = _importer.Import(renderedText);

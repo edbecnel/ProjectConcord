@@ -9,4 +9,8 @@ using Edf.Domain.Relay;
 public sealed record EngineeringAgentAutomatedForwardRequest(
     ProjectConcordProjectId ProjectId,
     GovernedPackageId SourcePackageId,
-    EngineeringAgentMode RoutingIntent);
+    EngineeringAgentMode RoutingIntent,
+    /// <summary>
+    /// Authoritative governed Project Root locator for automated provider execution.
+    /// </summary>
+    ProjectLocator GovernedProjectRoot);

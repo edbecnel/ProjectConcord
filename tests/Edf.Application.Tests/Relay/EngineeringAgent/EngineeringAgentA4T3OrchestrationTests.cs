@@ -23,7 +23,7 @@ public class EngineeringAgentA4T3OrchestrationTests
         var (_, _, service, sourceId) = CreateHarness(projectId, registerFake: false);
 
         var result = await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.Equal(EngineeringAgentAutomatedTransportOutcome.ProviderUnavailable, result.Outcome);
     }
@@ -38,7 +38,8 @@ public class EngineeringAgentA4T3OrchestrationTests
             new EngineeringAgentAutomatedForwardRequest(
                 projectId,
                 GovernedPackageId.New(),
-                EngineeringAgentMode.Plan));
+                EngineeringAgentMode.Plan,
+                EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.Equal(EngineeringAgentAutomatedTransportOutcome.GovernanceIneligible, result.Outcome);
         Assert.Equal(0, fake.ForwardCallCount);
@@ -59,7 +60,7 @@ public class EngineeringAgentA4T3OrchestrationTests
             selectPluginByDefault: false);
 
         var result = await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.Equal(EngineeringAgentAutomatedTransportOutcome.ProviderUnavailable, result.Outcome);
         Assert.Equal(0, fake.InitializeAsyncCallCount);
@@ -82,7 +83,7 @@ public class EngineeringAgentA4T3OrchestrationTests
             fake);
 
         var result = await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.Equal(EngineeringAgentAutomatedTransportOutcome.ProviderUnavailable, result.Outcome);
         Assert.Equal(0, fake.InitializeAsyncCallCount);
@@ -101,7 +102,7 @@ public class EngineeringAgentA4T3OrchestrationTests
             fake);
 
         var result = await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.Equal(EngineeringAgentAutomatedTransportOutcome.ProviderUnavailable, result.Outcome);
         Assert.Equal(0, fake.InitializeAsyncCallCount);
@@ -118,7 +119,7 @@ public class EngineeringAgentA4T3OrchestrationTests
         var (_, _, service, sourceId) = CreateHarness(projectId, fake: fake);
 
         var result = await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.Equal(EngineeringAgentAutomatedTransportOutcome.ProviderUnavailable, result.Outcome);
         Assert.Equal(0, fake.InitializeAsyncCallCount);
@@ -135,7 +136,7 @@ public class EngineeringAgentA4T3OrchestrationTests
         var (_, _, service, sourceId) = CreateHarness(projectId, fake: fake);
 
         var result = await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Debug));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Debug, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.Equal(EngineeringAgentAutomatedTransportOutcome.ProviderUnavailable, result.Outcome);
         Assert.Equal(0, fake.InitializeAsyncCallCount);
@@ -149,7 +150,7 @@ public class EngineeringAgentA4T3OrchestrationTests
         var (fake, _, service, sourceId) = CreateHarness(projectId);
 
         await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.Equal(1, fake.InitializeAsyncCallCount);
     }
@@ -164,7 +165,7 @@ public class EngineeringAgentA4T3OrchestrationTests
         var (_, _, service, sourceId) = CreateHarness(projectId, fake: fake);
 
         var result = await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.Equal(EngineeringAgentAutomatedTransportOutcome.ProviderUnavailable, result.Outcome);
         Assert.Equal(1, fake.InitializeAsyncCallCount);
@@ -182,7 +183,7 @@ public class EngineeringAgentA4T3OrchestrationTests
         var (_, _, service, sourceId) = CreateHarness(projectId, fake: fake);
 
         var result = await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.Equal(EngineeringAgentAutomatedTransportOutcome.ProviderUnavailable, result.Outcome);
         Assert.Equal(1, fake.InitializeAsyncCallCount);
@@ -197,7 +198,7 @@ public class EngineeringAgentA4T3OrchestrationTests
         var (_, _, service, sourceId) = CreateHarness(projectId);
 
         var result = await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.NotNull(result.Operation);
         Assert.Equal(TransportOperationLifecycleState.ForwardAcknowledged, result.Operation!.LifecycleState);
@@ -246,7 +247,7 @@ public class EngineeringAgentA4T3OrchestrationTests
         };
 
         await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.NotNull(capturedId);
     }
@@ -269,7 +270,7 @@ public class EngineeringAgentA4T3OrchestrationTests
         };
 
         await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.Equal(1, fake.ForwardCallCount);
         Assert.Equal(
@@ -290,7 +291,7 @@ public class EngineeringAgentA4T3OrchestrationTests
         var (fake, _, service, sourceId) = CreateHarness(projectId, persistence);
 
         var result = await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.Equal(EngineeringAgentAutomatedTransportOutcome.PersistenceFailed, result.Outcome);
         Assert.Equal(0, fake.ForwardCallCount);
@@ -303,7 +304,7 @@ public class EngineeringAgentA4T3OrchestrationTests
         var (_, persistence, service, sourceId) = CreateHarness(projectId);
 
         var result = await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.Equal(EngineeringAgentAutomatedTransportOutcome.Dispatched, result.Outcome);
         Assert.Equal("fake-session", result.Operation!.ProviderSessionHint!.Value.Value);
@@ -325,7 +326,7 @@ public class EngineeringAgentA4T3OrchestrationTests
                 "forward failed"));
 
         var result = await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.Equal(EngineeringAgentAutomatedTransportOutcome.ForwardFailed, result.Outcome);
         Assert.Equal(1, fake.ForwardCallCount);
@@ -347,10 +348,59 @@ public class EngineeringAgentA4T3OrchestrationTests
                 "ambiguous"));
 
         var result = await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.Equal(EngineeringAgentAutomatedTransportOutcome.Ambiguous, result.Outcome);
         Assert.Equal(TransportOperationLifecycleState.Ambiguous, result.Operation!.LifecycleState);
+    }
+
+    [Fact]
+    public async Task Forward_SendsComposedExecutionPrompt_WithResponseContract()
+    {
+        var projectId = ProjectConcordProjectId.New();
+        var (fake, _, service, sourceId) = CreateHarness(projectId);
+        fake.ForwardHandler = _ => AckForward();
+
+        _ = await service.ForwardGovernedHandoverAsync(
+            new EngineeringAgentAutomatedForwardRequest(
+                projectId,
+                sourceId,
+                EngineeringAgentMode.Plan,
+                EngineeringAgentTestWorkspace.DefaultLocator));
+
+        Assert.NotNull(fake.LastForwardRequest);
+        var body = fake.LastForwardRequest!.RenderedHandoverBody;
+        Assert.Contains("engineeringAgentHandoverExport", body, StringComparison.Ordinal);
+        Assert.Contains("engineeringResultImport", body, StringComparison.Ordinal);
+        Assert.Contains(GovernedRelayV1Format.MachineBlockFenceLanguage, body, StringComparison.Ordinal);
+        Assert.Contains(
+            GovernedRelayEngineeringResultResponseInstruction.SectionHeading,
+            body,
+            StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task Forward_EnvelopedMidLineRenderMarker_ExtractsAndCompletesImport()
+    {
+        var projectId = ProjectConcordProjectId.New();
+        var (fake, _, service, sourceId) = CreateHarness(projectId);
+        var doc = RenderValidEngineeringResult(projectId);
+        var firstNewline = doc.TrimEnd().IndexOf('\n');
+        var enveloped =
+            $"Preamble.\nMore prose.{doc.TrimEnd()[..firstNewline]}\n{doc.TrimEnd()[(firstNewline + 1)..]}\nTrailing.";
+        fake.CandidateHandler = id => new EngineeringAgentResultCandidateResult(
+            true,
+            new EngineeringAgentTransportResultCandidate(id, enveloped, IsReadyForParse: true),
+            null);
+
+        var result = await service.ForwardGovernedHandoverAsync(
+            new EngineeringAgentAutomatedForwardRequest(
+                projectId,
+                sourceId,
+                EngineeringAgentMode.Plan,
+                EngineeringAgentTestWorkspace.DefaultLocator));
+
+        Assert.Equal(EngineeringAgentAutomatedTransportOutcome.ImportCompleted, result.Outcome);
     }
 
     [Fact]
@@ -365,7 +415,7 @@ public class EngineeringAgentA4T3OrchestrationTests
             null);
 
         var result = await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.Equal(EngineeringAgentAutomatedTransportOutcome.ImportCompleted, result.Outcome);
         Assert.Equal(TransportOperationLifecycleState.ImportCompleted, result.Operation!.LifecycleState);
@@ -383,7 +433,7 @@ public class EngineeringAgentA4T3OrchestrationTests
             null);
 
         var result = await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.Equal(EngineeringAgentAutomatedTransportOutcome.ImportRejected, result.Outcome);
         Assert.Equal(TransportOperationLifecycleState.ImportRejected, result.Operation!.LifecycleState);
@@ -396,7 +446,7 @@ public class EngineeringAgentA4T3OrchestrationTests
         var projectId = ProjectConcordProjectId.New();
         var (_, _, service, sourceId) = CreateHarness(projectId);
         var forward = await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         var cancel = await service.CancelTransportOperationAsync(
             new EngineeringAgentAutomatedCancelRequest(projectId, forward.Operation!.OperationId));
@@ -411,7 +461,7 @@ public class EngineeringAgentA4T3OrchestrationTests
         var projectId = ProjectConcordProjectId.New();
         var (fake, _, service, sourceId) = CreateHarness(projectId);
         var forward = await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
         fake.CancelHandler = _ => new EngineeringAgentCancelResult(
             false,
             new EngineeringAgentProviderFailure(
@@ -435,7 +485,7 @@ public class EngineeringAgentA4T3OrchestrationTests
         var (fake, _, service, sourceId) = CreateHarness(projectId, persistence);
 
         var result = await service.ForwardGovernedHandoverAsync(
-            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan));
+            new EngineeringAgentAutomatedForwardRequest(projectId, sourceId, EngineeringAgentMode.Plan, EngineeringAgentTestWorkspace.DefaultLocator));
 
         Assert.Equal(EngineeringAgentAutomatedTransportOutcome.PersistenceFailed, result.Outcome);
         Assert.Equal(0, fake.ForwardCallCount);

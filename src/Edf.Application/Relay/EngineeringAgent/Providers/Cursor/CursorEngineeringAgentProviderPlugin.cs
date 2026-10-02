@@ -3,6 +3,7 @@ namespace Edf.Application.Relay.EngineeringAgent.Providers.Cursor;
 using System.Collections.Concurrent;
 using Edf.Application.Relay.EngineeringAgent.Plugins;
 using Edf.Application.Relay.EngineeringAgent.Transport;
+using Edf.Application.Relay.EngineeringAgent.Providers.Cursor.Models;
 using Edf.Domain.Relay;
 
 /// <summary>
@@ -11,21 +12,24 @@ using Edf.Domain.Relay;
 public sealed class CursorEngineeringAgentProviderPlugin : IEngineeringAgentProviderPlugin
 {
     private readonly Func<ICursorAcpTransport> _transportFactory;
+    private readonly ICursorEngineeringAgentModelPreferencesStore _modelPreferences;
     private readonly CursorAcpPermissionPolicy _permissionPolicy;
     private readonly ConcurrentDictionary<TransportOperationId, CursorTransportOperationState> _operations = new();
     private CursorAcpClient? _client;
     private bool _lifecycleInitialized;
 
     public CursorEngineeringAgentProviderPlugin()
-        : this(static () => new CursorAcpSubprocessTransport())
+        : this(static () => new CursorAcpSubprocessTransport(), new CursorEngineeringAgentModelPreferencesStore())
     {
     }
 
     internal CursorEngineeringAgentProviderPlugin(
         Func<ICursorAcpTransport> transportFactory,
+        ICursorEngineeringAgentModelPreferencesStore? modelPreferences = null,
         CursorAcpPermissionPolicy? permissionPolicy = null)
     {
         _transportFactory = transportFactory ?? throw new ArgumentNullException(nameof(transportFactory));
+        _modelPreferences = modelPreferences ?? new CursorEngineeringAgentModelPreferencesStore();
         _permissionPolicy = permissionPolicy ?? new CursorAcpPermissionPolicy();
     }
 
@@ -112,7 +116,14 @@ public sealed class CursorEngineeringAgentProviderPlugin : IEngineeringAgentProv
         }
 
         var existingSession = request.ProviderSessionHint?.Value;
-        var prompt = _client.RunPromptAsync(cursorMode, request.RenderedHandoverBody, existingSession, cancellationToken)
+        var modelSelection = _modelPreferences.GetSelection(request.ProjectId);
+        var prompt = _client.RunPromptAsync(
+                cursorMode,
+                request.RenderedHandoverBody,
+                request.GovernedProjectRoot.NormalizedAbsolutePath,
+                modelSelection,
+                existingSession,
+                cancellationToken)
             .GetAwaiter()
             .GetResult();
         if (prompt.Failure is not null)

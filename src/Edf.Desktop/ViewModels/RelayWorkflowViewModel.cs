@@ -517,6 +517,12 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
             return;
         }
 
+        if (_workspace.CurrentRoot is not { } projectRoot)
+        {
+            RelayStatusMessage = "Open a Project Root before automated forward.";
+            return;
+        }
+
         if (_lastPaHandoverImport is null)
         {
             RelayStatusMessage = "Import a validated PA handover before automated forward.";
@@ -524,11 +530,13 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
         }
 
         RelayStatusMessage = null;
+        var governedRoot = ProjectLocator.FromPath(projectRoot.AbsolutePath);
         var result = await _automatedTransport.ForwardGovernedHandoverAsync(
             new EngineeringAgentAutomatedForwardRequest(
                 projectId,
                 _lastPaHandoverImport.PackageId,
-                EngineeringAgentMode)).ConfigureAwait(true);
+                EngineeringAgentMode,
+                governedRoot)).ConfigureAwait(true);
 
         _lastAutomatedTransportResult = result;
         if (result.GovernanceValidation is not null)

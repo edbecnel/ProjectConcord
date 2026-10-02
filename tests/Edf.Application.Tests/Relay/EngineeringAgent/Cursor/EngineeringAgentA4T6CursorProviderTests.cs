@@ -4,6 +4,7 @@ using Edf.Application.Relay.EngineeringAgent.Hosting;
 using Edf.Application.Relay.EngineeringAgent.Plugins;
 using Edf.Application.Relay.EngineeringAgent.Providers.Cursor;
 using Edf.Application.Relay.EngineeringAgent.Transport;
+using Edf.Domain.Projects;
 using Edf.Domain.Relay;
 
 namespace Edf.Application.Tests.Relay.EngineeringAgent.Cursor;
@@ -84,7 +85,12 @@ public class EngineeringAgentA4T6CursorProviderTests
         var request = CreateForwardRequest(EngineeringAgentMode.Plan);
         var forward = plugin.Forward(request);
         Assert.True(forward.IsAcknowledged);
-        Assert.Contains("plan", transport.WrittenLines[2], StringComparison.OrdinalIgnoreCase);
+        var sessionNewLine = transport.WrittenLines.First(l => l.Contains("session/new", StringComparison.Ordinal));
+        Assert.Contains("plan", sessionNewLine, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains(
+            request.GovernedProjectRoot.NormalizedAbsolutePath,
+            sessionNewLine,
+            StringComparison.Ordinal);
 
         var candidate = plugin.TryGetResultCandidate(request.TransportOperationId);
         Assert.True(candidate.HasCandidate);
@@ -126,7 +132,7 @@ public class EngineeringAgentA4T6CursorProviderTests
 
         Assert.Contains(
             transport.WrittenLines,
-            line => line.Contains("session/permission_response", StringComparison.Ordinal)
+            line => line.Contains("\"id\":99", StringComparison.Ordinal)
                     && line.Contains("deny", StringComparison.Ordinal));
     }
 
@@ -158,7 +164,7 @@ public class EngineeringAgentA4T6CursorProviderTests
                 EngineeringAgentProviderPermissionDisposition.AllowOnce),
         };
         var transport = new ScriptedCursorAcpTransport(CursorAcpFixtures.PromptWithPermissionScript());
-        var plugin = new CursorEngineeringAgentProviderPlugin(() => transport, policy);
+        var plugin = new CursorEngineeringAgentProviderPlugin(() => transport, modelPreferences: null, policy);
         await plugin.InitializeAsync();
         _ = plugin.Forward(CreateForwardRequest(EngineeringAgentMode.Plan));
 
@@ -169,10 +175,27 @@ public class EngineeringAgentA4T6CursorProviderTests
 
     [Trait("RequiresCursor", "true")]
     [Fact]
-    public void RequiresCursor_Trait_IsDeclaredForOptionalIntegrationTests()
+    public async Task LiveCursorAcp_InitializeHandshake_Succeeds()
     {
-        // Optional real-CLI tests may be added under this trait; default suite does not require Cursor installation.
-        Assert.True(true);
+        var transport = new CursorAcpSubprocessTransport();
+        var client = new CursorAcpClient(transport, ioTimeout: TimeSpan.FromSeconds(20));
+        var result = await client.InitializeAndAuthenticateAsync(CancellationToken.None);
+
+        if (result.Failure?.Kind == EngineeringAgentProviderFailureKind.InitializationFailed)
+        {
+            Assert.Fail(result.Failure.Message);
+        }
+
+        Assert.True(client.IsInitialized);
+        if (result.Failure?.Kind == EngineeringAgentProviderFailureKind.AuthenticationUnavailable)
+        {
+            Assert.False(client.IsAuthenticated);
+            return;
+        }
+
+        Assert.True(result.Succeeded);
+        Assert.True(client.IsAuthenticated);
+        await client.DisposeAsync();
     }
 
     private static CursorEngineeringAgentProviderPlugin CreateScriptedPlugin(IEnumerable<string> script) =>
@@ -182,13 +205,15 @@ public class EngineeringAgentA4T6CursorProviderTests
     {
         var operationId = TransportOperationId.New();
         return new EngineeringAgentForwardRequest(
+            ProjectConcordProjectId.New(),
             operationId,
             GovernedPackageId.New(),
             GovernedCorrelationId.New(),
             mode,
             "handover-body",
             RelayTestFixtures.SessionWithBothIntents(),
-            ProviderSessionHint: null);
+            ProviderSessionHint: null,
+            ProjectLocator.FromPath("/tmp/projectconcord-test-root-a"));
     }
 }
 
@@ -196,19 +221,32 @@ internal static class CursorAcpFixtures
 {
     public static IEnumerable<string> MinimalLifecycleScript() =>
     [
-        """{"jsonrpc":"2.0","id":1,"result":{}}""",
+        InitializeSuccessLine(1),
         """{"jsonrpc":"2.0","id":2,"result":{}}""",
     ];
 
     public static IEnumerable<string> PromptSuccessScript() =>
     [
-        """{"jsonrpc":"2.0","id":1,"result":{}}""",
+        InitializeSuccessLine(1),
         """{"jsonrpc":"2.0","id":2,"result":{}}""",
-        """{"jsonrpc":"2.0","id":3,"result":{"sessionId":"sess-1"}}""",
-        """{"jsonrpc":"2.0","id":4,"result":{}}""",
-        """{"jsonrpc":"2.0","method":"session/update","params":{"update":{"type":"agent_message","text":"engineering-result"}}}""",
-        """{"jsonrpc":"2.0","method":"session/update","params":{"update":{"type":"prompt_complete"}}}""",
+        SessionNewDiscoveryLine(3),
+        SessionNewConfiguredLine(4),
+        """{"jsonrpc":"2.0","method":"session/update","params":{"update":{"sessionUpdate":"agent_message_chunk","content":{"type":"text","text":"engineering-result"}}}}""",
+        """{"jsonrpc":"2.0","id":5,"result":{"stopReason":"end_turn"}}""",
     ];
+
+    public static string SessionNewDiscoveryLine(int id) =>
+        "{\"jsonrpc\":\"2.0\",\"id\":" + id
+        + ",\"result\":{\"sessionId\":\"disc-sess\",\"models\":{\"currentModelId\":\"composer-2.5[fast=true]\",\"availableModels\":[{\"modelId\":\"composer-2.5\",\"name\":\"composer-2.5\"}]}}}";
+
+    public static string SessionNewConfiguredLine(int id) =>
+        "{\"jsonrpc\":\"2.0\",\"id\":" + id
+        + ",\"result\":{\"sessionId\":\"sess-1\",\"models\":{\"currentModelId\":\"composer-2.5\",\"availableModels\":[{\"modelId\":\"composer-2.5\",\"name\":\"composer-2.5\"}]}}}";
+
+    public static IEnumerable<string> PromptLiveCursorOrderScript() => PromptSuccessScript();
+
+    public static string InitializeSuccessLine(int id) =>
+        "{\"jsonrpc\":\"2.0\",\"id\":" + id + ",\"result\":{\"protocolVersion\":1}}";
 
     public static IEnumerable<string> PromptSuccessWithCancelScript()
     {
@@ -217,18 +255,17 @@ internal static class CursorAcpFixtures
             yield return line;
         }
 
-        yield return """{"jsonrpc":"2.0","id":5,"result":{}}""";
+        yield return """{"jsonrpc":"2.0","id":6,"result":{}}""";
     }
 
     public static IEnumerable<string> PromptWithPermissionScript() =>
     [
-        """{"jsonrpc":"2.0","id":1,"result":{}}""",
+        InitializeSuccessLine(1),
         """{"jsonrpc":"2.0","id":2,"result":{}}""",
-        """{"jsonrpc":"2.0","id":3,"result":{"sessionId":"sess-1"}}""",
-        """{"jsonrpc":"2.0","id":4,"result":{}}""",
-        """{"jsonrpc":"2.0","method":"session/request_permission","params":{"requestId":"perm-1","permission":"tool"}}""",
-        """{"jsonrpc":"2.0","id":5,"result":{}}""",
-        """{"jsonrpc":"2.0","method":"session/update","params":{"update":{"type":"agent_message","text":"engineering-result"}}}""",
-        """{"jsonrpc":"2.0","method":"session/update","params":{"update":{"type":"prompt_complete"}}}""",
+        SessionNewDiscoveryLine(3),
+        SessionNewConfiguredLine(4),
+        """{"jsonrpc":"2.0","id":99,"method":"session/request_permission","params":{"requestId":"perm-1","permission":"tool"}}""",
+        """{"jsonrpc":"2.0","id":5,"result":{"stopReason":"end_turn"}}""",
+        """{"jsonrpc":"2.0","method":"session/update","params":{"update":{"sessionUpdate":"agent_message_chunk","content":{"type":"text","text":"engineering-result"}}}}""",
     ];
 }

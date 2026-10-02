@@ -8,7 +8,7 @@
 >
 > **EACH A4 IMPLEMENTATION TRANCHE REQUIRES EXPLICIT PROJECT ARCHITECT AUTHORIZATION.**
 
-> **A4 implementation plan:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01). **A4-T0–T6 CLOSED / PA ACCEPTED / PUBLISHED** (2026-10-01). **A4-T7 NOT AUTHORIZED.** Overall A4 **in progress / not closed**.
+> **A4 implementation plan:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01). **A4-T0–T6 CLOSED / PA ACCEPTED / PUBLISHED** (2026-10-01). **A4-T7 AUTHORIZED — verification in progress** (2026-10-01); **not PA accepted/published**. Overall A4 **in progress / not closed**.
 
 **Mode:** **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01)
 
@@ -18,7 +18,7 @@
 
 **Architecture basis:** [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md), [ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md), [ADR-0023](../Architecture/ADRs/ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md), [ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md), [ADR-0020](../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), published [A2 P0 governed relay](ProjectConcord-A2-Implementation-Plan.md) implementation on `main`, [PAR Workflow Architecture Plan](ProjectConcord-PAR-Workflow-Architecture-Plan.md)
 
-**Governance inputs:** **PA accepted** A4 implementation plan (2026-10-01); **A4-T0–T6 PA accepted / published** (2026-10-01); **A4-T7 NOT AUTHORIZED**; **A3 NOT AUTHORIZED**. Overall A4 **not closed** (T7 pending).
+**Governance inputs:** **PA accepted** A4 implementation plan (2026-10-01); **A4-T0–T6 PA accepted / published** (2026-10-01); **A4-T7 authorized** (2026-10-01) — [T7 evidence](ProjectConcord-A4-T7-Verification-Evidence.md); **MVR-0003 human execution In progress** (Groups C/D Pass; Group A/B blocked on external Cursor ACP non-fast); **A3 NOT AUTHORIZED**. Overall A4 **not closed**.
 
 ---
 
@@ -36,7 +36,7 @@
 | **A4-T4** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T4 notes](ProjectConcord-A4-T4-Implementation-Notes.md); [§31](#31-a4-t4-closeout-2026-10-01) |
 | **A4-T5** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T5 notes](ProjectConcord-A4-T5-Implementation-Notes.md); [§32](#32-a4-t5-closeout-2026-10-01) |
 | **A4-T6** | **CLOSED / PROJECT ARCHITECT ACCEPTED / PUBLISHED** (2026-10-01) — [T6 notes](ProjectConcord-A4-T6-Implementation-Notes.md); [§33](#33-a4-t6-closeout-2026-10-01) |
-| **A4-T7** | **NOT AUTHORIZED** |
+| **A4-T7** | **AUTHORIZED — IN PROGRESS** (2026-10-01) — blocker-independent human MVR **complete**; machine Release validation **PASS**; [MVR-0003](../Verification/Records/MVR-0003-a4-engineering-agent-automated-transport.md) **In progress** (external blocker on Group A/B); **PA accept/publish pending** |
 | A3 | **NOT AUTHORIZED** |
 
 No implementation tranche inherits authority from plan publication.
@@ -496,14 +496,16 @@ Reuse existing P0 path unchanged in semantics: eligibility, renderer, parser, va
 
 | | |
 |---|---|
-| **Authorization** | **NOT AUTHORIZED** |
+| **Authorization** | **AUTHORIZED** (2026-10-01) — **IN PROGRESS / PA REVIEW PENDING** |
 | **Objective** | Full regression; **MVR-0003** draft/execute per §18; T7 evidence doc; plan/roadmap closeout sections (**docs only** in T7 unless PA authorized remediation STOP) |
 | **Architecture basis** | §20 closeout criteria |
 | **Dependencies** | T6 |
 | **Remediation rule** | Mirror [A2-T8](ProjectConcord-A2-Implementation-Plan.md#a2-t8--verification-mvr-documentation-closeout): MVR FAIL or defect requiring `src/` change → **STOP** — separate PA remediation authorization |
-| **Tests** | Full Release suite |
-| **Acceptance** | PA A4 overall closeout disposition recorded |
-| **STOP** | **A4 complete** — await PA for A3 or other tracks |
+| **Tests** | Full Release suite — **249 PASS** (SDK 10.0.401) |
+| **MVR** | [MVR-0003](../Verification/Records/MVR-0003-a4-engineering-agent-automated-transport.md); **Human execution status In progress** (2026-10-02) |
+| **Evidence** | [ProjectConcord-A4-T7-Verification-Evidence.md](ProjectConcord-A4-T7-Verification-Evidence.md) |
+| **Acceptance** | PA A4 overall closeout disposition recorded — **not yet** |
+| **STOP** | **Await human MVR + PA A4 closeout** — does not authorize A3 |
 
 ---
 
@@ -719,7 +721,29 @@ Details: [ProjectConcord-A4-T5-Implementation-Notes.md](ProjectConcord-A4-T5-Imp
 
 Details: [ProjectConcord-A4-T6-Implementation-Notes.md](ProjectConcord-A4-T6-Implementation-Notes.md).
 
-**Next governance decision:** Whether to authorize **A4-T7 only** (verification / closeout). **A4-T7 NOT AUTHORIZED** until explicit PA disposition.
+**Next governance decision:** **Human execution of MVR-0003** and **PA A4 overall closeout** disposition. **A4-T7 not PA accepted/published** until explicit PA disposition.
+
+---
+
+## 34. A4-T7 verification status (2026-10-01 — local; not published)
+
+**PA disposition:** **A4-T7 AUTHORIZED — IN PROGRESS** (2026-10-01). **Not** CLOSED / PA ACCEPTED / PUBLISHED.
+
+| Item | Disposition |
+|------|-------------|
+| Pre-T7 baseline | `eecf0538bd4623d837c93d06439a39b2b6c0abe0` (A4-T6 publication) |
+| Release validation | `dotnet build/test -c Release` — **249** tests **PASS** (SDK **10.0.401**) |
+| MVR-0003 | [Record](../Verification/Records/MVR-0003-a4-engineering-agent-automated-transport.md); **Human execution status In progress** — Groups C/D human Pass; Group A/B blocked |
+| T7 evidence | [ProjectConcord-A4-T7-Verification-Evidence.md](ProjectConcord-A4-T7-Verification-Evidence.md) |
+| Cursor CLI probe | `agent` **2026.09.28-64d2043** @ `~/.local/bin/agent`; `agent acp` available; **auth not human-attested** |
+| `src/` remediation | **None** under T7 |
+| **Overall A4** | **Not closed** |
+| **A3** | **NOT AUTHORIZED** |
+| AAR-0002 | **Not created** (§19) |
+
+Details: [ProjectConcord-A4-T7-Verification-Evidence.md](ProjectConcord-A4-T7-Verification-Evidence.md).
+
+**Next governance decision:** Complete **MVR-0003** human MVTs; return package for **PA A4 overall closeout**. **No commit/push** until separate publication authorization.
 
 ---
 

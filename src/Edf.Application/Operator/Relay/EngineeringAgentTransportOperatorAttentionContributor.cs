@@ -50,18 +50,22 @@ public sealed class EngineeringAgentTransportOperatorAttentionContributor : IOpe
                     ?? preflight.Compatibility.RenderProtocol.Reason
                     ?? preflight.Compatibility.RoutingIntent.Reason));
         }
-        else
+        if (input.LastAutomatedTransportResult is { } last)
+        {
+            items.AddRange(MapTransportResult(last));
+        }
+
+        if (preflight.CanProceedToInitialization
+            && (preflight.Compatibility is null
+                || (preflight.Compatibility.HostContract.IsCompatible
+                    && preflight.Compatibility.RenderProtocol.IsCompatible
+                    && preflight.Compatibility.RoutingIntent.IsCompatible)))
         {
             var readiness = _selection.EvaluateRuntimeReadinessForAutomatedTransport(projectId, input.RoutingIntent);
             if (!readiness.CanUseForAutomatedTransport)
             {
                 items.Add(MapRuntimeUnavailable(readiness));
             }
-        }
-
-        if (input.LastAutomatedTransportResult is { } last)
-        {
-            items.AddRange(MapTransportResult(last));
         }
 
         foreach (var operation in _transportStore.GetRecoverableOperations(projectId))
@@ -213,6 +217,8 @@ public sealed class EngineeringAgentTransportOperatorAttentionContributor : IOpe
                 => OperatorAttentionCodes.EngineeringAgentInitializationFailure,
             EngineeringAgentProviderFailureKind.ForwardFailed
                 => OperatorAttentionCodes.EngineeringAgentForwardFailure,
+            EngineeringAgentProviderFailureKind.ModelConfigurationFailed
+                => OperatorAttentionCodes.EngineeringAgentModelConfigurationFailure,
             EngineeringAgentProviderFailureKind.ResultRetrievalFailed
                 => OperatorAttentionCodes.EngineeringAgentResultRetrievalFailure,
             EngineeringAgentProviderFailureKind.AmbiguousOutcome
