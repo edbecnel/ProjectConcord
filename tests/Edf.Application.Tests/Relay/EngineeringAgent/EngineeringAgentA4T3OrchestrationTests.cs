@@ -708,6 +708,10 @@ public class EngineeringAgentA4T3OrchestrationTests
 
         public IWorkflowInstanceStore WorkflowInstances => inner.WorkflowInstances;
 
+        public IWorkflowOriginStore WorkflowOrigins => inner.WorkflowOrigins;
+
+        public IWorkflowDependencyStore WorkflowDependencies => inner.WorkflowDependencies;
+
         public void ExecuteInTransaction(Action work) => inner.ExecuteInTransaction(work);
     }
 }

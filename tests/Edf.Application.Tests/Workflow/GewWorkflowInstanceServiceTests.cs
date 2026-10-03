@@ -247,7 +247,11 @@ public class GewWorkflowInstanceServiceTests
         var registry = new GewV1PrescribedWorkflowRegistry();
         var resolver = git ?? new MutableGitHeadCommitResolver(null);
         var workflow = new WorkflowInstanceService(persistence.WorkflowInstances, registry, resolver);
-        var recovery = new GovernedWorkStateRecoveryService(persistence.WorkflowInstances, registry);
+        var recovery = new GovernedWorkStateRecoveryService(
+            persistence.WorkflowInstances,
+            persistence.WorkflowOrigins,
+            persistence.WorkflowDependencies,
+            registry);
         return new TestHarness(persistence, project.ProjectId, workflow, recovery);
     }
 

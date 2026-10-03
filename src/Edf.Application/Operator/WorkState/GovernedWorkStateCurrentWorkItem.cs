@@ -11,4 +11,6 @@ public sealed record GovernedWorkStateCurrentWorkItem(
     TraversalOccurrenceId TraversalOccurrenceId,
     GovernedBaselineReference StoredGovernedBaseline,
     long ResourceVersion,
-    bool? HeadDriftsFromStoredBaseline);
+    bool? HeadDriftsFromStoredBaseline,
+    bool DependencyBlocked,
+    IReadOnlyList<WorkflowInstanceId> UnresolvedRequiredWorkflowInstanceIds);

@@ -45,7 +45,7 @@ public class WorkflowInstancePersistenceTests
         {
         }
 
-        Assert.Equal(4, ReadSchemaVersion(path));
+        Assert.Equal(5, ReadSchemaVersion(path));
         Assert.True(TableExists(path, "workflow_instance"));
         TryDelete(path);
     }

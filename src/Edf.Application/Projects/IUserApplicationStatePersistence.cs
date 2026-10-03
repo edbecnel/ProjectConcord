@@ -18,5 +18,9 @@ public interface IUserApplicationStatePersistence
 
     IWorkflowInstanceStore WorkflowInstances { get; }
 
+    IWorkflowOriginStore WorkflowOrigins { get; }
+
+    IWorkflowDependencyStore WorkflowDependencies { get; }
+
     void ExecuteInTransaction(Action work);
 }

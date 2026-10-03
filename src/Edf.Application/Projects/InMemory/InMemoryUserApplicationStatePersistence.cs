@@ -36,7 +36,9 @@ public sealed class InMemoryUserApplicationStatePersistence : IUserApplicationSt
         InMemoryUserPreferencesStore userPreferences,
         InMemoryRelayOperationalStore relayOperational,
         InMemoryTransportOperationStore? transportOperations,
-        InMemoryWorkflowInstanceStore? workflowInstances = null)
+        InMemoryWorkflowInstanceStore? workflowInstances = null,
+        InMemoryWorkflowOriginStore? workflowOrigins = null,
+        InMemoryWorkflowDependencyStore? workflowDependencies = null)
     {
         ProjectRegistry = projectRegistry ?? throw new ArgumentNullException(nameof(projectRegistry));
         UserPreferences = userPreferences ?? throw new ArgumentNullException(nameof(userPreferences));
@@ -44,6 +46,8 @@ public sealed class InMemoryUserApplicationStatePersistence : IUserApplicationSt
         TransportOperations = transportOperations
             ?? new InMemoryTransportOperationStore(relayOperational);
         WorkflowInstances = workflowInstances ?? new InMemoryWorkflowInstanceStore();
+        WorkflowOrigins = workflowOrigins ?? new InMemoryWorkflowOriginStore();
+        WorkflowDependencies = workflowDependencies ?? new InMemoryWorkflowDependencyStore();
     }
 
     public IProjectRegistry ProjectRegistry { get; }
@@ -55,6 +59,10 @@ public sealed class InMemoryUserApplicationStatePersistence : IUserApplicationSt
     public ITransportOperationStore TransportOperations { get; }
 
     public IWorkflowInstanceStore WorkflowInstances { get; }
+
+    public IWorkflowOriginStore WorkflowOrigins { get; }
+
+    public IWorkflowDependencyStore WorkflowDependencies { get; }
 
     public void ExecuteInTransaction(Action work)
     {

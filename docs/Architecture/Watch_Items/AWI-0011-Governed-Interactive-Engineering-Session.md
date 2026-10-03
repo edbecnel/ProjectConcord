@@ -24,6 +24,7 @@ While **Active**, this item:
 - **Does** record: SPEC-004 GEW/GIES consumption (**published** 2026-10-03 — [tranche plan](../../Handover/ProjectConcord-SPEC-004-GIES-Consumption-Reconciliation-Tranche-Plan.md)); SPEC-006 GIES interaction relay semantic contract (**published** 2026-10-03 — [tranche plan](../../Handover/ProjectConcord-SPEC-006-GIES-Interaction-Relay-Reconciliation-Tranche-Plan.md)); work-state recovery binding at relay (**published** 2026-10-03 — [recovery tranche plan](../../Handover/ProjectConcord-Durable-Governed-Work-State-Recovery-Binding-Tranche-Plan.md)); wire schemas and persistence/runtime ([GAP-055](../../Development/EDF_Gap_Register.md)).
 - **Does not** authorize A3, GIES runtime, or changes to A4/T7/MVR disposition.
 - **Does not** merge GIES Interaction Hold with [PCON-0003](../PCON-0003-Governed-Pause-Continuation-and-Resume.md) without separate PA decision.
+- **PA exchange cross-track (deferred):** When arbitrary Project Architect conversational prose is imported without a canonical PA response/directive, **GIES** may later support clarification and human-confirmed resolution — **fallback** to the preferred **ProjectConcord-mediated PA Exchange Contract** path documented in [AWI-0010 §B.2](AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md#b2-project-architect-exchange-contract-deferred--capture-2026-10-03) (`730c89c8`). **Not** authorized in M7a-WF-1b or current GIES runtime tranches.
 
 ## Promotion path
 

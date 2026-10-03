@@ -23,23 +23,40 @@ public sealed class GovernedWorkStateOperatorProjectionService
         string? projectRootAbsolutePath)
     {
         var recovery = _recovery.RecoverForProject(projectId);
+        var pendingByBlocked = recovery.Dependencies
+            .Where(d => d.Status == WorkflowDependencyStatus.Pending)
+            .GroupBy(d => d.BlockedWorkflowInstanceId)
+            .ToDictionary(g => g.Key, g => g.Select(d => d.RequiredWorkflowInstanceId).ToList());
+
         var currentWork = recovery.ActiveInstances
-            .Select(i => new GovernedWorkStateCurrentWorkItem(
-                i.InstanceId,
-                i.WorkflowId,
-                i.DefinitionVersion,
-                i.ProfileId,
-                i.TopologyPlaceId,
-                i.TraversalOccurrenceId,
-                i.GovernedBaseline,
-                i.ResourceVersion,
-                TryComputeHeadDrift(projectRootAbsolutePath, i.GovernedBaseline)))
+            .Select(i =>
+            {
+                IReadOnlyList<WorkflowInstanceId> unresolved = pendingByBlocked.TryGetValue(i.InstanceId, out var required)
+                    ? required
+                    : Array.Empty<WorkflowInstanceId>();
+                return new GovernedWorkStateCurrentWorkItem(
+                    i.InstanceId,
+                    i.WorkflowId,
+                    i.DefinitionVersion,
+                    i.ProfileId,
+                    i.TopologyPlaceId,
+                    i.TraversalOccurrenceId,
+                    i.GovernedBaseline,
+                    i.ResourceVersion,
+                    TryComputeHeadDrift(projectRootAbsolutePath, i.GovernedBaseline),
+                    unresolved.Count > 0,
+                    unresolved);
+            })
             .ToList();
+
+        var anyDependencyWait = currentWork.Any(w => w.DependencyBlocked);
 
         return new GovernedWorkStateOperatorProjection(
             currentWork,
-            ProjectionAvailability.Unavailable,
-            GovernedWorkStateUnavailableReasons.NotImplementedInM7aWf1,
+            anyDependencyWait ? ProjectionAvailability.Available : ProjectionAvailability.Unavailable,
+            anyDependencyWait
+                ? GovernedWorkStateUnavailableReasons.WorkflowDependencyWait
+                : GovernedWorkStateUnavailableReasons.NotImplementedInM7aWf1,
             ProjectionAvailability.Unavailable,
             GovernedWorkStateUnavailableReasons.NotImplementedInM7aWf1);
     }

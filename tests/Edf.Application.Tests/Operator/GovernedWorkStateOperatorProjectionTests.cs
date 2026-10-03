@@ -1,6 +1,7 @@
 using Edf.Application.Composition;
 using Edf.Application.Operator.WorkState;
 using Edf.Application.Projects.InMemory;
+using Edf.Application.Workflow;
 using Edf.Domain.Projects;
 using Edf.Domain.Relay;
 
@@ -45,5 +46,29 @@ public class GovernedWorkStateOperatorProjectionTests
         Assert.Single(projection.CurrentWork);
         Assert.Equal(ProjectionAvailability.Unavailable, projection.WaitingOnAvailability);
         Assert.Equal(ProjectionAvailability.Unavailable, projection.NextActionAvailability);
+    }
+
+    [Fact]
+    public void DependencyBlocked_ExposesWaitingOn_ForBlockedInstance()
+    {
+        var persistence = new InMemoryUserApplicationStatePersistence();
+        var project = persistence.ProjectRegistry.RegisterNewProjectAtLocator(
+            ProjectLocator.FromPath(Directory.CreateTempSubdirectory("edf-wf-proj-").FullName),
+            "blocked",
+            DateTimeOffset.UtcNow);
+        var services = WorkflowApplicationServicesFactory.Create(persistence);
+        var a = services.WorkflowInstances.CreateGewInstance(project.ProjectId, GovernedCorrelationId.New(), null);
+        var b = services.WorkflowInstances.CreateGewInstance(project.ProjectId, GovernedCorrelationId.New(), null);
+        services.WorkflowRelationships.RecordGovernedBlockingDependency(
+            a.InstanceId,
+            b.InstanceId,
+            GovernedWorkflowMutationAuthorityTestSupport.ForTestHarness(GovernedCorrelationId.New()));
+
+        var projection = services.WorkStateOperatorProjection.ProjectForProject(project.ProjectId, null);
+
+        Assert.Equal(ProjectionAvailability.Available, projection.WaitingOnAvailability);
+        var workA = projection.CurrentWork.Single(w => w.InstanceId == a.InstanceId);
+        Assert.True(workA.DependencyBlocked);
+        Assert.Contains(b.InstanceId, workA.UnresolvedRequiredWorkflowInstanceIds);
     }
 }

@@ -12,7 +12,7 @@
 | **Related ADRs** | [ADR-0020](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) (**Accepted** 2026-10-01 — operator projections, shell, navigation); [ADR-0016](../ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md); [ADR-0015](../ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md); [ADR-0019](../ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) (**Accepted** 2026-10-01); [ADR-0018](../ADRs/ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md) (**Accepted** 2026-10-01); [ADR-0014](../ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md) (**Proposed** — attestation direction only, not acceptance) |
 | **Last architecture update** | 2026-10-01 — A+C operator/shell/navigation **Accepted** in [ADR-0020](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md); structured authoring → [AWI-0009](AWI-0009-Governed-Structured-Authoring-Form-Runtime-and-Form-Editor.md) |
 | **Related specs** | [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md); [SPEC-005](../../Specifications/features/SPEC-005-manual-verification-record-consumption.md) |
-| **Cross-reference** | [AWI-0009](AWI-0009-Governed-Structured-Authoring-Form-Runtime-and-Form-Editor.md) (structured authoring — deferred); [AWI-0003](AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md); [AWI-0005](AWI-0005-Manual-Verification-Records.md); [PCON-0004](../PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md) |
+| **Cross-reference** | [AWI-0009](AWI-0009-Governed-Structured-Authoring-Form-Runtime-and-Form-Editor.md) (structured authoring — deferred); [AWI-0010](AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md) (workflow graph / GEW runtime — backend); [AWI-0003](AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md); [AWI-0005](AWI-0005-Manual-Verification-Records.md); [PCON-0004](../PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md) |
 
 ---
 
@@ -63,6 +63,32 @@ The P0 long vertically scrollable relay panel is **not** an acceptable target pr
 
 **Disposition (2026-10-01, A+C tranche):** Workflow-local **staged/stepper** presentation within a broader Project **workspace** — not a modal linear wizard requirement ([ADR-0020](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §5; [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §17). Raw relay transport remains progressive disclosure only.
 
+### B.1 Hierarchical Workflow View (deferred — capture 2026-10-03)
+
+**Handover capture:** `c3b1d909-7a0e-4a32-b486-fd1c12afab17` (supplements operator UX direction; **does not** authorize implementation).
+
+**Future capability:** An operator-visible **Hierarchical Workflow View** that helps users navigate **WorkflowInstances** and their **governed relationships** that arose during engineering work (conceptual example: A → B → D and A → C). The view **may** surface origin/discovery links, blocking dependencies, **Satisfied** / **Released** dependency history, lifecycle/topology state, and later relationship kinds.
+
+**Authoritative model vs visualization:**
+
+```text
+Authoritative workflow graph (instances + relationship records)
+    -> governed operator projections ([ADR-0020](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md); [PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) §2.7)
+    -> hierarchical / tree-like visualization (derived only)
+```
+
+The graph is **not** necessarily a tree. The UI **SHALL NOT** redefine authoritative relationships as parent/child **ownership**. Because instances may have **multiple origins**, **multiple blockers**, and **shared dependencies**, the presentation **may** require repeated/reference nodes, cross-links, relationship indicators, and expansion/navigation — not a single parent per node.
+
+**Node inspection (future):** Selecting a node opens inspection of that **WorkflowInstance** (identity, definition/version, lifecycle, topology place, traversal occurrence, baseline, origins, dependencies and status, **Waiting On**, provenance/history, and later governed dimensions). **Inspection ≠ mutation:** visibility and selection **do not** grant authority to edit, delete, release, advance, or otherwise mutate; command availability must be derived from **governed operation policy** (Available / Unavailable / Requires authorization / Requires attention — or equivalent), not from display alone (`node visible ≠ node mutable`; `node selected ≠ mutation authorized`).
+
+**Delete semantics (future investigation):** Do **not** assume arbitrary physical deletion of governed **WorkflowInstance** rows. History and provenance are preserved; “delete” in the UI may map to governed operations such as cancel, supersede, abandon, archive, or draft removal — **not** convenience erasure of historical state.
+
+**Relationship operations (future):** Governed transitions such as dependency **Pending → Released** (when policy permits) **mutate relationship state**; they **do not** imply physical deletion of **Satisfied** / **Released** records where inspection/provenance requires retention ([M7a-WF-1b](../../Development/EDF_Gap_Register.md#gap-054--workflow-framework-runtime-and-effective-configuration) backend scope).
+
+**Visual status (deferred design):** Eventually distinguish Active, dependency-blocked vs dependency-unblocked, Completed, future Suspended/Cancelled/Superseded if defined, Pending / Satisfied / Released dependencies, and Attention — exact visuals TBD.
+
+**Explicit non-goals for current tranches:** **No** Desktop workflow tree, graph editor, drag/drop graph editing, delete controls, lifecycle command UI, or visualization implementation in **M7a-WF-1b** (backend graph/projection only). Implementation requires a **separate** PA-governed product-shell / UX tranche after authoritative graph data exists ([AWI-0010](AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md)).
+
 ### C. Durable governed relay/package working state
 
 Useful governed handover/package working material should survive application close/reopen where appropriate.
@@ -106,8 +132,11 @@ Human authority and explicit authorization boundaries are preserved. ProjectConc
 ### Target governed interaction model
 
 ```text
-Project Architect  ↔  ProjectConcord  ↔  Engineering Agent
+Human  ↔  ProjectConcord  ↔  Project Architect provider
+ProjectConcord  ↔  Engineering Agent
 ```
+
+**Preferred PA path (deferred — capture `730c89c8`):** The human asks ProjectConcord in ordinary language; ProjectConcord composes the canonical **PA Exchange Contract** request and handles import/validation of structured PA responses. Manual ChatGPT copy/paste remains a supported **transport**, not a separate governance architecture. Normative follow-through: [AWI-0010 §B.2](AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md#b2-project-architect-exchange-contract-deferred--capture-2026-10-03). **Not authorized** in current tranches.
 
 ProjectConcord supplies (when implemented): canonical context retrieval; governed operational continuity; work-package and review-package construction; authorization representation; STOP boundaries; provenance; evidence intake/projection. Authority remains with applicable human governance roles.
 
@@ -169,7 +198,8 @@ Handovers remain **valid** as projection/transport representations. They are **n
 
 - `src/` product shell, navigation, projections, Markdown rendering, terminology projection;
 - operational draft persistence schema and behavior;
-- structured authoring per [AWI-0009](AWI-0009-Governed-Structured-Authoring-Form-Runtime-and-Form-Editor.md).
+- structured authoring per [AWI-0009](AWI-0009-Governed-Structured-Authoring-Form-Runtime-and-Form-Editor.md);
+- **Hierarchical Workflow View** (§B.1) — deferred; depends on workflow instance + relationship runtime ([AWI-0010](AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md)).
 
 Subsequent PA-governed tranches are required before `src/` implementation.
 
@@ -179,6 +209,7 @@ Subsequent PA-governed tranches are required before `src/` implementation.
 - Operational relay paste buffers treated as canonical artifacts.
 - MVR or gate state mutated without human-attestation boundary ([ADR-0014](../ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md)).
 - User-facing shorthand (PA, EA, PAR) proliferating in Desktop without glossary or expansion.
+- Hierarchical workflow UI treated as **authoritative** structure (tree-as-source-of-truth) rather than a **projection** over the workflow graph ([PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) §2.7; [ADR-0024](../ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) §12).
 
 ## Parent
 
