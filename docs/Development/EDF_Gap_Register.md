@@ -5,7 +5,7 @@
 > **Status:** Draft  
 > **Owner:** ProjectConcord  
 > **Applies To:** Deterministic EDF Engine design  
-> **Last Reviewed:** 2026-10-03 (GIES architecture publication — GAP-055)  
+> **Last Reviewed:** 2026-10-03 (SPEC-004 GEW/GIES consumption publication — GAP-055)  
 > **Authoritative:** Yes — interim policies reference ADRs where binding
 
 ## Purpose
@@ -491,7 +491,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 |---|---|
 | **Source** | [PCON-0006](../Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md) (**Accepted** 2026-10-03); [ADR-0025](../Architecture/ADRs/ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md) (**Accepted** 2026-10-03); [AWI-0011](../Architecture/Watch_Items/AWI-0011-Governed-Interactive-Engineering-Session.md) |
 | **Question** | How does ProjectConcord implement **Interaction Hold**, context/set/item lifecycle, policy-governed **routing**, pre-resolution against authoritative state, operational **provenance**, recovery after app/provider interruption, and integration with relay STOP/Attention — without a chat platform or forms engine? |
-| **Interim policy** | Normative architecture **published** 2026-10-03 (PCON-0006, ADR-0025); persistence schema and APIs **not implemented**; **no** `src/` implementation; relates to [GAP-027](#gap-027--developmentworkauthorization-schema-and-identity), [GAP-054](#gap-054--workflow-framework-runtime-and-effective-configuration), [AWI-0002](../Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md). |
+| **Interim policy** | GIES architecture and SPEC-004 GEW consumption **published** 2026-10-03 ([PCON-0006](../Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md), [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md), [tranche plan](../Handover/ProjectConcord-SPEC-004-GIES-Consumption-Reconciliation-Tranche-Plan.md)); runtime/persistence **not implemented**; **no** `src/` implementation; relates to [GAP-027](#gap-027--developmentworkauthorization-schema-and-identity), [GAP-054](#gap-054--workflow-framework-runtime-and-effective-configuration), [AWI-0002](../Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md). |
 
 ---
 
