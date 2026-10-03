@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Edf.Application" />
+    <InternalsVisibleTo Include="Edf.Application.Tests" />
+    <InternalsVisibleTo Include="Edf.ProjectServices.Tests" />
+  </ItemGroup>
+
 </Project>

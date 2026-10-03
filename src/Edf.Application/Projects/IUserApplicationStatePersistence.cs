@@ -16,5 +16,7 @@ public interface IUserApplicationStatePersistence
 
     ITransportOperationStore TransportOperations { get; }
 
+    IWorkflowInstanceStore WorkflowInstances { get; }
+
     void ExecuteInTransaction(Action work);
 }

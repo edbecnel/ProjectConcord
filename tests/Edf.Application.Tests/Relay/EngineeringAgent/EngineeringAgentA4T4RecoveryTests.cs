@@ -456,6 +456,8 @@ public class EngineeringAgentA4T4RecoveryTests
 
         public ITransportOperationStore TransportOperations => transport;
 
+        public IWorkflowInstanceStore WorkflowInstances => inner.WorkflowInstances;
+
         public void ExecuteInTransaction(Action work) => inner.ExecuteInTransaction(work);
     }
 }

@@ -706,6 +706,8 @@ public class EngineeringAgentA4T3OrchestrationTests
 
         public ITransportOperationStore TransportOperations => transport;
 
+        public IWorkflowInstanceStore WorkflowInstances => inner.WorkflowInstances;
+
         public void ExecuteInTransaction(Action work) => inner.ExecuteInTransaction(work);
     }
 }

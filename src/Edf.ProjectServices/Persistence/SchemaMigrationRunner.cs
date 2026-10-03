@@ -43,6 +43,12 @@ internal static class SchemaMigrationRunner
         if (fromVersion < Migration003TransportOperations.Version)
         {
             Migration003TransportOperations.Apply(connection, null);
+            fromVersion = Migration003TransportOperations.Version;
+        }
+
+        if (fromVersion < Migration004WorkflowInstances.Version)
+        {
+            Migration004WorkflowInstances.Apply(connection, null);
         }
     }
 

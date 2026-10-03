@@ -13,6 +13,7 @@ public sealed class SqliteUserApplicationStatePersistence : IUserApplicationStat
     private readonly SqliteUserPreferencesStoreAdapter _preferences;
     private readonly SqliteRelayOperationalStoreAdapter _relay;
     private readonly SqliteTransportOperationStoreAdapter _transportOperations;
+    private readonly SqliteWorkflowInstanceStoreAdapter _workflowInstances;
 
     public SqliteUserApplicationStatePersistence(SqliteUserApplicationStateStore store)
     {
@@ -21,6 +22,7 @@ public sealed class SqliteUserApplicationStatePersistence : IUserApplicationStat
         _preferences = new SqliteUserPreferencesStoreAdapter(store);
         _relay = new SqliteRelayOperationalStoreAdapter(store);
         _transportOperations = new SqliteTransportOperationStoreAdapter(store);
+        _workflowInstances = new SqliteWorkflowInstanceStoreAdapter(store);
     }
 
     public IProjectRegistry ProjectRegistry => _registry;
@@ -30,6 +32,8 @@ public sealed class SqliteUserApplicationStatePersistence : IUserApplicationStat
     public IRelayOperationalStore RelayOperational => _relay;
 
     public ITransportOperationStore TransportOperations => _transportOperations;
+
+    public IWorkflowInstanceStore WorkflowInstances => _workflowInstances;
 
     public void ExecuteInTransaction(Action work) => _store.ExecuteInTransaction(work);
 
