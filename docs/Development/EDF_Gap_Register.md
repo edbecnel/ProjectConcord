@@ -5,7 +5,7 @@
 > **Status:** Draft  
 > **Owner:** ProjectConcord  
 > **Applies To:** Deterministic EDF Engine design  
-> **Last Reviewed:** 2026-10-03 (durable work-state recovery binding publication — GAP-043/054)  
+> **Last Reviewed:** 2026-10-03 (M7a-WF-1-doc GEW v1 topology / traversal semantics — GAP-054)  
 > **Authoritative:** Yes — interim policies reference ADRs where binding
 
 ## Purpose
@@ -483,7 +483,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 |---|---|
 | **Source** | [PCON-0005](../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03); [ADR-0024](../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03); [AWI-0010](../Architecture/Watch_Items/AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md) |
 | **Question** | How does ProjectConcord implement prescribed-workflow **registry**, **definition versioning**, **effective-configuration resolver** (invariant + bounded + policy-derived), invalid-configuration rejection, and workflow/profile **resolution** at relay and operator-projection boundaries without a generic BPM engine? |
-| **Interim policy** | SPEC-004 GEW reconciliation **published** 2026-10-03; [PCON-0005](../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) **FW-8** binds durable workflow-instance/sync position for recovery ([recovery binding tranche](../Handover/ProjectConcord-Durable-Governed-Work-State-Recovery-Binding-Tranche-Plan.md) **published** 2026-10-03); runtime/registry/resolver **not implemented**; **no** A3 authorization. |
+| **Interim policy** | SPEC-004 GEW reconciliation **published** 2026-10-03; [PCON-0005](../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) **FW-8** + §2.7 and [ADR-0024](../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) §9–§13 define **GEW v1** topology places, traversal (`TopologyPlaceId`, `TraversalOccurrenceId`), and orthogonal STOP/sync/AEI separation ([M7a-WF-1-doc tranche](../Handover/ProjectConcord-M7a-WF-1-doc-GEW-Topology-Documentation-Tranche-Plan.md) — **pending PA publication**); **runtime** registry, persistence, resolver, and effective-configuration implementation **not authorized**; **no** A3 authorization. |
 
 ### GAP-055 — Governed Interactive Engineering Session runtime and persistence
 

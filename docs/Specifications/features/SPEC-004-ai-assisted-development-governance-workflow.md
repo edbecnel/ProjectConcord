@@ -11,7 +11,7 @@
 | **Owner** | ProjectConcord |
 | **Normative** | Yes — product behavior requirements when implemented |
 | **Implementation** | **Not implemented** — requirements define future M7+ capability unless separately authorized |
-| **Last Reviewed** | 2026-10-03 (GEW consumption of GIES — **published** on `main`; Project Architect acceptance; [tranche plan](../../Handover/ProjectConcord-SPEC-004-GIES-Consumption-Reconciliation-Tranche-Plan.md)) |
+| **Last Reviewed** | 2026-10-03 (GEW v1 topology / durable traversal — [M7a-WF-1-doc](../../Handover/ProjectConcord-M7a-WF-1-doc-GEW-Topology-Documentation-Tranche-Plan.md); GEW/GIES consumption published earlier same day) |
 | **Governing decisions** | [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) (Accepted), [ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) (Accepted 2026-09-29), [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (Accepted 2026-09-29 — Software Development governed workflow), [ADR-0019](../../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) (Accepted 2026-10-01 — product shell / local-first / sync), [ADR-0006](../../Architecture/ADRs/ADR-0006-AI-Boundary.md), [ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md), [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03), [ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03), [PCON-0006](../../Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md) (**Accepted** 2026-10-03), [ADR-0025](../../Architecture/ADRs/ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md) (**Accepted** 2026-10-03 — GIES layer allocation) |
 | **Architecture scope** | **Software Development / Engineering Extension** — not ProjectConcord Core neutrality ([AMD-0003](../../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md)) |
 | **Discovery source** | [PCON-0001](../../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) |
@@ -125,6 +125,12 @@ Profiles are **GEW-local**, **not** global ProjectConcord modes, and **not** qua
 
 **Open (normative detail deferred):** per-profile minimum synchronization sets and evidence-class floors beyond what GEW invariants already require are **not** fully enumerated in this specification; whether **Accelerated** normatively permits a combined planning/implementation **authorization boundary** for some bounded work units (distinct from sync/evidence compression) is **not** fully specified here — future governed policy or amendments **MAY** define that without using bounded configuration to invent authorization law.
 
+### GEW v1 topology and durable position (recovery cross-reference)
+
+Normative **GEW v1** definition places, transitions, and **workflow-instance traversal** (`TopologyPlaceId`, `TraversalOccurrenceId`) are defined in [ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) §9–§13. Framework separation of definition topology, instance traversal, orthogonal STOP/sync/AEI state, and derived projections is in [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) §2.7.
+
+When implemented, durable recovery of governed work state **SHALL** use those semantics for **FW-8** / operator recovery ([ADR-0020](../../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §15) — **not** PA/EA chat history. This specification **does not** prescribe runtime registry APIs or SQLite layout ([GAP-054](../../Development/EDF_Gap_Register.md)).
+
 ## Configuration classes and effective configuration
 
 For GEW work units, operational semantics **SHALL** align with [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) §3:
@@ -134,7 +140,7 @@ For GEW work units, operational semantics **SHALL** align with [PCON-0005](../..
 | **Invariant** | PC-AIGOV-001–004 (where applicable), 007, 014, 016; framework FW-1–FW-7 |
 | **Bounded Configuration** | DWA scope and authorized operations within limits already established by workflow, profile, and policy; baseline reference (PC-AIGOV-009) — **SHALL NOT** weaken, remove, invent, or silently redefine **authorization law** (PC-AIGOV-004) |
 | **Policy-Derived** | Linked MVR / human verification when F-layer policy requires; risk- or scope-derived evidence |
-| **Instance State** | STOP (PC-AIGOV-007); **Governed Interaction Hold** ([PCON-0006](../../Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md)); workflow position; pending disposition — **not** configuration knobs |
+| **Instance State** | Topology traversal and orthogonal STOP/sync/AEI/control state per [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) §2.7; **Governed Interaction Hold** ([PCON-0006](../../Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md)); pending disposition — **not** configuration knobs |
 
 There is **no** unrestricted workflow-configuration surface. A lower layer **MUST NOT** weaken an inherited governance constraint.
 

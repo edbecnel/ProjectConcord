@@ -75,7 +75,8 @@ Deliberately **small**. Each item classified:
 | Profile-required **synchronization set** | Profile-fixed | Which human sync points cannot be omitted |
 | **Evidence-class floors** | Profile-fixed + bounded | Minimum evidence categories per profile |
 | Linked **MVR** / human verification | Policy-derived | F-layer; not optional when linked |
-| STOP / instance position | Instance state | Not configuration |
+| Topology traversal (`TopologyPlaceId`, `TraversalOccurrenceId`) | Instance state | Not configuration — see §10 |
+| STOP; sync satisfaction; active AEI | Orthogonal instance state | Not topology places — see §11 |
 | Investigation / read-only work | **Not a profile** — see §5 |
 
 No speculative knobs (reviewer counts, N-of-M, org CAB) in v1 architecture.
@@ -122,6 +123,83 @@ GEW instances **SHALL** consume [SPEC-006](../../Specifications/features/SPEC-00
 
 Handover packages **MAY** include `WorkflowId`, `ProfileId`, and effective-configuration **references** for transport; authority remains DWA + canonical F-layer.
 
+### 9. GEW v1 minimum definition topology (normative)
+
+**DefinitionVersion** `1` for `concord.governed-engineering` **SHALL** include the following **topology places** (stable identifiers). These are **governance-region** places — **not** a PA/EA conversational stage sequence and **not** the illustrative [PCON-0001](../PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) audit timeline.
+
+| TopologyPlaceId | Meaning |
+|---|---|
+| `gew.v1.place.intake` | Instance is bound/created but has **not** yet entered a governed execution region. |
+| `gew.v1.place.planning-governed` | Instance is operating under applicable **planning** governance / authorization law ([PC-AIGOV-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) theme). |
+| `gew.v1.place.implementation-governed` | Instance is operating under applicable **implementation** governance / authorization law. |
+| `gew.v1.place.post-submission-governed` | Governed work has been **submitted** and is in post-submission / review / **acceptance** region — **without** implying authorization for subsequent work ([PC-AIGOV-014](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) theme). |
+
+**Minimum permitted transitions** (all subject to applicable governance, authorization, **Control**, evidence, synchronization, STOP, and workflow rules):
+
+| From | To | When |
+|---|---|---|
+| `gew.v1.place.intake` | `gew.v1.place.planning-governed` | Governed transition into planning region |
+| `gew.v1.place.planning-governed` | `gew.v1.place.implementation-governed` | When applicable governed authorization/control permits |
+| `gew.v1.place.implementation-governed` | `gew.v1.place.post-submission-governed` | Governed submission into post-submission region |
+| `gew.v1.place.post-submission-governed` | `gew.v1.place.planning-governed` | Remediation / replanning loop |
+| `gew.v1.place.post-submission-governed` | `gew.v1.place.implementation-governed` | Rework loop |
+| `gew.v1.place.post-submission-governed` | *(terminal completion)* | Instance lifecycle **Completed** / superseded per policy — not an additional conversational “stage” |
+
+Additional branches, profile-specific attachments, and evidence/sync bindings **MAY** refine this graph in future governed amendments; they **MUST NOT** redefine these place identities without a definition version increment.
+
+Framework **SynchronizationPoint**, **AuthorizedExecutionInterval**, **EvidenceRequirement**, and **Control** primitives ([PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) §6) **MAY** be associated with places or transitions in the GEW v1 registry — they **MUST NOT** be modeled as interchangeable topology place names (§11).
+
+### 10. Workflow-instance traversal state
+
+A **WorkflowInstance** **SHALL** record durable traversal state comprising at minimum:
+
+| Field | Semantics |
+|---|---|
+| **`TopologyPlaceId`** | Current place in the GEW v1 definition graph (§9). |
+| **`TraversalOccurrenceId`** | **Opaque stable identity** for **this** visit to the current place. A **new** occurrence identity **SHALL** be established whenever the instance **enters or re-enters** a topology place. Re-entry to the same `TopologyPlaceId` **SHALL** use a **distinct** `TraversalOccurrenceId`. Occurrence values **MUST NOT** imply ordering, chronology, or global/per-place sequence. Encoding (for example UUID) is implementation-defined. |
+
+**Example:** Instance `WF-A` at `gew.v1.place.implementation-governed` with occurrence `X`. After leaving and re-entering the same place, occurrence **`Y`** (distinct from `X`) — without any implication that `Y` is “later” than `X` in a total order.
+
+This model **SHALL** support loops, revisitation, branching, and merging without a global synchronization or traversal ordinal ([PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) §2.7).
+
+### 11. Orthogonal governed state (STOP, synchronization, AEI)
+
+The following **SHALL** remain **semantically separate** from `TopologyPlaceId` / `TraversalOccurrenceId`:
+
+| Concern | Architecture |
+|---|---|
+| **SynchronizationPoint** | A framework **primitive**, not a universal GEW topology place. Definitions **MAY** attach distinct synchronization points to places/transitions. Instance state **SHALL** identify applicable synchronization requirements and satisfaction **separately** from current topology place. |
+| **AuthorizedExecutionInterval** | **Distinct** from topology position. An interval **MAY** span applicable places/transitions per definition. Active/inactive/applicable interval state **MUST NOT** be encoded by moving the instance into a place named for “authorized execution.” |
+| **STOP** | **Orthogonal** governed state affecting advancement ([PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) §2.7; [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §14). STOP **MUST NOT** be modeled as a topology place. Recovery **SHALL** be capable of understanding **place + occurrence + applicable STOP state** without conflating dimensions. This **does not** implement [PCON-0003](../PCON-0003-Governed-Pause-Continuation-and-Resume.md) governed pause. |
+
+Physical persistence layout (columns, JSON, related tables) is **not** prescribed here; implementations **SHALL** preserve recoverability of these semantic categories ([GAP-054](../../Development/EDF_Gap_Register.md)).
+
+### 12. Multiple workflow instances; origin and blocking (architecture only)
+
+The following **SHALL** apply to GEW and the wider workflow framework ([PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) §2.7; [ADR-0020](ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §2):
+
+- A Project **MAY** have **zero or more** **Active** `WorkflowInstance` records; multiple Active instances are **valid**; there is **no** globally primary Active instance required for recovery.
+- **Current Work** **MAY** be a **set** of Active instances; operator **focus/selection** is projection/operator state — **not** workflow authority.
+- **Spawning** one workflow instance from another **does not** by itself imply **blocking**; **origin/provenance** and **blocking dependency** are **distinct** relationship kinds (implementation deferred).
+- **Blocking** is an **explicit** governed relationship; **lifecycle** (`Active`, `Completed`, `Superseded`) is **distinct** from blocked-for-advancement; **Active + blocked-for-advancement** is valid.
+- Dependencies **MAY** be recursive; multiple workflows **MAY** depend on one workflow; one workflow **MAY** have multiple blockers; parallel non-blocking Active workflows are valid; future dependency graphs **SHALL** reject cycles where dependency semantics require satisfiability.
+- **Actionable frontier** is **derived** from authoritative instance state, dependencies, controls/authorization, STOP, and other governance — **not** persisted as a convenience flag.
+
+Relationship persistence and resolution algorithms are **not** authorized in this ADR amendment ([GAP-054](../../Development/EDF_Gap_Register.md)).
+
+### 13. Future relay applicability (PC-PAR-025 compatibility)
+
+Future [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) **PC-PAR-025** applicability **SHALL** be able to bind artifacts to traversal identity using at minimum:
+
+- `WorkflowInstanceId`
+- `WorkflowDefinitionVersion`
+- `TopologyPlaceId`
+- `TraversalOccurrenceId`
+
+plus applicable provenance/correlation and governance state.
+
+A package produced for traversal occurrence **`X`** **SHALL NOT** become actionable for advancement merely because the same workflow later returns to the same `TopologyPlaceId` under occurrence **`Y`**. PC-PAR-025 runtime enforcement remains **not implemented** ([GAP-043](../../Development/EDF_Gap_Register.md)).
+
 ## Consequences
 
 ### Positive
@@ -144,3 +222,4 @@ Handover packages **MAY** include `WorkflowId`, `ProfileId`, and effective-confi
 - [ADR-0013](ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md), [ADR-0020](ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md)
 - [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md), [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)
 - [AWI-0004](../Watch_Items/AWI-0004-Governed-Maintenance-Fast-Path.md), [AWI-0010](../Watch_Items/AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md)
+- [M7a-WF-1-doc tranche plan](../../Handover/ProjectConcord-M7a-WF-1-doc-GEW-Topology-Documentation-Tranche-Plan.md)

@@ -102,6 +102,23 @@ Topology describes **SynchronizationPoints**, **AuthorizedExecutionIntervals**, 
 
 The framework **MUST NOT** assume a linear stage list. **Stages** are workflow-specific **presentation labels** only; there is **no** global reusable Stage library (§8).
 
+### 2.7 Durable topology position (definition, traversal, orthogonal state)
+
+[FW-8](#5-framework-invariants) and [ADR-0020](ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §15 require recoverable **workflow-instance** state without PA/EA chat history. The following **SHALL** be distinguished — they **MUST NOT** be collapsed into a single mutually exclusive “position” label:
+
+| Layer | Meaning | Canonical? |
+|---|---|---|
+| **A. Workflow-definition topology** | For a prescribed workflow `WorkflowId` + `DefinitionVersion`: stable **topology places** and **permitted transitions** (including branches, loops, and merge points). Framework **primitives** (§6) **MAY** be **associated** with places or transitions — they are **not** substitutes for place identity. | Definition registry / manifest |
+| **B. Workflow-instance traversal state** | Where a particular **WorkflowInstance** is in that definition graph: **`TopologyPlaceId`** plus **`TraversalOccurrenceId`** — an **opaque stable identity** established whenever the instance **enters or re-enters** a topology place. Re-entry to the same place **SHALL** yield a **new** occurrence identity. Occurrence identities **MUST NOT** be interpreted as first/second ordering, per-place counters, global sequence, or progress ordinals. | **Yes** (operational persistence) |
+| **C. Orthogonal governed state** | Facts that affect advancement and recovery but **are not** topology places — for example **STOP**; **synchronization** requirement/satisfaction state; **AuthorizedExecutionInterval** active/applicable state; future **DevelopmentWorkAuthorization** / **Control** correlation ([GAP-027](../Development/EDF_Gap_Register.md)). Multiple dimensions **MAY** apply simultaneously (for example at place *P* while STOP is active and an AEI is open). | **Yes** — semantic categories; physical storage is implementation-defined |
+| **D. Derived projections** | Operator labels, relay package-kind “stages” ([SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) PC-PAR-023), “blocked”, actionable frontier, operator focus/selection — **MUST NOT** become topology places merely because they are useful to display ([ADR-0020](ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §2, §8). | **No** |
+
+**GEW v1** normative places and transitions are defined in [ADR-0024](ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) §9–§10. [PCON-0001](PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) audit timelines and conversational PA/EA sequences **SHALL NOT** be promoted to normative topology.
+
+**No global or per-place synchronization/traversal ordinal** is required by this framework. Loops, revisitation, branching, merging, multiple active instances, and future workflow **origin** and **blocking** relationships **SHALL** remain compatible with place + occurrence identity ([ADR-0024](ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) §12–§13).
+
+**Persistence authority (current phase):** governed operational facts **SHALL** be durable at the **running installation’s** local operational persistence boundary ([ADR-0019](ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)); domain semantics **SHALL NOT** depend unnecessarily on SQLite physical ownership so a future synchronization/shared-authority layer ([GAP-049](../Development/EDF_Gap_Register.md)) can be introduced without redefining `WorkflowInstance` semantics. Implementation: [GAP-054](../Development/EDF_Gap_Register.md).
+
 ---
 
 ## 3. Operational configuration classes
@@ -111,7 +128,7 @@ The framework **MUST NOT** assume a linear stage list. **Stages** are workflow-s
 | **Invariant** | Rules that cannot be altered within the effective governed workflow. May originate at framework, prescribed workflow, or selected profile level. |
 | **Bounded Configuration** | Explicitly exposed settings with types/ranges/enumerations constrained by governing workflow/profile semantics. |
 | **Policy-Derived** | Behavior from authoritative governed policy/context (F-layer, risk, scope, linked MVR, repo facts) — not manually selected. |
-| **Instance State** | Execution position, loops, STOP — **not** configuration. |
+| **Instance State** | Topology traversal (§2.7 **B**); orthogonal STOP/sync/AEI/control state (§2.7 **C**) — **not** configuration. |
 
 There is **no** unconstrained “workflow-configurable” class. A lower layer **MUST NOT** weaken an inherited governance constraint.
 
@@ -282,6 +299,7 @@ Framework-level **Governed Interactive Engineering Session** architecture is def
 - [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md), [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)
 - [PCON-0001](PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) (historical full-loop reference — not the only topology)
 - [AWI-0010](Watch_Items/AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md), [GAP-054](../Development/EDF_Gap_Register.md#gap-054--workflow-framework-runtime-and-effective-configuration)
+- [M7a-WF-1-doc tranche plan](../Handover/ProjectConcord-M7a-WF-1-doc-GEW-Topology-Documentation-Tranche-Plan.md)
 
 ---
 

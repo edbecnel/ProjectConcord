@@ -43,6 +43,7 @@ Inbound architectural and integration handovers from external frameworks, progra
 | [Stage 1 Documentation Tranche Plan](ProjectConcord-Stage-1-Documentation-Tranche-Plan.md) | Stage 1 architecture — **CLOSED / PA ACCEPTED** (2026-09-29) | Active |
 | [Stage 2 Documentation Tranche Plan](ProjectConcord-Stage-2-Documentation-Tranche-Plan.md) | Stage 2 — **CLOSED / PA ACCEPTED / PUBLISHED** (2026-09-29; `c968a88`) | Active |
 | [SPEC-006 Reconciliation Documentation Tranche Plan](ProjectConcord-SPEC-006-Reconciliation-Documentation-Tranche-Plan.md) | SPEC-006 reconciliation + acceptance — **CLOSED / PA ACCEPTED** (2026-09-29) | Active |
+| [M7a-WF-1-doc GEW topology tranche plan](ProjectConcord-M7a-WF-1-doc-GEW-Topology-Documentation-Tranche-Plan.md) | GEW v1 topology + `TraversalOccurrenceId` — **pending PA publication** (2026-10-03) | Active |
 
 ## Parent
 
