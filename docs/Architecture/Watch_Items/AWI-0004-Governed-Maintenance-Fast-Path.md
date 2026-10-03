@@ -7,9 +7,9 @@
 | **Status** | Active |
 | **Owner** | ProjectConcord |
 | **Created** | 2026-09-26 |
-| **Revisit Trigger** | EDF GMFP consumed in ProjectConcord; future PCON discovery for workflow-profile abstraction; before normative ADR-0013 / SPEC-004 amendment |
+| **Revisit Trigger** | EDF GMFP consumed in ProjectConcord; GMFP prescribed-workflow runtime; before normative SPEC-004 reconciliation ([tranche plan](../../Handover/ProjectConcord-SPEC-004-Workflow-Framework-Reconciliation-Tranche-Plan.md)) |
 | **Discovery source** | [GMFP handover](../../Handover/EDF-Governed-Maintenance-Fast-Path-Architecture-Handover.md) |
-| **Related ADRs** | [ADR-0013](../ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (**Accepted** 2026-09-29) — **do not amend in this tranche** |
+| **Related ADRs** | [ADR-0013](../ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (**Accepted** 2026-09-29); [ADR-0024](../ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03 — GMFP separate prescribed workflow); [PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03) |
 | **Related specs** | [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) (Draft / not implemented) |
 | **Gap** | [GAP-041](../../Development/EDF_Gap_Register.md#gap-041--gmfp-gmr-consumption-and-workflow-profile-representation) |
 
@@ -62,7 +62,7 @@ Do **not** conflate workflow stages with human approvals.
 
 ## Binding architectural observations
 
-1. **Workflow profile principle** — ProjectConcord MUST NOT assume all EDF-governed work uses one fixed human-gate topology. Eventually distinguish at least conceptually: workflow classification/profile; workflow/instance state; human governance synchronization points; authorized execution intervals; canonical governance artifacts; operational execution authorization.
+1. **Workflow framework principle** — ProjectConcord MUST NOT assume all governed work uses one fixed human-gate topology. [PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03) distinguishes prescribed workflow, profile, bounded configuration, and instance state. **GMFP is a separate prescribed workflow**, not a GEW profile ([ADR-0024](../ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) **Accepted** 2026-10-03).
 
 2. **Gate 1 semantics (Project Architect binding)** — GMFP Gate 1 is **one** bounded maintenance authorization (diagnose, classify, root cause/evidence, bounded scope, validation strategy, eligibility, authorize maintenance execution). It is **not** separate human planning authorization plus implementation authorization. GMFP-2 may include implementation, validation, evidence, maintenance documentation, and appropriate local commits without another human gate. [PC-AIGOV-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) must **not** be interpreted to reconstruct the intermediate approval gates GMFP intentionally removes; any future synthesis is deferred.
 
@@ -76,13 +76,13 @@ Do **not** conflate workflow stages with human approvals.
 
 | Theme | Deferred question |
 |---|---|
-| Workflow-profile abstraction | Generic model before GMFP-specific hard coding |
+| GMFP registry consumption | Register `edf.governed-maintenance-fast-path` without redefining EDF semantics |
 | GMR discovery | Parse/index `docs/Program/Maintenance_Records/GMR-*.md` |
 | Integrity transitions | Governed fields per EDF when machine-readable rules exist |
 | Operational projection | DWA/profile bound to GMR without embedding DWA IDs in GMR |
 | Escalation | STOP GMFP → Escalated → normal EDF governance |
 | Visualization | Two human gates + execution interval timeline |
-| PC-AIGOV-004 synthesis | Reconcile full dev workflow vs GMFP profile without ad hoc SPEC-004 edits |
+| PC-AIGOV-004 synthesis | Reconcile full dev workflow vs GMFP separate prescribed workflow without ad hoc SPEC-004 edits |
 
 ## Signals to watch
 

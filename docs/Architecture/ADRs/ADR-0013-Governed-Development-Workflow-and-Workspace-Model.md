@@ -204,6 +204,7 @@ Documentation-only reconciliation per [ADR-0013 Reconciliation Documentation Tra
 - [PCON-0002](../PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) (**Proposed**)
 - [PCR-0001](../../Development/PCR-0001-Project-Continuation-and-Pause-Record.md)
 - [ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) (**Accepted** 2026-10-01)
+- [PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03 — multi-workflow framework), [ADR-0024](ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03 — GEW as first prescribed workflow)
 
 ## Maintenance
 

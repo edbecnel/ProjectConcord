@@ -29,7 +29,9 @@ Non-normative records capture origin, motivation, and pre-specification explorat
 | [PCON-0002](PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md) | Actor–Role Model, Engineering Domain Neutrality, and Governance Abstraction | Proposed (post-closeout discovery) |
 | [PCON-0003](PCON-0003-Governed-Pause-Continuation-and-Resume.md) | Governed Pause, Continuation, and Resume | Proposed (post-closeout discovery) |
 | [PCON-0004](PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md) | Primary Orchestration UI and External Engineering/AI Integration | Proposed (post-closeout discovery) |
+| [PCON-0005](PCON-0005-ProjectConcord-Workflow-Framework.md) | ProjectConcord Workflow Framework | Accepted (2026-10-03) |
 | [Analysis](AI_Governance_Workflow_Integration_Analysis.md) | AI Governance Workflow — Integration Analysis | Integrated 2026-09-21 (doc tranche accepted) |
+| [Analysis](Analysis/Workflow_Framework_Comparative_Research_Support.md) | Workflow Framework — comparative research support | Active (non-normative) |
 
 ## Architectural Watch Items
 

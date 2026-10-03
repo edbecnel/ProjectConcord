@@ -23,6 +23,7 @@ EDF convention: `docs/Architecture/Watch_Items/AWI-NNNN-Short-Title.md` ([EDF Ga
 | [AWI-0007](AWI-0007-SQLite-Transitive-NuGet-Advisory.md) | `Microsoft.Data.Sqlite` transitive `SQLitePCLRaw.lib.e_sqlite3` NU1903 / GHSA-2m69-gcr7-jv3q (A1b) | Active |
 | [AWI-0008](AWI-0008-Governed-Operator-Experience-and-Product-Shell.md) | Governed operator shell; A+C → ADR-0020 **Accepted**; terminology → ADR-0018; structured authoring → AWI-0009; `src/` shell deferred | Active (partial promotion 2026-10-01) |
 | [AWI-0009](AWI-0009-Governed-Structured-Authoring-Form-Runtime-and-Form-Editor.md) | Governed structured authoring, Form Runtime, form definitions, Form Editor (future) | Active — **deferred**, **capture-only** (2026-10-01) |
+| [AWI-0010](AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md) | Workflow Framework and GEW architectural follow-through (runtime, SPEC-004 reconciliation) | Active |
 
 ## Lifecycle
 

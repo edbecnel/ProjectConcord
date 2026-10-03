@@ -5,7 +5,7 @@
 > **Status:** Draft  
 > **Owner:** ProjectConcord  
 > **Applies To:** Deterministic EDF Engine design  
-> **Last Reviewed:** 2026-09-28  
+> **Last Reviewed:** 2026-10-03 (workflow framework documentation tranche — substantive review of GAP-027, GAP-041, GAP-054)  
 > **Authoritative:** Yes — interim policies reference ADRs where binding
 
 ## Purpose
@@ -57,7 +57,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-024 | Transition prerequisites / acceptance rules | Medium | EGR human gates; app surfaces independent review |
 | GAP-025 | Trusted integrity record portability | Medium | Rebuild from Git + validation; operational fingerprints optional |
 | GAP-026 | AAR discovery in Engine/UI | Medium | Parse `docs/Architecture/Audits/AAR-*.md` status (Open/Complete/Superseded); EDF [AAR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/main/docs/Specifications/AAR-0001-Architectural-Audit-Records.md); post-M5 |
-| GAP-027 | DevelopmentWorkAuthorization schema and identity | High | [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md); operational per [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md); M7+ |
+| GAP-027 | DevelopmentWorkAuthorization schema and identity | High | [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md); operational per [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md); **architectural** correlation to prescribed workflow/profile/instance per [ADR-0024](../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03); M7+ |
 | GAP-028 | Handover vs authorization rendering / rollover | Medium | Derived packages; [PCON-0001](../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) §23–24 |
 | GAP-029 | HumanInitiatedWorkItem vs AWI / backlog / PWR | Medium | HIW = intake/triage (SPEC-004 normative name); vs **ProjectWorkRecord** ([ADR-0017](../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) **Accepted** — architectural boundary only); **OperationalIntakeRecord** = working terminology only; final intake name/ownership deferred |
 | GAP-030 | Provider adapter interface, security, and Engineering Agent plugin boundary | Medium | **Closed / resolved** — [ADR-0021](../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md) (2026-10-01); [GAP-030 detail](#gap-030--engineering-agent-provider-adapter-and-plugin-boundary) |
@@ -71,7 +71,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-038 | Candidate PC-AIGOV-052–059 (pause/continuation/resume) | Low | Record only; [PCON-0003](../Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md); [AWI-0002](../Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md); not normative in SPEC-004 |
 | GAP-039 | Candidate PC-AIGOV-060–071 (primary orchestration / external integration) | Low | Record only; [PCON-0004](../Architecture/PCON-0004-Primary-Orchestration-UI-and-External-Engineering-AI-Integration.md); [AWI-0003](../Architecture/Watch_Items/AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md); not normative in SPEC-004 |
 | GAP-040 | GDO dependency evaluation, EGR round-trip, governance debt UX | Medium | EDF normative via EGR-0001 v1.1; Concord consumption per [GDO handover](../Handover/EDF-Governed-Dependency-Override-Architecture-Handover.md); extends GAP-006; not AWI |
-| GAP-041 | GMFP / GMR consumption and workflow-profile representation | Medium | EDF normative via [GMFP-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/b158f4a382dfbea941435eeacd96beb729443687/docs/Specifications/GMFP-0001-Governed-Maintenance-Fast-Path.md) at `b158f4a`; Concord consumption per [GMFP handover](../Handover/EDF-Governed-Maintenance-Fast-Path-Architecture-Handover.md); [AWI-0004](../Architecture/Watch_Items/AWI-0004-Governed-Maintenance-Fast-Path.md); **not implemented** — future GMR discovery, workflow profile, DWA projection, evidence, escalation, visualization |
+| GAP-041 | GMFP / GMR consumption and separate prescribed workflow integration | Medium | EDF normative via [GMFP-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/b158f4a382dfbea941435eeacd96beb729443687/docs/Specifications/GMFP-0001-Governed-Maintenance-Fast-Path.md) at `b158f4a`; GMFP as **separate prescribed workflow** (`edf.governed-maintenance-fast-path`) per [ADR-0024](../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03); [GMFP handover](../Handover/EDF-Governed-Maintenance-Fast-Path-Architecture-Handover.md); [AWI-0004](../Architecture/Watch_Items/AWI-0004-Governed-Maintenance-Fast-Path.md); **not implemented** |
 | GAP-042 | MVR / MVT consumption, attestation, pending QA | Medium | EDF normative via [MVR-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/192fe5c1c6254c51e257d24aefc09e127ce72464/docs/Specifications/MVR-0001-Manual-Verification-Records.md) at `192fe5c`; Concord consumption per [MVR handover](../Handover/EDF-Manual-Verification-Record-Architecture-Handover.md), [SPEC-005](../Specifications/features/SPEC-005-manual-verification-record-consumption.md), [ADR-0014](../Architecture/ADRs/ADR-0014-MVR-Human-Attestation-and-AI-Boundary.md); [AWI-0005](../Architecture/Watch_Items/AWI-0005-Manual-Verification-Records.md); **not implemented** — future parser, pending-QA query, human attestation write-back, ATTENTION UI, read-only gate hints |
 | GAP-043 | PAR runtime, Project ID registry, per-user SQLite, package validation | High | Normative [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md); [PAR plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md); **A1 published**; **A2 P0 governed relay published**; remaining workflow breadth **A3** (not authorized) |
 | GAP-044 | Engineering Agent automated transport architecture | Medium | **Closed / resolved** — [ADR-0022](../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) (**Accepted** 2026-10-01); A4 **not authorized** ([GAP-044 detail](#gap-044--engineering-agent-automated-transport)) |
@@ -84,6 +84,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-051 | Application-layer persistence / service-port isolation | Medium | Remove Application → concrete SQLite store coupling ([ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) §4); **not implemented** |
 | GAP-052 | Multi-process local operational-store concurrency strategy and validation | Medium | Shared per-user `user-state.db` across processes — semantics not yet designed/validated ([ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)); investigation OPEN — **not** a claim that SQLite shared access is inherently unsafe |
 | GAP-053 | macOS **Go to Folder…** project locator vs browse-open identity | Medium | **Observed defect** (2026-10-02, A4-T7 human MVR) — path entry for disposable Root-A opened wrong Project ID; browse-open correct; **distinct from** Cursor ACP non-fast blocker; see [GAP-053 detail](#gap-053--macos-go-to-folder-project-locator-vs-browse-open-identity) |
+| GAP-054 | Workflow framework runtime, registry, effective-configuration resolver | High | [PCON-0005](../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03), [ADR-0024](../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03); [AWI-0010](../Architecture/Watch_Items/AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md); **not implemented** |
 
 ---
 
@@ -350,8 +351,8 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | Field | Content |
 |---|---|
 | **Source** | EDF commit `b158f4a382dfbea941435eeacd96beb729443687`; [GMFP-0001](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/b158f4a382dfbea941435eeacd96beb729443687/docs/Specifications/GMFP-0001-Governed-Maintenance-Fast-Path.md); [EDF ADR-0009 (GMFP)](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/b158f4a382dfbea941435eeacd96beb729443687/docs/Architecture/ADRs/ADR-0009-Governed-Maintenance-Fast-Path.md); [GMFP handover](../Handover/EDF-Governed-Maintenance-Fast-Path-Architecture-Handover.md); [AWI-0004](../Architecture/Watch_Items/AWI-0004-Governed-Maintenance-Fast-Path.md) |
-| **Question** | How does ProjectConcord discover and represent **Governed Maintenance Records (GMR)**, project canonical GMFP authorization into operational **DevelopmentWorkAuthorization** (or successor) without embedding DWA IDs in GMR, visualize **two human gates** and **GMFP-2 execution interval**, present consolidated evidence, handle **Escalated** / STOP, and distinguish GMFP from EGR/GDO/AAR — without hard-coding provisional workflow enums or GMR states? |
-| **Interim policy** | EDF GMR remains canonical in Git; semantics per EDF + handover; generic workflow-profile abstraction deferred to future PCON discovery before normative ADR-0013/SPEC-004 amendment; no parser, validator, workflow engine, GMFP UI, or schema in current tranche. |
+| **Question** | How does ProjectConcord register and run **GMFP** as a **separate prescribed workflow**, discover **GMR** instances, project Gate 1 authorization into operational **DevelopmentWorkAuthorization** (or successor) without embedding DWA IDs in GMR, visualize **two human gates** and **GMFP-2 execution interval**, present consolidated evidence, handle **Escalated** / STOP, and distinguish GMFP from EGR/GDO/AAR — without hard-coding provisional enums or redefining EDF GMR states? |
+| **Interim policy** | EDF GMR remains canonical in Git; GMFP is **not** a GEW profile ([ADR-0024](../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) **Accepted** 2026-10-03); framework primitives per [PCON-0005](../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) **Accepted** 2026-10-03; no parser, validator, workflow engine, GMFP UI, or schema in current tranche. |
 
 ### GAP-042 — MVR / MVT consumption, human attestation, pending manual QA
 
@@ -466,6 +467,22 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | **Distinction** | **Not** the external **Cursor ACP Composer 2.5 non-fast** capability blocker ([A4-T7 §E2](../Handover/ProjectConcord-A4-T7-Verification-Evidence.md#e2-cursor-acp-provider-capability-blocker-2026-10-02)). |
 | **Question** | How should ProjectConcord normalize or reconcile locator paths from **Go to Folder…** vs hierarchical browse so the same physical Project Root resolves to a single stable Project ID ([ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md); relates to [GAP-043](#gap-043--par-runtime-and-per-user-operational-persistence), [MVR-0001](../Verification/Records/MVR-0001-a1c-desktop-project-root-recent-workflow.md) Go to Folder cautions)? |
 | **Interim policy** | **OPEN** — defect **recorded**; **no** root-cause investigation or `src/` remediation in A4-T7 closeout tranche; workaround: use normal browse for disposable Root-A until separately authorized fix. |
+
+### GAP-027 — DevelopmentWorkAuthorization schema and identity
+
+| Field | Content |
+|---|---|
+| **Source** | [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md); [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md); [ADR-0024](../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03) |
+| **Question** | How does operational **DevelopmentWorkAuthorization** correlate **PrescribedWorkflowId**, **ProfileId**, **WorkflowInstanceId**, bounded configuration, and effective-configuration snapshots without duplicating authority semantics or embedding workflow state unrelated to execution authorization? |
+| **Interim policy** | Architecture direction in ADR-0024 **Accepted** 2026-10-03; schema and APIs **not implemented** until M7+ / separately governed tranche. |
+
+### GAP-054 — Workflow framework runtime and effective configuration
+
+| Field | Content |
+|---|---|
+| **Source** | [PCON-0005](../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03); [ADR-0024](../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03); [AWI-0010](../Architecture/Watch_Items/AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md) |
+| **Question** | How does ProjectConcord implement prescribed-workflow **registry**, **definition versioning**, **effective-configuration resolver** (invariant + bounded + policy-derived), invalid-configuration rejection, and workflow/profile **resolution** at relay and operator-projection boundaries without a generic BPM engine? |
+| **Interim policy** | Documentation tranche only (2026-10-03); **no** `src/` workflow engine, **no** A3 authorization. |
 
 ---
 
