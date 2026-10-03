@@ -33,7 +33,7 @@ Many workflows architecturally;
 one applicable ProjectConcord-native workflow operationally today.
 ```
 
-This record defines the **general framework**. GEW-specific semantics live in [ADR-0024](ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md). Software Development **B-layer** entities and relay boundaries remain in [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) and [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) until a separately governed SPEC-004 reconciliation tranche.
+This record defines the **general framework**. GEW-specific semantics live in [ADR-0024](ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md). Software Development **B-layer** entities, relay boundaries, and normative GEW requirements (PC-AIGOV) are in [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) and [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) (**Draft**, GEW/PC-AIGOV requirements reconciled — published 2026-10-03).
 
 ---
 

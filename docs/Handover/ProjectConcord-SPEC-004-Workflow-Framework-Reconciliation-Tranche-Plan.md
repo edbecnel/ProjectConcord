@@ -7,7 +7,7 @@
 | Item | Status |
 |---|---|
 | **Workflow framework documentation tranche** | **Published** (2026-10-03) — [PCON-0005](../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md), [ADR-0024](../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted**) |
-| **This SPEC-004 reconciliation tranche** | **NOT AUTHORIZED** — plan only |
+| **This SPEC-004 reconciliation tranche** | **Published** (2026-10-03) — normative SPEC-004 GEW reconciliation on `main`; tranche **closed** |
 | **Implementation** | **Not authorized** |
 
 ## Purpose

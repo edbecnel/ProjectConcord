@@ -11,8 +11,8 @@
 | **Owner** | ProjectConcord |
 | **Normative** | Yes — product behavior requirements when implemented |
 | **Implementation** | **Not implemented** — requirements define future M7+ capability unless separately authorized |
-| **Last Reviewed** | 2026-09-29 (Stage 2 PWR ownership; ADR-0013 reconciliation and acceptance) |
-| **Governing decisions** | [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) (Accepted), [ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) (Accepted 2026-09-29), [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (Accepted 2026-09-29 — Software Development governed workflow), [ADR-0019](../../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) (Accepted 2026-10-01 — product shell / local-first / sync), [ADR-0006](../../Architecture/ADRs/ADR-0006-AI-Boundary.md), [ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md), [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03), [ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03 — GEW prescribed workflow; normative profile hooks deferred to [SPEC-004 reconciliation tranche](../../Handover/ProjectConcord-SPEC-004-Workflow-Framework-Reconciliation-Tranche-Plan.md)) |
+| **Last Reviewed** | 2026-10-03 (Workflow Framework / GEW normative reconciliation — **published** on `main`; Project Architect acceptance; [handover plan](../../Handover/ProjectConcord-SPEC-004-Workflow-Framework-Reconciliation-Tranche-Plan.md)) |
+| **Governing decisions** | [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) (Accepted), [ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) (Accepted 2026-09-29), [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (Accepted 2026-09-29 — Software Development governed workflow), [ADR-0019](../../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) (Accepted 2026-10-01 — product shell / local-first / sync), [ADR-0006](../../Architecture/ADRs/ADR-0006-AI-Boundary.md), [ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md), [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03), [ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03 — GEW prescribed workflow architecture) |
 | **Architecture scope** | **Software Development / Engineering Extension** — not ProjectConcord Core neutrality ([AMD-0003](../../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md)) |
 | **Discovery source** | [PCON-0001](../../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) |
 
@@ -37,6 +37,9 @@ Engineering teams using an Architectural AI and a repository execution agent (fo
 - Mandatory AAR for every implementation tranche ([ADR-0012](../../Architecture/ADRs/ADR-0012-Adopt-EDF-Architectural-Audit-Records.md) scope unchanged).
 - Upstreaming PC-AIGOV-022–028 to EDF in this tranche.
 - MVP (M1–M5) delivery of governance UI or inter-project features.
+- Defining workflow runtime APIs, registry implementation, or effective-configuration resolver ([GAP-054](../../Development/EDF_Gap_Register.md)).
+- Copying or redefining EDF GMFP/GMR normative text ([AWI-0004](../../Architecture/Watch_Items/AWI-0004-Governed-Maintenance-Fast-Path.md)).
+- Operator UI for workflow/profile selection beyond derived projections ([ADR-0020](../../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md)).
 
 ## Terminology (workspace-adjacent — not synonyms)
 
@@ -49,6 +52,9 @@ Engineering teams using an Architectural AI and a repository execution agent (fo
 | **Git worktree / branch** | **B** | Software Development execution/evidence context. |
 | **Provider / agent session** | **E** | Transport and adapter session state. |
 | **Persona / UI workspace** | UI ([GAP-036](../../Development/EDF_Gap_Register.md)) | UX-only; not governance semantics. |
+| **Prescribed Workflow / Workflow Profile** | Framework + GEW ([PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md), [ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md)) | **GEW** (`concord.governed-engineering`) is the applicable ProjectConcord-native prescribed workflow for Software Development governance modeled here. **Profiles** (`gew.accelerated`, `gew.standard`, `gew.high-assurance`) are GEW-local topology variants — not global Concord modes or quality rankings. |
+| **Effective configuration** | Derived ([PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) §4) | Deterministic from authoritative inputs when possible; not a user-editable superset of governance rules. |
+| **GMFP (consumed workflow)** | EDF authoritative; ProjectConcord integrates | Separate prescribed workflow `edf.governed-maintenance-fast-path` — not a GEW profile ([ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) §7). |
 
 ## M1–M5 architectural constraint
 
@@ -60,7 +66,7 @@ Specific identity, API scoping, and persistence mechanisms are **not** prescribe
 
 | Concern | Owner (A–F) |
 |---|---|
-| PC-AIGOV-001–004, 007, 014–016 (governance invariants) | **A** relay + **B** Software Development semantics; enforcement via [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md) at relay boundary |
+| PC-AIGOV-001–004, 007, 014–016, 072–076 (governance invariants + GEW placement) | **A** relay + **B** Software Development semantics under GEW (`concord.governed-engineering`); enforcement via [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md) at relay boundary |
 | PC-AIGOV-022–023 (cross-project / per-project partitions) | **A** instance model per [ADR-0019](../../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md); **B** requirements assume per-project SD partitions when extension enabled |
 | **ProjectWorkRecord** (working name; Core per [ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) Accepted) | **A** — coordination identity; not task/backlog ontology ([AMD-0004](../../Architecture/AMD-0004-Project-Work-Record-and-Coordination-Capability-Model.md)) |
 | DevelopmentWorkAuthorization, submissions, inter-project entities, **HumanInitiatedWorkItem** | **B** — Software Development extension (operational store) |
@@ -72,7 +78,7 @@ Specific identity, API scoping, and persistence mechanisms are **not** prescribe
 
 | Entity | Default store | Purpose |
 |---|---|---|
-| DevelopmentWorkAuthorization | Operational | Capability-bounded permitted work per project (**B** — software extension; see Stage 1 decomposition) |
+| DevelopmentWorkAuthorization | Operational | Capability-bounded **Control** for Software Development per project (**B**); correlates conceptually with workflow instance (`WorkflowId`, `DefinitionVersion` where applicable, `ProfileId`, `WorkflowInstanceId`), bounded configuration, and effective-configuration provenance — **schema/API not prescribed** ([GAP-027](../../Development/EDF_Gap_Register.md)) |
 | Handover package | Derived / operational snapshot | Inherited project context for agents |
 | ArchitecturalReviewSubmission | Operational | Plan or implementation return for review |
 | HumanInitiatedWorkItem | Operational | Inbox/triage; distinct from AWI and from generic Core **ProjectWorkRecord** (see § Stage 2 intake semantics) |
@@ -88,7 +94,81 @@ Stage 2 architecture ([AMD-0004](../../Architecture/AMD-0004-Project-Work-Record
 
 An intake record (HIW) may result in: creation of a Project Work Record; association with an existing Project Work Record; merging into existing work/intake; routing toward another governed process; or rejection/disposition **without** creating a Project Work Record.
 
-## Requirements (PC-AIGOV-001–028)
+## Governed Engineering Workflow (GEW) scope
+
+Software Development governance requirements in this specification **SHALL** be interpreted as requirements on work under the **Governed Engineering Workflow (GEW)** — the first ProjectConcord-native **prescribed workflow** registered as:
+
+| Field | Value |
+|---|---|
+| **WorkflowId** | `concord.governed-engineering` |
+| **Architecture** | [ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted**) |
+| **Framework** | [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted**) |
+
+GEW is the **applicable** native prescribed workflow for the governance modeled by PC-AIGOV-001–028 and PC-AIGOV-072–076. ProjectConcord **MAY** host additional prescribed workflows (including EDF-consumed workflows); GEW is **not** asserted to be the only workflow the platform can ever host.
+
+Read-only investigation and research **SHALL NOT** be modeled as a GEW profile; represent through **Control** / DWA capability (for example RESEARCH / PLANNING), instance state, and relay routing ([ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) §5; [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md)).
+
+### GEW profiles
+
+GEW defines three initial **workflow profiles** (working identifiers):
+
+| ProfileId | Name | Role in this spec |
+|---|---|---|
+| `gew.accelerated` | Accelerated | Bounded, reversible, low-uncertainty engineering; permitted **synchronization points**, **evidence requirements**, and related **artifacts** **MAY** be compressed or combined where profile and authoritative policy permit — **without** weakening GEW invariants, **authorization law** (PC-AIGOV-004), or inherited framework constraints. Compression of sync/evidence/artifacts is **not** the same as collapsing planning and implementation **authorization** unless explicit profile or policy semantics allow a combined authorization boundary (**open** — see PC-AIGOV-004). |
+| `gew.standard` | Standard | Normal substantive governed engineering. |
+| `gew.high-assurance` | High Assurance | Cross-cutting, novel, high-consequence, or otherwise high-risk engineering; stricter synchronization and evidence floors **when** profile-fixed rules require them. |
+
+Profiles are **GEW-local**, **not** global ProjectConcord modes, and **not** quality rankings. **Standard is not an implicit fallback:** profile resolution **SHALL** follow [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) §8.2 — authoritative policy or state **MAY** resolve deterministically; otherwise governed or PA selection is required; ambiguity **SHALL** produce Attention and **SHALL NOT** silently select High Assurance, Standard, or any other profile.
+
+**Open (normative detail deferred):** per-profile minimum synchronization sets and evidence-class floors beyond what GEW invariants already require are **not** fully enumerated in this specification; whether **Accelerated** normatively permits a combined planning/implementation **authorization boundary** for some bounded work units (distinct from sync/evidence compression) is **not** fully specified here — future governed policy or amendments **MAY** define that without using bounded configuration to invent authorization law.
+
+## Configuration classes and effective configuration
+
+For GEW work units, operational semantics **SHALL** align with [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) §3:
+
+| Class | SPEC-004 touchpoints (examples) |
+|---|---|
+| **Invariant** | PC-AIGOV-001–004 (where applicable), 007, 014, 016; framework FW-1–FW-7 |
+| **Bounded Configuration** | DWA scope and authorized operations within limits already established by workflow, profile, and policy; baseline reference (PC-AIGOV-009) — **SHALL NOT** weaken, remove, invent, or silently redefine **authorization law** (PC-AIGOV-004) |
+| **Policy-Derived** | Linked MVR / human verification when F-layer policy requires; risk- or scope-derived evidence |
+| **Instance State** | STOP (PC-AIGOV-007); workflow position; pending disposition — **not** configuration knobs |
+
+There is **no** unrestricted workflow-configuration surface. A lower layer **MUST NOT** weaken an inherited governance constraint.
+
+Effective configuration **SHALL** be deterministically derived from authoritative inputs when possible ([PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) §4; PC-AIGOV-075). Operator projections (Attention, Next Action, workflow-local step labels) **SHALL** remain derived ([ADR-0020](../../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md)); this spec **does not** define a global Stage library.
+
+## GMFP boundary (separate prescribed workflow)
+
+**Governed Maintenance Fast Path (GMFP)** is architecturally a **separate prescribed workflow** consumed by ProjectConcord, with working **WorkflowId** `edf.governed-maintenance-fast-path`. GMFP is **not** a GEW profile, **not** Accelerated GEW, **not** a bypass around unrelated GEW/EGR/GDO/AAR/ADR/SPEC obligations, and **not** a substitute for destination governance.
+
+EDF remains **authoritative** for GMFP and **GMR** semantics. This specification **does not** copy EDF GMFP normative text. PC-AIGOV-004 and related GEW planning/implementation separation **SHALL NOT** be reinterpreted to impose an intermediate GEW planning gate on GMFP work that EDF does not require ([ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) §7; [AWI-0004](../../Architecture/Watch_Items/AWI-0004-Governed-Maintenance-Fast-Path.md)).
+
+## PC-AIGOV applicability by GEW profile (summary)
+
+| Applicability | PC-AIGOV IDs | Notes |
+|---|---|---|
+| **GEW invariant (all profiles)** | 001–003, 005–008, 010–013, 015–016, 017–028 | Apply to Software Development governance under GEW unless a row below qualifies |
+| **Authorization law (planning vs implementation)** | 004 | Whether distinct planning and implementation **authorizations** are required is governed by prescribed workflow + **GEW profile** + **authoritative policy** — **not** bounded configuration. `gew.standard` and `gew.high-assurance`: distinct boundaries apply per profile semantics. `gew.accelerated`: sync/evidence/artifact compression **≠** authorization collapse; combined authorization boundary only via explicit profile/policy (**open**). **Not** universal to every prescribed workflow. |
+| **Acceptance vs next authorization** | 014 | Invariant across profiles: accepting one bounded unit/tranche does **not** authorize the next. Profile **MAY** shape which sync/evidence/**artifacts** record acceptance for a unit; **MUST NOT** weaken mandatory authorization or acceptance semantics; bounded configuration **MUST NOT** substitute for those semantics. |
+| **Synchronization / evidence / artifact variation** | 008–009, 011 | **Distinct from authorization law.** Accelerated **MAY** compress or combine **permitted** synchronization points and evidence artifacts; High Assurance **MAY** require additional profile-fixed sync/evidence when governed policy defines them — without weakening PC-AIGOV-004/014 invariants. |
+| **Provenance (GEW binding)** | 016 | Satisfies framework provenance invariant FW-7 for GEW via Software Development requirements; **not** asserted as a universal framework requirement for all future workflows |
+| **Profile resolution** | 073 | Ambiguity → Attention; no silent High Assurance, Standard, or other profile; no implicit Standard ([PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) §8.2) |
+| **STOP / instance state** | 007 | Instance state — not a profile selector |
+| **Cross-project (B-layer)** | 021–028 | Unchanged; assume per-project GEW instances unless work is explicitly under another prescribed workflow |
+| **GMFP work units** | 004 (qualified), 076 | GMFP authorization law per EDF; no forced GEW planning/implementation gate |
+
+## Requirements (PC-AIGOV-001–076)
+
+### Workflow framework (GEW placement)
+
+| ID | Requirement |
+|---|---|
+| **PC-AIGOV-072** | Software Development governance requirements in this specification **SHALL** apply to work executed under GEW (`concord.governed-engineering`) as the applicable ProjectConcord-native prescribed workflow, without implying that no other prescribed workflow may govern other work units or future scope ([PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) §1). |
+| **PC-AIGOV-073** | A GEW workflow instance **SHALL** use ProfileId `gew.accelerated`, `gew.standard`, or `gew.high-assurance` when profile determination is required. Profile resolution **SHALL** follow [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) §8.2 (no silent profile selection; no implicit Standard). |
+| **PC-AIGOV-074** | GEW bounded configuration **SHALL NOT** introduce unrestricted workflow configuration; classes **SHALL** align with Invariant, Bounded Configuration, Policy-Derived, and Instance State ([PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) §3). Bounded configuration **SHALL NOT** weaken, remove, invent, or silently redefine **authorization law** (PC-AIGOV-004) established by prescribed workflow, profile, or authoritative policy. |
+| **PC-AIGOV-075** | When authoritative inputs suffice, the system **SHALL** derive effective configuration per [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) §4 and **SHALL NOT** require operators to re-enter information already available from authoritative governed state (resolver implementation: [GAP-054](../../Development/EDF_Gap_Register.md)). |
+| **PC-AIGOV-076** | Work explicitly under `edf.governed-maintenance-fast-path` (GMFP) **SHALL NOT** be classified as GEW or as a GEW profile. GMFP semantics remain EDF-authoritative; this spec does not redefine GMFP. |
+
 
 ### Authority and canonical state
 
@@ -97,9 +177,9 @@ An intake record (HIW) may result in: creation of a Project Work Record; associa
 | **PC-AIGOV-001** | AI recommendations and execution SHALL NOT implicitly become project authorization or acceptance. |
 | **PC-AIGOV-002** | Governance state SHALL be represented independently of AI chat transcripts and provider prompts. |
 | **PC-AIGOV-003** | Inherited project context (handover) and permitted work (DevelopmentWorkAuthorization) SHALL be distinct concepts. |
-| **PC-AIGOV-004** | Planning authorization SHALL NOT imply implementation authorization. |
-| **PC-AIGOV-014** | Acceptance of one stage/tranche SHALL NOT implicitly authorize the next. |
-| **PC-AIGOV-016** | Governed work SHALL retain provenance sufficient to reconstruct authorization, execution, validation, and acceptance. |
+| **PC-AIGOV-004** | Planning authorization SHALL NOT imply implementation authorization. **Authorization law** — whether planning and implementation require **distinct authorizations** — is determined by the applicable **prescribed workflow**, **GEW profile**, and **authoritative policy**, not by operator-selectable **bounded configuration**. Bounded configuration (including DWA scope and authorized operations) **SHALL NOT** weaken, remove, invent, or silently redefine that authorization law. **GEW:** For `gew.standard` and `gew.high-assurance`, distinct planning and implementation authorization boundaries apply as those profiles’ authorization semantics require. For `gew.accelerated`, compression or combination of **synchronization points**, **evidence requirements**, and related **artifacts** where permitted does **not** by itself eliminate distinct planning and implementation authorization; any **combined authorization boundary** for a bounded work unit requires explicit **profile or authoritative policy** semantics (**open:** whether Accelerated permits such a combined boundary for some work units is not fully enumerated in this specification). **Not universal:** This requirement is **not** a universal rule for every ProjectConcord prescribed workflow. **GMFP:** Work under `edf.governed-maintenance-fast-path` follows EDF authorization law and SHALL NOT be forced through a GEW-style planning/implementation gate that EDF does not require ([ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) §7). |
+| **PC-AIGOV-014** | Acceptance of one stage/tranche SHALL NOT implicitly authorize the next. **GEW applicability:** Invariant across GEW profiles. A profile **MAY** determine which **synchronization points**, **evidence**, or **artifacts** record acceptance of a bounded unit of work; such variation **SHALL NOT** weaken mandatory **authorization** or **acceptance** semantics established by the workflow, profile, and authoritative policy. **Bounded configuration** **SHALL NOT** substitute for those semantics or imply authorization for a subsequent unit. |
+| **PC-AIGOV-016** | Governed work SHALL retain provenance sufficient to reconstruct authorization, execution, validation, and acceptance. **GEW applicability:** Binds GEW to framework provenance expectations ([PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) FW-7 via [ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md)); does **not** by itself establish PC-AIGOV-016 as a universal requirement on non–Software-Development prescribed workflows. |
 
 ### Provider modes and execution
 
@@ -150,15 +230,18 @@ Requirements PC-AIGOV-021–028 are **Software Development extension (B)** inter
 - [SPEC-003](SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md) — canonical **artifact** integrity and lifecycle; external IDE edits.
 - [SPEC-001](SPEC-001-mvp-edf-desktop-client.md) — M1–M5 MVP does not implement this spec.
 - [ADR-0006](../../Architecture/ADRs/ADR-0006-AI-Boundary.md) — AI proposals for EDF writes; complementary.
-- [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md) — Project Root, identity, Core Governed Interaction Relay, provider adapters (**Accepted** 2026-09-29; A2 P0 relay subset **published**; further PAR/A3+ not authorized). SPEC-006 enforces at relay boundary; PC-AIGOV-001–028 remain defined here.
+- [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md) — Project Root, identity, Core Governed Interaction Relay, provider adapters (**Accepted** 2026-09-29; A2 P0 relay subset **published**; further PAR/A3+ not authorized). SPEC-006 enforces at relay boundary; PC-AIGOV-001–076 remain defined here.
+- [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md), [ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) — prescribed workflow, profiles, configuration classes (architecture **Accepted**; this spec carries normative Software Development requirements).
 
 ## Acceptance criteria (future — not applicable until implementation authorized)
 
-When implementation is authorized, acceptance tests SHALL demonstrate at minimum: handover/authorization separation; planning vs implementation separation; manual-mode parity for one governance cycle; STOP semantics; no fabricated operator validation; HIW distinct from AWI; destination authority on inter-project handover (simulated or manual).
+When implementation is authorized, acceptance tests SHALL demonstrate at minimum: handover/authorization separation; planning vs implementation separation under GEW where profile and authoritative policy require distinct authorizations (including Standard/High Assurance cases); bounded configuration does not weaken authorization law; GMFP work unit **not** subject to spurious GEW planning gate; profile ambiguity surfaces Attention without silent Standard/High Assurance selection; manual-mode parity for one governance cycle; STOP semantics; no fabricated operator validation; HIW distinct from AWI; destination authority on inter-project handover (simulated or manual).
 
 ## Open questions
 
 Remain OPEN per [AI Governance Workflow Integration Analysis](../../Architecture/AI_Governance_Workflow_Integration_Analysis.md): identity representation, cloud sync, permissions, events, unloaded targets, dependency addressing, provider enforcement.
+
+**Workflow / GEW (post-reconciliation):** Enumerated per-profile minimum synchronization sets and evidence-class floors beyond GEW invariants; explicit project-level default profile policy encoding; DWA persistence fields for `WorkflowId`, `ProfileId`, and effective-configuration references ([GAP-027](../../Development/EDF_Gap_Register.md), [GAP-054](../../Development/EDF_Gap_Register.md)). **Governed Interactive Engineering Session** lifecycle remains deferred ([PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) §13).
 
 ## Parent
 
@@ -167,6 +250,8 @@ Remain OPEN per [AI Governance Workflow Integration Analysis](../../Architecture
 ## Related Documents
 
 - [PCON-0001](../../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md)
+- [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md), [ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md)
+- [AWI-0004](../../Architecture/Watch_Items/AWI-0004-Governed-Maintenance-Fast-Path.md), [AWI-0010](../../Architecture/Watch_Items/AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md)
 - [AI Governance Workflow Integration Analysis](../../Architecture/AI_Governance_Workflow_Integration_Analysis.md)
 - [Implementation Roadmap](../../Development/Implementation_Roadmap.md)
 - [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md), [ADR-0015](../../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md)

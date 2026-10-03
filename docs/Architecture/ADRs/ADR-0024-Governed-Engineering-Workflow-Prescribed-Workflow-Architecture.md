@@ -10,11 +10,11 @@ Accepted
 
 ## Context
 
-[PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) establishes the ProjectConcord Workflow Framework. [ADR-0013](ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (**Accepted**) defines Software Development **B-layer** boundaries (DevelopmentWorkAuthorization, handover vs authorization, operational vs canonical). [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) (**Draft**, not implemented) encodes PC-AIGOV-001–028. [PCON-0001](../PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) describes a full Snaptara-style loop as **reference** practice — not the only permitted topology.
+[PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) establishes the ProjectConcord Workflow Framework. [ADR-0013](ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (**Accepted**) defines Software Development **B-layer** boundaries (DevelopmentWorkAuthorization, handover vs authorization, operational vs canonical). [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) (**Draft**, not implemented) encodes PC-AIGOV-001–076 including GEW/profile hooks from the [SPEC-004 reconciliation tranche](../../Handover/ProjectConcord-SPEC-004-Workflow-Framework-Reconciliation-Tranche-Plan.md) (reconciled — published on `main` 2026-10-03). [PCON-0001](../PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) describes a full Snaptara-style loop as **reference** practice — not the only permitted topology.
 
 Human PA ↔ Engineering Agent practice (including PAR track A4) demonstrated **profile-like** rigor differences (tranche authorization, MVR depth) without replacing the framework model.
 
-This ADR records **GEW as the first ProjectConcord-native prescribed workflow** and its **three initial profiles**. It does **not** implement runtime workflow engines or amend SPEC-004 normatively ([SPEC-004 reconciliation tranche plan](../../Handover/ProjectConcord-SPEC-004-Workflow-Framework-Reconciliation-Tranche-Plan.md)).
+This ADR records **GEW as the first ProjectConcord-native prescribed workflow** and its **three initial profiles**. It does **not** implement runtime workflow engines. Normative Software Development / GEW product requirements are reconciled in [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) via the [reconciliation tranche plan](../../Handover/ProjectConcord-SPEC-004-Workflow-Framework-Reconciliation-Tranche-Plan.md) (published on `main` 2026-10-03); this ADR records **architectural** placement only.
 
 ## Decision
 
@@ -25,7 +25,7 @@ This ADR records **GEW as the first ProjectConcord-native prescribed workflow** 
 | **WorkflowId** | `concord.governed-engineering` (working identifier until implementation registry) |
 | **Role** | First **ProjectConcord-native** prescribed workflow |
 | **Operational today** | **Yes** — the only native workflow that applies in current product/process scope |
-| **Normative product requirements** | Remain in [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) pending reconciliation; this ADR records **architectural** placement |
+| **Normative product requirements** | [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) (**Draft**, GEW reconciliation **published** 2026-10-03); this ADR records **architectural** placement |
 
 GEW **SHALL** be interpreted under [PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) configuration classes and effective-configuration rules.
 
@@ -131,7 +131,7 @@ Handover packages **MAY** include `WorkflowId`, `ProfileId`, and effective-confi
 
 ### Negative
 
-- SPEC-004 still requires a **separate reconciliation tranche** for normative profile hooks.
+- SPEC-004 GEW/profile normative hooks are reconciled in **Draft** (published 2026-10-03); runtime/registry gaps remain ([GAP-054](../../Development/EDF_Gap_Register.md), [GAP-027](../../Development/EDF_Gap_Register.md)).
 - Runtime registry, resolver, and DWA schema extensions remain open ([GAP-054](../../Development/EDF_Gap_Register.md), [GAP-027](../../Development/EDF_Gap_Register.md)).
 
 ### Risks

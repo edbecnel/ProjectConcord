@@ -5,7 +5,7 @@
 > **Status:** Draft  
 > **Owner:** ProjectConcord  
 > **Applies To:** Deterministic EDF Engine design  
-> **Last Reviewed:** 2026-10-03 (workflow framework documentation tranche — substantive review of GAP-027, GAP-041, GAP-054)  
+> **Last Reviewed:** 2026-10-03 (SPEC-004 GEW reconciliation publication — GAP-027, GAP-054)  
 > **Authoritative:** Yes — interim policies reference ADRs where binding
 
 ## Purpose
@@ -474,7 +474,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 |---|---|
 | **Source** | [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md); [ADR-0013](../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md); [ADR-0024](../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03) |
 | **Question** | How does operational **DevelopmentWorkAuthorization** correlate **PrescribedWorkflowId**, **ProfileId**, **WorkflowInstanceId**, bounded configuration, and effective-configuration snapshots without duplicating authority semantics or embedding workflow state unrelated to execution authorization? |
-| **Interim policy** | Architecture direction in ADR-0024 **Accepted** 2026-10-03; schema and APIs **not implemented** until M7+ / separately governed tranche. |
+| **Interim policy** | Architecture direction in ADR-0024 **Accepted** 2026-10-03; SPEC-004 (Draft, GEW reconciliation **published** 2026-10-03) documents conceptual DWA ↔ workflow/profile/instance correlation; schema and APIs **not implemented** until M7+ / separately governed tranche. |
 
 ### GAP-054 — Workflow framework runtime and effective configuration
 
@@ -482,7 +482,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 |---|---|
 | **Source** | [PCON-0005](../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03); [ADR-0024](../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03); [AWI-0010](../Architecture/Watch_Items/AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md) |
 | **Question** | How does ProjectConcord implement prescribed-workflow **registry**, **definition versioning**, **effective-configuration resolver** (invariant + bounded + policy-derived), invalid-configuration rejection, and workflow/profile **resolution** at relay and operator-projection boundaries without a generic BPM engine? |
-| **Interim policy** | Documentation tranche only (2026-10-03); **no** `src/` workflow engine, **no** A3 authorization. |
+| **Interim policy** | SPEC-004 GEW reconciliation **published** 2026-10-03; runtime/registry/resolver **not implemented**; **no** A3 authorization. |
 
 ---
 
