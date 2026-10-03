@@ -34,6 +34,7 @@ This directory contains individual Architecture Decision Records.
 | [ADR-0022](ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) | Engineering Agent automated transport architecture (GAP-044 / AWI-0006) | Accepted | 2026-10-01 |
 | [ADR-0023](ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md) | Engineering Agent plugin hosting and registration architecture | Accepted | 2026-10-01 |
 | [ADR-0024](ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) | Governed Engineering Workflow — prescribed workflow and profiles | Accepted | 2026-10-03 |
+| [ADR-0025](ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md) | Governed interaction — operational boundaries and layer responsibilities (GIES) | Accepted | 2026-10-03 |
 
 ## Navigation
 

@@ -257,9 +257,9 @@ The framework **MUST** avoid unnecessary blocking of future extension but **MUST
 
 ---
 
-## 13. Deferred: Governed Interactive Engineering Session
+## 13. Governed Interactive Engineering Session (GIES)
 
-Future routing **EA → ProjectConcord → PA → Human → …** **SHALL** be able to depend on: prescribed workflow, profile, effective configuration, instance state, and authoritative evidence. That architecture is **not** designed in this tranche.
+Framework-level **Governed Interactive Engineering Session** architecture is defined in [PCON-0006](PCON-0006-Governed-Interactive-Engineering-Session-Framework.md) (**Accepted** 2026-10-03) with layer allocation in [ADR-0025](ADRs/ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md) (**Accepted** 2026-10-03). Routing **SHALL** be able to depend on prescribed workflow, profile, effective configuration, instance state, and authoritative evidence. **Implementation** remains unauthorized ([AWI-0011](Watch_Items/AWI-0011-Governed-Interactive-Engineering-Session.md), [GAP-055](../Development/EDF_Gap_Register.md)).
 
 ---
 

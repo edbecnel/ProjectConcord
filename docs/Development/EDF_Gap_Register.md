@@ -5,7 +5,7 @@
 > **Status:** Draft  
 > **Owner:** ProjectConcord  
 > **Applies To:** Deterministic EDF Engine design  
-> **Last Reviewed:** 2026-10-03 (SPEC-004 GEW reconciliation publication — GAP-027, GAP-054)  
+> **Last Reviewed:** 2026-10-03 (GIES architecture publication — GAP-055)  
 > **Authoritative:** Yes — interim policies reference ADRs where binding
 
 ## Purpose
@@ -85,6 +85,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | GAP-052 | Multi-process local operational-store concurrency strategy and validation | Medium | Shared per-user `user-state.db` across processes — semantics not yet designed/validated ([ADR-0019](../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)); investigation OPEN — **not** a claim that SQLite shared access is inherently unsafe |
 | GAP-053 | macOS **Go to Folder…** project locator vs browse-open identity | Medium | **Observed defect** (2026-10-02, A4-T7 human MVR) — path entry for disposable Root-A opened wrong Project ID; browse-open correct; **distinct from** Cursor ACP non-fast blocker; see [GAP-053 detail](#gap-053--macos-go-to-folder-project-locator-vs-browse-open-identity) |
 | GAP-054 | Workflow framework runtime, registry, effective-configuration resolver | High | [PCON-0005](../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03), [ADR-0024](../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03); [AWI-0010](../Architecture/Watch_Items/AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md); **not implemented** |
+| GAP-055 | Governed Interactive Engineering Session runtime, hold persistence, routing | High | [PCON-0006](../Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md) (**Accepted** 2026-10-03), [ADR-0025](../Architecture/ADRs/ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md) (**Accepted** 2026-10-03); [AWI-0011](../Architecture/Watch_Items/AWI-0011-Governed-Interactive-Engineering-Session.md); **not implemented** |
 
 ---
 
@@ -483,6 +484,14 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | **Source** | [PCON-0005](../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03); [ADR-0024](../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03); [AWI-0010](../Architecture/Watch_Items/AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md) |
 | **Question** | How does ProjectConcord implement prescribed-workflow **registry**, **definition versioning**, **effective-configuration resolver** (invariant + bounded + policy-derived), invalid-configuration rejection, and workflow/profile **resolution** at relay and operator-projection boundaries without a generic BPM engine? |
 | **Interim policy** | SPEC-004 GEW reconciliation **published** 2026-10-03; runtime/registry/resolver **not implemented**; **no** A3 authorization. |
+
+### GAP-055 — Governed Interactive Engineering Session runtime and persistence
+
+| Field | Content |
+|---|---|
+| **Source** | [PCON-0006](../Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md) (**Accepted** 2026-10-03); [ADR-0025](../Architecture/ADRs/ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md) (**Accepted** 2026-10-03); [AWI-0011](../Architecture/Watch_Items/AWI-0011-Governed-Interactive-Engineering-Session.md) |
+| **Question** | How does ProjectConcord implement **Interaction Hold**, context/set/item lifecycle, policy-governed **routing**, pre-resolution against authoritative state, operational **provenance**, recovery after app/provider interruption, and integration with relay STOP/Attention — without a chat platform or forms engine? |
+| **Interim policy** | Normative architecture **published** 2026-10-03 (PCON-0006, ADR-0025); persistence schema and APIs **not implemented**; **no** `src/` implementation; relates to [GAP-027](#gap-027--developmentworkauthorization-schema-and-identity), [GAP-054](#gap-054--workflow-framework-runtime-and-effective-configuration), [AWI-0002](../Architecture/Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md). |
 
 ---
 
