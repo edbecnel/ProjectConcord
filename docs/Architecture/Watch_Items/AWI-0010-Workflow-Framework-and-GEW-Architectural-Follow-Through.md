@@ -21,7 +21,7 @@ Track **implementation and normative follow-through** for the accepted-in-princi
 
 While **Active**, this item:
 
-- **Does** record open work: runtime registry, effective-configuration resolver, DWA schema extensions ([GAP-054](../../Development/EDF_Gap_Register.md), [GAP-027](../../Development/EDF_Gap_Register.md)), GMFP registry consumption.
+- **Does** record open work: runtime registry, effective-configuration resolver, DWA schema extensions ([GAP-054](../../Development/EDF_Gap_Register.md), [GAP-027](../../Development/EDF_Gap_Register.md)), GMFP registry consumption; cross-track follow-through with [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) GIES relay contract (**published** 2026-10-03 — [AWI-0011](AWI-0011-Governed-Interactive-Engineering-Session.md)).
 - **Does not** authorize `src/` implementation, A3, or changes to A4/T7/MVR disposition.
 - **Does not** supersede [AWI-0004](AWI-0004-Governed-Maintenance-Fast-Path.md) (GMFP consumption semantics remain EDF-owned).
 
