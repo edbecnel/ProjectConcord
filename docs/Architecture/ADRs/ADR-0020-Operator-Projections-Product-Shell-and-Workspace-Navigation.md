@@ -8,6 +8,8 @@ Accepted
 
 2026-10-01 (Accepted by Project Architect)
 
+**Amended:** 2026-10-03 — governed work-state recovery binding **published** ([tranche plan](../../Handover/ProjectConcord-Durable-Governed-Work-State-Recovery-Binding-Tranche-Plan.md))
+
 ## Context
 
 [AWI-0008](../Watch_Items/AWI-0008-Governed-Operator-Experience-and-Product-Shell.md) captured operator-experience requirements from A2 P0 manual governed relay verification. Partial promotions established terminology ([ADR-0018](ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md)), instance and persistence architecture ([ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)), and governed interaction direction (work/review packages, state sources **A** / **B** / **C**).
@@ -64,6 +66,10 @@ A Project **MAY** have **multiple concurrent governed operations** (for example 
 
 When **ProjectWorkRecord** exists, it remains **identity** correlation only. **DevelopmentWorkAuthorization** remains distinct execution authority. Relay package kinds and validation state remain governed-interaction authority at the relay boundary.
 
+Operator-facing **Current State**, **Waiting On**, and **Baseline** (illustrative labels) are **derived projections** over the same authoritative inputs as Current Work and Attention — **not** duplicate canonical or operational records stored for UI convenience.
+
+**Waiting On** **MAY** reflect distinct underlying conditions (for example Engineering Agent action, Project Architect review, human observation or authorization, provider response, external capability unavailability, **Governed Interaction Hold**, or other workflow-required actor/action) without introducing a universal actor framework in this ADR.
+
 ### 3. Attention
 
 ProjectConcord **SHALL** define one conceptual **Project-level Attention** projection.
@@ -108,6 +114,8 @@ These classes **MUST NOT** be silently collapsed.
 ProjectConcord **MUST NOT** imply **implementation authorization** merely because work exists, a Project Architect review package was produced, an operation is displayed as Current Work, or a Recommended Action is shown.
 
 No hidden workflow engine is authorized. Legitimate actions are those already permitted by relay consumption/production rules, B-layer authorization, and F-layer governance — not new transitions invented in the shell.
+
+**Recovery binding:** Next Action **SHALL NOT** be reconstructed from PA/EA conversational history, model memory, handover prose, or ephemeral UI state. It **SHALL** be derived only from authoritative inputs listed in [§15](#15-governed-work-state-recovery-authoritative-inputs).
 
 ### 5. Governed workflow navigation (workspace + visible progression)
 
@@ -254,6 +262,52 @@ Software Development **authorization** semantics **MUST NOT** move into Core for
 | **Ephemeral UI** | Scroll position, panel expansion, transient focus unless persisted as user preference |
 | **External (C)** | Provider chat — not canonical |
 
+### 15. Governed work-state recovery (authoritative inputs)
+
+#### 15.1 Recovery invariant
+
+ProjectConcord **SHALL NOT** require PA/EA chat history, model memory, handover prose, or UI state to determine the current governed work state after restart, interruption, provider-session loss, or operator return.
+
+Recoverable governed state **SHALL** derive from:
+
+1. **authoritative canonical/project evidence** where applicable ([F] — Git/EDF, gates, MVR, applicable baseline references); and  
+2. **authoritative persisted operational state** ([ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md), [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md)).
+
+Operator projections (Overview, Current Work, Attention, Next Action, workflow-local stage presentation) are **derived** from those sources. They are **not** themselves authority.
+
+**LLM inference** **MUST NOT** substitute for missing authoritative inputs ([§8](#8-capability-graded-projections)).
+
+#### 15.2 Minimum authoritative facts (binding, not a new entity model)
+
+Sufficient durable state **SHALL** exist — stored directly or **deterministically derivable** — to support recovery of the applicable:
+
+| Fact category | Primary architecture |
+|---|---|
+| Project identity | [ADR-0015](ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md), PC-PAR-001–004 |
+| Prescribed workflow identity/version | [PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) §2, [ADR-0024](ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) |
+| Workflow profile / effective configuration | PCON-0005 §4 — [GAP-054](../../Development/EDF_Gap_Register.md) |
+| Workflow-instance identity and instance state | PCON-0005 §2.5, §9 — **FW-8** |
+| Current synchronization / topology position | PCON-0005 §2.6, §6 — **FW-8** |
+| DWA / **Control** authorization boundary | [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md), [GAP-027](../../Development/EDF_Gap_Register.md) |
+| Operation baseline vs current repository HEAD | PCON-0005 §9.1 |
+| STOP / Attention conditions | PC-AIGOV-007, §3 Attention inputs |
+| Outstanding required actor/action | Derived from instance state, relay, GIES, MVR, inter-project (**B**) |
+| Relay produce/consume provenance position | [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) PC-PAR-021, §19 |
+| GIES context / hold / blocking items (when active) | [PCON-0006](../PCON-0006-Governed-Interactive-Engineering-Session-Framework.md) — [GAP-055](../../Development/EDF_Gap_Register.md) |
+| Provider correlation (transport recovery) | [ADR-0022](ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) — not governance identity |
+
+Facts **MAY** be distributed across canonical and operational stores per [ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md). Redundant persistence of derivable facts is **not** required.
+
+#### 15.3 Pause / continuation boundary
+
+Ordinary work-state recovery **does not** depend on [PCON-0003](../PCON-0003-Governed-Pause-Continuation-and-Resume.md) (**Proposed**) or candidate PC-AIGOV-052–057. Broader governed pause, continuation, resume, and long-duration suspension remain on [AWI-0002](../Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md).
+
+**Governed Interaction Hold** ([PCON-0006](../PCON-0006-Governed-Interactive-Engineering-Session-Framework.md)) is **not** governed pause under PCON-0003.
+
+#### 15.4 Stale packages (cross-reference)
+
+Relay import **non-regression** and **Valid** vs **actionable** applicability are normatively bound in [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §19 (PC-PAR-013, PC-PAR-014). Workflow-instance durability for applicability is bound in PCON-0005 **FW-8**.
+
 ## Consequences
 
 - Future shell implementation tranches **MUST** implement projections as read models over **A** + **B** (+ **F** consumption), not as new lifecycle stores.
@@ -269,4 +323,5 @@ Software Development **authorization** semantics **MUST NOT** move into Core for
 - [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)
 - [PCON-0000](../PCON-0000-EDF-Project-Management-System-Architectural-Vision-and-Bootstrap-Handover.md) §37–38 (reconciled)
 - [PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03 — workflow framework; operator projections remain derived)
+- [Work-state recovery binding tranche plan](../../Handover/ProjectConcord-Durable-Governed-Work-State-Recovery-Binding-Tranche-Plan.md)
 - [ADR-0024](ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03 — GEW prescribed workflow)

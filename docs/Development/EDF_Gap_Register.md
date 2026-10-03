@@ -5,7 +5,7 @@
 > **Status:** Draft  
 > **Owner:** ProjectConcord  
 > **Applies To:** Deterministic EDF Engine design  
-> **Last Reviewed:** 2026-10-03 (SPEC-006 GIES interaction relay publication — GAP-055)  
+> **Last Reviewed:** 2026-10-03 (durable work-state recovery binding publication — GAP-043/054)  
 > **Authoritative:** Yes — interim policies reference ADRs where binding
 
 ## Purpose
@@ -368,7 +368,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 | Field | Content |
 |---|---|
 | **Question** | How does ProjectConcord assign stable Project IDs, persist per-user SQLite state (recent roots, session provenance, workflow partitions), implement PAR package validation (including INCOMPLETE handover rules), and Tier 0 awareness without creating `.projectconcord/` on open or depending on ChatGPT/API? |
-| **Interim policy** | Architecture in [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md), [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md), [PAR plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md); **A1 closed**; **A2-T7 closed** (Desktop P0 relay UI — [T7 notes](../Handover/ProjectConcord-A2-T7-Implementation-Notes.md)); remaining PAR workflow UI for separately authorized A3; MVR A2-T8. |
+| **Interim policy** | Architecture in [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) (including §19 applicability / PC-PAR-025 — [recovery binding tranche](../Handover/ProjectConcord-Durable-Governed-Work-State-Recovery-Binding-Tranche-Plan.md) **published** 2026-10-03), [ADR-0015](../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md), [ADR-0020](../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §15, [PAR plan](../Handover/ProjectConcord-PAR-Workflow-Architecture-Plan.md); **A1 closed**; **A2-T7 closed** (Desktop P0 relay UI — [T7 notes](../Handover/ProjectConcord-A2-T7-Implementation-Notes.md)); remaining PAR workflow UI for separately authorized A3; MVR A2-T8. |
 
 ### GAP-030 — Engineering Agent provider adapter and plugin boundary
 
@@ -483,7 +483,7 @@ Framework Advisor checks directory presence, root files, AI handbook completenes
 |---|---|
 | **Source** | [PCON-0005](../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03); [ADR-0024](../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03); [AWI-0010](../Architecture/Watch_Items/AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md) |
 | **Question** | How does ProjectConcord implement prescribed-workflow **registry**, **definition versioning**, **effective-configuration resolver** (invariant + bounded + policy-derived), invalid-configuration rejection, and workflow/profile **resolution** at relay and operator-projection boundaries without a generic BPM engine? |
-| **Interim policy** | SPEC-004 GEW reconciliation **published** 2026-10-03; runtime/registry/resolver **not implemented**; **no** A3 authorization. |
+| **Interim policy** | SPEC-004 GEW reconciliation **published** 2026-10-03; [PCON-0005](../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) **FW-8** binds durable workflow-instance/sync position for recovery ([recovery binding tranche](../Handover/ProjectConcord-Durable-Governed-Work-State-Recovery-Binding-Tranche-Plan.md) **published** 2026-10-03); runtime/registry/resolver **not implemented**; **no** A3 authorization. |
 
 ### GAP-055 — Governed Interactive Engineering Session runtime and persistence
 

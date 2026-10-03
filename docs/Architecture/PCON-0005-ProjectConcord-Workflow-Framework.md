@@ -154,6 +154,7 @@ The following apply to **all** prescribed workflows (unless a future PA decision
 | **FW-5** | Authorization failure is **fail-closed** (STOP / no implied permission). |
 | **FW-6** | UI projections are **derived**; the shell is not an independent workflow engine or authority store ([ADR-0020](ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md)). |
 | **FW-7** | Each prescribed workflow **SHALL** preserve provenance sufficient to reconstruct the governed decisions **that workflow requires**, without treating full conversation or chat history as the authoritative record. |
+| **FW-8** | **Workflow-instance** identity, **instance state**, and **synchronization/topology position** **SHALL** be durably recoverable (directly or deterministically derivable from persisted operational inputs) sufficient to support operator recovery projections ([ADR-0020](ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §15) and **non-regression** on relay import ([SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §19). Redundant storage of derivable facts is **not** required. Implementation: [GAP-054](../Development/EDF_Gap_Register.md). |
 
 Framework invariants are **not** engineering-specific. GEW-specific invariants (including binding to PC-AIGOV-016 where applicable) are in [ADR-0024](ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md).
 
@@ -218,6 +219,18 @@ A governed policy **MAY** establish an explicit default profile (for example Sta
 | Effective configuration | — | Deterministic resolver (cacheable) |
 | Instance state | Operational store | Attention, Next Action, stepper |
 | Handover / relay package | Derived snapshot ([ADR-0004](ADRs/ADR-0004-Derived-Data-and-Cache.md)) | Carries refs to workflow/profile/effective config |
+
+### 9.1 Operation baseline and repository HEAD
+
+An active governed operation **SHALL** retain or reference the **applicable authoritative baseline** (for example commit or governed baseline pointer) relevant to that operation.
+
+**Current repository HEAD** and the operation's **governed baseline** **SHALL NOT** be assumed identical after interruption or elapsed time.
+
+A changed HEAD **SHALL NOT** silently rewrite the operation's recorded baseline.
+
+Applicable workflow, profile, and policy **SHALL** determine whether reconciliation, **Attention**, **STOP**, reauthorization, or continuation is required when baseline and current repository state diverge. Universal Git conflict policy is **out of scope** for this framework record.
+
+Broader pause/resume reconciliation when work was intentionally suspended is deferred to [PCON-0003](PCON-0003-Governed-Pause-Continuation-and-Resume.md) (**Proposed**, [AWI-0002](Watch_Items/AWI-0002-Governed-Pause-Continuation-and-Resume.md)).
 
 ---
 

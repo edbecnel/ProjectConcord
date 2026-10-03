@@ -11,7 +11,7 @@
 | **Accepted** | Project Architect — **2026-09-29** |
 | **Owner** | ProjectConcord |
 | **Normative** | Yes — Project identity/session (**A**), Core Governed Interaction Relay (**A**), per-user operational state (**A**), Software Development governance at relay boundary (**B**), provider/tool adapters (**E**); historical **Project Architect Relay (PAR)** track terminology |
-| **Last Reviewed** | 2026-10-03 (GIES interaction relay reconciliation **published** — [tranche plan](../../Handover/ProjectConcord-SPEC-006-GIES-Interaction-Relay-Reconciliation-Tranche-Plan.md); implementation **not authorized**) |
+| **Last Reviewed** | 2026-10-03 (work-state recovery binding **published** — [tranche plan](../../Handover/ProjectConcord-Durable-Governed-Work-State-Recovery-Binding-Tranche-Plan.md); implementation **not authorized**) |
 | **Target release** | Historical PAR track A1–A4 (separately authorized); not part of M1 |
 | **Implementation** | **A1** (identity + per-user state): **published** 2026-09-28 — see [Implementation Roadmap](../../Development/Implementation_Roadmap.md). **A2–A4** (governed interaction relay, workflow MVP, automated provider transport per AWI-0006): **not authorized** except tranches separately accepted. Accepted SPEC-006 satisfies the specification/governance prerequisite for Project Architect **consideration** of **A2**; acceptance does **not** authorize A2. |
 | **Architecture baseline** | Accepted [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md), [ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md), [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md), [ADR-0015](../../Architecture/ADRs/ADR-0015-Project-Identity-PAR-and-Per-User-Operational-State.md) — repository baseline at reconciliation `084c6f043e27db2c9bdca558f14216de596f3c8d` |
@@ -40,6 +40,7 @@
 - [ADR-0022 — Engineering Agent automated transport architecture](../../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) (**Accepted** 2026-10-01)
 - [PCON-0005 — ProjectConcord Workflow Framework](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03)
 - [ADR-0024 — Governed Engineering Workflow prescribed workflow architecture](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03)
+- [Durable governed work-state recovery binding tranche plan](../../Handover/ProjectConcord-Durable-Governed-Work-State-Recovery-Binding-Tranche-Plan.md) (**Published** 2026-10-03; tranche **closed**)
 
 ---
 
@@ -124,7 +125,7 @@ Define normative ProjectConcord product behavior across accepted component bound
 
 ### Architectural ownership (normative mapping)
 
-Normative requirements (PC-PAR-001–024) map to owners per [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md):
+Normative requirements (PC-PAR-001–025) map to owners per [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md):
 
 | Owner | Scope in SPEC-006 |
 |---|---|
@@ -148,7 +149,7 @@ Normative requirements (PC-PAR-001–024) map to owners per [ADR-0016](../../Arc
 | Context reconstructability | PC-AIGOV-015 | Tier 0 (**A**) + operational provenance (**A**) |
 | GIES consumption / Interaction Hold | PC-AIGOV-077, PC-AIGOV-078 | Relay carries interaction; does not own GIES semantics (§18); hold ≠ INCOMPLETE; answer text ≠ authorization |
 
-SPEC-006 adds relay, identity, session, provider, and **GIES interaction relay** requirements (PC-PAR-001–024). Where [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) is not yet implemented, SPEC-006 defines **minimum relay-boundary behavior** for authorized tranches (**A2+**) only — without restating the full Software Development entity model or GIES framework semantics ([PCON-0006](../../Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md)).
+SPEC-006 adds relay, identity, session, provider, **GIES interaction relay**, and **work-state recovery applicability** requirements (PC-PAR-001–025). Where [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) is not yet implemented, SPEC-006 defines **minimum relay-boundary behavior** for authorized tranches (**A2+**) only — without restating the full Software Development entity model or GIES framework semantics ([PCON-0006](../../Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md)).
 
 ## 4. Identifier requirements (PC-PAR-001–004)
 
@@ -183,8 +184,8 @@ Historical PAR track sections map here to **Core Governed Interaction Relay** (*
 | ID | Requirement |
 |---|---|
 | **PC-PAR-012** | The **Core Governed Interaction Relay** SHALL assemble governed interaction packages as follows: **[A]** transport-neutral package assembly; package and correlation identity; incorporation of authorized operational inputs and Tier 0 relay-safe context ([§12](#12-canonical-markdown-awareness--tier-0)). **[B]** When the Software Development extension is in scope, **PA Review Package** profile and content — including **DevelopmentWorkAuthorization**-related context, submissions, and Software Development workflow payload — per [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) and [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md); such content is **not** universal Core semantics. **[D]** Where Working Environment policy is configured, supervision, checkpoint, or escalation information MAY be included by reference to configured policy — without defining new Working Environment facets. |
-| **PC-PAR-013** | Imported **PA handover responses** SHALL be validated as follows: **[A]** structural validation, required relay fields, validation pipeline, and **INCOMPLETE** disposition when governance-critical metadata is missing ([§9](#9-pa-handover-schema--governance-critical-fields-pc-par-020)). **[B]** Software Development semantic rules — including handover vs **DevelopmentWorkAuthorization** separation — per [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) (for example PC-AIGOV-003, PC-AIGOV-005); this spec does not duplicate the complete semantic model. **[E]** Provider-specific serialization parsing (delimited blocks, Markdown sections, or equivalent). |
-| **PC-PAR-014** | **Engineering-Agent-directed handovers** SHALL be validated before **automated** Engineering Agent relay: **[A]** Core validation and **INCOMPLETE** status MUST block **automated** Engineering Agent relay; **RejectedMalformed** MUST block automated forward; active relay **STOP** and **Valid != actionable** rules MUST be preserved. **GIES:** The same rules apply to **GIES interaction** relay payloads (§18) — **INCOMPLETE** means missing **relay-critical** correlation/structure, not an unresolved Interaction Item awaiting answer. **[E]** Automated forward is performed only by an **Engineering Agent provider plugin** that declares automated transport capability per [ADR-0021](../../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md) and MUST use the same governed render/parse semantics as P0 manual. **P0 manual** copy/export and human paste MUST NOT be described as requiring an implemented automated bridge or plugin. |
+| **PC-PAR-013** | Imported **governed relay packages** (including PA handover responses and Engineering Agent results) SHALL be validated as follows: **[A]** structural validation, required relay fields, validation pipeline, and **INCOMPLETE** disposition when governance-critical metadata is missing ([§9](#9-pa-handover-schema--governance-critical-fields-pc-par-020)). **[A]** After structural validation, the relay **SHALL** evaluate **applicability** to the **current** persisted governed workflow state per [§19](#19-governed-work-state-recovery-at-the-relay-boundary) and [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) **FW-8** / [ADR-0020](../../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §15. **[B]** Software Development semantic rules — including handover vs **DevelopmentWorkAuthorization** separation and PC-AIGOV-014 non-regression — per [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) (for example PC-AIGOV-003, PC-AIGOV-005, PC-AIGOV-014); this spec does not duplicate the complete semantic model. **[E]** Provider-specific serialization parsing (delimited blocks, Markdown sections, or equivalent). |
+| **PC-PAR-014** | **Engineering-Agent-directed handovers** SHALL be validated before **automated** Engineering Agent relay: **[A]** Core validation and **INCOMPLETE** status MUST block **automated** Engineering Agent relay; **RejectedMalformed** MUST block automated forward; active relay **STOP** and **Valid != actionable** rules MUST be preserved. **Recovery:** A structurally **Valid** import that is **not actionable** for the current governed operation (for example superseded synchronization position — §19) **MUST NOT** advance or regress persisted workflow-instance state and **MUST** fail closed for state advancement while **MAY** be retained as historical evidence where policy permits. **GIES:** The same rules apply to **GIES interaction** relay payloads (§18) — **INCOMPLETE** means missing **relay-critical** correlation/structure, not an unresolved Interaction Item awaiting answer. **[E]** Automated forward is performed only by an **Engineering Agent provider plugin** that declares automated transport capability per [ADR-0021](../../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md) and MUST use the same governed render/parse semantics as P0 manual. **P0 manual** copy/export and human paste MUST NOT be described as requiring an implemented automated bridge or plugin. |
 | **PC-PAR-015** | Missing governance-critical authorization or mode metadata MUST NOT be silently inferred from free prose or model output. **[A]** Core relay validation and inference safety at the boundary. **[B]** Meaning of authorization, planning vs implementation, and governed Software Development state — semantic source [SPEC-004](SPEC-004-ai-assisted-development-governance-workflow.md) / [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (for example PC-AIGOV-003, PC-AIGOV-004). **GIES:** Interaction **answer text** (including colloquial “yes”, “proceed”, “approved”) **SHALL NOT** be treated as **DevelopmentWorkAuthorization** or planning/implementation authorization — governed authorization **SHALL** be referenced only through applicable **Control** / DWA / workflow disposition (PC-AIGOV-077, PC-AIGOV-078). |
 
 ## 8. Provider separation (PC-PAR-016–019)
@@ -307,6 +308,8 @@ When a relay implementation tranche (for example **A2**) is authorized by the Pr
 
 **GIES relay (post–§18 reconciliation):** Exact `projectconcord-relay-v1` field schemas and `GovernedPackageKind` profile assignment for interaction need/answer; additional correlation ids; partial-set serialization on wire; stale-answer rejection rules at parse layer; profile-specific GIES mediation — **open** ([GAP-055](../../Development/EDF_Gap_Register.md), [AWI-0011](../../Architecture/Watch_Items/AWI-0011-Governed-Interactive-Engineering-Session.md)).
 
+**Work-state recovery (post–§19 binding):** Exact applicability algorithm, disposition wire values beyond **Valid != actionable**, and workflow-instance store fields — **open** ([GAP-043](../../Development/EDF_Gap_Register.md), [GAP-054](../../Development/EDF_Gap_Register.md)).
+
 ## 17. Operator-stage presentation binding (PC-PAR-023)
 
 This section defines **presentation/workflow projection** binding between the Core Governed Interaction Relay and the operator-stage model ([ADR-0020](../../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md)). It **does not** alter authoritative relay semantics, package kinds, validation outcomes, provenance rules, or **B**-layer authorization semantics.
@@ -400,6 +403,54 @@ Relay payloads **SHALL** carry effective governed facts required by the operatio
 | **PC-PAR-024a** | **[A]** GIES interaction relay **SHALL** preserve correlation sufficient to return resolutions to the **same** governed EA operation (§18.3). |
 | **PC-PAR-024b** | **[A]** Relay **SHALL** distinguish **INCOMPLETE** package defects from **Interaction Hold** and from valid pending Interaction Items (§18.4). |
 | **PC-PAR-024c** | **[A]**+[B] Relay **SHALL** carry provenance/reference categories sufficient for the EA to consume answers without treating provider transcript as canonical evidence (GIES-4, PC-AIGOV-016); authoritative MVR or F-layer artifacts **SHALL** be referenced rather than duplicated when applicable. |
+
+## 19. Governed work-state recovery at the relay boundary
+
+[ADR-0020](../../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §15 defines recovery invariants and minimum authoritative inputs. This section binds **relay import** to **non-regression** without defining wire schemas or persistence implementation ([GAP-043](../../Development/EDF_Gap_Register.md), [GAP-054](../../Development/EDF_Gap_Register.md)).
+
+### 19.1 Valid vs actionable (repository terminology)
+
+Relay validation distinguishes **structural validity** from **applicability** to the **current** governed operation:
+
+| Term | Meaning |
+|---|---|
+| **Valid** (structural) | Package satisfies its structural/semantic validation contract — disposition **Valid** when implemented (`RelayValidationState.Valid` in published code) |
+| **Actionable** (applicability) | Package is valid **for the current** workflow-instance state, synchronization/topology position, and correlation/provenance relationship — may advance or consume governed operational state per governing rules |
+
+A package **MAY** be **Valid** but **not actionable** (for example an earlier pre-publication reconciliation return when publication is already authorized and awaiting execution).
+
+**Valid != actionable** (PC-PAR-014) **SHALL** be preserved. **INCOMPLETE** and **RejectedMalformed** remain structural validation dispositions; they are **not** substitutes for superseded applicability.
+
+### 19.2 Non-regression on import
+
+An otherwise well-formed imported relay package **SHALL NOT** be allowed to **regress** or **overwrite** current governed workflow state when correlation, provenance, synchronization position, or supersession identifies it as belonging to an **earlier** state.
+
+Validation **SHALL** consider **both**:
+
+1. package validity in isolation; and  
+2. applicability to **current** persisted governed state.
+
+Fail closed for **state advancement**. The workflow instance **SHALL NOT** silently move backward. Later authorization **SHALL NOT** be implicitly revoked. A stale package **SHALL NOT** be treated as a new authoritative consume for advancement merely because it parses.
+
+**Semantic example (illustrative):** Current state — reconciliation reviewed; publication authorized; awaiting publication execution. Incoming package — earlier pre-publication reconciliation return. Required — recognize prior synchronization position; **do not** regress to PA review; **do not** overwrite newer authorization.
+
+### 19.3 Correlation inputs (reuse)
+
+Applicability **SHALL** bind to existing identifiers and provenance where adequate:
+
+- `WorkflowInstanceId` when implemented ([PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md));
+- `GovernedCorrelationId`, `GovernedPackageId` / package identity;
+- work-session and package produce/consume provenance (PC-PAR-021);
+- synchronization/topology position and last successful consume for state advancement;
+- GIES supersession where applicable (§18.3) — without reopening §18 wire design.
+
+A new **GovernedOperationId** primitive is **not** required.
+
+### 19.4 Normative requirement (PC-PAR-025)
+
+| ID | Requirement |
+|---|---|
+| **PC-PAR-025** | **[A]** The Core Governed Interaction Relay **SHALL** enforce §19.1–§19.3 on import: **Valid** but **not actionable** packages **MUST** fail closed for governed operational state advancement; **MUST NOT** regress workflow-instance or authorization state; **MAY** be retained or referenced as historical evidence. **[B]** Applicability **SHALL** consume current workflow-instance, DWA/**Control**, STOP, and synchronization position from authoritative operational inputs — not PA/EA chat history. |
 
 ## Maintenance
 

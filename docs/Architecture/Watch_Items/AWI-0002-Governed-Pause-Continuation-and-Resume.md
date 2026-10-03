@@ -33,6 +33,8 @@ This watch item:
 
 While **Active**, non-authoritative for implementation.
 
+**Cross-track (2026-10-03):** Ordinary durable work-state recovery ([ADR-0020](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §15, [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §19) **does not** depend on PCON-0003 acceptance. Broader pause/continuation/resume remains this watch item.
+
 ## Context
 
 While formalizing [PCR-0001](../../Development/PCR-0001-Project-Continuation-and-Pause-Record.md), the Project Architect recognized that continuation/pause handovers should eventually become a **reusable governance capability**: continuation vs authorization separation; reconciliation on resume; supersession of stale continuation records; provider/conversation independence; scoped pause; engineering-domain neutrality ([PCON-0003](../PCON-0003-Governed-Pause-Continuation-and-Resume.md)).
