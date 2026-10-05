@@ -13,4 +13,8 @@ public sealed record GovernedWorkStateCurrentWorkItem(
     long ResourceVersion,
     bool? HeadDriftsFromStoredBaseline,
     bool DependencyBlocked,
-    IReadOnlyList<WorkflowInstanceId> UnresolvedRequiredWorkflowInstanceIds);
+    IReadOnlyList<WorkflowInstanceId> UnresolvedRequiredWorkflowInstanceIds,
+    bool StopActive,
+    ProjectionAvailability EffectiveConfigurationAvailability,
+    string? EffectiveConfigurationUnavailableReason,
+    IReadOnlyList<DevelopmentWorkAuthorizationKind> ApplicableActiveAuthorizationKinds);

@@ -38,7 +38,9 @@ public sealed class InMemoryUserApplicationStatePersistence : IUserApplicationSt
         InMemoryTransportOperationStore? transportOperations,
         InMemoryWorkflowInstanceStore? workflowInstances = null,
         InMemoryWorkflowOriginStore? workflowOrigins = null,
-        InMemoryWorkflowDependencyStore? workflowDependencies = null)
+        InMemoryWorkflowDependencyStore? workflowDependencies = null,
+        InMemoryDevelopmentWorkAuthorizationStore? developmentWorkAuthorizations = null,
+        InMemoryWorkflowInstanceStopStore? workflowInstanceStops = null)
     {
         ProjectRegistry = projectRegistry ?? throw new ArgumentNullException(nameof(projectRegistry));
         UserPreferences = userPreferences ?? throw new ArgumentNullException(nameof(userPreferences));
@@ -48,6 +50,8 @@ public sealed class InMemoryUserApplicationStatePersistence : IUserApplicationSt
         WorkflowInstances = workflowInstances ?? new InMemoryWorkflowInstanceStore();
         WorkflowOrigins = workflowOrigins ?? new InMemoryWorkflowOriginStore();
         WorkflowDependencies = workflowDependencies ?? new InMemoryWorkflowDependencyStore();
+        DevelopmentWorkAuthorizations = developmentWorkAuthorizations ?? new InMemoryDevelopmentWorkAuthorizationStore();
+        WorkflowInstanceStops = workflowInstanceStops ?? new InMemoryWorkflowInstanceStopStore();
     }
 
     public IProjectRegistry ProjectRegistry { get; }
@@ -63,6 +67,10 @@ public sealed class InMemoryUserApplicationStatePersistence : IUserApplicationSt
     public IWorkflowOriginStore WorkflowOrigins { get; }
 
     public IWorkflowDependencyStore WorkflowDependencies { get; }
+
+    public IDevelopmentWorkAuthorizationStore DevelopmentWorkAuthorizations { get; }
+
+    public IWorkflowInstanceStopStore WorkflowInstanceStops { get; }
 
     public void ExecuteInTransaction(Action work)
     {

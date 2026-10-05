@@ -55,6 +55,12 @@ internal static class SchemaMigrationRunner
         if (fromVersion < Migration005WorkflowRelationships.Version)
         {
             Migration005WorkflowRelationships.Apply(connection, null);
+            fromVersion = Migration005WorkflowRelationships.Version;
+        }
+
+        if (fromVersion < Migration006WorkflowAuthorizationAndStop.Version)
+        {
+            Migration006WorkflowAuthorizationAndStop.Apply(connection, null);
         }
     }
 

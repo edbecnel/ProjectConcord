@@ -16,6 +16,8 @@ public sealed class SqliteUserApplicationStatePersistence : IUserApplicationStat
     private readonly SqliteWorkflowInstanceStoreAdapter _workflowInstances;
     private readonly SqliteWorkflowOriginStoreAdapter _workflowOrigins;
     private readonly SqliteWorkflowDependencyStoreAdapter _workflowDependencies;
+    private readonly SqliteDevelopmentWorkAuthorizationStoreAdapter _developmentWorkAuthorizations;
+    private readonly SqliteWorkflowInstanceStopStoreAdapter _workflowInstanceStops;
 
     public SqliteUserApplicationStatePersistence(SqliteUserApplicationStateStore store)
     {
@@ -27,6 +29,8 @@ public sealed class SqliteUserApplicationStatePersistence : IUserApplicationStat
         _workflowInstances = new SqliteWorkflowInstanceStoreAdapter(store);
         _workflowOrigins = new SqliteWorkflowOriginStoreAdapter(store);
         _workflowDependencies = new SqliteWorkflowDependencyStoreAdapter(store);
+        _developmentWorkAuthorizations = new SqliteDevelopmentWorkAuthorizationStoreAdapter(store);
+        _workflowInstanceStops = new SqliteWorkflowInstanceStopStoreAdapter(store);
     }
 
     public IProjectRegistry ProjectRegistry => _registry;
@@ -42,6 +46,10 @@ public sealed class SqliteUserApplicationStatePersistence : IUserApplicationStat
     public IWorkflowOriginStore WorkflowOrigins => _workflowOrigins;
 
     public IWorkflowDependencyStore WorkflowDependencies => _workflowDependencies;
+
+    public IDevelopmentWorkAuthorizationStore DevelopmentWorkAuthorizations => _developmentWorkAuthorizations;
+
+    public IWorkflowInstanceStopStore WorkflowInstanceStops => _workflowInstanceStops;
 
     public void ExecuteInTransaction(Action work) => _store.ExecuteInTransaction(work);
 

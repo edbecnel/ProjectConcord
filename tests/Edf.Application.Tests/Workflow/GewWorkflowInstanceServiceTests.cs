@@ -171,7 +171,8 @@ public class GewWorkflowInstanceServiceTests
         var instance = harness.Workflow.CreateGewInstance(
             harness.ProjectId,
             GovernedCorrelationId.New(),
-            projectRootAbsolutePath: "/tmp/project");
+            projectRootAbsolutePath: "/tmp/project",
+            profileId: WorkflowProfileId.Parse(GewV1ProfileIds.Standard));
 
         git.Head = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
 
@@ -237,6 +238,24 @@ public class GewWorkflowInstanceServiceTests
             authority());
     }
 
+    [Fact]
+    public void TopologyTransition_WithoutProfile_DoesNotRequireEffectiveConfiguration()
+    {
+        var harness = CreateHarness();
+        var instance = harness.Workflow.CreateGewInstance(
+            harness.ProjectId,
+            GovernedCorrelationId.New(),
+            projectRootAbsolutePath: null);
+
+        var updated = harness.Workflow.RecordGovernedTopologyTransition(
+            instance.InstanceId,
+            TopologyPlaceId.Parse(GewV1TopologyPlaces.PlanningGoverned),
+            instance.ResourceVersion,
+            GovernedWorkflowTransitionAuthorityTestSupport.ForTestHarness(GovernedCorrelationId.New()));
+
+        Assert.Equal(GewV1TopologyPlaces.PlanningGoverned, updated.TopologyPlaceId.Value);
+    }
+
     private static TestHarness CreateHarness(IGitHeadCommitResolver? git = null)
     {
         var persistence = new InMemoryUserApplicationStatePersistence();
@@ -245,12 +264,14 @@ public class GewWorkflowInstanceServiceTests
             "wf",
             DateTimeOffset.UtcNow);
         var registry = new GewV1PrescribedWorkflowRegistry();
-        var resolver = git ?? new MutableGitHeadCommitResolver(null);
-        var workflow = new WorkflowInstanceService(persistence.WorkflowInstances, registry, resolver);
+        var gitResolver = git ?? new GitHeadCommitResolver();
+        var workflow = new WorkflowInstanceService(persistence.WorkflowInstances, registry, gitResolver);
         var recovery = new GovernedWorkStateRecoveryService(
             persistence.WorkflowInstances,
             persistence.WorkflowOrigins,
             persistence.WorkflowDependencies,
+            persistence.DevelopmentWorkAuthorizations,
+            persistence.WorkflowInstanceStops,
             registry);
         return new TestHarness(persistence, project.ProjectId, workflow, recovery);
     }
@@ -258,8 +279,8 @@ public class GewWorkflowInstanceServiceTests
     private sealed record TestHarness(
         InMemoryUserApplicationStatePersistence Persistence,
         ProjectConcordProjectId ProjectId,
-        WorkflowInstanceService Workflow,
-        GovernedWorkStateRecoveryService Recovery);
+        IWorkflowInstanceService Workflow,
+        IGovernedWorkStateRecoveryService Recovery);
 
     private sealed class MutableGitHeadCommitResolver : IGitHeadCommitResolver
     {

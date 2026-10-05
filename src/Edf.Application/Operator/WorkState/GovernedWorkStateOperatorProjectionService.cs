@@ -8,13 +8,20 @@ namespace Edf.Application.Operator.WorkState;
 public sealed class GovernedWorkStateOperatorProjectionService
 {
     private readonly IGovernedWorkStateRecoveryService _recovery;
+    private readonly IGewV1EffectiveConfigurationResolver _effectiveConfigurationResolver;
+    private readonly IPrescribedWorkflowRegistry _registry;
     private readonly IGitHeadCommitResolver _gitHeadCommitResolver;
 
     public GovernedWorkStateOperatorProjectionService(
         IGovernedWorkStateRecoveryService recovery,
+        IGewV1EffectiveConfigurationResolver effectiveConfigurationResolver,
+        IPrescribedWorkflowRegistry registry,
         IGitHeadCommitResolver gitHeadCommitResolver)
     {
         _recovery = recovery ?? throw new ArgumentNullException(nameof(recovery));
+        _effectiveConfigurationResolver = effectiveConfigurationResolver
+            ?? throw new ArgumentNullException(nameof(effectiveConfigurationResolver));
+        _registry = registry ?? throw new ArgumentNullException(nameof(registry));
         _gitHeadCommitResolver = gitHeadCommitResolver ?? throw new ArgumentNullException(nameof(gitHeadCommitResolver));
     }
 
@@ -28,12 +35,53 @@ public sealed class GovernedWorkStateOperatorProjectionService
             .GroupBy(d => d.BlockedWorkflowInstanceId)
             .ToDictionary(g => g.Key, g => g.Select(d => d.RequiredWorkflowInstanceId).ToList());
 
+        var authorizationsByInstance = recovery.DevelopmentWorkAuthorizations
+            .GroupBy(a => a.WorkflowInstanceId)
+            .ToDictionary(g => g.Key, g => (IReadOnlyList<DevelopmentWorkAuthorization>)g.ToList());
+
+        var stopByInstance = recovery.WorkflowInstanceStopSummaries
+            .ToDictionary(s => s.WorkflowInstanceId);
+
         var currentWork = recovery.ActiveInstances
             .Select(i =>
             {
                 IReadOnlyList<WorkflowInstanceId> unresolved = pendingByBlocked.TryGetValue(i.InstanceId, out var required)
                     ? required
                     : Array.Empty<WorkflowInstanceId>();
+
+                var instanceAuthorizations = authorizationsByInstance.TryGetValue(i.InstanceId, out var records)
+                    ? records
+                    : Array.Empty<DevelopmentWorkAuthorization>();
+
+                var stopActive = stopByInstance.TryGetValue(i.InstanceId, out var stop) && stop.IsStopActive;
+
+                var effectiveConfig = _effectiveConfigurationResolver.Resolve(
+                    new EffectiveConfigurationResolveInput(i, instanceAuthorizations));
+
+                ProjectionAvailability effectiveAvailability;
+                string? effectiveReason = null;
+                IReadOnlyList<DevelopmentWorkAuthorizationKind> applicableKinds;
+                if (effectiveConfig is EffectiveConfigurationResolved)
+                {
+                    effectiveAvailability = ProjectionAvailability.Available;
+                    applicableKinds = instanceAuthorizations
+                        .Where(r => DevelopmentWorkAuthorizationApplicability.IsCurrentlyApplicable(r, i, _registry))
+                        .Select(r => r.AuthorizationKind)
+                        .Distinct()
+                        .ToList();
+                }
+                else if (effectiveConfig is EffectiveConfigurationUnresolved unresolvedConfig)
+                {
+                    effectiveAvailability = ProjectionAvailability.Unavailable;
+                    effectiveReason = EffectiveConfigurationReasonCodes.ToUnavailableReason(unresolvedConfig.Code);
+                    applicableKinds = Array.Empty<DevelopmentWorkAuthorizationKind>();
+                }
+                else
+                {
+                    effectiveAvailability = ProjectionAvailability.Unavailable;
+                    applicableKinds = Array.Empty<DevelopmentWorkAuthorizationKind>();
+                }
+
                 return new GovernedWorkStateCurrentWorkItem(
                     i.InstanceId,
                     i.WorkflowId,
@@ -45,7 +93,11 @@ public sealed class GovernedWorkStateOperatorProjectionService
                     i.ResourceVersion,
                     TryComputeHeadDrift(projectRootAbsolutePath, i.GovernedBaseline),
                     unresolved.Count > 0,
-                    unresolved);
+                    unresolved,
+                    stopActive,
+                    effectiveAvailability,
+                    effectiveReason,
+                    applicableKinds);
             })
             .ToList();
 

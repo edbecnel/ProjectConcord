@@ -9,17 +9,23 @@ public sealed class GovernedWorkStateRecoveryService : IGovernedWorkStateRecover
     private readonly IWorkflowInstanceStore _store;
     private readonly IWorkflowOriginStore _origins;
     private readonly IWorkflowDependencyStore _dependencies;
+    private readonly IDevelopmentWorkAuthorizationStore _authorizations;
+    private readonly IWorkflowInstanceStopStore _stops;
     private readonly IPrescribedWorkflowRegistry _registry;
 
     public GovernedWorkStateRecoveryService(
         IWorkflowInstanceStore store,
         IWorkflowOriginStore origins,
         IWorkflowDependencyStore dependencies,
+        IDevelopmentWorkAuthorizationStore authorizations,
+        IWorkflowInstanceStopStore stops,
         IPrescribedWorkflowRegistry registry)
     {
         _store = store ?? throw new ArgumentNullException(nameof(store));
         _origins = origins ?? throw new ArgumentNullException(nameof(origins));
         _dependencies = dependencies ?? throw new ArgumentNullException(nameof(dependencies));
+        _authorizations = authorizations ?? throw new ArgumentNullException(nameof(authorizations));
+        _stops = stops ?? throw new ArgumentNullException(nameof(stops));
         _registry = registry ?? throw new ArgumentNullException(nameof(registry));
     }
 
@@ -33,9 +39,20 @@ public sealed class GovernedWorkStateRecoveryService : IGovernedWorkStateRecover
 
         var origins = _origins.ListByProject(projectId);
         var dependencies = _dependencies.ListByProject(projectId);
-        ValidateRelationships(projectId, origins, dependencies);
+        var authorizations = _authorizations.ListByProject(projectId);
+        var stopSummaries = _stops.ListSummariesByProject(projectId);
 
-        return new GovernedWorkStateRecoverySnapshot(projectId, active, origins, dependencies);
+        ValidateRelationships(projectId, origins, dependencies);
+        ValidateAuthorizations(projectId, authorizations);
+        ValidateStopSummaries(projectId, stopSummaries);
+
+        return new GovernedWorkStateRecoverySnapshot(
+            projectId,
+            active,
+            origins,
+            dependencies,
+            authorizations,
+            stopSummaries);
     }
 
     private void ValidateRelationships(
@@ -65,6 +82,59 @@ public sealed class GovernedWorkStateRecoveryService : IGovernedWorkStateRecover
 
             EnsureInstanceInProject(dependency.BlockedWorkflowInstanceId, projectId);
             EnsureInstanceInProject(dependency.RequiredWorkflowInstanceId, projectId);
+        }
+    }
+
+    private void ValidateAuthorizations(
+        ProjectConcordProjectId projectId,
+        IReadOnlyList<DevelopmentWorkAuthorization> authorizations)
+    {
+        foreach (var authorization in authorizations)
+        {
+            if (authorization.ProjectId != projectId)
+            {
+                throw new GovernedWorkStateRecoveryException(
+                    $"Development work authorization '{authorization.AuthorizationId}' has mismatched project id.");
+            }
+
+            EnsureInstanceInProject(authorization.WorkflowInstanceId, projectId);
+        }
+    }
+
+    private void ValidateStopSummaries(
+        ProjectConcordProjectId projectId,
+        IReadOnlyList<WorkflowInstanceStopSummary> stopSummaries)
+    {
+        foreach (var summary in stopSummaries)
+        {
+            if (summary.ProjectId != projectId)
+            {
+                throw new GovernedWorkStateRecoveryException(
+                    $"Workflow instance stop summary for '{summary.WorkflowInstanceId}' has mismatched project id.");
+            }
+
+            EnsureInstanceInProject(summary.WorkflowInstanceId, projectId);
+
+            var events = _stops.ListEventsByWorkflowInstance(summary.WorkflowInstanceId);
+            if (events.Count == 0)
+            {
+                throw new GovernedWorkStateRecoveryException(
+                    $"Workflow instance stop summary for '{summary.WorkflowInstanceId}' has no events.");
+            }
+
+            var lastEvent = events.Last();
+            if (lastEvent.EventId != summary.LastEventId)
+            {
+                throw new GovernedWorkStateRecoveryException(
+                    $"Workflow instance stop summary for '{summary.WorkflowInstanceId}' does not reference the latest event.");
+            }
+
+            var expectedActive = lastEvent.EventKind == WorkflowInstanceStopEventKind.Set;
+            if (summary.IsStopActive != expectedActive)
+            {
+                throw new GovernedWorkStateRecoveryException(
+                    $"Workflow instance stop summary for '{summary.WorkflowInstanceId}' is inconsistent with the latest event.");
+            }
         }
     }
 

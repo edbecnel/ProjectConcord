@@ -4,6 +4,7 @@ using Edf.Application.Projects.InMemory;
 using Edf.Application.Workflow;
 using Edf.Domain.Projects;
 using Edf.Domain.Relay;
+using Edf.Domain.Workflow;
 
 namespace Edf.Application.Tests.Operator;
 
@@ -44,6 +45,13 @@ public class GovernedWorkStateOperatorProjectionTests
         var projection = services.WorkStateOperatorProjection.ProjectForProject(project.ProjectId, null);
 
         Assert.Single(projection.CurrentWork);
+        var work = projection.CurrentWork.Single();
+        Assert.Equal(ProjectionAvailability.Unavailable, work.EffectiveConfigurationAvailability);
+        Assert.Equal(
+            GovernedWorkStateUnavailableReasons.EffectiveConfigMissingProfile,
+            work.EffectiveConfigurationUnavailableReason);
+        Assert.False(work.StopActive);
+        Assert.Empty(work.ApplicableActiveAuthorizationKinds);
         Assert.Equal(ProjectionAvailability.Unavailable, projection.WaitingOnAvailability);
         Assert.Equal(ProjectionAvailability.Unavailable, projection.NextActionAvailability);
     }

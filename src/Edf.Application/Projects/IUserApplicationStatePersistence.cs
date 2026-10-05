@@ -22,5 +22,9 @@ public interface IUserApplicationStatePersistence
 
     IWorkflowDependencyStore WorkflowDependencies { get; }
 
+    IDevelopmentWorkAuthorizationStore DevelopmentWorkAuthorizations { get; }
+
+    IWorkflowInstanceStopStore WorkflowInstanceStops { get; }
+
     void ExecuteInTransaction(Action work);
 }

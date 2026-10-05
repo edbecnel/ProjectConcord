@@ -45,7 +45,7 @@ public class RelayOperationalPersistenceTests
         {
         }
 
-        Assert.Equal(5, ReadSchemaVersion(path));
+        Assert.Equal(6, ReadSchemaVersion(path));
         Assert.True(TableExists(path, "relay_continuity"));
         Assert.True(TableExists(path, "relay_package"));
         Assert.True(TableExists(path, "relay_provenance_event"));

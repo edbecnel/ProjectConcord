@@ -462,6 +462,11 @@ public class EngineeringAgentA4T4RecoveryTests
 
         public IWorkflowDependencyStore WorkflowDependencies => inner.WorkflowDependencies;
 
+        public IDevelopmentWorkAuthorizationStore DevelopmentWorkAuthorizations =>
+            inner.DevelopmentWorkAuthorizations;
+
+        public IWorkflowInstanceStopStore WorkflowInstanceStops => inner.WorkflowInstanceStops;
+
         public void ExecuteInTransaction(Action work) => inner.ExecuteInTransaction(work);
     }
 }
