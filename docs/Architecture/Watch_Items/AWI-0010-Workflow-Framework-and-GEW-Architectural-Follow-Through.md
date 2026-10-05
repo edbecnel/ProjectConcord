@@ -21,11 +21,12 @@ Track **implementation and normative follow-through** for the accepted-in-princi
 
 While **Active**, this item:
 
-- **Does** record open work: **M7a-WF-1** + **M7a-WF-1b** + **M7a-WF-1c** backend foundations **implemented** (**uncommitted** pending publication): Migration004/005/006; instance + origin/blocking graph; **GEW v1** effective-configuration resolver (derived; grant-time guard only — not topology/lifecycle/STOP/supersede); durable **DevelopmentWorkAuthorization** grant/supersede ([GAP-027](../../Development/EDF_Gap_Register.md) partial); **WorkflowInstance**-scoped orthogonal **STOP**; recovery/projection extensions (effective-config availability, STOP, applicable DWA kinds — **not** Next Action / actionable frontier); **deferred**: PC-PAR-025 enforcement; synchronization / AEI instance persistence; production relay binding and governed-advancement integration; GMFP registry consumption; **Hierarchical Workflow View** UI ([AWI-0008](AWI-0008-Governed-Operator-Experience-and-Product-Shell.md) §B.1); GIES cross-track ([AWI-0011](AWI-0011-Governed-Interactive-Engineering-Session.md)); **PA Exchange** runtime ([§B.2](#b2-project-architect-exchange-contract-deferred--capture-2026-10-03)); **GEW v1 topology** normative docs — [PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) §2.7, [ADR-0024](../ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) §9–§13 ([M7a-WF-1-doc](../../Handover/ProjectConcord-M7a-WF-1-doc-GEW-Topology-Documentation-Tranche-Plan.md) — **published**).
+- **Does** record open work: **M7a-WF-1** + **M7a-WF-1b** + **M7a-WF-1c** backend foundations **published** (**M7a-WF-1c** **closed** at `78bfde9155ee61ece052ac179a3d0cfe24a81dd2`): Migration004/005/006; instance + origin/blocking graph; **GEW v1** effective-configuration resolver (derived; grant-time guard only — not topology/lifecycle/STOP/supersede); durable **DevelopmentWorkAuthorization** grant/supersede ([GAP-027](../../Development/EDF_Gap_Register.md) partial); **WorkflowInstance**-scoped orthogonal **STOP**; recovery/projection extensions (effective-config availability, STOP, applicable DWA kinds — **not** Next Action / actionable frontier); **deferred**: PC-PAR-025 enforcement; synchronization / AEI instance persistence; production relay binding and governed-advancement integration; GMFP registry consumption; **Hierarchical Workflow View** UI ([AWI-0008](AWI-0008-Governed-Operator-Experience-and-Product-Shell.md) §B.1); GIES cross-track ([AWI-0011](AWI-0011-Governed-Interactive-Engineering-Session.md)); **PA Exchange** runtime ([§B.2](#b2-project-architect-exchange-contract-deferred--capture-2026-10-03)); **GEW v1 topology** normative docs — [PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) §2.7, [ADR-0024](../ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) §9–§13 ([M7a-WF-1-doc](../../Handover/ProjectConcord-M7a-WF-1-doc-GEW-Topology-Documentation-Tranche-Plan.md) — **published**).
 - **Does not** authorize `src/` implementation, A3, or changes to A4/T7/MVR disposition.
 - **Does not** supersede [AWI-0004](AWI-0004-Governed-Maintenance-Fast-Path.md) (GMFP consumption semantics remain EDF-owned).
 - **Operator UX (deferred):** Future **Hierarchical Workflow View** over the authoritative instance/relationship graph is captured in [AWI-0008 §B.1](AWI-0008-Governed-Operator-Experience-and-Product-Shell.md#b1-hierarchical-workflow-view-deferred--capture-2026-10-03) — **not** part of M7a-WF-1b backend scope; no Desktop visualization in current tranche.
 - **Project Architect exchange (deferred):** Preferred **Human ↔ ProjectConcord ↔ Project Architect provider** interaction, provider-neutral **PA Exchange Contract**, transport separation, and canonical request/response identity — [§B.2](#b2-project-architect-exchange-contract-deferred--capture-2026-10-03) (handover captures `8ca11fb9`, `730c89c8`).
+- **Conditional alternate synchronization satisfaction (deferred):** Human-selected **conditional alternate satisfaction** of eligible **SynchronizationPoint**s — applications **Conditional Publication Authorization** ([§B.3.1](#b31-conditional-publication-authorization)) and **Conditional Closure Authorization** ([§B.3.2](#b32-conditional-closure-authorization)) — [§B.3](#b3-human-selected-conditional-alternate-synchronization-satisfaction-deferred--capture-2026-10-06) (handovers `c7d8d85d-47c1-4e98-8649-864c5843b920`, `b8e23f19-e813-44e8-9c98-b934b91a0d17`, `e6f8137c-22cb-40f9-b07c-271da098ad86`, documentation `0de6ed2b-24ef-441c-b20d-10ef2c14709d`).
 
 ## B.2 Project Architect Exchange Contract (deferred — capture 2026-10-03)
 
@@ -99,6 +100,199 @@ Future composer may allow optional intent selection (default **Auto / Not sure**
 ### Explicit non-goals (current tranches)
 
 **No** authorization for: PA request composer UI; OpenAI/ChatGPT integration; browser extension/bookmarklet/clipboard automation; PA directive parser; PA message classifier; automatic workflow creation; GIES clarification runtime; user message-type selector UI.
+
+## B.3 Human-selected conditional alternate synchronization satisfaction (deferred — capture 2026-10-06)
+
+**Handover / review provenance:** `c7d8d85d-47c1-4e98-8649-864c5843b920` (CPA capture); `b8e23f19-e813-44e8-9c98-b934b91a0d17` (CPA plan review); `e6f8137c-22cb-40f9-b07c-271da098ad86` (CCA investigation plan); `0de6ed2b-24ef-441c-b20d-10ef2c14709d` (documentation authorization) — **documentation only**; **does not** authorize `src/` implementation or amend accepted [PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) / [ADR-0024](../ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md). Formal runtime design **deferred**.
+
+### Parent pattern (capture only)
+
+The Workflow Framework **SHALL** eventually support an **optional** pattern: **human-selected conditional alternate satisfaction of an eligible SynchronizationPoint**.
+
+For an eligible **SynchronizationPoint**, the human operator in charge **MAY** elect an **alternate governed satisfaction path** in which predefined objective **EvidenceRequirements**, **Controls**, authorization conditions, and other applicable requirements replace the normally required **interactive PA satisfaction** path for that synchronization requirement.
+
+The governed synchronization requirement is **not** simply skipped. If alternate criteria fail, cannot be established, or become indeterminate, **normal interactive synchronization** is required again (**fail-closed**).
+
+**Conditional Publication Authorization (CPA)** and **Conditional Closure Authorization (CCA)** are **named applications** of this pattern — capability/application labels, **not** new canonical Workflow Framework primitives.
+
+Prefer the term **conditional alternate synchronization satisfaction** over “governance bypass” or “synchronization bypass.”
+
+### Eligibility
+
+**Prescribed workflow definition** and **applicable policy** determine which **SynchronizationPoint**s are eligible for alternate satisfaction and under what constraints.
+
+A runtime **registry** (or other implementation) **MAY** eventually resolve or enforce that information; binding architectural responsibility to a registry at this stage is **not** authorized.
+
+### Human election
+
+The human operator **SHALL** explicitly elect use of an available alternate satisfaction path when it applies.
+
+Alternate satisfaction **SHALL NOT** be silently selected by: Project Architect judgment; Engineering Agent judgment; workflow profile alone; model inference; implementation size; successful tests; apparent simplicity; or “narrow correction” classification.
+
+The election **SHALL** require **governed provenance**. How the election is represented and durably retained **remains unresolved**. This capture **does not** bind election to **DevelopmentWorkAuthorization** or any other persistence record.
+
+### Distinct governance concepts
+
+The following **SHALL** remain distinct (do **not** collapse into DWA):
+
+1. Engineering / bounded-work authorization.
+2. Publication authorization.
+3. Human election to use alternate synchronization satisfaction.
+4. Evidence establishing objective requirements.
+5. Closure authority / applicable governed transition.
+
+Successful publication **does not** independently create closure authority.
+
+### Evidence
+
+Alternate synchronization satisfaction **does not** eliminate evidence. Required evidence **SHALL** still be generated, retained, associated with the applicable governed context, and recoverable as required. The architecture changes the **permitted method of satisfying** an eligible synchronization requirement, not the existence of evidence requirements.
+
+### Recovery / provenance (semantic requirements)
+
+ProjectConcord must ultimately recover enough authoritative state to determine:
+
+- whether the human elected alternate satisfaction;
+- which **SynchronizationPoint** occurrence/context it applied to;
+- whether workflow/policy permitted it;
+- which objective requirements applied;
+- whether those requirements were satisfied;
+- whether normal synchronization became required instead;
+- whether publication occurred;
+- whether closure remains pending or legitimately completed.
+
+Persistence schema is **not** designed in this capture.
+
+### Workflow Framework primitives
+
+Retain the four existing primitives ([PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) §6): **SynchronizationPoint**, **AuthorizedExecutionInterval**, **EvidenceRequirement**, **Control**. **No** fifth primitive is authorized or currently justified.
+
+These primitives **appear sufficient** for this deferred architectural model. Final runtime sufficiency **remains subject** to later formal runtime design.
+
+| Primitive | Role in this pattern (conceptual, non-normative) |
+|---|---|
+| **SynchronizationPoint** | Identifies the synchronization requirement; default satisfaction = interactive PA path; alternate satisfaction when elected and criteria met — **orthogonally** to topology place ([ADR-0024](../ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) §11) |
+| **EvidenceRequirement** | Objective criteria that may satisfy the sync point on the alternate path |
+| **Control** | Permitted operations when alternate satisfaction holds (e.g. commit/push; governed closure transition) |
+| **AuthorizedExecutionInterval** | May span work between human sync events while alternate criteria are evaluated |
+
+### GEW profiles and GMFP
+
+CPA and CCA are **not** equivalent to Accelerated, Standard, or High Assurance; **not** automatically selected by a profile; and **not** a quality or assurance downgrade.
+
+Future workflow or profile policy **MAY** permit, prohibit, constrain eligible **SynchronizationPoint**s, or impose evidence/control floors. Human election remains a **separate** concept unless later architecture explicitly decides otherwise.
+
+[GMFP](AWI-0004-Governed-Maintenance-Fast-Path.md) remains a **separate prescribed workflow** with EDF semantics. Conditional alternate synchronization satisfaction is **not** implicit GMFP selection and is **not** a substitute for GMFP.
+
+### Workflow rigor follow-through (deferred)
+
+This pattern relates to the deferred investigation of workflow **rigor** / **compression** ([PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) workflow profile; [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) open per-profile sync/evidence floors). That investigation **SHOULD** eventually distinguish at least:
+
+- full interactive synchronization satisfaction;
+- human-elected objective alternate satisfaction at declared eligible synchronization points;
+- profile/policy-defined minimum synchronization and evidence floors;
+- any additional intermediate or specialized governed configurations later found necessary.
+
+Complete rigor architecture is **not** designed here.
+
+### Relation to M7a-WF-1c
+
+**M7a-WF-1c** is **published** and **closed** at commit `78bfde9155ee61ece052ac179a3d0cfe24a81dd2`. Neither CPA nor CCA **governed** that publication, **retroactively alter** **M7a-WF-1c**, or alter accepted **M7a-WF-1c** governance history. See [§B.3.2](#b32-conditional-closure-authorization) for the motivating example only.
+
+### Explicit non-goals (current tranches)
+
+**No** authorization for: runtime enforcement; sync/AEI instance persistence; relay binding; profile binding; UI for election; automatic narrow-change routing; registry-as-eligibility-owner; amendment of accepted PCON-0005 / ADR-0024 / SPEC-004; or operational **Attention** / **STOP** representation for CCA fail-closed (deferred).
+
+### B.3.1 Conditional Publication Authorization
+
+**CPA** — pre-publication application of §B.3.
+
+After PA authorizes a bounded correction, the human **MAY** elect alternate satisfaction of an eligible **pre-publication** **SynchronizationPoint**, allowing commit/push without another interactive pre-publication PA synchronization/review **only while** required validation, bounded scope, predefined conditions, applicable manual verification, and other applicable controls remain satisfied.
+
+**Normal path (conceptual):**
+
+```text
+implementation/correction
+    ->
+validation
+    ->
+evidence
+    ->
+PA review
+    ->
+publication authorization
+    ->
+commit/push
+```
+
+**Optional path with CPA (conceptual):**
+
+```text
+bounded correction authorization
+    ->
+human elects alternate satisfaction (CPA)
+    ->
+correction
+    ->
+validation/evidence
+    ->
+objective alternate satisfaction of eligible pre-publication synchronization
+    ->
+commit/push
+    ->
+publication evidence retained/returned
+```
+
+The normal interactive PA path remains available and becomes required again when alternate criteria fail or become indeterminate.
+
+**CPA fail-closed:** Alternate satisfaction failure normally occurs **before** publication; **SHALL** return to the normal interactive PA path **without commit/push** when, at minimum: required validation fails; unexpected test regressions; scope expansion beyond the bounded correction; new architectural ambiguity; incomplete required human verification; unexpected or unrelated files in the publication set; repository or baseline drift from authorization; or inability to establish that alternate satisfaction still applies.
+
+Which GEW transition’s pre-publication **SynchronizationPoint** is affected, and evidence timing relative to existing publication-evidence patterns, **remain unresolved**.
+
+### B.3.2 Conditional Closure Authorization
+
+**CCA** — post-publication / pre-closure application of §B.3.
+
+After PA **publication authorization**, the human **MAY** elect alternate satisfaction of an eligible **pre-closure** **SynchronizationPoint**, allowing governed closure when separately authorized/permitted **without** another interactive post-publication PA synchronization/review **only while** predefined objective closure/publication verification criteria are satisfied.
+
+**Normal path (conceptual):**
+
+```text
+PA publication authorization
+    ->
+EA commit/push
+    ->
+EA verifies publication
+    ->
+EA returns publication evidence
+    ->
+PA reviews publication evidence
+    ->
+PA declares tranche/work closed
+```
+
+**Optional path with CCA (conceptual):**
+
+```text
+publication authorization
+    ->
+human elects alternate satisfaction (CCA)
+    ->
+commit/push
+    ->
+publication verification/evidence
+    ->
+objective alternate satisfaction of eligible pre-closure synchronization
+    ->
+governed closure if separately authorized/permitted
+```
+
+**Motivating example (not normative):** The **M7a-WF-1c** publication at `78bfde9155ee61ece052ac179a3d0cfe24a81dd2` illustrated objective publication facts (authorized parent SHA, expected publication commit, successful non-force push, local `main` aligned with `origin/main`, clean working tree, no unrelated files, applicable validation evidence still in force). That case was **not** governed by CCA and is **not** a normative precedent.
+
+**CCA fail-closed asymmetry:** Alternate satisfaction failure **MAY** occur **after** publication. CCA fail-closed behavior **does not** imply rollback or reversal of an already-successful publication. Instead: publication remains a historical/operational fact; closure is **not** automatically declared; the applicable synchronization remains **unresolved**; normal PA review/synchronization is required. Later architecture **MAY** define **Attention**, **STOP**, or other operational representation — **not** designed here.
+
+Candidate revert themes (not normative runtime rules): commit/push failure before closure; force or unauthorized publication mechanism; unexpected parent/baseline or publication contents; unrelated files; dirty working tree when cleanliness required; local/remote divergence; required validation evidence absent or no longer applicable; publication hook/build failure; authorization or election no longer applicable; inability to establish a required closure condition; ambiguity requiring PA judgment.
+
+**Closure multiplicity (open):** “Closure” is **not** yet one universal operation. Future architecture **MUST** distinguish as applicable: **WorkflowInstance** lifecycle completion; governed tranche/work closeout; relay/package/operation closeout; other workflow-specific terminal dispositions. CCA **MUST NOT** silently equate these concepts. **Not** resolved in this capture.
 
 ## Promotion path
 
