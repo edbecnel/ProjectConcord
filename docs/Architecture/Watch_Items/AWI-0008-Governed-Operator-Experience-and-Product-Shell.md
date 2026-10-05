@@ -89,6 +89,22 @@ The graph is **not** necessarily a tree. The UI **SHALL NOT** redefine authorita
 
 **Explicit non-goals for current tranches:** **No** Desktop workflow tree, graph editor, drag/drop graph editing, delete controls, lifecycle command UI, or visualization implementation in **M7a-WF-1b** (backend graph/projection only). Implementation requires a **separate** PA-governed product-shell / UX tranche after authoritative graph data exists ([AWI-0010](AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md)).
 
+### B.2 Synchronization path disposition (deferred — capture 2026-10-06)
+
+**Handover capture:** `476976f4-8b0d-4a4d-b1ef-2035fb9bb034` (reviews plan `8f3b0af2-b327-4dca-8ef3-78d13d742f87`) — **documentation only**; **does not** authorize `src/` implementation or amend [ADR-0020](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md).
+
+**Future operator UX follow-through** for [AWI-0010 §B.3](AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md#b3-conditional-alternate-synchronization-satisfaction-deferred--capture-2026-10-06) **conditional alternate synchronization satisfaction** and **synchronization path disposition** (**OptimizedAlternate** default vs **RequireInteractiveSynchronization** override).
+
+When an eligible/applicable optimized path is active, the operator experience **SHOULD**:
+
+- make the **active disposition** visible (optimized default vs require-interactive override);
+- provide a clear, **occurrence-scoped** mechanism to require full interactive Project Architect synchronization for the applicable synchronization occurrence;
+- **not** treat presentation or inspection as establishing eligibility or applicability ([ADR-0020](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) — inspection/display **≠** governed mutation; command availability from governed operation policy).
+
+Operator UI **SHALL NOT** substitute for prescribed workflow definition, applicable policy, authorization, **Controls**, or objective **EvidenceRequirements** when determining eligibility.
+
+Exact control placement, wording, and stepper/Attention integration remain **deferred**. **No** UI implementation in current tranches.
+
 ### C. Durable governed relay/package working state
 
 Useful governed handover/package working material should survive application close/reopen where appropriate.
