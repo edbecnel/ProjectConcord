@@ -21,6 +21,7 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
     private readonly Func<string, Task> _copyTextAsync;
     private readonly IEngineeringAgentAutomatedTransportService? _automatedTransport;
     private readonly RelayWorkflowOperatorProjectionService? _operatorProjections;
+    private readonly Action? _onOperatorWorkStateMayHaveChanged;
 
     private AgentSessionIntent? _projectArchitectSessionIntent;
     private AgentSessionIntent? _engineeringAgentSessionIntent;
@@ -47,7 +48,7 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
         IGovernedRelayP0WorkflowService workflow,
         IProjectWorkspaceService workspace,
         Func<string, Task> copyTextAsync)
-        : this(workflow, workspace, copyTextAsync, null, null)
+        : this(workflow, workspace, copyTextAsync, null, null, null)
     {
     }
 
@@ -56,13 +57,15 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
         IProjectWorkspaceService workspace,
         Func<string, Task> copyTextAsync,
         IEngineeringAgentAutomatedTransportService? automatedTransport,
-        RelayWorkflowOperatorProjectionService? operatorProjections)
+        RelayWorkflowOperatorProjectionService? operatorProjections,
+        Action? onOperatorWorkStateMayHaveChanged = null)
     {
         _workflow = workflow ?? throw new ArgumentNullException(nameof(workflow));
         _workspace = workspace ?? throw new ArgumentNullException(nameof(workspace));
         _copyTextAsync = copyTextAsync ?? throw new ArgumentNullException(nameof(copyTextAsync));
         _automatedTransport = automatedTransport;
         _operatorProjections = operatorProjections;
+        _onOperatorWorkStateMayHaveChanged = onOperatorWorkStateMayHaveChanged;
         _hasAutomatedTransportIntegration = automatedTransport is not null && operatorProjections is not null;
 
         Diagnostics = new ObservableCollection<string>();
@@ -88,6 +91,9 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
             CancelAutomatedTransportAsync,
             () => IsRelaySectionEnabled && CanCancelAutomatedTransport);
     }
+
+    public (GovernedRelayPackage? Package, RelayValidationResult? Validation) ConsumedPaHandover =>
+        (_lastPaHandoverImport, _lastPaHandoverValidation);
 
     public ObservableCollection<string> Diagnostics { get; }
 
@@ -283,8 +289,10 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
     public string SessionIntentHint =>
         "Session intents are explicit user choices (NEW/CONTINUE). They are not inferred from package prose.";
 
+    public const string ExchangeSectionTitle = "Governed Exchange";
+
     public string AuthorizationBoundaryNotice =>
-        "Governed relay packages present state only. Handover and PA acceptance do not grant implementation authorization.";
+        "Package validation and handover acceptance do not grant durable development work authorization or implementation permission.";
 
     public IReadOnlyList<AgentSessionIntent> SessionIntentOptions { get; } =
         [AgentSessionIntent.New, AgentSessionIntent.Continue];
@@ -427,6 +435,7 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
         (PrepareEngineeringHandoverCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
         RefreshProvenance(projectId);
         RefreshOperatorProjections();
+        _onOperatorWorkStateMayHaveChanged?.Invoke();
         await Task.CompletedTask.ConfigureAwait(true);
     }
 
@@ -575,6 +584,7 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
             CanForwardAutomatedHandover = false;
             CanCancelAutomatedTransport = false;
             RaiseAutomatedTransportCommandCanExecuteChanged();
+            _onOperatorWorkStateMayHaveChanged?.Invoke();
             return;
         }
 
@@ -602,6 +612,7 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
             or TransportOperationLifecycleState.AwaitingResult
             or TransportOperationLifecycleState.ForwardInProgress;
         RaiseAutomatedTransportCommandCanExecuteChanged();
+        _onOperatorWorkStateMayHaveChanged?.Invoke();
     }
 
     private void RefreshProvenance(ProjectConcordProjectId projectId)

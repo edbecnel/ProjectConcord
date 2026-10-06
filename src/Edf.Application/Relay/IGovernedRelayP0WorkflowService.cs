@@ -38,7 +38,8 @@ public sealed record RelayP0SessionState(
 
 public sealed record RelayPaReviewExportOptions(
     EngineeringAgentMode EngineeringAgentMode,
-    EngineeringAgentMode? PriorEngineeringAgentMode);
+    EngineeringAgentMode? PriorEngineeringAgentMode,
+    PaHandoverResponseProfile PaHandoverResponseProfile = PaHandoverResponseProfile.PlanningEntry);
 
 public sealed record PaReviewExportOperationResult(
     string? RenderedPackage,

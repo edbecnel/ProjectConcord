@@ -81,7 +81,7 @@ public class ProjectArchitectManualAdapterTests
         var result = _adapter.TryParsePaHandoverImport(rendered);
 
         Assert.Equal(RelayValidationState.RejectedMalformed, result.Validation.State);
-        Assert.Contains(result.Validation.Diagnostics, d => d.Code == RelayValidationCodes.MachineBlockMissing);
+        Assert.Contains(result.Validation.Diagnostics, d => d.Code == RelayValidationCodes.ManualPasteMachineBlockMissing);
     }
 
     [Fact]

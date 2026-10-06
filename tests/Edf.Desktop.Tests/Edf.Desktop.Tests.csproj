@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Edf.Desktop\Edf.Desktop.csproj" />
     <ProjectReference Include="..\..\src\Edf.Application\Edf.Application.csproj" />
+    <ProjectReference Include="..\Edf.Application.Tests\Edf.Application.Tests.csproj" />
     <ProjectReference Include="..\..\src\Edf.Domain\Edf.Domain.csproj" />
   </ItemGroup>
 

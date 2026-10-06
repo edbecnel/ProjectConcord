@@ -3,6 +3,7 @@ namespace Edf.Application.Relay;
 using Edf.Application.Projects;
 using Edf.Application.Relay.EngineeringAgent;
 using Edf.Application.Relay.ProjectArchitect;
+using Edf.Application.Relay.Serialization;
 using Edf.Application.Relay.SoftwareDevelopment;
 using Edf.Domain.Projects;
 using Edf.Domain.Relay;
@@ -131,7 +132,15 @@ public sealed class GovernedRelayP0WorkflowService : IGovernedRelayP0WorkflowSer
         }
 
         var recorded = _relay.RecordProducedPackage(package, validation, projectRoot);
-        var rendered = _projectArchitect.RenderPaReviewPackage(recorded.Package);
+        var reviewBody = _projectArchitect.RenderPaReviewPackage(recorded.Package);
+        var contract = GovernedRelayPaHandoverResponseInstruction.Render(
+            recorded.Package,
+            options.PaHandoverResponseProfile);
+        var rendered = reviewBody.TrimEnd()
+            + Environment.NewLine
+            + Environment.NewLine
+            + contract
+            + Environment.NewLine;
         return new PaReviewExportOperationResult(rendered, validation, recorded.Package.PackageId);
     }
 

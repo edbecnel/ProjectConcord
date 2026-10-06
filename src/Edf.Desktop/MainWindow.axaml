@@ -3,12 +3,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:Edf.Desktop.ViewModels"
-        mc:Ignorable="d" d:DesignWidth="720" d:DesignHeight="520"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="640"
         x:Class="Edf.Desktop.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Title="ProjectConcord"
-        Width="720" Height="900"
-        MinWidth="560" MinHeight="400">
+        Title="ProjectConcord — Operator"
+        Width="800" Height="900"
+        MinWidth="640" MinHeight="520">
   <NativeMenu.Menu>
     <NativeMenu>
       <NativeMenuItem Header="File">
@@ -21,253 +21,492 @@
       </NativeMenuItem>
     </NativeMenu>
   </NativeMenu.Menu>
-  <ScrollViewer>
-    <StackPanel Margin="24" Spacing="16">
-      <SelectableTextBlock Text="ProjectConcord"
-                 FontSize="20"
-                 FontWeight="SemiBold" />
-      <SelectableTextBlock Text="{Binding ActorDisplayName, StringFormat=Actor: {0}}" />
 
-      <Border Padding="12" CornerRadius="4" BorderThickness="1" BorderBrush="#CCC">
-        <StackPanel Spacing="8">
-          <SelectableTextBlock Text="Active project" FontWeight="SemiBold" />
-          <SelectableTextBlock Text="No project open."
-                     IsVisible="{Binding !HasActiveProject}" />
-          <StackPanel Spacing="6" IsVisible="{Binding HasActiveProject}">
-            <SelectableTextBlock Text="Project ID" FontWeight="SemiBold" FontSize="12" />
-            <Grid ColumnDefinitions="*,Auto" Margin="0,0,0,4">
-              <TextBox Grid.Column="0"
-                       Text="{Binding CurrentProjectId}"
-                       IsReadOnly="True"
-                       TextWrapping="Wrap"
-                       MinHeight="28" />
-              <Button Grid.Column="1"
-                      Margin="8,0,0,0"
-                      Content="Copy Project ID"
-                      Command="{Binding CopyProjectIdCommand}"
-                      VerticalAlignment="Center" />
-            </Grid>
-            <SelectableTextBlock Text="Project Root path" FontWeight="SemiBold" FontSize="12" />
-            <Grid ColumnDefinitions="*,Auto">
-              <TextBox Grid.Column="0"
-                       Text="{Binding ProjectRootPath}"
-                       IsReadOnly="True"
-                       TextWrapping="Wrap"
-                       MinHeight="32" />
-              <Button Grid.Column="1"
-                      Margin="8,0,0,0"
-                      Content="Copy path"
-                      Command="{Binding CopyActivePathCommand}"
-                      VerticalAlignment="Center" />
-            </Grid>
+  <DockPanel Margin="16">
+    <Border DockPanel.Dock="Top"
+            Padding="12"
+            CornerRadius="4"
+            BorderThickness="1"
+            BorderBrush="#CCC"
+            Margin="0,0,0,12">
+      <StackPanel Spacing="8">
+        <Grid ColumnDefinitions="*,Auto">
+          <StackPanel Grid.Column="0" Spacing="4">
+            <SelectableTextBlock Text="ProjectConcord Operator" FontSize="18" FontWeight="SemiBold" />
+            <SelectableTextBlock Text="{Binding ProjectHeaderTitle}" FontWeight="SemiBold" />
+            <SelectableTextBlock Text="{Binding ActorDisplayName, StringFormat=Signed in as {0}}"
+                                 FontSize="12"
+                                 Foreground="Gray" />
           </StackPanel>
-          <StackPanel Orientation="Horizontal" Spacing="8">
-            <Button Content="Open project folder…"
-                    Command="{Binding OpenProjectFolderCommand}" />
-            <Button Content="Close Project"
-                    Command="{Binding CloseProjectCommand}" />
+          <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Top">
+            <Button Content="Close project"
+                    Command="{Binding CloseProjectCommand}"
+                    IsVisible="{Binding HasActiveProject}" />
           </StackPanel>
+        </Grid>
+
+        <SelectableTextBlock Text="Open a project from the Projects area to begin."
+                   IsVisible="{Binding !HasActiveProject}"
+                   TextWrapping="Wrap"
+                   Foreground="DarkOrange" />
+
+        <StackPanel Spacing="6" IsVisible="{Binding HasActiveProject}">
+          <SelectableTextBlock Text="Project ID" FontWeight="SemiBold" FontSize="12" />
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBox Grid.Column="0"
+                     Text="{Binding CurrentProjectId}"
+                     IsReadOnly="True"
+                     TextWrapping="Wrap"
+                     MinHeight="28" />
+            <Button Grid.Column="1"
+                    Margin="8,0,0,0"
+                    Content="Copy ID"
+                    Command="{Binding CopyProjectIdCommand}"
+                    VerticalAlignment="Center" />
+          </Grid>
+          <SelectableTextBlock Text="Project root" FontWeight="SemiBold" FontSize="12" />
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBox Grid.Column="0"
+                     Text="{Binding ProjectRootPath}"
+                     IsReadOnly="True"
+                     TextWrapping="Wrap"
+                     MinHeight="28" />
+            <Button Grid.Column="1"
+                    Margin="8,0,0,0"
+                    Content="Copy path"
+                    Command="{Binding CopyActivePathCommand}"
+                    VerticalAlignment="Center" />
+          </Grid>
         </StackPanel>
-      </Border>
 
-      <SelectableTextBlock Text="Recent Projects" FontWeight="SemiBold" />
-      <SelectableTextBlock Text="{Binding RecentEmptyMessage}"
-                 IsVisible="{Binding !HasRecentProjects}"
-                 TextWrapping="Wrap"
-                 Foreground="Gray" />
+        <SelectableTextBlock Text="{Binding StatusMessage}"
+                   Foreground="Gray"
+                   TextWrapping="Wrap"
+                   FontSize="12" />
+      </StackPanel>
+    </Border>
 
-      <ItemsControl ItemsSource="{Binding RecentProjects}"
-                    IsVisible="{Binding HasRecentProjects}">
-        <ItemsControl.ItemTemplate>
-          <DataTemplate x:DataType="vm:RecentProjectItemViewModel">
-            <Border Margin="0,0,0,8" Padding="12" CornerRadius="4" BorderThickness="1" BorderBrush="#DDD">
-              <StackPanel Spacing="6">
-                <StackPanel Orientation="Horizontal" Spacing="8">
-                  <SelectableTextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" />
-                  <SelectableTextBlock Text="Last active"
-                             IsVisible="{Binding IsLastActive}"
-                             FontSize="11"
-                             Foreground="#0066CC" />
-                  <SelectableTextBlock Text="{Binding AvailabilityLabel}"
-                             FontSize="11"
-                             Foreground="DarkOrange"
-                             IsVisible="{Binding IsMissingOnDisk}" />
-                  <SelectableTextBlock Text="{Binding AvailabilityLabel}"
-                             FontSize="11"
-                             Foreground="Gray"
-                             IsVisible="{Binding !IsMissingOnDisk}" />
+    <TabControl SelectedIndex="{Binding SelectedOperatorTabIndex}">
+      <TabItem Header="Current Work">
+        <ScrollViewer>
+          <StackPanel Margin="8" Spacing="12"
+                      IsVisible="{Binding WorkState, Converter={x:Static ObjectConverters.IsNotNull}}">
+            <SelectableTextBlock Text="{x:Static vm:MainWindowViewModel.CurrentWorkTabIntro}"
+                       TextWrapping="Wrap"
+                       FontSize="12"
+                       Foreground="Gray" />
+            <StackPanel Spacing="10" DataContext="{Binding WorkState}">
+              <SelectableTextBlock Text="{Binding BoundaryNotice}" TextWrapping="Wrap" FontSize="12" Foreground="Gray" />
+              <SelectableTextBlock Text="{Binding EmptyStateMessage}"
+                         IsVisible="{Binding !HasCurrentWorkItems}"
+                         TextWrapping="Wrap"
+                         Foreground="DarkOrange" />
+              <Button Content="Start GEW — Standard profile"
+                      Command="{Binding StartGewBootstrapCommand}"
+                      IsVisible="{Binding CanStartGewBootstrap}"
+                      HorizontalAlignment="Left" />
+              <SelectableTextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap" Foreground="#0066CC" />
+
+              <Border Padding="12" CornerRadius="4" BorderThickness="2" BorderBrush="#5A9FD4"
+                      IsVisible="{Binding HasCurrentWorkItems}">
+                <StackPanel Spacing="6">
+                  <SelectableTextBlock Text="{Binding OperatorSituationHeadline}"
+                             FontWeight="SemiBold" FontSize="15" TextWrapping="Wrap" />
+                  <SelectableTextBlock Text="{Binding OperatorSituationSummary}"
+                             TextWrapping="Wrap" FontSize="13" />
                 </StackPanel>
-                <Grid ColumnDefinitions="*,Auto">
-                  <TextBox Grid.Column="0"
-                           Text="{Binding LocatorPath}"
-                           IsReadOnly="True"
-                           FontSize="12"
-                           TextWrapping="Wrap"
-                           MinHeight="28" />
-                  <Button Grid.Column="1"
-                          Margin="8,0,0,0"
-                          Content="Copy path"
-                          Command="{Binding CopyLocatorPathCommand}"
-                          VerticalAlignment="Center" />
-                </Grid>
-                <SelectableTextBlock Text="{Binding LastOpenedLabel, StringFormat=Last opened: {0}}" FontSize="11" Foreground="Gray" />
-                <StackPanel Orientation="Horizontal" Spacing="8">
-                  <Button Content="Open"
-                          Command="{Binding OpenCommand}" />
-                  <Button Content="Relocate Project…"
-                          Command="{Binding RelocateCommand}" />
-                  <Button Content="Remove from Recent"
-                          Command="{Binding RemoveFromRecentCommand}" />
+              </Border>
+
+              <StackPanel Spacing="4" IsVisible="{Binding HasOperatorNextStepSummary}">
+                <SelectableTextBlock Text="What to do next" FontWeight="SemiBold" FontSize="13" />
+                <SelectableTextBlock Text="{Binding OperatorNextStepSummary}" TextWrapping="Wrap" FontSize="13" />
+              </StackPanel>
+
+              <StackPanel Spacing="6" IsVisible="{Binding CanOpenExchange}">
+                <SelectableTextBlock Text="{Binding PlanningEntryActionExplanation}" TextWrapping="Wrap" FontSize="13" />
+                <Button Content="Get Project Architect Approval"
+                        Command="{Binding OpenExchangeCommand}"
+                        HorizontalAlignment="Left" />
+              </StackPanel>
+
+              <StackPanel Spacing="6" IsVisible="{Binding CanEnterGovernedPlanning}">
+                <SelectableTextBlock Text="{Binding PlanningEntryActionExplanation}" TextWrapping="Wrap" FontSize="13" />
+                <Button Content="Enter Governed Planning"
+                        Command="{Binding EnterGovernedPlanningCommand}"
+                        HorizontalAlignment="Left" />
+              </StackPanel>
+
+              <StackPanel Spacing="4" IsVisible="{Binding HasWaitingOnItems}">
+                <SelectableTextBlock Text="Waiting on" FontWeight="SemiBold" FontSize="13" />
+                <ItemsControl ItemsSource="{Binding WaitingOnItems}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:GovernedWorkStateWaitingOnItemViewModel">
+                      <StackPanel Spacing="2" Margin="0,0,0,4">
+                        <SelectableTextBlock Text="{Binding DisplayLine}" TextWrapping="Wrap" FontSize="13" />
+                        <Expander Header="Technical detail">
+                          <SelectableTextBlock Text="{Binding TechnicalDetail}" TextWrapping="Wrap" FontSize="11" Foreground="Gray" />
+                        </Expander>
+                      </StackPanel>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+
+              <ItemsControl ItemsSource="{Binding CurrentWorkItems}"
+                            IsVisible="{Binding HasCurrentWorkItems}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate x:DataType="vm:GovernedWorkStateCurrentWorkItemViewModel">
+                    <Border Margin="0,8,0,0" Padding="10" CornerRadius="4" BorderThickness="1" BorderBrush="#DDD">
+                      <StackPanel Spacing="4">
+                        <SelectableTextBlock Text="{Binding InstanceLabel, StringFormat=Instance {0}}"
+                                   FontWeight="SemiBold" FontSize="12" Foreground="Gray" />
+                        <Expander Header="Governance and traceability detail" IsExpanded="False">
+                          <StackPanel Spacing="4" Margin="0,4,0,0">
+                            <SelectableTextBlock Text="{Binding WorkflowSummary}" TextWrapping="Wrap" FontSize="12" />
+                            <SelectableTextBlock Text="{Binding PlaceSummary}" TextWrapping="Wrap" FontSize="12" />
+                            <SelectableTextBlock Text="{Binding BaselineLine}" TextWrapping="Wrap" FontSize="12" />
+                            <SelectableTextBlock Text="{Binding StopLine}" FontSize="12" />
+                            <SelectableTextBlock Text="{Binding DependencyLine}" TextWrapping="Wrap" FontSize="12" />
+                            <SelectableTextBlock Text="{Binding EffectiveConfigLine}" TextWrapping="Wrap" FontSize="12" />
+                            <SelectableTextBlock Text="{Binding ApplicableDwaLine}" TextWrapping="Wrap" FontSize="12" />
+                            <SelectableTextBlock Text="{Binding ActionabilityLine}" TextWrapping="Wrap" FontSize="12" />
+                            <SelectableTextBlock Text="{Binding EligibilitySummary}" TextWrapping="Wrap" FontSize="12" Foreground="Gray" />
+                          </StackPanel>
+                        </Expander>
+                        <Expander Header="Technical detail (IDs and codes)" IsExpanded="False">
+                          <SelectableTextBlock Text="{Binding TechnicalDetail}" TextWrapping="Wrap" FontSize="11" Foreground="Gray" />
+                        </Expander>
+                      </StackPanel>
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+
+              <Expander Header="Evaluated eligibility (not permission)" IsExpanded="False"
+                        IsVisible="{Binding HasCurrentWorkItems}">
+                <StackPanel Spacing="4" Margin="0,4,0,0">
+                  <SelectableTextBlock Text="{Binding FullyGovernedFrontierLine}" TextWrapping="Wrap" FontSize="12" />
+                  <SelectableTextBlock Text="{Binding CandidateFrontierLine}" TextWrapping="Wrap" FontSize="12" />
+                  <SelectableTextBlock Text="{Binding WaitingOnAvailabilityLine}" TextWrapping="Wrap" FontSize="12" />
+                  <SelectableTextBlock Text="{Binding WorkflowNextActionAvailabilityLine}" TextWrapping="Wrap" FontSize="12" />
+                  <ItemsControl ItemsSource="{Binding WorkflowNextActions}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="vm:GovernedWorkStateNextActionItemViewModel">
+                        <StackPanel Spacing="2" Margin="0,0,0,6">
+                          <SelectableTextBlock Text="{Binding DisplayLine}" TextWrapping="Wrap" FontSize="12" />
+                          <SelectableTextBlock Text="{Binding PermissionLine}" TextWrapping="Wrap" FontSize="11" Foreground="Gray" />
+                          <SelectableTextBlock Text="{Binding OperatorPlainSummary}" TextWrapping="Wrap" FontSize="11" Foreground="Gray" />
+                          <Expander Header="Technical detail">
+                            <SelectableTextBlock Text="{Binding TechnicalDetail}" TextWrapping="Wrap" FontSize="11" Foreground="Gray" />
+                          </Expander>
+                        </StackPanel>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+              </Expander>
+            </StackPanel>
+          </StackPanel>
+        </ScrollViewer>
+      </TabItem>
+
+      <TabItem Header="Exchange">
+        <ScrollViewer>
+          <StackPanel Margin="8" Spacing="12"
+                      IsVisible="{Binding Relay, Converter={x:Static ObjectConverters.IsNotNull}}">
+            <Border Padding="14" CornerRadius="6" BorderThickness="2" BorderBrush="#5A9FD4"
+                    IsVisible="{Binding IsPlanningEntryGuidedVisible}">
+              <StackPanel Spacing="10" DataContext="{Binding PlanningEntryGuided}">
+                <SelectableTextBlock Text="Planning Entry — Project Architect Exchange"
+                           FontWeight="SemiBold" FontSize="16" TextWrapping="Wrap" />
+                <SelectableTextBlock Text="{Binding StepProgressLabel}" FontSize="12" Foreground="Gray" />
+                <SelectableTextBlock Text="{Binding StepTitle}" FontWeight="SemiBold" FontSize="14" TextWrapping="Wrap" />
+                <SelectableTextBlock Text="{Binding StepBody}" TextWrapping="Wrap" FontSize="13" />
+                <SelectableTextBlock Text="{Binding StatusMessage}" Foreground="#0066CC" TextWrapping="Wrap" />
+
+                <StackPanel Spacing="8">
+                  <StackPanel Spacing="8" IsVisible="{Binding ShowConfirmSessionContinuity}">
+                    <SelectableTextBlock Text="Project Architect conversation" FontWeight="SemiBold" />
+                    <ComboBox ItemsSource="{Binding SessionIntentOptions}" SelectedItem="{Binding SelectedPaSessionIntent}"
+                              PlaceholderText="Continue prior conversation or start new" />
+                    <SelectableTextBlock Text="Engineering Agent conversation" FontWeight="SemiBold" />
+                    <ComboBox ItemsSource="{Binding SessionIntentOptions}" SelectedItem="{Binding SelectedEaSessionIntent}"
+                              PlaceholderText="Continue prior conversation or start new" />
+                    <Button Content="Continue" Command="{Binding ConfirmSessionContinuityCommand}" HorizontalAlignment="Left" />
+                  </StackPanel>
+                  <Button Content="Prepare Review" Command="{Binding PrepareReviewCommand}" HorizontalAlignment="Left"
+                          IsVisible="{Binding ShowPrepareReview}" />
+                  <StackPanel Spacing="6" IsVisible="{Binding ShowSendReview}">
+                    <Button Content="Copy Review" Command="{Binding CopyReviewCommand}" HorizontalAlignment="Left" />
+                    <SelectableTextBlock Text="✓ Review copied" IsVisible="{Binding ReviewCopied}" FontWeight="SemiBold" />
+                    <SelectableTextBlock Text="Paste the review into your Project Architect conversation, obtain the response, then return here."
+                               IsVisible="{Binding ReviewCopied}" TextWrapping="Wrap" />
+                    <Button Content="I Have the Project Architect Response" Command="{Binding AcknowledgeHavePaResponseCommand}"
+                            IsVisible="{Binding ShowAwaitPaResponseButton}" HorizontalAlignment="Left" />
+                  </StackPanel>
+                  <StackPanel Spacing="6" IsVisible="{Binding ShowValidateResponse}">
+                    <TextBox Text="{Binding PaResponseDraft}" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="120"
+                             PlaceholderText="Paste the complete Project Architect response" />
+                    <Button Content="Validate PA Response" Command="{Binding ValidatePaResponseCommand}" HorizontalAlignment="Left" />
+                    <SelectableTextBlock Text="{Binding ValidationOperatorMessage}" Foreground="DarkOrange" TextWrapping="Wrap" />
+                    <Expander Header="Technical detail">
+                      <SelectableTextBlock Text="{Binding TechnicalValidationDetail}" TextWrapping="Wrap" FontSize="11" Foreground="Gray" />
+                    </Expander>
+                  </StackPanel>
+                  <StackPanel Spacing="6" IsVisible="{Binding ShowReviewDecision}">
+                    <SelectableTextBlock Text="{Binding DecisionSummary}" TextWrapping="Wrap" />
+                    <Button Content="Enter Governed Planning" Command="{Binding EnterGovernedPlanningCommand}" HorizontalAlignment="Left" />
+                  </StackPanel>
+                  <StackPanel Spacing="6" IsVisible="{Binding ShowComplete}">
+                    <SelectableTextBlock Text="✓ Entered Governed Planning" FontWeight="SemiBold" />
+                  </StackPanel>
+                  <Button Content="Return to Current Work" Command="{Binding ReturnToCurrentWorkCommand}" HorizontalAlignment="Left" />
                 </StackPanel>
               </StackPanel>
             </Border>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-      </ItemsControl>
 
-      <SelectableTextBlock Text="{Binding StatusMessage}"
-                 Foreground="Gray"
-                 TextWrapping="Wrap" />
+            <Expander Header="Advanced exchange (diagnostic)" IsExpanded="False"
+                      IsVisible="{Binding IsPlanningEntryGuidedVisible}">
+              <StackPanel Spacing="8" Margin="0,8,0,0">
+                <SelectableTextBlock Text="For MVR and development diagnostics, open the legacy exchange control panel. This is not the normal Planning Entry path."
+                           TextWrapping="Wrap" FontSize="12" Foreground="Gray" />
+                <Button Content="Show legacy exchange controls"
+                        Command="{Binding OpenLegacyExchangeCommand}"
+                        HorizontalAlignment="Left" />
+              </StackPanel>
+            </Expander>
 
-      <Border Padding="12" CornerRadius="4" BorderThickness="1" BorderBrush="#CCC"
-              IsVisible="{Binding Relay, Converter={x:Static ObjectConverters.IsNotNull}}">
-        <StackPanel Spacing="10" DataContext="{Binding Relay}">
-          <SelectableTextBlock Text="Governed relay (P0 manual)" FontWeight="SemiBold" />
-          <SelectableTextBlock Text="{Binding AuthorizationBoundaryNotice}" TextWrapping="Wrap" FontSize="12" Foreground="Gray" />
-          <SelectableTextBlock Text="{Binding SessionIntentHint}" TextWrapping="Wrap" FontSize="12" Foreground="Gray" />
-          <SelectableTextBlock Text="Open a project to enable relay workflow."
-                     IsVisible="{Binding !IsRelaySectionEnabled}"
-                     Foreground="DarkOrange"
-                     TextWrapping="Wrap" />
+            <StackPanel Spacing="10" IsVisible="{Binding IsLegacyExchangeVisible}">
+            <SelectableTextBlock Text="{x:Static vm:MainWindowViewModel.ExchangeTabIntro}"
+                       TextWrapping="Wrap"
+                       FontSize="12"
+                       Foreground="Gray" />
+            <StackPanel Spacing="10" DataContext="{Binding Relay}">
+              <SelectableTextBlock Text="{x:Static vm:RelayWorkflowViewModel.ExchangeSectionTitle}"
+                         FontWeight="SemiBold"
+                         FontSize="14" />
+              <SelectableTextBlock Text="{Binding AuthorizationBoundaryNotice}" TextWrapping="Wrap" FontSize="12" Foreground="Gray" />
+              <SelectableTextBlock Text="Open a project to use Governed Exchange."
+                         IsVisible="{Binding !IsRelaySectionEnabled}"
+                         Foreground="DarkOrange"
+                         TextWrapping="Wrap" />
 
-          <Grid ColumnDefinitions="*,*" IsVisible="{Binding IsRelaySectionEnabled}">
-            <StackPanel Grid.Column="0" Spacing="6" Margin="0,0,8,0">
-              <SelectableTextBlock Text="Project Architect session" FontWeight="SemiBold" />
-              <ComboBox ItemsSource="{Binding SessionIntentOptions}"
-                        SelectedItem="{Binding ProjectArchitectSessionIntent}"
-                        PlaceholderText="Select NEW or CONTINUE" />
-              <SelectableTextBlock Text="Engineering Agent session" FontWeight="SemiBold" />
-              <ComboBox ItemsSource="{Binding SessionIntentOptions}"
-                        SelectedItem="{Binding EngineeringAgentSessionIntent}"
-                        PlaceholderText="Select NEW or CONTINUE" />
+              <Expander Header="1. Session and Engineering Agent mode" IsExpanded="True"
+                        IsVisible="{Binding IsRelaySectionEnabled}">
+                <StackPanel Spacing="8" Margin="0,8,0,0">
+                  <SelectableTextBlock Text="{Binding SessionIntentHint}" TextWrapping="Wrap" FontSize="12" Foreground="Gray" />
+                  <Grid ColumnDefinitions="*,*">
+                    <StackPanel Grid.Column="0" Spacing="6" Margin="0,0,8,0">
+                      <SelectableTextBlock Text="Project Architect session" FontWeight="SemiBold" />
+                      <ComboBox ItemsSource="{Binding SessionIntentOptions}"
+                                SelectedItem="{Binding ProjectArchitectSessionIntent}"
+                                PlaceholderText="Select NEW or CONTINUE" />
+                      <SelectableTextBlock Text="Engineering Agent session" FontWeight="SemiBold" />
+                      <ComboBox ItemsSource="{Binding SessionIntentOptions}"
+                                SelectedItem="{Binding EngineeringAgentSessionIntent}"
+                                PlaceholderText="Select NEW or CONTINUE" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Spacing="6" Margin="8,0,0,0">
+                      <SelectableTextBlock Text="Engineering Agent mode" FontWeight="SemiBold" />
+                      <ComboBox ItemsSource="{Binding EngineeringAgentModeOptions}"
+                                SelectedItem="{Binding EngineeringAgentMode}" />
+                      <SelectableTextBlock Text="Prior Engineering Agent mode (optional)" FontWeight="SemiBold" />
+                      <ComboBox ItemsSource="{Binding PriorEngineeringAgentModeOptions}"
+                                SelectedItem="{Binding PriorEngineeringAgentMode}" />
+                    </StackPanel>
+                  </Grid>
+                </StackPanel>
+              </Expander>
+
+              <Expander Header="2. Project Architect exchange" IsExpanded="True"
+                        IsVisible="{Binding IsRelaySectionEnabled}">
+                <StackPanel Spacing="8" Margin="0,8,0,0">
+                  <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Content="Generate review package for PA"
+                            Command="{Binding GeneratePaReviewCommand}" />
+                    <Button Content="Copy for PA"
+                            Command="{Binding CopyPaReviewCommand}" />
+                  </StackPanel>
+                  <SelectableTextBlock Text="{Binding PaReviewValidationSummary}" TextWrapping="Wrap" />
+                  <Expander Header="Generated package text (detail)">
+                    <TextBox Text="{Binding PaReviewRendered}"
+                             IsReadOnly="True"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             MinHeight="80" />
+                  </Expander>
+
+                  <SelectableTextBlock Text="Import Project Architect handover" FontWeight="SemiBold" />
+                  <TextBox Text="{Binding PaImportText}"
+                           AcceptsReturn="True"
+                           TextWrapping="Wrap"
+                           MinHeight="60"
+                           PlaceholderText="Paste Project Architect handover response" />
+                  <Button Content="Import PA handover"
+                          HorizontalAlignment="Left"
+                          Command="{Binding ImportPaHandoverCommand}" />
+                  <SelectableTextBlock Text="{Binding PaImportValidationSummary}" TextWrapping="Wrap" />
+                  <SelectableTextBlock Text="{Binding EngineeringHandoverStatus}" TextWrapping="Wrap" Foreground="#0066CC" />
+                </StackPanel>
+              </Expander>
+
+              <Expander Header="3. Engineering Agent exchange" IsExpanded="True"
+                        IsVisible="{Binding IsRelaySectionEnabled}">
+                <StackPanel Spacing="8" Margin="0,8,0,0">
+                  <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Content="Prepare Engineering Agent handover"
+                            Command="{Binding PrepareEngineeringHandoverCommand}" />
+                    <Button Content="Copy handover for EA"
+                            Command="{Binding CopyEngineeringHandoverCommand}" />
+                  </StackPanel>
+                  <Expander Header="Prepared handover text (detail)">
+                    <TextBox Text="{Binding EngineeringHandoverRendered}"
+                             IsReadOnly="True"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             MinHeight="80" />
+                  </Expander>
+
+                  <StackPanel IsVisible="{Binding HasAutomatedTransportIntegration}" Spacing="6">
+                    <SelectableTextBlock Text="Automated delivery to Engineering Agent"
+                                         FontWeight="SemiBold" />
+                    <SelectableTextBlock Text="{Binding AutomatedTransportStatus}"
+                                         TextWrapping="Wrap"
+                                         Foreground="#444" />
+                    <SelectableTextBlock Text="{Binding RecommendedManualRelaySummary}"
+                                         TextWrapping="Wrap"
+                                         Foreground="#0066CC"
+                                         IsVisible="{Binding HasRecommendedManualRelay}" />
+                    <ItemsControl ItemsSource="{Binding AttentionItems}"
+                                  IsVisible="{Binding AttentionItems.Count}">
+                      <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:OperatorAttentionItemViewModel">
+                          <SelectableTextBlock Text="{Binding DisplayLine}" TextWrapping="Wrap" FontSize="12" />
+                        </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                      <Button Content="Forward handover automatically"
+                              Command="{Binding ForwardAutomatedHandoverCommand}" />
+                      <Button Content="Cancel automated delivery"
+                              Command="{Binding CancelAutomatedTransportCommand}" />
+                    </StackPanel>
+                  </StackPanel>
+
+                  <SelectableTextBlock Text="Import engineering result (optional)" FontWeight="SemiBold" />
+                  <TextBox Text="{Binding EngineeringResultText}"
+                           AcceptsReturn="True"
+                           TextWrapping="Wrap"
+                           MinHeight="48"
+                           PlaceholderText="Paste engineering result text" />
+                  <Button Content="Import engineering result"
+                          HorizontalAlignment="Left"
+                          Command="{Binding ImportEngineeringResultCommand}" />
+                  <SelectableTextBlock Text="{Binding EngineeringResultValidationSummary}" TextWrapping="Wrap" />
+                </StackPanel>
+              </Expander>
+
+              <Expander Header="4. Diagnostics and provenance" IsExpanded="False"
+                        IsVisible="{Binding IsRelaySectionEnabled}">
+                <StackPanel Spacing="8" Margin="0,8,0,0">
+                  <SelectableTextBlock Text="Validation diagnostics (last operation)"
+                                       FontWeight="SemiBold"
+                                       FontSize="12"
+                                       IsVisible="{Binding Diagnostics.Count}" />
+                  <ItemsControl ItemsSource="{Binding Diagnostics}"
+                                IsVisible="{Binding Diagnostics.Count}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate>
+                        <SelectableTextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="12" />
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                  <SelectableTextBlock Text="Recent exchange provenance" FontWeight="SemiBold" />
+                  <ItemsControl ItemsSource="{Binding ProvenanceEvents}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="vm:RelayProvenanceItemViewModel">
+                        <SelectableTextBlock Text="{Binding DisplayLine}" FontSize="11" Foreground="Gray" TextWrapping="Wrap" />
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+              </Expander>
+
+              <SelectableTextBlock Text="{Binding RelayStatusMessage}" Foreground="Gray" TextWrapping="Wrap" />
             </StackPanel>
-            <StackPanel Grid.Column="1" Spacing="6" Margin="8,0,0,0">
-              <SelectableTextBlock Text="Engineering Agent mode" FontWeight="SemiBold" />
-              <ComboBox ItemsSource="{Binding EngineeringAgentModeOptions}"
-                        SelectedItem="{Binding EngineeringAgentMode}" />
-              <SelectableTextBlock Text="Prior Engineering Agent mode (optional)" FontWeight="SemiBold" />
-              <ComboBox ItemsSource="{Binding PriorEngineeringAgentModeOptions}"
-                        SelectedItem="{Binding PriorEngineeringAgentMode}" />
             </StackPanel>
-          </Grid>
-
-          <SelectableTextBlock Text="PA review export" FontWeight="SemiBold" />
-          <StackPanel Orientation="Horizontal" Spacing="8">
-            <Button Content="Generate PA review package"
-                    Command="{Binding GeneratePaReviewCommand}" />
-            <Button Content="Copy PA review"
-                    Command="{Binding CopyPaReviewCommand}" />
           </StackPanel>
-          <SelectableTextBlock Text="{Binding PaReviewValidationSummary}" TextWrapping="Wrap" />
-          <TextBox Text="{Binding PaReviewRendered}"
-                   IsReadOnly="True"
-                   AcceptsReturn="True"
-                   TextWrapping="Wrap"
-                   MinHeight="80"
-                   PlaceholderText="Generated PA review package appears here" />
+        </ScrollViewer>
+      </TabItem>
 
-          <SelectableTextBlock Text="PA handover import" FontWeight="SemiBold" />
-          <TextBox Text="{Binding PaImportText}"
-                   AcceptsReturn="True"
-                   TextWrapping="Wrap"
-                   MinHeight="80"
-                   PlaceholderText="Paste Project Architect handover response" />
-          <Button Content="Import PA handover"
-                  HorizontalAlignment="Left"
-                  Command="{Binding ImportPaHandoverCommand}" />
-          <SelectableTextBlock Text="{Binding PaImportValidationSummary}" TextWrapping="Wrap" />
-          <SelectableTextBlock Text="Validation diagnostics (last operation)"
-                               FontWeight="SemiBold"
-                               FontSize="12"
-                               IsVisible="{Binding Diagnostics.Count}" />
-          <ItemsControl ItemsSource="{Binding Diagnostics}"
-                          IsVisible="{Binding Diagnostics.Count}">
-            <ItemsControl.ItemTemplate>
-              <DataTemplate>
-                <SelectableTextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="12" />
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-          <SelectableTextBlock Text="{Binding EngineeringHandoverStatus}" TextWrapping="Wrap" Foreground="#0066CC" />
+      <TabItem Header="Projects">
+        <ScrollViewer>
+          <StackPanel Margin="8" Spacing="12">
+            <SelectableTextBlock Text="{x:Static vm:MainWindowViewModel.ProjectsTabIntro}"
+                       TextWrapping="Wrap"
+                       FontSize="12"
+                       Foreground="Gray" />
+            <Button Content="Open project folder…"
+                    Command="{Binding OpenProjectFolderCommand}"
+                    HorizontalAlignment="Left" />
 
-          <SelectableTextBlock Text="Engineering Agent handover" FontWeight="SemiBold" />
-          <StackPanel Orientation="Horizontal" Spacing="8">
-            <Button Content="Prepare Engineering Agent handover"
-                    Command="{Binding PrepareEngineeringHandoverCommand}" />
-            <Button Content="Copy Engineering Agent handover"
-                    Command="{Binding CopyEngineeringHandoverCommand}" />
+            <SelectableTextBlock Text="Recent projects" FontWeight="SemiBold" />
+            <SelectableTextBlock Text="{Binding RecentEmptyMessage}"
+                       IsVisible="{Binding !HasRecentProjects}"
+                       TextWrapping="Wrap"
+                       Foreground="Gray" />
+
+            <ItemsControl ItemsSource="{Binding RecentProjects}"
+                          IsVisible="{Binding HasRecentProjects}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:RecentProjectItemViewModel">
+                  <Border Margin="0,0,0,8" Padding="12" CornerRadius="4" BorderThickness="1" BorderBrush="#DDD">
+                    <StackPanel Spacing="6">
+                      <StackPanel Orientation="Horizontal" Spacing="8">
+                        <SelectableTextBlock Text="{Binding DisplayName}" FontWeight="SemiBold" />
+                        <SelectableTextBlock Text="Last active"
+                                   IsVisible="{Binding IsLastActive}"
+                                   FontSize="11"
+                                   Foreground="#0066CC" />
+                        <SelectableTextBlock Text="{Binding AvailabilityLabel}"
+                                   FontSize="11"
+                                   Foreground="DarkOrange"
+                                   IsVisible="{Binding IsMissingOnDisk}" />
+                        <SelectableTextBlock Text="{Binding AvailabilityLabel}"
+                                   FontSize="11"
+                                   Foreground="Gray"
+                                   IsVisible="{Binding !IsMissingOnDisk}" />
+                      </StackPanel>
+                      <Grid ColumnDefinitions="*,Auto">
+                        <TextBox Grid.Column="0"
+                                 Text="{Binding LocatorPath}"
+                                 IsReadOnly="True"
+                                 FontSize="12"
+                                 TextWrapping="Wrap"
+                                 MinHeight="28" />
+                        <Button Grid.Column="1"
+                                Margin="8,0,0,0"
+                                Content="Copy path"
+                                Command="{Binding CopyLocatorPathCommand}"
+                                VerticalAlignment="Center" />
+                      </Grid>
+                      <SelectableTextBlock Text="{Binding LastOpenedLabel, StringFormat=Last opened: {0}}" FontSize="11" Foreground="Gray" />
+                      <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Content="Open"
+                                Command="{Binding OpenCommand}" />
+                        <Button Content="Relocate Project…"
+                                Command="{Binding RelocateCommand}" />
+                        <Button Content="Remove from Recent"
+                                Command="{Binding RemoveFromRecentCommand}" />
+                      </StackPanel>
+                    </StackPanel>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
           </StackPanel>
-          <TextBox Text="{Binding EngineeringHandoverRendered}"
-                   IsReadOnly="True"
-                   AcceptsReturn="True"
-                   TextWrapping="Wrap"
-                   MinHeight="80"
-                   PlaceholderText="Prepared handover appears here when Valid and actionable" />
-
-          <SelectableTextBlock Text="Engineering Agent automated transport (P1+)"
-                               FontWeight="SemiBold"
-                               IsVisible="{Binding HasAutomatedTransportIntegration}" />
-          <SelectableTextBlock Text="{Binding AutomatedTransportStatus}"
-                               TextWrapping="Wrap"
-                               Foreground="#444"
-                               IsVisible="{Binding HasAutomatedTransportIntegration}" />
-          <SelectableTextBlock Text="{Binding RecommendedManualRelaySummary}"
-                               TextWrapping="Wrap"
-                               Foreground="#0066CC"
-                               IsVisible="{Binding HasRecommendedManualRelay}" />
-          <SelectableTextBlock Text="Attention (derived)"
-                               FontWeight="SemiBold"
-                               FontSize="12"
-                               IsVisible="{Binding AttentionItems.Count}" />
-          <ItemsControl ItemsSource="{Binding AttentionItems}"
-                        IsVisible="{Binding AttentionItems.Count}">
-            <ItemsControl.ItemTemplate>
-              <DataTemplate x:DataType="vm:OperatorAttentionItemViewModel">
-                <SelectableTextBlock Text="{Binding DisplayLine}" TextWrapping="Wrap" FontSize="12" />
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-          <StackPanel Orientation="Horizontal" Spacing="8"
-                      IsVisible="{Binding HasAutomatedTransportIntegration}">
-            <Button Content="Forward handover (automated)"
-                    Command="{Binding ForwardAutomatedHandoverCommand}" />
-            <Button Content="Cancel automated transport"
-                    Command="{Binding CancelAutomatedTransportCommand}" />
-          </StackPanel>
-
-          <SelectableTextBlock Text="Engineering result import (optional)" FontWeight="SemiBold" />
-          <TextBox Text="{Binding EngineeringResultText}"
-                   AcceptsReturn="True"
-                   TextWrapping="Wrap"
-                   MinHeight="60"
-                   PlaceholderText="Paste thin engineering result relay text" />
-          <Button Content="Import engineering result"
-                  HorizontalAlignment="Left"
-                  Command="{Binding ImportEngineeringResultCommand}" />
-          <SelectableTextBlock Text="{Binding EngineeringResultValidationSummary}" TextWrapping="Wrap" />
-
-          <SelectableTextBlock Text="Recent provenance (PC-PAR-021)" FontWeight="SemiBold" />
-          <ItemsControl ItemsSource="{Binding ProvenanceEvents}">
-            <ItemsControl.ItemTemplate>
-              <DataTemplate x:DataType="vm:RelayProvenanceItemViewModel">
-                <SelectableTextBlock Text="{Binding DisplayLine}" FontSize="11" Foreground="Gray" TextWrapping="Wrap" />
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-
-          <SelectableTextBlock Text="{Binding RelayStatusMessage}" Foreground="Gray" TextWrapping="Wrap" />
-        </StackPanel>
-      </Border>
-    </StackPanel>
-  </ScrollViewer>
+        </ScrollViewer>
+      </TabItem>
+    </TabControl>
+  </DockPanel>
 </Window>

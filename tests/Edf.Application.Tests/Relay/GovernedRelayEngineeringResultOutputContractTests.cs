@@ -53,7 +53,8 @@ public class GovernedRelayEngineeringResultOutputContractTests
         Assert.Contains(package.CorrelationId.Value.ToString(), contract, StringComparison.Ordinal);
         Assert.Contains(GovernedRelayEngineeringResultOutputContract.PlaceholderPackageId, contract, StringComparison.Ordinal);
         Assert.Contains(GovernedRelayEngineeringResultOutputContract.PlaceholderUtcTimestamp, contract, StringComparison.Ordinal);
-        Assert.Contains("RETURN ONLY THE COMPLETED PROJECTCONCORD RELAY DOCUMENT", contract, StringComparison.Ordinal);
+        Assert.Contains("RETURN ONLY ONE OUTER PLAIN-TEXT COPY SURFACE", contract, StringComparison.Ordinal);
+        Assert.Contains($"```{GovernedRelayManualPasteCopyFence.OuterFenceLanguage}", contract, StringComparison.Ordinal);
         Assert.Contains("Do **not** include a preamble", contract, StringComparison.Ordinal);
         Assert.Contains("Machine / projection agreement", contract, StringComparison.Ordinal);
         Assert.Contains("Authorization safety", contract, StringComparison.Ordinal);

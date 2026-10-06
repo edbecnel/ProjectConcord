@@ -156,18 +156,58 @@ internal static class GovernedRelayGovernanceProjections
 
         var stopLabel = ReadKey(stopSection, "Label");
 
-        var authPresent = ParseBool(ReadKey(governanceSection, "Authorization-Disposition-Present"));
-        var workPresent = ParseBool(ReadKey(governanceSection, "Work-Context-Present"));
-        var directsImplementation = ParseBool(ReadKey(governanceSection, "Directs-Implementation-Work"));
-        var directsTranche = ParseBool(ReadKey(governanceSection, "Directs-Tranche-Work"));
+        if (!TryParseProjectionBool(
+                ReadKey(governanceSection, "Authorization-Disposition-Present"),
+                out var authPresent,
+                out error))
+        {
+            return false;
+        }
+
+        if (!TryParseProjectionBool(ReadKey(governanceSection, "Work-Context-Present"), out var workPresent, out error))
+        {
+            return false;
+        }
+
+        if (!TryParseProjectionBool(
+                ReadKey(governanceSection, "Directs-Implementation-Work"),
+                out var directsImplementation,
+                out error))
+        {
+            return false;
+        }
+
+        if (!TryParseProjectionBool(
+                ReadKey(governanceSection, "Directs-Tranche-Work"),
+                out var directsTranche,
+                out error))
+        {
+            return false;
+        }
 
         AuthorizationDispositionProjection? authProjection = null;
         if (authSection is not null)
         {
+            if (!TryParseProjectionBool(
+                    ReadKey(authSection, "Planning-Authorized"),
+                    out var planningAuthorized,
+                    out error))
+            {
+                return false;
+            }
+
+            if (!TryParseProjectionBool(
+                    ReadKey(authSection, "Implementation-Authorized"),
+                    out var implementationAuthorized,
+                    out error))
+            {
+                return false;
+            }
+
             authProjection = new AuthorizationDispositionProjection(
                 ReadKey(authSection, "Disposition-Summary"),
-                ParseBool(ReadKey(authSection, "Planning-Authorized")),
-                ParseBool(ReadKey(authSection, "Implementation-Authorized")),
+                planningAuthorized,
+                implementationAuthorized,
                 NullIfEmpty(ReadKey(authSection, "Authorized-Tranche-Id")));
         }
 
@@ -510,8 +550,34 @@ internal static class GovernedRelayGovernanceProjections
     private static string FormatBool(bool value) =>
         value ? "true" : "false";
 
-    private static bool ParseBool(string text) =>
-        bool.TryParse(text, out var value) && value;
+    private static bool TryParseProjectionBool(string text, out bool value, out string? error)
+    {
+        value = false;
+        error = null;
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return true;
+        }
+
+        var normalized = text.Trim();
+        if (bool.TryParse(normalized, out value))
+        {
+            return true;
+        }
+
+        switch (normalized.ToUpperInvariant())
+        {
+            case "YES":
+                value = true;
+                return true;
+            case "NO":
+                value = false;
+                return true;
+            default:
+                error = $"Unrecognized boolean projection value '{text.Trim()}'.";
+                return false;
+        }
+    }
 
     private static string? NullIfEmpty(string text) =>
         string.IsNullOrWhiteSpace(text) ? null : text;

@@ -83,7 +83,15 @@ public sealed class EngineeringAgentManualRelayBridge : IEngineeringAgentRelayBr
 
     public EngineeringResultImportResult TryParseEngineeringResult(string renderedText)
     {
-        var import = _importer.Import(renderedText);
+        if (!GovernedRelayManualPasteDocumentNormalizer.TryNormalizeToCanonicalRelayDocument(
+                renderedText,
+                out var canonicalDocument,
+                out var normalizeFailure))
+        {
+            return new EngineeringResultImportResult(null, normalizeFailure);
+        }
+
+        var import = _importer.Import(canonicalDocument);
         if (import.Package is null)
         {
             return new EngineeringResultImportResult(null, import.StructuralResult);

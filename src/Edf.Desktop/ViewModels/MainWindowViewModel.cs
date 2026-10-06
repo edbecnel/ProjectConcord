@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Edf.Application.Composition;
 using Edf.Application.Operator.Relay;
 using Edf.Application.Projects;
 using Edf.Application.Relay;
@@ -18,6 +19,9 @@ public sealed class MainWindowViewModel : ViewModelBase
     private string? _statusMessage;
     private string _actorDisplayName;
     private bool _hasActiveProject;
+    private int _selectedOperatorTabIndex;
+    private string? _projectDisplayName;
+    private OperatorGuidedContext _guidedContext;
 
     public MainWindowViewModel(
         IProjectWorkspaceService workspace,
@@ -33,7 +37,8 @@ public sealed class MainWindowViewModel : ViewModelBase
         Func<string, string?, Task<string?>> pickFolderAsync,
         Func<string, Task>? copyTextAsync = null,
         IEngineeringAgentAutomatedTransportService? automatedTransport = null,
-        RelayWorkflowOperatorProjectionService? relayOperatorProjections = null)
+        RelayWorkflowOperatorProjectionService? relayOperatorProjections = null,
+        WorkflowApplicationServices? workflowServices = null)
     {
         _workspace = workspace ?? throw new ArgumentNullException(nameof(workspace));
         _pickFolderAsync = pickFolderAsync ?? throw new ArgumentNullException(nameof(pickFolderAsync));
@@ -45,20 +50,99 @@ public sealed class MainWindowViewModel : ViewModelBase
         CloseProjectCommand = new RelayCommand(CloseProject, () => HasActiveProject);
         CopyActivePathCommand = new AsyncRelayCommand(CopyActivePathAsync, () => HasActiveProject && !string.IsNullOrWhiteSpace(ProjectRootPath));
         CopyProjectIdCommand = new AsyncRelayCommand(CopyProjectIdAsync, () => HasActiveProject && !string.IsNullOrWhiteSpace(CurrentProjectId));
+        OpenLegacyExchangeCommand = new RelayCommand(OpenLegacyExchange, () => IsPlanningEntryGuidedVisible);
 
-        Relay = relayWorkflow is null
+        RelayWorkflowViewModel? relayViewModel = null;
+        PlanningEntryGuidedExchangeViewModel? planningEntryGuided = null;
+
+        WorkState = workflowServices is null
+            ? null
+            : new GovernedWorkStateViewModel(
+                workspace,
+                workflowServices,
+                () => relayViewModel?.ConsumedPaHandover ?? default,
+                LaunchPlanningEntryGuidedExchange);
+
+        relayViewModel = relayWorkflow is null
             ? null
             : new RelayWorkflowViewModel(
                 relayWorkflow,
                 workspace,
                 _copyTextAsync,
                 automatedTransport,
-                relayOperatorProjections);
+                relayOperatorProjections,
+                () => WorkState?.RefreshFromProjection());
 
+        if (workflowServices is not null && relayWorkflow is not null)
+        {
+            planningEntryGuided = new PlanningEntryGuidedExchangeViewModel(
+                relayWorkflow,
+                workspace,
+                workflowServices,
+                _copyTextAsync,
+                ReturnFromGuidedExchange,
+                () => WorkState?.RefreshFromProjection());
+        }
+
+        Relay = relayViewModel;
+        PlanningEntryGuided = planningEntryGuided;
+
+        SelectedOperatorTabIndex = (int)OperatorShellTab.CurrentWork;
         InitializeFromWorkspace();
     }
 
+    public const string CurrentWorkTabIntro =
+        "Read the situation summary first. Open the sections below for governance traceability, eligibility detail, and raw IDs.";
+
+    public const string ExchangeTabIntro =
+        "Exchange governed packages with the Project Architect and Engineering Agent. Package validation here does not grant durable development work authorization.";
+
+    public const string ProjectsTabIntro =
+        "Open, switch, or relocate registered project roots.";
+
+    public int SelectedOperatorTabIndex
+    {
+        get => _selectedOperatorTabIndex;
+        set => SetProperty(ref _selectedOperatorTabIndex, value);
+    }
+
+    public OperatorShellTab SelectedOperatorTab =>
+        (OperatorShellTab)_selectedOperatorTabIndex;
+
+    public string? ProjectDisplayName
+    {
+        get => _projectDisplayName;
+        private set => SetProperty(ref _projectDisplayName, value);
+    }
+
+    public string ProjectHeaderTitle => HasActiveProject
+        ? ProjectDisplayName ?? "Active project"
+        : "No project open";
+
+    public GovernedWorkStateViewModel? WorkState { get; }
+
     public RelayWorkflowViewModel? Relay { get; }
+
+    public PlanningEntryGuidedExchangeViewModel? PlanningEntryGuided { get; }
+
+    public OperatorGuidedContext GuidedContext
+    {
+        get => _guidedContext;
+        private set
+        {
+            if (SetProperty(ref _guidedContext, value))
+            {
+                RaisePropertyChanged(nameof(IsPlanningEntryGuidedVisible));
+                RaisePropertyChanged(nameof(IsLegacyExchangeVisible));
+            }
+        }
+    }
+
+    public bool IsPlanningEntryGuidedVisible =>
+        GuidedContext == OperatorGuidedContext.PlanningEntry
+        && PlanningEntryGuided?.IsActive == true;
+
+    public bool IsLegacyExchangeVisible => !IsPlanningEntryGuidedVisible;
 
     public ObservableCollection<RecentProjectItemViewModel> RecentProjects { get; }
 
@@ -69,6 +153,8 @@ public sealed class MainWindowViewModel : ViewModelBase
     public ICommand CopyActivePathCommand { get; }
 
     public ICommand CopyProjectIdCommand { get; }
+
+    public ICommand OpenLegacyExchangeCommand { get; }
 
     public bool HasRecentProjects => RecentProjects.Count > 0;
 
@@ -82,7 +168,9 @@ public sealed class MainWindowViewModel : ViewModelBase
             if (SetProperty(ref _projectRootPath, value))
             {
                 (CopyActivePathCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
+                UpdateProjectDisplayName(value);
                 RaisePropertyChanged(nameof(ActiveProjectSummary));
+                RaisePropertyChanged(nameof(ProjectHeaderTitle));
             }
         }
     }
@@ -127,6 +215,7 @@ public sealed class MainWindowViewModel : ViewModelBase
                 (CopyActivePathCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
                 (CopyProjectIdCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
                 RaisePropertyChanged(nameof(ActiveProjectSummary));
+                RaisePropertyChanged(nameof(ProjectHeaderTitle));
             }
         }
     }
@@ -304,6 +393,7 @@ public sealed class MainWindowViewModel : ViewModelBase
         CurrentProjectId = result.ProjectId?.ToString();
         ActorDisplayName = _workspace.CurrentActor.DisplayName;
         HasActiveProject = true;
+        SelectedOperatorTabIndex = (int)OperatorShellTab.CurrentWork;
         RefreshRecentProjects();
         NotifyRelayProjectChanged(result.ProjectId);
     }
@@ -321,13 +411,46 @@ public sealed class MainWindowViewModel : ViewModelBase
 
         ProjectRootPath = null;
         CurrentProjectId = null;
+        ProjectDisplayName = null;
         HasActiveProject = false;
         NotifyRelayProjectChanged(null);
     }
 
     private void NotifyRelayProjectChanged(ProjectConcordProjectId? projectId)
     {
+        WorkState?.OnActiveProjectChanged(projectId, HasActiveProject);
         Relay?.OnActiveProjectChanged(projectId, HasActiveProject);
+        PlanningEntryGuided?.OnActiveProjectChanged(projectId, HasActiveProject);
+    }
+
+    private void LaunchPlanningEntryGuidedExchange()
+    {
+        GuidedContext = OperatorGuidedContext.PlanningEntry;
+        PlanningEntryGuided?.ActivatePlanningEntryGuided();
+        SelectedOperatorTabIndex = (int)OperatorShellTab.Exchange;
+        RaiseGuidedExchangeVisibility();
+    }
+
+    private void ReturnFromGuidedExchange()
+    {
+        GuidedContext = OperatorGuidedContext.None;
+        PlanningEntryGuided?.Deactivate();
+        SelectedOperatorTabIndex = (int)OperatorShellTab.CurrentWork;
+        RaiseGuidedExchangeVisibility();
+    }
+
+    private void OpenLegacyExchange()
+    {
+        GuidedContext = OperatorGuidedContext.None;
+        PlanningEntryGuided?.Deactivate();
+        RaiseGuidedExchangeVisibility();
+    }
+
+    private void RaiseGuidedExchangeVisibility()
+    {
+        RaisePropertyChanged(nameof(IsPlanningEntryGuidedVisible));
+        RaisePropertyChanged(nameof(IsLegacyExchangeVisible));
+        (OpenLegacyExchangeCommand as RelayCommand)?.RaiseCanExecuteChanged();
     }
 
     private void RefreshRecentProjects()
@@ -340,5 +463,16 @@ public sealed class MainWindowViewModel : ViewModelBase
 
         RaisePropertyChanged(nameof(HasRecentProjects));
         RaisePropertyChanged(nameof(RecentEmptyMessage));
+    }
+
+    private void UpdateProjectDisplayName(string? rootPath)
+    {
+        if (string.IsNullOrWhiteSpace(rootPath))
+        {
+            ProjectDisplayName = null;
+            return;
+        }
+
+        ProjectDisplayName = new DirectoryInfo(rootPath).Name;
     }
 }

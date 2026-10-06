@@ -40,6 +40,8 @@ public class GovernedRelayP0WorkflowServiceTests
         Assert.Equal(RelayValidationState.Valid, result.Validation.State);
         Assert.NotNull(result.RenderedPackage);
         Assert.Contains(GovernedRelayV1Format.MachineBlockFenceLanguage, result.RenderedPackage, StringComparison.Ordinal);
+        Assert.Contains(GovernedRelayPaHandoverOutputContract.SectionHeading, result.RenderedPackage, StringComparison.Ordinal);
+        Assert.Contains("PLANNING ENTRY", result.RenderedPackage, StringComparison.Ordinal);
     }
 
     private static (IGovernedRelayP0WorkflowService Service, ProjectConcordProjectId ProjectId, ProjectRoot Root) CreateService()

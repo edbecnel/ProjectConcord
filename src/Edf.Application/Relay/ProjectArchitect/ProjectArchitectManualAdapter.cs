@@ -26,7 +26,15 @@ public sealed class ProjectArchitectManualAdapter : IProjectArchitectProvider
 
     public PaHandoverImportResult TryParsePaHandoverImport(string renderedText)
     {
-        var import = _importer.Import(renderedText);
+        if (!GovernedRelayManualPasteDocumentNormalizer.TryNormalizeToCanonicalRelayDocument(
+                renderedText,
+                out var canonicalDocument,
+                out var normalizeFailure))
+        {
+            return new PaHandoverImportResult(null, normalizeFailure);
+        }
+
+        var import = _importer.Import(canonicalDocument);
         if (import.Package is null)
         {
             return new PaHandoverImportResult(null, import.StructuralResult);

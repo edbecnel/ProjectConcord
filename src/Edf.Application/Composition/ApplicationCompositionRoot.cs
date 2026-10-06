@@ -17,7 +17,8 @@ public sealed record DesktopApplicationServices(
     EngineeringAgentPluginHostingServices EngineeringAgentPluginHosting,
     IEngineeringAgentAutomatedTransportService AutomatedTransport,
     IEngineeringAgentTransportRecoveryService TransportRecovery,
-    RelayWorkflowOperatorProjectionService RelayOperatorProjections);
+    RelayWorkflowOperatorProjectionService RelayOperatorProjections,
+    WorkflowApplicationServices Workflow);
 
 public static class ApplicationCompositionRoot
 {
@@ -63,6 +64,7 @@ public static class ApplicationCompositionRoot
             new EngineeringAgentTransportOperatorAttentionContributor(
                 pluginHosting.Selection,
                 persistence.TransportOperations));
+        var workflow = WorkflowApplicationServicesFactory.Create(persistence);
         return new DesktopApplicationServices(
             workspace,
             relayWorkflow,
@@ -70,6 +72,7 @@ public static class ApplicationCompositionRoot
             pluginHosting,
             automatedTransport,
             transportRecovery,
-            relayOperatorProjections);
+            relayOperatorProjections,
+            workflow);
     }
 }

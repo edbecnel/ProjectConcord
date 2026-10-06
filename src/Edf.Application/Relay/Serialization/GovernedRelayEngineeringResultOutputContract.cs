@@ -39,7 +39,7 @@ public static class GovernedRelayEngineeringResultOutputContract
         builder.AppendLine();
         builder.AppendLine(
             "When you finish work for this handover, your **final message** for ProjectConcord MUST be **only** "
-            + "the completed governed relay document described below — not ordinary prose alone. "
+            + "one outer plain-text copy surface containing the **complete** governed relay document described below — not ordinary prose alone. "
             + "ProjectConcord validates all provider output as **untrusted** until `TryParseEngineeringResult` succeeds.");
         builder.AppendLine();
         AppendFieldSemantics(builder, handoverExportPackage, reporting);
@@ -47,7 +47,7 @@ public static class GovernedRelayEngineeringResultOutputContract
         builder.AppendLine("### Structural template (replace every placeholder)");
         builder.AppendLine();
         builder.AppendLine(
-            "The block below shows the **exact document shape** you must return. "
+            "The block below shows the **exact single-copy shape** you must return (outer plain-text fence wrapping the full canonical relay document). "
             + "Values marked ProjectConcord-fixed must be copied exactly. "
             + "Replace every `__REPLACE_…__` placeholder with a real value. **Do not return placeholder text.**");
         builder.AppendLine();
@@ -77,7 +77,8 @@ public static class GovernedRelayEngineeringResultOutputContract
     {
         var skeleton = CreateResultImportSkeleton(handoverExportPackage, useFreshIdentity: true, reporting);
         var rendered = new GovernedRelayV1Renderer().Render(skeleton);
-        return ApplyInstructionalPlaceholders(rendered, skeleton);
+        var withPlaceholders = ApplyInstructionalPlaceholders(rendered, skeleton);
+        return GovernedRelayManualPasteCopyFence.WrapForManualCopy(withPlaceholders);
     }
 
     /// <summary>
@@ -312,10 +313,12 @@ public static class GovernedRelayEngineeringResultOutputContract
     {
         builder.AppendLine("### Final response (output isolation)");
         builder.AppendLine();
-        builder.AppendLine("**RETURN ONLY THE COMPLETED PROJECTCONCORD RELAY DOCUMENT.**");
-        builder.AppendLine("- Do **not** include a preamble, explanation, or Markdown introduction.");
-        builder.AppendLine("- Do **not** include commentary before or after the relay document.");
-        builder.AppendLine("- Do **not** wrap the entire relay document inside an additional generic Markdown code fence.");
+        builder.AppendLine("**RETURN ONLY ONE OUTER PLAIN-TEXT COPY SURFACE.**");
+        builder.AppendLine("- Return **exactly one** outer Markdown code fence labeled `text` (or `plaintext`) whose **literal copied bytes** contain the **complete** canonical engineering-result relay document.");
+        builder.AppendLine("- The copied payload MUST include `ProjectConcord-Relay-Render: 1`, the literal ` ```projectconcord-relay-v1` machine fence and JSON, and all required governance projections — not JSON alone.");
+        builder.AppendLine("- Do **not** include a preamble, explanation, or Markdown introduction outside that single outer fence.");
+        builder.AppendLine("- Do **not** return multiple relay documents, multiple render markers, or nested competing outer fences.");
+        builder.AppendLine("- **Preserve** the inner ` ```projectconcord-relay-v1` fence and projection sections exactly inside the outer fence.");
         builder.AppendLine("- **Replace every required placeholder.** Do **not** return the instructional template unchanged.");
     }
 }

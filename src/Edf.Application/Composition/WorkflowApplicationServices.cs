@@ -1,7 +1,9 @@
+using Edf.Application.Operator.PlanningEntry;
 using Edf.Application.Operator.WorkState;
 using Edf.Application.Projects;
 using Edf.Application.Workflow;
 using Edf.Application.Workflow.Eligibility;
+using Edf.Application.Workflow.PlanningEntry;
 using Edf.ProjectServices.Relay;
 
 namespace Edf.Application.Composition;
@@ -13,7 +15,9 @@ public sealed record WorkflowApplicationServices(
     IWorkflowInstanceStopService WorkflowInstanceStops,
     IGewV1EffectiveConfigurationResolver EffectiveConfigurationResolver,
     IGovernedWorkStateRecoveryService WorkStateRecovery,
-    GovernedWorkStateOperatorProjectionService WorkStateOperatorProjection);
+    GovernedWorkStateOperatorProjectionService WorkStateOperatorProjection,
+    IGewV1IntakePlanningEntryTransitionService IntakePlanningEntryTransitions,
+    IPlanningEntryRelayReadModel PlanningEntryRelayReadModel);
 
 public static class WorkflowApplicationServicesFactory
 {
@@ -53,6 +57,13 @@ public static class WorkflowApplicationServicesFactory
             eligibilityEvaluator,
             registry,
             git);
+        var intakePlanningEntryTransitions = new GewV1IntakePlanningEntryTransitionService(
+            recovery,
+            effectiveConfigurationResolver,
+            eligibilityEvaluator,
+            registry,
+            workflowService);
+        var planningEntryRelayReadModel = new PlanningEntryRelayReadModel(persistence.RelayOperational);
         return new WorkflowApplicationServices(
             workflowService,
             relationshipService,
@@ -60,6 +71,8 @@ public static class WorkflowApplicationServicesFactory
             workflowInstanceStopService,
             effectiveConfigurationResolver,
             recovery,
-            projection);
+            projection,
+            intakePlanningEntryTransitions,
+            planningEntryRelayReadModel);
     }
 }

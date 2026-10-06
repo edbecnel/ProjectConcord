@@ -48,4 +48,11 @@ public static class RelayValidationCodes
     public const string TransportExtractionEndBoundaryAmbiguous = "relay.transport.extraction.end_boundary.ambiguous";
     public const string TransportExtractionMachineBlockAmbiguous = "relay.transport.extraction.machine_block.ambiguous";
     public const string TransportExtractionBoundaryOrderInvalid = "relay.transport.extraction.boundary.order.invalid";
+
+    public const string ManualPasteEmpty = "relay.manual_paste.empty";
+    public const string ManualPasteJsonOnlyRejected = "relay.manual_paste.json_only.rejected";
+    public const string ManualPasteMachineBlockOnlyRejected = "relay.manual_paste.machine_block_only.rejected";
+    public const string ManualPasteRenderMarkerMissing = "relay.manual_paste.render_marker.missing";
+    public const string ManualPasteRenderMarkerAmbiguous = "relay.manual_paste.render_marker.ambiguous";
+    public const string ManualPasteMachineBlockMissing = "relay.manual_paste.machine_block.missing";
 }

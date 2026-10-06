@@ -22,7 +22,8 @@ public partial class MainWindow : Window
             PickFolderAsync,
             CopyTextToClipboardAsync,
             services.AutomatedTransport,
-            services.RelayOperatorProjections);
+            services.RelayOperatorProjections,
+            services.Workflow);
     }
 
     private void FileOpenProjectFolder_OnClick(object? sender, EventArgs e)

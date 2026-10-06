@@ -1,0 +1,68 @@
+ProjectConcord-Relay-Render: 1
+
+```projectconcord-relay-v1
+{
+  "packageId": "a7db5db2-679d-4bc9-8db0-632ad620e1ff",
+  "correlationId": "bac27753-a2e0-40b6-9067-a9da5cd6d296",
+  "kind": "paHandoverImport",
+  "schemaVersionMajor": 1,
+  "schemaVersionMinor": 0,
+  "projectId": "f4f11783-2c48-44f0-9e24-50df4ab51e02",
+  "createdUtc": "2026-10-06T12:10:14.797087+00:00",
+  "updatedUtc": "2026-10-06T12:10:14.797087+00:00",
+  "governanceCritical": {
+    "engineeringAgentMode": "plan",
+    "sessionContinuity": {
+      "projectArchitectSessionIntent": "continue",
+      "projectArchitectSessionAdvisory": {
+        "kind": "none"
+      },
+      "engineeringAgentSessionIntent": "continue",
+      "engineeringAgentSessionAdvisory": {
+        "kind": "none"
+      }
+    },
+    "stop": {
+      "state": "none"
+    },
+    "authorizationDispositionPresent": true,
+    "workContextPresent": false,
+    "directiveFlags": {
+      "directsImplementationWork": false,
+      "directsTrancheWork": false
+    }
+  },
+  "tier0Snapshot": {
+    "knownPathsPresent": [],
+    "narrowMetadata": {}
+  },
+  "softwareDevelopmentProfile": {
+    "payloadVersion": 1,
+    "authorizationDisposition": {
+      "dispositionSummary": "PLANNING AUTHORIZED",
+      "planningAuthorized": true,
+      "implementationAuthorized": false
+    }
+  }
+}
+```
+
+## Governance-Critical
+Engineering-Agent-Mode: PLAN
+Engineering-Agent-Chat: CONTINUE
+ChatGPT-Chat: CONTINUE
+Authorization-Disposition-Present: true
+Work-Context-Present: false
+Directs-Implementation-Work: false
+Directs-Tranche-Work: false
+
+## STOP
+State: None
+
+## Authorization-Disposition
+Planning-Authorized: true
+Implementation-Authorized: false
+Authorized-Tranche-Id: 
+Disposition-Summary: PLANNING AUTHORIZED
+
+Reminder: the next Engineering Agent handover must include Engineering-Agent-Mode (and Engineering-Agent-Mode-Transition when mode changes).
