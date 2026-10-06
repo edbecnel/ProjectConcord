@@ -1,3 +1,4 @@
+using Edf.Application.Workflow.Eligibility;
 using Edf.Domain.Workflow;
 
 namespace Edf.Application.Operator.WorkState;
@@ -17,4 +18,5 @@ public sealed record GovernedWorkStateCurrentWorkItem(
     bool StopActive,
     ProjectionAvailability EffectiveConfigurationAvailability,
     string? EffectiveConfigurationUnavailableReason,
-    IReadOnlyList<DevelopmentWorkAuthorizationKind> ApplicableActiveAuthorizationKinds);
+    IReadOnlyList<DevelopmentWorkAuthorizationKind> ApplicableActiveAuthorizationKinds,
+    WorkflowInstanceGovernedEligibility GovernedEligibility);

@@ -33,6 +33,18 @@ public static class DevelopmentWorkAuthorizationApplicability
             return false;
         }
 
+        if (!record.GrantTopologyPlaceId.Value.Equals(
+                instance.TopologyPlaceId.Value,
+                StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        if (!record.GrantTraversalOccurrenceId.Value.Equals(instance.TraversalOccurrenceId.Value))
+        {
+            return false;
+        }
+
         return true;
     }
 }

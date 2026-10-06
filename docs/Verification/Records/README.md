@@ -35,6 +35,7 @@ Copy [Manual_Verification_Record_Template.md](../../Templates/Manual_Verificatio
 | [MVR-0001](MVR-0001-a1c-desktop-project-root-recent-workflow.md) | A1c Desktop Project Root and Recent Projects workflow | Complete (2026-09-28) |
 | [MVR-0002](MVR-0002-a2-p0-manual-governed-relay-workflow.md) | **A2 P0 manual governed relay workflow** — executable operator procedure + execution record | **Complete** (2026-09-30; MVT-1–MVT-19 Pass; PA accepted for A2 closeout) |
 | [MVR-0003](MVR-0003-a4-engineering-agent-automated-transport.md) | **A4 Engineering Agent automated transport** — Cursor forward, recovery, P0 fallback, boundaries | **In progress** (2026-10-02) — Groups C/D human **Pass**; Group A/B + MVT-23 **blocked** on external Cursor ACP non-fast |
+| [MVR-0004](MVR-0004-m7a-wf-1d-governed-eligibility-recovery-projections.md) | **M7a-WF-1d** partial governed eligibility, CandidateFrontier, Waiting On, workflow Next Action | **Complete** (2026-10-06) — automated Release evidence; human-interactive MVT not required for current WF-1d scope |
 
 ## Parent
 

@@ -1,7 +1,9 @@
 using Edf.Application.Composition;
 using Edf.Application.Operator;
 using Edf.Application.Operator.Relay;
+using Edf.Application.Operator.WorkState;
 using Edf.Application.Projects.InMemory;
+using Edf.Application.Workflow;
 using Edf.Application.Relay;
 using Edf.Application.Relay.EngineeringAgent;
 using Edf.Application.Relay.EngineeringAgent.Hosting;
@@ -13,6 +15,7 @@ using Edf.Application.Tests.Relay;
 using Edf.Application.Tests.Relay.EngineeringAgent;
 using Edf.Domain.Projects;
 using Edf.Domain.Relay;
+using Edf.Domain.Workflow;
 
 namespace Edf.Application.Tests.Operator;
 
@@ -51,6 +54,38 @@ public class EngineeringAgentA4T5OperatorProjectionTests
             null));
 
         var recommended = projection.NextActions.Single(a => a.ActionClass == OperatorNextActionClass.Recommended);
+        Assert.Equal(OperatorNextActionCodes.GovernedRelayManualP0, recommended.Code);
+    }
+
+    [Fact]
+    public void WorkflowNextActionsAndRelayP0_AreIndependentProjections()
+    {
+        var persistence = new InMemoryUserApplicationStatePersistence();
+        var project = persistence.ProjectRegistry.RegisterNewProjectAtLocator(
+            ProjectLocator.FromPath(Directory.CreateTempSubdirectory("edf-wf-relay-wfna-").FullName),
+            "joint",
+            DateTimeOffset.UtcNow);
+        var workflowServices = WorkflowApplicationServicesFactory.Create(persistence);
+        workflowServices.WorkflowInstances.CreateGewInstance(
+            project.ProjectId,
+            GovernedCorrelationId.New(),
+            null,
+            WorkflowProfileId.Parse(GewV1ProfileIds.Standard));
+
+        var workState = workflowServices.WorkStateOperatorProjection.ProjectForProject(project.ProjectId, null);
+        Assert.NotEmpty(workState.WorkflowNextActions);
+        Assert.Equal(ProjectionAvailability.Available, workState.NextActionAvailability);
+
+        var (package, validation) = CreateEligibleImport(project.ProjectId);
+        var relayService = CreateProjectionService(EngineeringAgentPluginCatalog.CreateEmpty());
+        var relayProjection = relayService.Project(new RelayWorkflowOperatorProjectionInput(
+            project.ProjectId,
+            EngineeringAgentMode.Plan,
+            package,
+            validation,
+            null));
+
+        var recommended = relayProjection.NextActions.Single(a => a.ActionClass == OperatorNextActionClass.Recommended);
         Assert.Equal(OperatorNextActionCodes.GovernedRelayManualP0, recommended.Code);
     }
 

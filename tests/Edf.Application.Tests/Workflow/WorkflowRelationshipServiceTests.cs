@@ -191,7 +191,7 @@ public class WorkflowRelationshipServiceTests
         Assert.True(workA.DependencyBlocked);
         Assert.Contains(c.InstanceId, workA.UnresolvedRequiredWorkflowInstanceIds);
         Assert.DoesNotContain(b.InstanceId, workA.UnresolvedRequiredWorkflowInstanceIds);
-        Assert.Equal(ProjectionAvailability.Unavailable, projection.NextActionAvailability);
+        Assert.Equal(ProjectionAvailability.Available, projection.NextActionAvailability);
     }
 
     [Fact]

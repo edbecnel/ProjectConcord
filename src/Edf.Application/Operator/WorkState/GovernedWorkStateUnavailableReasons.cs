@@ -2,7 +2,8 @@ namespace Edf.Application.Operator.WorkState;
 
 public static class GovernedWorkStateUnavailableReasons
 {
-    public const string NotImplementedInM7aWf1 = "gew.work-state.not-implemented-m7a-wf-1";
+    public const string NoEvaluatedWaitingOnConditions = "gew.waiting-on.no-evaluated-blockers";
+    public const string NoWorkflowNextActionSuggestions = "gew.next-action.no-workflow-suggestions";
 
     public const string WorkflowDependencyWait = "gew.waiting-on.workflow-dependency";
 

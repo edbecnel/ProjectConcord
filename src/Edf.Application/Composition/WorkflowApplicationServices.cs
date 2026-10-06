@@ -1,6 +1,7 @@
 using Edf.Application.Operator.WorkState;
 using Edf.Application.Projects;
 using Edf.Application.Workflow;
+using Edf.Application.Workflow.Eligibility;
 using Edf.ProjectServices.Relay;
 
 namespace Edf.Application.Composition;
@@ -45,9 +46,11 @@ public static class WorkflowApplicationServicesFactory
             persistence.DevelopmentWorkAuthorizations,
             persistence.WorkflowInstanceStops,
             registry);
+        var eligibilityEvaluator = new GewV1WorkflowInstanceEligibilityEvaluator(registry);
         var projection = new GovernedWorkStateOperatorProjectionService(
             recovery,
             effectiveConfigurationResolver,
+            eligibilityEvaluator,
             registry,
             git);
         return new WorkflowApplicationServices(

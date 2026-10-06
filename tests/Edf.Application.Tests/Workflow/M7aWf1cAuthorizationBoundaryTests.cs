@@ -135,7 +135,7 @@ public class M7aWf1cAuthorizationBoundaryTests
     }
 
     [Fact]
-    public void NextAction_RemainsUnavailable_AfterWf1cCorrections()
+    public void NextAction_Available_AtIntake_WithWf1dWorkflowSuggestions()
     {
         var (services, instance, _) = CreateServices(withProfile: true);
         services.DevelopmentWorkAuthorizations.RecordGovernedGrant(
@@ -147,7 +147,8 @@ public class M7aWf1cAuthorizationBoundaryTests
             GovernedWorkflowMutationAuthorityTestSupport.ForTestHarness(GovernedCorrelationId.New()));
 
         var projection = services.WorkStateOperatorProjection.ProjectForProject(instance.ProjectId, null);
-        Assert.Equal(ProjectionAvailability.Unavailable, projection.NextActionAvailability);
+        Assert.Equal(ProjectionAvailability.Available, projection.NextActionAvailability);
+        Assert.NotEmpty(projection.WorkflowNextActions);
     }
 
     private static (WorkflowApplicationServices Services, WorkflowInstance Instance, InMemoryUserApplicationStatePersistence Persistence) CreateServices(
