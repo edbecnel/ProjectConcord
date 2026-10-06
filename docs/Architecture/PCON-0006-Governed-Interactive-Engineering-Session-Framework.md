@@ -264,6 +264,14 @@ GIES **composes** [PCON-0005](PCON-0005-ProjectConcord-Workflow-Framework.md) §
 
 **Gate** may group items for operator presentation; it is not a separate primitive.
 
+### 13.1 Governed Synchronization Review (reference use case)
+
+[PCON-0007](PCON-0007-Governed-Synchronization-Review.md) (**Accepted**) defines **Governed Synchronization Review** — incremental evidence acquisition and **Review Subject** disposition while satisfying an applicable **SynchronizationPoint**.
+
+GIES **SHALL** supply **interaction mechanics** for that pattern (evidence requests, judgment, hold, provenance, resume). GIES **does not** own review policy, reviewer-controlled frontier rules, or **aggregate SynchronizationPoint satisfaction** (recorded via workflow / **Control** — GIES-3).
+
+Typical mapping: **Review Evidence** acquisition → information/fact or human observation items; **Review Subject** disposition → architectural/governance judgment; aggregate satisfaction or bounded correction → authorization/decision items that **mutate** state only through **Control** / **DevelopmentWorkAuthorization** / workflow governance.
+
 ---
 
 ## 14. Prescribed workflow policy
@@ -365,3 +373,4 @@ This framework **does not** authorize:
 - [ADR-0025](ADRs/ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md)
 - [PCON-0005](PCON-0005-ProjectConcord-Workflow-Framework.md), [ADR-0024](ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md), [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)
 - [AWI-0011](Watch_Items/AWI-0011-Governed-Interactive-Engineering-Session.md), [GAP-055](../Development/EDF_Gap_Register.md)
+- [PCON-0007](PCON-0007-Governed-Synchronization-Review.md) — Governed Synchronization Review reference use case (§13.1)

@@ -172,6 +172,8 @@ The following **SHALL** remain **semantically separate** from `TopologyPlaceId` 
 | **AuthorizedExecutionInterval** | **Distinct** from topology position. An interval **MAY** span applicable places/transitions per definition. Active/inactive/applicable interval state **MUST NOT** be encoded by moving the instance into a place named for “authorized execution.” |
 | **STOP** | **Orthogonal** governed state affecting advancement ([PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) §2.7; [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §14). STOP **MUST NOT** be modeled as a topology place. Recovery **SHALL** be capable of understanding **place + occurrence + applicable STOP state** without conflating dimensions. This **does not** implement [PCON-0003](../PCON-0003-Governed-Pause-Continuation-and-Resume.md) governed pause. |
 
+Applicable **SynchronizationPoint** review **MAY** be conducted **incrementally** through **Governed Synchronization Review** ([PCON-0007](../PCON-0007-Governed-Synchronization-Review.md) — **Accepted**): partial **Review Subject** dispositions and evidence acquisition **do not** replace orthogonal synchronization satisfaction semantics defined there and in [PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) §6.
+
 Physical persistence layout (columns, JSON, related tables) is **not** prescribed here; implementations **SHALL** preserve recoverability of these semantic categories ([GAP-054](../../Development/EDF_Gap_Register.md)).
 
 ### 12. Multiple workflow instances; origin and blocking (architecture only)

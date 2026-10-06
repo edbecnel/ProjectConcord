@@ -11,8 +11,8 @@
 | **Owner** | ProjectConcord |
 | **Normative** | Yes — product behavior requirements when implemented |
 | **Implementation** | **Not implemented** — requirements define future M7+ capability unless separately authorized |
-| **Last Reviewed** | 2026-10-03 (GEW v1 topology / durable traversal — [M7a-WF-1-doc](../../Handover/ProjectConcord-M7a-WF-1-doc-GEW-Topology-Documentation-Tranche-Plan.md); GEW/GIES consumption published earlier same day) |
-| **Governing decisions** | [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) (Accepted), [ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) (Accepted 2026-09-29), [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (Accepted 2026-09-29 — Software Development governed workflow), [ADR-0019](../../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) (Accepted 2026-10-01 — product shell / local-first / sync), [ADR-0006](../../Architecture/ADRs/ADR-0006-AI-Boundary.md), [ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md), [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03), [ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03), [PCON-0006](../../Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md) (**Accepted** 2026-10-03), [ADR-0025](../../Architecture/ADRs/ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md) (**Accepted** 2026-10-03 — GIES layer allocation) |
+| **Last Reviewed** | 2026-10-06 (Governed Synchronization Review — [PCON-0007](../../Architecture/PCON-0007-Governed-Synchronization-Review.md) **Accepted**; [investigation handover](../../Handover/ProjectConcord-Governed-Synchronization-Review-Investigation.md)) |
+| **Governing decisions** | [ADR-0016](../../Architecture/ADRs/ADR-0016-Core-Domain-Extension-and-Working-Environment-Boundary.md) (Accepted), [ADR-0017](../../Architecture/ADRs/ADR-0017-Project-Work-Record-Core-Boundary.md) (Accepted 2026-09-29), [ADR-0013](../../Architecture/ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md) (Accepted 2026-09-29 — Software Development governed workflow), [ADR-0019](../../Architecture/ADRs/ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md) (Accepted 2026-10-01 — product shell / local-first / sync), [ADR-0006](../../Architecture/ADRs/ADR-0006-AI-Boundary.md), [ADR-0009](../../Architecture/ADRs/ADR-0009-Multi-User-Platform-and-Shared-Project-Services.md), [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03), [ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03), [PCON-0006](../../Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md) (**Accepted** 2026-10-03), [ADR-0025](../../Architecture/ADRs/ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md) (**Accepted** 2026-10-03 — GIES layer allocation), [PCON-0007](../../Architecture/PCON-0007-Governed-Synchronization-Review.md) (**Accepted** 2026-10-06 — Governed Synchronization Review) |
 | **Architecture scope** | **Software Development / Engineering Extension** — not ProjectConcord Core neutrality ([AMD-0003](../../Architecture/AMD-0003-Core-Domain-Extension-and-Working-Environment-Capability-Model.md)) |
 | **Discovery source** | [PCON-0001](../../Architecture/PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) |
 
@@ -42,6 +42,7 @@ Engineering teams using an Architectural AI and a repository execution agent (fo
 - Operator UI for workflow/profile selection beyond derived projections ([ADR-0020](../../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md)).
 - GIES runtime, Interaction Hold persistence, or routing implementation ([PCON-0006](../../Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md), [GAP-055](../../Development/EDF_Gap_Register.md)).
 - SPEC-006 interaction request/answer packages or relay schemas ([ADR-0025](../../Architecture/ADRs/ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md) §5).
+- Governed Synchronization Review Context persistence, invalidation engine, or synchronization satisfaction runtime ([PCON-0007](../../Architecture/PCON-0007-Governed-Synchronization-Review.md), [GAP-054](../../Development/EDF_Gap_Register.md), [GAP-055](../../Development/EDF_Gap_Register.md)).
 
 ## Terminology (workspace-adjacent — not synonyms)
 
@@ -83,7 +84,7 @@ Specific identity, API scoping, and persistence mechanisms are **not** prescribe
 |---|---|---|
 | DevelopmentWorkAuthorization | Operational | Capability-bounded **Control** for Software Development per project (**B**); correlates conceptually with workflow instance (`WorkflowId`, `DefinitionVersion` where applicable, `ProfileId`, `WorkflowInstanceId`), bounded configuration, and effective-configuration provenance — **schema/API not prescribed** ([GAP-027](../../Development/EDF_Gap_Register.md)) |
 | Handover package | Derived / operational snapshot | Inherited project context for agents |
-| ArchitecturalReviewSubmission | Operational | Plan or implementation return for review |
+| ArchitecturalReviewSubmission | Operational | Plan or implementation return for review; **MAY** anchor a [Governed Synchronization Review Context](../../Architecture/PCON-0007-Governed-Synchronization-Review.md) while an applicable **SynchronizationPoint** is unsatisfied |
 | HumanInitiatedWorkItem | Operational | Inbox/triage; distinct from AWI and from generic Core **ProjectWorkRecord** (see § Stage 2 intake semantics) |
 | InterProjectHandover | Operational | Governed cross-project event |
 | CrossProjectDependency | Operational | Ongoing cross-project relationship |
@@ -187,6 +188,32 @@ Derived states (for example Awaiting Human Input, Awaiting PA Input, Awaiting Au
 
 When authorized, [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md) **MAY** add interaction need/answer package profiles and relay validation. Transport **carries** interaction information; it does **not** own GIES governance semantics ([ADR-0025](../../Architecture/ADRs/ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md)).
 
+## GEW consumption of Governed Synchronization Review (GSR)
+
+[PCON-0007](../../Architecture/PCON-0007-Governed-Synchronization-Review.md) defines **Governed Synchronization Review**; this section states **GEW-specific** Software Development constraints. It does **not** duplicate the full PCON-0007 model.
+
+### Applicability
+
+GEW **MAY** use Governed Synchronization Review when an applicable **SynchronizationPoint** requires human or organizational review judgment that **MAY** proceed incrementally (for example post-submission implementation review under [ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) §9).
+
+GSR is **not** mandatory for every synchronization event. Not every inspection **SHALL** be modeled as a durable **Review Subject**.
+
+### GEW / GSR contract (minimum)
+
+| Theme | GEW obligation |
+|---|---|
+| **Subject vs evidence** | Disposition applies to **Review Subject**; **Review Evidence** is versioned/fingerprinted support — see PCON-0007 §4 |
+| **Frontier** | Required reviewer/authority controls what to inspect next; submission completeness ≠ sync satisfaction |
+| **Disposition vs sync** | Review Subject dispositions **do not** satisfy **SynchronizationPoint** (PC-AIGOV-079) |
+| **Reuse / invalidation** | PC-AIGOV-080; DWA correction scope is impact envelope — not universal invalidation (PC-AIGOV-081) |
+| **MVR** | PC-AIGOV-082 — MVR only when policy makes it an **EvidenceRequirement** |
+| **GIES** | When GSR uses interaction, PC-AIGOV-077–078 apply; GIES does not record aggregate sync satisfaction via answer text |
+| **Alternate path** | [AWI-0010 §B.3](../../Architecture/Watch_Items/AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md) remains valid for eligible synchronization occurrences |
+
+### ArchitecturalReviewSubmission
+
+An **ArchitecturalReviewSubmission** **SHOULD** correlate to at most one **Open** Governed Synchronization Review Context per applicable synchronization occurrence unless policy explicitly allows supersession chains documented in operational state.
+
 ## PC-AIGOV applicability by GEW profile (summary)
 
 | Applicability | PC-AIGOV IDs | Notes |
@@ -201,8 +228,9 @@ When authorized, [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-rela
 | **Cross-project (B-layer)** | 021–028 | Unchanged; assume per-project GEW instances unless work is explicitly under another prescribed workflow |
 | **GMFP work units** | 004 (qualified), 076 | GMFP authorization law per EDF; no forced GEW planning/implementation gate |
 | **GIES under GEW** | 004, 007, 014, 016, 075, 077–078 | Consume [PCON-0006](../../Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md) when applicable; hold ≠ STOP; answers ≠ authorization; profile GIES detail **open** |
+| **Governed Synchronization Review under GEW** | 079–082 | Consume [PCON-0007](../../Architecture/PCON-0007-Governed-Synchronization-Review.md) when applicable; subject disposition ≠ sync satisfaction; MVR when policy requires; profile GSR detail **open** |
 
-## Requirements (PC-AIGOV-001–078)
+## Requirements (PC-AIGOV-001–082)
 
 ### Workflow framework (GEW placement)
 
@@ -215,6 +243,10 @@ When authorized, [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-rela
 | **PC-AIGOV-076** | Work explicitly under `edf.governed-maintenance-fast-path` (GMFP) **SHALL NOT** be classified as GEW or as a GEW profile. GMFP semantics remain EDF-authoritative; this spec does not redefine GMFP. |
 | **PC-AIGOV-077** | When GEW uses **Governed Interactive Engineering Session** ([PCON-0006](../../Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md)) for a governed operation, GEW **SHALL** conform to framework invariants **GIES-1** through **GIES-6** and the GEW consumption constraints in § GEW consumption of GIES. GIES is **not** required for every GEW operation — only when interaction must participate in governed state, routing, provenance, authorization, evidence, or resume semantics. |
 | **PC-AIGOV-078** | A **Governed Interaction Hold** on a GEW governed operation **SHALL NOT** silently expand **DevelopmentWorkAuthorization** scope, authorized operations, **ProfileId**, or authorization boundaries. The hold **SHALL NOT** grant or widen authorization. Before the governed operation resumes forward progress after hold resolution, the system **SHALL** reconcile applicable authorization, **STOP**, **Attention**, scope, and risk per GEW requirements. |
+| **PC-AIGOV-079** | When GEW uses **Governed Synchronization Review** ([PCON-0007](../../Architecture/PCON-0007-Governed-Synchronization-Review.md)) for an applicable **SynchronizationPoint**, a **Review Subject** disposition **SHALL NOT** by itself satisfy that **SynchronizationPoint**. Aggregate satisfaction **SHALL** follow PCON-0007 §9 (interactive governed reviewer/authority outcome where required, or authorized conditional alternate satisfaction where applicable). |
+| **PC-AIGOV-080** | Governed Synchronization Review **SHALL** support incremental **Review Evidence** acquisition and partial **Review Subject** disposition without requiring accepted, unaffected subjects to be re-reviewed after a bounded correction while authoritative facts, versions, scope, provenance, applicable policy, and declared/prescribed dependencies supporting the prior disposition remain valid. Re-review **SHALL** occur when deterministic invalidation per PCON-0007 §8 establishes invalidity. Conversational or model inference **SHALL NOT** be authoritative for invalidation. |
+| **PC-AIGOV-081** | **DevelopmentWorkAuthorization** correction scope **SHALL** be treated as the authorized possible **impact envelope** for a correction. Scope membership **SHALL NOT** universally invalidate a prior **Review Subject** disposition. Scope **MAY** identify candidates for impact evaluation or trigger conservative re-review when profile/policy requires. |
+| **PC-AIGOV-082** | Governed Synchronization Review **SHALL NOT** universally require a **Manual Verification Record** for aggregate implementation-review **SynchronizationPoint** satisfaction. An MVR **SHALL** be required only where applicable workflow, profile, or policy establishes it as an **EvidenceRequirement** ([SPEC-005](SPEC-005-manual-verification-record-consumption.md)). |
 
 ### Authority and canonical state
 
@@ -276,7 +308,7 @@ Requirements PC-AIGOV-021–028 are **Software Development extension (B)** inter
 - [SPEC-003](SPEC-003-canonical-artifact-integrity-and-authorized-state-transitions.md) — canonical **artifact** integrity and lifecycle; external IDE edits.
 - [SPEC-001](SPEC-001-mvp-edf-desktop-client.md) — M1–M5 MVP does not implement this spec.
 - [ADR-0006](../../Architecture/ADRs/ADR-0006-AI-Boundary.md) — AI proposals for EDF writes; complementary.
-- [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md) — Project Root, identity, Core Governed Interaction Relay, provider adapters (**Accepted** 2026-09-29; A2 P0 relay subset **published**; further PAR/A3+ not authorized). SPEC-006 enforces at relay boundary; PC-AIGOV-001–078 remain defined here. Future GIES interaction packages — § GEW consumption of GIES.
+- [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md) — Project Root, identity, Core Governed Interaction Relay, provider adapters (**Accepted** 2026-09-29; A2 P0 relay subset **published**; further PAR/A3+ not authorized). SPEC-006 enforces at relay boundary; PC-AIGOV-001–082 remain defined here. Future GIES interaction packages — § GEW consumption of GIES.
 - [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md), [ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) — prescribed workflow, profiles, configuration classes (architecture **Accepted**; this spec carries normative Software Development requirements).
 - [PCON-0006](../../Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md), [ADR-0025](../../Architecture/ADRs/ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md) — GIES framework (**Accepted**); GEW consumption in § GEW consumption of GIES.
 
@@ -292,6 +324,8 @@ Remain OPEN per [AI Governance Workflow Integration Analysis](../../Architecture
 
 **GIES / GEW (published consumption tranche 2026-10-03; runtime open):** GEW profile-specific GIES mediation, evidence floors, and synchronization; timeout/waiver defaults; multiple concurrent governed-operation interaction behavior; shared persistence with [PCON-0003](../../Architecture/PCON-0003-Governed-Pause-Continuation-and-Resume.md) pause; actor/role attribution ([PCON-0002](../../Architecture/PCON-0002-Actor-Role-Model-Engineering-Domain-Neutrality-and-Governance-Abstraction.md)); SPEC-006 interaction package shapes; GIES runtime ([GAP-055](../../Development/EDF_Gap_Register.md), [AWI-0011](../../Architecture/Watch_Items/AWI-0011-Governed-Interactive-Engineering-Session.md)).
 
+**Governed Synchronization Review / GEW (documentation tranche 2026-10-06; detail open):** GEW-specific **Governed Synchronization Review** policy and operational detail beyond PC-AIGOV-079–082 and § GEW consumption of Governed Synchronization Review (GSR) remain **open**. The authoritative enumerated open-question list is [PCON-0007](../../Architecture/PCON-0007-Governed-Synchronization-Review.md) §16 — including disposition vocabulary; dependency and checklist authoring; Review Subject checklist/source; EvidenceKind fingerprint rules; AAR vs B-layer submission-review boundary; authority-exchange field split; dirty working tree vs governed baseline evidence policy; profile/policy-specific conservative re-review after correction. Governed Synchronization Review Context persistence and invalidation runtime ([GAP-054](../../Development/EDF_Gap_Register.md), [GAP-055](../../Development/EDF_Gap_Register.md)).
+
 ## Parent
 
 - [Specifications](../README.md)
@@ -302,6 +336,7 @@ Remain OPEN per [AI Governance Workflow Integration Analysis](../../Architecture
 - [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md), [ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md)
 - [AWI-0004](../../Architecture/Watch_Items/AWI-0004-Governed-Maintenance-Fast-Path.md), [AWI-0010](../../Architecture/Watch_Items/AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md), [AWI-0011](../../Architecture/Watch_Items/AWI-0011-Governed-Interactive-Engineering-Session.md)
 - [PCON-0006](../../Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md), [ADR-0025](../../Architecture/ADRs/ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md), [SPEC-005](SPEC-005-manual-verification-record-consumption.md)
+- [PCON-0007](../../Architecture/PCON-0007-Governed-Synchronization-Review.md), [Governed Synchronization Review investigation handover](../../Handover/ProjectConcord-Governed-Synchronization-Review-Investigation.md)
 - [SPEC-004 GIES consumption tranche plan](../../Handover/ProjectConcord-SPEC-004-GIES-Consumption-Reconciliation-Tranche-Plan.md)
 - [AI Governance Workflow Integration Analysis](../../Architecture/AI_Governance_Workflow_Integration_Analysis.md)
 - [Implementation Roadmap](../../Development/Implementation_Roadmap.md)

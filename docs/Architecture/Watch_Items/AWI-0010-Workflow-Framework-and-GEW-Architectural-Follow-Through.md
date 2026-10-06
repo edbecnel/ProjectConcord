@@ -27,6 +27,7 @@ While **Active**, this item:
 - **Operator UX (deferred):** Future **Hierarchical Workflow View** over the authoritative instance/relationship graph is captured in [AWI-0008 §B.1](AWI-0008-Governed-Operator-Experience-and-Product-Shell.md#b1-hierarchical-workflow-view-deferred--capture-2026-10-03) — **not** part of M7a-WF-1b backend scope; no Desktop visualization in current tranche.
 - **Project Architect exchange (deferred):** Preferred **Human ↔ ProjectConcord ↔ Project Architect provider** interaction, provider-neutral **PA Exchange Contract**, transport separation, and canonical request/response identity — [§B.2](#b2-project-architect-exchange-contract-deferred--capture-2026-10-03) (handover captures `8ca11fb9`, `730c89c8`).
 - **Conditional alternate synchronization satisfaction (deferred):** **Conditional alternate satisfaction** of eligible **SynchronizationPoint**s — default **optimized** path when eligible and applicable; per-occurrence human override to require interactive synchronization — applications **Conditional Publication Authorization** ([§B.3.1](#b31-conditional-publication-authorization)) and **Conditional Closure Authorization** ([§B.3.2](#b32-conditional-closure-authorization)) — [§B.3](#b3-conditional-alternate-synchronization-satisfaction-deferred--capture-2026-10-06) (handovers `c7d8d85d-47c1-4e98-8649-864c5843b920`, `b8e23f19-e813-44e8-9c98-b934b91a0d17`, `e6f8137c-22cb-40f9-b07c-271da098ad86`, `0de6ed2b-24ef-441c-b20d-10ef2c14709d`, `8f3b0af2-b327-4dca-8ef3-78d13d742f87`, `476976f4-8b0d-4a4d-b1ef-2035fb9bb034`).
+- **Governed Synchronization Review (published architecture — Accepted):** [PCON-0007](../PCON-0007-Governed-Synchronization-Review.md) + [§B.4](#b4-governed-synchronization-review-and-conditional-alternate-synchronization--capture-2026-10-06) (investigation `7bd25f3e`, refinement `1f6bd23e`, documentation authorization `a88bc129`) — **does not** authorize runtime; complements deferred CPA/CCA capture.
 
 ## B.2 Project Architect Exchange Contract (deferred — capture 2026-10-03)
 
@@ -324,6 +325,27 @@ Candidate revert themes (not normative runtime rules): commit/push failure befor
 
 **Closure multiplicity (open):** “Closure” is **not** yet one universal operation. Future architecture **MUST** distinguish as applicable: **WorkflowInstance** lifecycle completion; governed tranche/work closeout; relay/package/operation closeout; other workflow-specific terminal dispositions. CCA **MUST NOT** silently equate these concepts. **Not** resolved in this capture.
 
+## B.4 Governed Synchronization Review and conditional alternate synchronization (capture — 2026-10-06)
+
+**Handover provenance:** `7bd25f3e-8ef0-4ac1-a32d-24e3fc4fd3a8` (investigation); `1f6bd23e-673a-4507-b250-c682a274e3b9` (refinement); `a88bc129-87c9-4df6-949c-b56b5881eb39` (documentation tranche authorization) — **documentation only**; **does not** authorize `src/` implementation or CPA/CCA runtime.
+
+### Relationship (orthogonal concerns)
+
+| Concern | Architecture |
+|---|---|
+| **Governed Synchronization Review** ([PCON-0007](../PCON-0007-Governed-Synchronization-Review.md)) | **How** an interactive synchronization obligation may be satisfied **incrementally** — reviewer frontier, Review Subject dispositions, evidence reuse, correction resume |
+| **Conditional alternate synchronization satisfaction** ([§B.3](#b3-conditional-alternate-synchronization-satisfaction-deferred--capture-2026-10-06)) | **Whether** an eligible **SynchronizationPoint** may be satisfied without another interactive reviewer path when objective criteria hold |
+
+Incremental interactive review **reduces unnecessary re-review** during an open synchronization occurrence. Conditional alternate satisfaction **changes the permitted satisfaction method** for eligible occurrences (for example CPA/CCA applications) — **not** a downgrade of assurance and **not** automatic reviewer approval.
+
+### In-review resume vs post-correction optimization
+
+After a **bounded correction** during an **Open** [Governed Synchronization Review Context](../PCON-0007-Governed-Synchronization-Review.md), deterministic invalidation **SHOULD** limit re-review to affected subjects/evidence (PCON-0007 §8; [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) PC-AIGOV-080).
+
+**CPA** (§B.3.1) addresses a **different** synchronization occurrence context (pre-publication) where optimized alternate satisfaction may be the **default** when eligible — **without** requiring another full interactive synchronization **for that occurrence**, while controls and evidence remain satisfied. CPA **does not** replace in-review frontier semantics; it **does not** authorize skipping required review subjects that remain invalid under PCON-0007.
+
+Runtime binding of which **SynchronizationPoint** occurrences use GSR vs alternate satisfaction remains **[GAP-054](../../Development/EDF_Gap_Register.md)** follow-through.
+
 ## Promotion path
 
 ```text
@@ -342,3 +364,4 @@ AWI-0010 (this item)
 - [AWI-0008 — Hierarchical Workflow View (deferred UX)](AWI-0008-Governed-Operator-Experience-and-Product-Shell.md#b1-hierarchical-workflow-view-deferred--capture-2026-10-03)
 - [AWI-0008 — Synchronization path disposition (deferred UX)](AWI-0008-Governed-Operator-Experience-and-Product-Shell.md#b2-synchronization-path-disposition-deferred--capture-2026-10-06)
 - [AWI-0011 — GIES (clarification / interactive resolution)](AWI-0011-Governed-Interactive-Engineering-Session.md)
+- [PCON-0007 — Governed Synchronization Review](../PCON-0007-Governed-Synchronization-Review.md), [investigation handover](../../Handover/ProjectConcord-Governed-Synchronization-Review-Investigation.md)

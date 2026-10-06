@@ -105,6 +105,18 @@ Operator UI **SHALL NOT** substitute for prescribed workflow definition, applica
 
 Exact control placement, wording, and stepper/Attention integration remain **deferred**. **No** UI implementation in current tranches.
 
+### B.3 Governed Synchronization Review — review frontier and packages (capture — 2026-10-06)
+
+**Handover capture:** Governed Synchronization Review documentation tranche `a88bc129-87c9-4df6-949c-b56b5881eb39` — **documentation only**; **does not** authorize `src/` implementation.
+
+**Architecture:** [PCON-0007](../PCON-0007-Governed-Synchronization-Review.md) (**Accepted**); operator rules in [ADR-0020](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) §15.
+
+Future **review packages**, **review frontier** presentation, and related **Attention** / **Next Action** facets **SHALL** be **derived projections** of authoritative operational state (**B**) — including **Governed Synchronization Review Context**, **Review Subject** dispositions, cited **Review Evidence** fingerprints, open GIES items, and orthogonal **SynchronizationPoint** satisfaction — plus canonical **A** and structured agent results.
+
+Review packages **SHALL NOT** be the authoritative store of review state. Human-readable handovers remain valid **transport** ([SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) PC-AIGOV-006).
+
+Exact UI for frontier ordering, subject/evidence drill-down, and disposition history remains **deferred**.
+
 ### C. Durable governed relay/package working state
 
 Useful governed handover/package working material should survive application close/reopen where appropriate.
