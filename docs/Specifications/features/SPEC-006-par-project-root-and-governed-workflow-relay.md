@@ -450,7 +450,7 @@ A new **GovernedOperationId** primitive is **not** required.
 
 | ID | Requirement |
 |---|---|
-| **PC-PAR-025** | **[A]** The Core Governed Interaction Relay **SHALL** enforce §19.1–§19.3 on import: **Valid** but **not actionable** packages **MUST** fail closed for governed operational state advancement; **MUST NOT** regress workflow-instance or authorization state; **MAY** be retained or referenced as historical evidence. **[B]** Applicability **SHALL** consume current workflow-instance, DWA/**Control**, STOP, and synchronization position from authoritative operational inputs — not PA/EA chat history. |
+| **PC-PAR-025** | **[A]** The Core Governed Interaction Relay **SHALL** enforce §19.1–§19.3 on import: **Valid** but **not actionable** packages **MUST** fail closed for governed operational state advancement; **MUST NOT** regress workflow-instance or authorization state; **MAY** be retained or referenced as historical evidence. **[B]** Applicability **SHALL** consume current workflow-instance, DWA/**Control**, STOP, and synchronization position from authoritative operational inputs — not PA/EA chat history. Package applicability is one slice of fail-closed premise handling; it **SHALL NOT** be conflated with evidence validity or governed work-obligation identity ([PCON-0008](../../Architecture/PCON-0008-Governed-Work-Disposition-and-Interaction-Consequence.md) **Accepted** §14–§15). |
 
 ## Maintenance
 

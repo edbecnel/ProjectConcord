@@ -310,6 +310,7 @@ Requirements PC-AIGOV-021–028 are **Software Development extension (B)** inter
 - [ADR-0006](../../Architecture/ADRs/ADR-0006-AI-Boundary.md) — AI proposals for EDF writes; complementary.
 - [SPEC-006](SPEC-006-par-project-root-and-governed-workflow-relay.md) — Project Root, identity, Core Governed Interaction Relay, provider adapters (**Accepted** 2026-09-29; A2 P0 relay subset **published**; further PAR/A3+ not authorized). SPEC-006 enforces at relay boundary; PC-AIGOV-001–082 remain defined here. Future GIES interaction packages — § GEW consumption of GIES.
 - [PCON-0005](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md), [ADR-0024](../../Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) — prescribed workflow, profiles, configuration classes (architecture **Accepted**; this spec carries normative Software Development requirements).
+- [PCON-0008](../../Architecture/PCON-0008-Governed-Work-Disposition-and-Interaction-Consequence.md) — interaction → Governed Work Disposition → governed state; distinct obligation vs authorization; multi-instance graph rules (**Accepted** 2026-10-06; GEW scope unchanged).
 - [PCON-0006](../../Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md), [ADR-0025](../../Architecture/ADRs/ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md) — GIES framework (**Accepted**); GEW consumption in § GEW consumption of GIES.
 
 ## Acceptance criteria (future — not applicable until implementation authorized)

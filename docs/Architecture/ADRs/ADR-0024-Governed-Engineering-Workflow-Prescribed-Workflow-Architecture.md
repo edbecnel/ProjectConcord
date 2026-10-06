@@ -182,7 +182,8 @@ The following **SHALL** apply to GEW and the wider workflow framework ([PCON-000
 
 - A Project **MAY** have **zero or more** **Active** `WorkflowInstance` records; multiple Active instances are **valid**; there is **no** globally primary Active instance required for recovery.
 - **Current Work** **MAY** be a **set** of Active instances; operator **focus/selection** is projection/operator state — **not** workflow authority.
-- **Spawning** one workflow instance from another **does not** by itself imply **blocking**; **origin/provenance** and **blocking dependency** are **distinct** relationship kinds (implementation deferred).
+- **WorkflowOrigin alone SHALL NOT imply WorkflowDependency** — **origin/provenance** and **blocking dependency** are **distinct** relationship kinds. Recording origin **does not** establish, imply, or default dependency; absence of a recorded dependency means only that no dependency has been established ([PCON-0008](../PCON-0008-Governed-Work-Disposition-and-Interaction-Consequence.md) §10).
+- **Spawning** or discovering one workflow instance from another **does not** by itself imply **blocking**; dependency requires explicit governed disposition under applicable workflow/policy.
 - **Blocking** is an **explicit** governed relationship; **lifecycle** (`Active`, `Completed`, `Superseded`) is **distinct** from blocked-for-advancement; **Active + blocked-for-advancement** is valid.
 - Dependencies **MAY** be recursive; multiple workflows **MAY** depend on one workflow; one workflow **MAY** have multiple blockers; parallel non-blocking Active workflows are valid; future dependency graphs **SHALL** reject cycles where dependency semantics require satisfiability.
 - **Actionable frontier** is **derived** from authoritative instance state, dependencies, controls/authorization, STOP, and other governance — **not** persisted as a convenience flag.

@@ -32,6 +32,7 @@ Non-normative records capture origin, motivation, and pre-specification explorat
 | [PCON-0005](PCON-0005-ProjectConcord-Workflow-Framework.md) | ProjectConcord Workflow Framework | Accepted (2026-10-03) |
 | [PCON-0006](PCON-0006-Governed-Interactive-Engineering-Session-Framework.md) | Governed Interactive Engineering Session (GIES) | Accepted (2026-10-03) |
 | [PCON-0007](PCON-0007-Governed-Synchronization-Review.md) | Governed Synchronization Review | Accepted (2026-10-06) |
+| [PCON-0008](PCON-0008-Governed-Work-Disposition-and-Interaction-Consequence.md) | Governed Work Disposition and interaction consequence | Accepted (2026-10-06) |
 | [Analysis](AI_Governance_Workflow_Integration_Analysis.md) | AI Governance Workflow — Integration Analysis | Integrated 2026-09-21 (doc tranche accepted) |
 | [Analysis](Analysis/Workflow_Framework_Comparative_Research_Support.md) | Workflow Framework — comparative research support | Active (non-normative) |
 

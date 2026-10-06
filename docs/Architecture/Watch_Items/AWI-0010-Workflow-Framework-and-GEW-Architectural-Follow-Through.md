@@ -21,13 +21,13 @@ Track **implementation and normative follow-through** for the accepted-in-princi
 
 While **Active**, this item:
 
-- **Does** record open work: **M7a-WF-1** + **M7a-WF-1b** + **M7a-WF-1c** backend foundations **published** (**M7a-WF-1c** **closed** at `78bfde9155ee61ece052ac179a3d0cfe24a81dd2`): Migration004/005/006; instance + origin/blocking graph; **GEW v1** effective-configuration resolver (derived; grant-time guard only — not topology/lifecycle/STOP/supersede); durable **DevelopmentWorkAuthorization** grant/supersede ([GAP-027](../../Development/EDF_Gap_Register.md) partial); **WorkflowInstance**-scoped orthogonal **STOP**; recovery/projection extensions (effective-config availability, STOP, applicable DWA kinds — **not** Next Action / actionable frontier); **deferred**: PC-PAR-025 enforcement; synchronization / AEI instance persistence; production relay binding and governed-advancement integration; GMFP registry consumption; **Hierarchical Workflow View** UI ([AWI-0008](AWI-0008-Governed-Operator-Experience-and-Product-Shell.md) §B.1); GIES cross-track ([AWI-0011](AWI-0011-Governed-Interactive-Engineering-Session.md)); **PA Exchange** runtime ([§B.2](#b2-project-architect-exchange-contract-deferred--capture-2026-10-03)); **GEW v1 topology** normative docs — [PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) §2.7, [ADR-0024](../ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) §9–§13 ([M7a-WF-1-doc](../../Handover/ProjectConcord-M7a-WF-1-doc-GEW-Topology-Documentation-Tranche-Plan.md) — **published**).
+- **Does** record open work: **M7a-WF-1** + **M7a-WF-1b** + **M7a-WF-1c** backend foundations **published** (**M7a-WF-1c** **closed** at `78bfde9155ee61ece052ac179a3d0cfe24a81dd2`): Migration004/005/006; instance + origin/blocking graph; **GEW v1** effective-configuration resolver (derived; grant-time guard only — not topology/lifecycle/STOP/supersede); durable **DevelopmentWorkAuthorization** grant/supersede ([GAP-027](../../Development/EDF_Gap_Register.md) partial); **WorkflowInstance**-scoped orthogonal **STOP**; recovery/projection (effective-config availability, STOP, applicable DWA kinds). **M7a-WF-1d** (**implementation** per handover `f4ef54a8`, plan `dcf55d72`): derived **partial governed eligibility** facets, **CandidateFrontier** (evaluated constraints only — **not** full governed permission), structured **Waiting On** (evaluated blockers only), structured workflow **Next Action** (suggestion vs `PermissionToExecute`; **`FullyGovernedActionability` remains `Indeterminate`** in WF-1d); DWA grant **place/occurrence** applicability tightening — **not** PC-PAR-025. **Deferred**: PC-PAR-025 enforcement; synchronization / AEI instance persistence; production relay binding and governed-advancement integration; GMFP registry consumption; **Hierarchical Workflow View** UI ([AWI-0008](AWI-0008-Governed-Operator-Experience-and-Product-Shell.md) §B.1); GIES cross-track ([AWI-0011](AWI-0011-Governed-Interactive-Engineering-Session.md)); **PA Exchange** runtime ([§B.2](#b2-project-architect-exchange-contract-deferred--capture-2026-10-03)); **GEW v1 topology** normative docs — [PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) §2.7, [ADR-0024](../ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) §9–§13 ([M7a-WF-1-doc](../../Handover/ProjectConcord-M7a-WF-1-doc-GEW-Topology-Documentation-Tranche-Plan.md) — **published**). Implementation notes: [M7a-WF-1d](../../Handover/ProjectConcord-M7a-WF-1d-Implementation-Notes.md); manual QA: [MVR-0004](../../Verification/Records/MVR-0004-m7a-wf-1d-governed-eligibility-recovery-projections.md) (**not executed** in WF-1d tranche).
 - **Does not** authorize `src/` implementation, A3, or changes to A4/T7/MVR disposition.
 - **Does not** supersede [AWI-0004](AWI-0004-Governed-Maintenance-Fast-Path.md) (GMFP consumption semantics remain EDF-owned).
 - **Operator UX (deferred):** Future **Hierarchical Workflow View** over the authoritative instance/relationship graph is captured in [AWI-0008 §B.1](AWI-0008-Governed-Operator-Experience-and-Product-Shell.md#b1-hierarchical-workflow-view-deferred--capture-2026-10-03) — **not** part of M7a-WF-1b backend scope; no Desktop visualization in current tranche.
 - **Project Architect exchange (deferred):** Preferred **Human ↔ ProjectConcord ↔ Project Architect provider** interaction, provider-neutral **PA Exchange Contract**, transport separation, and canonical request/response identity — [§B.2](#b2-project-architect-exchange-contract-deferred--capture-2026-10-03) (handover captures `8ca11fb9`, `730c89c8`).
 - **Conditional alternate synchronization satisfaction (deferred):** **Conditional alternate satisfaction** of eligible **SynchronizationPoint**s — default **optimized** path when eligible and applicable; per-occurrence human override to require interactive synchronization — applications **Conditional Publication Authorization** ([§B.3.1](#b31-conditional-publication-authorization)) and **Conditional Closure Authorization** ([§B.3.2](#b32-conditional-closure-authorization)) — [§B.3](#b3-conditional-alternate-synchronization-satisfaction-deferred--capture-2026-10-06) (handovers `c7d8d85d-47c1-4e98-8649-864c5843b920`, `b8e23f19-e813-44e8-9c98-b934b91a0d17`, `e6f8137c-22cb-40f9-b07c-271da098ad86`, `0de6ed2b-24ef-441c-b20d-10ef2c14709d`, `8f3b0af2-b327-4dca-8ef3-78d13d742f87`, `476976f4-8b0d-4a4d-b1ef-2035fb9bb034`).
-- **Governed Synchronization Review (published architecture — Accepted):** [PCON-0007](../PCON-0007-Governed-Synchronization-Review.md) + [§B.4](#b4-governed-synchronization-review-and-conditional-alternate-synchronization--capture-2026-10-06) (investigation `7bd25f3e`, refinement `1f6bd23e`, documentation authorization `a88bc129`) — **does not** authorize runtime; complements deferred CPA/CCA capture.
+- **Governed Synchronization Review (published architecture — Proposed):** [PCON-0007](../PCON-0007-Governed-Synchronization-Review.md) + [§B.4](#b4-governed-synchronization-review-and-conditional-alternate-synchronization--capture-2026-10-06) (investigation `7bd25f3e`, refinement `1f6bd23e`, documentation authorization `a88bc129`) — **does not** authorize runtime; complements deferred CPA/CCA capture.
 
 ## B.2 Project Architect Exchange Contract (deferred — capture 2026-10-03)
 
@@ -346,6 +346,25 @@ After a **bounded correction** during an **Open** [Governed Synchronization Revi
 
 Runtime binding of which **SynchronizationPoint** occurrences use GSR vs alternate satisfaction remains **[GAP-054](../../Development/EDF_Gap_Register.md)** follow-through.
 
+## B.5 Interaction consequence and Governed Work Disposition (capture — 2026-10-06)
+
+**Handover provenance:** `f4e42b75-28ad-4c39-bf75-fd9605370e3e` (investigation); `9f3e78d8-bd61-4a74-ae54-403c779ca979` (PA refinement); `c14bb671-46b9-41f7-8544-bcd43cc264a0` (documentation authorization) — **documentation only**; **does not** authorize `src/` implementation, disposition runtime, registry extension, or dependency semantics changes.
+
+### Architecture ([PCON-0008](../PCON-0008-Governed-Work-Disposition-and-Interaction-Consequence.md) — **Accepted** 2026-10-06)
+
+| Topic | Direction |
+|---|---|
+| **Core principle** | Model consequential governed state and work units; not every conversational step |
+| **Governed Work Disposition** | Semantic/protocol boundary — **not** a fifth primitive, persisted entity, or mandatory orchestrator |
+| **Identity vs authorization** | Distinct obligation ⇒ `WorkflowInstance` B; DWA scope exceedance ⇒ authorization path, **not** automatic B |
+| **Discovery vs execution** | Unresolved prescribed-workflow applicability ⇒ governed execution of B withheld (fail-closed) — **not** quasi-workflow |
+| **Origin vs dependency** | `WorkflowOrigin` alone **SHALL NOT** imply `WorkflowDependency` |
+| **Dependency granularity** | Runtime today: instance-level + lifecycle completion only — gate-specific withholding **open** |
+| **Shared discovery** | Governed **obligation identity** — no LLM merge |
+| **Validation case** | M7a-WF-1d + architecture obligation B ([PCON-0008](../PCON-0008-Governed-Work-Disposition-and-Interaction-Consequence.md) §17) |
+
+Follow-through: **[GAP-054](../../Development/EDF_Gap_Register.md)** (registry/applicability, disposition protocol, dependency extension, WF-1d sync/evidence); **[GAP-055](../../Development/EDF_Gap_Register.md)** / **[GAP-043](../../Development/EDF_Gap_Register.md)** for GIES/relay deferred runtime.
+
 ## Promotion path
 
 ```text
@@ -365,3 +384,4 @@ AWI-0010 (this item)
 - [AWI-0008 — Synchronization path disposition (deferred UX)](AWI-0008-Governed-Operator-Experience-and-Product-Shell.md#b2-synchronization-path-disposition-deferred--capture-2026-10-06)
 - [AWI-0011 — GIES (clarification / interactive resolution)](AWI-0011-Governed-Interactive-Engineering-Session.md)
 - [PCON-0007 — Governed Synchronization Review](../PCON-0007-Governed-Synchronization-Review.md), [investigation handover](../../Handover/ProjectConcord-Governed-Synchronization-Review-Investigation.md)
+- [PCON-0008 — Governed Work Disposition and interaction consequence](../PCON-0008-Governed-Work-Disposition-and-Interaction-Consequence.md) (**Accepted** 2026-10-06)

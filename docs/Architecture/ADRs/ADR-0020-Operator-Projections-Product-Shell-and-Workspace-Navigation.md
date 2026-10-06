@@ -294,6 +294,9 @@ Sufficient durable state **SHALL** exist — stored directly or **deterministica
 | Outstanding required actor/action | Derived from instance state, relay, GIES, MVR, inter-project (**B**) |
 | Relay produce/consume provenance position | [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) PC-PAR-021, §19 |
 | GIES context / hold / blocking items (when active) | [PCON-0006](../PCON-0006-Governed-Interactive-Engineering-Session-Framework.md) — [GAP-055](../../Development/EDF_Gap_Register.md) |
+| WorkflowOrigin / WorkflowDependency graph | [ADR-0024](ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) §12, [PCON-0008](../PCON-0008-Governed-Work-Disposition-and-Interaction-Consequence.md) — [GAP-054](../../Development/EDF_Gap_Register.md) |
+| Unresolved prescribed-workflow applicability for discovered obligations | [PCON-0008](../PCON-0008-Governed-Work-Disposition-and-Interaction-Consequence.md) §9 — fail-closed for governed execution; [GAP-054](../../Development/EDF_Gap_Register.md) |
+| Governed Synchronization Review context (when active) | [PCON-0007](../PCON-0007-Governed-Synchronization-Review.md) — [GAP-054](../../Development/EDF_Gap_Register.md) |
 | Provider correlation (transport recovery) | [ADR-0022](ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) — not governance identity |
 
 Facts **MAY** be distributed across canonical and operational stores per [ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md). Redundant persistence of derivable facts is **not** required.

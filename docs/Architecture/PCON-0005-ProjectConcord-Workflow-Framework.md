@@ -293,11 +293,18 @@ Framework-level **Governed Interactive Engineering Session** architecture is def
 
 ---
 
+## 13.1 Governed Work Disposition and interaction consequence
+
+How arbitrary interaction and reasoning become authoritative governed consequences — without modeling every conversational step — is defined in [PCON-0008](PCON-0008-Governed-Work-Disposition-and-Interaction-Consequence.md) (**Accepted** 2026-10-06). **Governed Work Disposition** is a semantic/protocol boundary pattern; it is **not** a fifth framework primitive. **Implementation** of disposition intake and extended dependency granularity remains unauthorized ([GAP-054](../Development/EDF_Gap_Register.md)).
+
+---
+
 ## 14. Related documents
 
 - [ADR-0024 — Governed Engineering Workflow](ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md)
 - [ADR-0013](ADRs/ADR-0013-Governed-Development-Workflow-and-Workspace-Model.md), [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)
 - [PCON-0001](PCON-0001-AI-Assisted-Architectural-Governance-and-Repository-Execution-Workflow.md) (historical full-loop reference — not the only topology)
+- [PCON-0008](PCON-0008-Governed-Work-Disposition-and-Interaction-Consequence.md) (interaction → disposition → governed state; **Accepted** 2026-10-06)
 - [AWI-0010](Watch_Items/AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md), [GAP-054](../Development/EDF_Gap_Register.md#gap-054--workflow-framework-runtime-and-effective-configuration)
 - [M7a-WF-1-doc tranche plan](../Handover/ProjectConcord-M7a-WF-1-doc-GEW-Topology-Documentation-Tranche-Plan.md)
 

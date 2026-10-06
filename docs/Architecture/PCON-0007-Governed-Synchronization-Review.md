@@ -327,3 +327,4 @@ Review packages and frontier presentation **SHALL NOT** substitute for authorita
 - [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)
 - [AWI-0010](Watch_Items/AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md), [AWI-0011](Watch_Items/AWI-0011-Governed-Interactive-Engineering-Session.md), [AWI-0008](Watch_Items/AWI-0008-Governed-Operator-Experience-and-Product-Shell.md)
 - [Investigation handover](../Handover/ProjectConcord-Governed-Synchronization-Review-Investigation.md)
+- [PCON-0008](PCON-0008-Governed-Work-Disposition-and-Interaction-Consequence.md) — fail-closed premise invalidation vs package applicability (**Accepted** 2026-10-06)

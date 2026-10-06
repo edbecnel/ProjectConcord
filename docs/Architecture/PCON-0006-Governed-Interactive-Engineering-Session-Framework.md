@@ -374,3 +374,4 @@ This framework **does not** authorize:
 - [PCON-0005](PCON-0005-ProjectConcord-Workflow-Framework.md), [ADR-0024](ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md), [SPEC-004](../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md), [SPEC-006](../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md)
 - [AWI-0011](Watch_Items/AWI-0011-Governed-Interactive-Engineering-Session.md), [GAP-055](../Development/EDF_Gap_Register.md)
 - [PCON-0007](PCON-0007-Governed-Synchronization-Review.md) — Governed Synchronization Review reference use case (§13.1)
+- [PCON-0008](PCON-0008-Governed-Work-Disposition-and-Interaction-Consequence.md) — interaction envelope vs authoritative consequences (**Accepted** 2026-10-06)
