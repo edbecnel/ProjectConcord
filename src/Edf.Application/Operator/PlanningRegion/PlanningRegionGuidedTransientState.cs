@@ -28,6 +28,23 @@ public sealed class PlanningRegionGuidedTransientState
 
     public string? CachedEngineeringHandover { get; set; }
 
+    public GovernedRelayPackage? PreparedEaExportPackage { get; set; }
+
+    public string? PreparedEaRenderedHandover { get; set; }
+
+    public string? PreparedEaHumanReadableView { get; set; }
+
+    public Guid? PreparedEaSourceHandoverPackageId { get; set; }
+
+    public void ClearPreparedEaHandover()
+    {
+        PreparedEaExportPackage = null;
+        PreparedEaRenderedHandover = null;
+        PreparedEaHumanReadableView = null;
+        PreparedEaSourceHandoverPackageId = null;
+        CachedEngineeringHandover = null;
+    }
+
     public void ResetForNewPaCycle()
     {
         CachedRenderedReview = null;
@@ -38,5 +55,6 @@ public sealed class PlanningRegionGuidedTransientState
         LastValidationAttemptFailed = false;
         LastCorrectionFailureClass = PaHandoverCorrectionFailureClass.None;
         LastOperatorValidationMessage = null;
+        ClearPreparedEaHandover();
     }
 }

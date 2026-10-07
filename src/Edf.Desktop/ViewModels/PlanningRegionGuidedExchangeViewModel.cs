@@ -44,6 +44,7 @@ public sealed class PlanningRegionGuidedExchangeViewModel : ViewModelBase
     private string? _technicalValidationDetail;
     private bool _showCopyCorrectionRequest;
     private string? _correctionNextStepHint;
+    private string? _humanReadableOutboundPackageView;
     private bool _importAttestationConfirmed;
     private AgentSessionIntent? _selectedPaSessionIntent;
     private AgentSessionIntent? _selectedEaSessionIntent;
@@ -80,6 +81,9 @@ public sealed class PlanningRegionGuidedExchangeViewModel : ViewModelBase
         CopyCorrectionRequestCommand = new AsyncRelayCommand(
             CopyCorrectionRequestAsync,
             () => IsActive && _showCopyCorrectionRequest);
+        CopyEngineeringAgentHandoverCommand = new AsyncRelayCommand(
+            CopyEngineeringAgentHandoverAsync,
+            () => IsActive && ShowCopyEngineeringAgentHandover);
         ReturnToCurrentWorkCommand = new RelayCommand(() => _returnToCurrentWork(), () => IsActive);
     }
 
@@ -142,8 +146,26 @@ public sealed class PlanningRegionGuidedExchangeViewModel : ViewModelBase
     }
 
     public bool HasPrimaryAction =>
-        _currentStep is PlanningRegionGuidedStep.SendToProjectArchitect
-            or PlanningRegionGuidedStep.SendToEngineeringAgent;
+        _currentStep == PlanningRegionGuidedStep.SendToProjectArchitect
+        || (_currentStep == PlanningRegionGuidedStep.SendToEngineeringAgent && !ShowCopyEngineeringAgentHandover);
+
+    public bool ShowCopyEngineeringAgentHandover =>
+        _currentStep == PlanningRegionGuidedStep.SendToEngineeringAgent
+        && !string.IsNullOrWhiteSpace(_transient.PreparedEaRenderedHandover);
+
+    public bool ShowHumanReadableOutboundPackage => ShowCopyEngineeringAgentHandover;
+
+    public string HumanReadableOutboundHeading =>
+        PlanningRegionGuidedPresentation.ComposeHumanReadableOutboundHeading();
+
+    public string CopyEngineeringAgentHandoverActionLabel =>
+        PlanningRegionGuidedPresentation.ComposeCopyEngineeringAgentHandoverActionLabel();
+
+    public string? HumanReadableOutboundPackageView
+    {
+        get => _humanReadableOutboundPackageView;
+        private set => SetProperty(ref _humanReadableOutboundPackageView, value);
+    }
 
     public string? StepTitle
     {
@@ -225,8 +247,20 @@ public sealed class PlanningRegionGuidedExchangeViewModel : ViewModelBase
         private set => SetProperty(ref _correctionNextStepHint, value);
     }
 
-    public string? TechnicalPackageDetail =>
-        string.IsNullOrWhiteSpace(_transient.CachedRenderedReview) ? null : _transient.CachedRenderedReview;
+    public string? TechnicalPackageDetail
+    {
+        get
+        {
+            if (!string.IsNullOrWhiteSpace(_transient.PreparedEaRenderedHandover))
+            {
+                return _transient.PreparedEaRenderedHandover;
+            }
+
+            return string.IsNullOrWhiteSpace(_transient.CachedRenderedReview)
+                ? null
+                : _transient.CachedRenderedReview;
+        }
+    }
 
     public AgentSessionIntent? SelectedPaSessionIntent
     {
@@ -252,6 +286,8 @@ public sealed class PlanningRegionGuidedExchangeViewModel : ViewModelBase
     public ICommand ValidatePaResponseCommand { get; }
 
     public ICommand CopyCorrectionRequestCommand { get; }
+
+    public ICommand CopyEngineeringAgentHandoverCommand { get; }
 
     public ICommand ReturnToCurrentWorkCommand { get; }
 
@@ -349,6 +385,8 @@ public sealed class PlanningRegionGuidedExchangeViewModel : ViewModelBase
             : null;
         ValidationOperatorMessage = _transient.LastOperatorValidationMessage;
 
+        InvalidatePreparedEaHandoverIfNeeded(step, projection, relay);
+        SyncHumanReadableOutboundView();
         ApplyStepPresentation(step);
         RaisePropertyChanged(nameof(ShowConfirmSubject));
         RaisePropertyChanged(nameof(ShowConfirmSessionContinuity));
@@ -356,6 +394,9 @@ public sealed class PlanningRegionGuidedExchangeViewModel : ViewModelBase
         RaisePropertyChanged(nameof(ShowBlockedByStop));
         RaisePropertyChanged(nameof(HasPrimaryAction));
         RaisePropertyChanged(nameof(TechnicalPackageDetail));
+        RaisePropertyChanged(nameof(ShowCopyEngineeringAgentHandover));
+        RaisePropertyChanged(nameof(ShowHumanReadableOutboundPackage));
+        RaisePropertyChanged(nameof(HumanReadableOutboundHeading));
         RaiseAllCommandCanExecuteChanged();
     }
 
@@ -396,7 +437,7 @@ public sealed class PlanningRegionGuidedExchangeViewModel : ViewModelBase
                 StepTitle = "Send work to the Engineering Agent";
                 StepBody =
                     "A qualifying Project Architect response is on record. "
-                    + "Use the primary action to prepare the Engineering Agent handover for manual transfer in Plan mode.";
+                    + "Prepare the handover, review what will be sent in human-readable form, then copy the canonical governed package for manual transfer in Plan mode.";
                 break;
             default:
                 StepTitle = "Guided planning work";
@@ -454,10 +495,18 @@ public sealed class PlanningRegionGuidedExchangeViewModel : ViewModelBase
         StatusMessage = "Review copied. Paste it into your Project Architect conversation, then return here to bring back the response.";
         RecordContinuity(projectId, result.PackageId);
         RaisePropertyChanged(nameof(TechnicalPackageDetail));
+        RaisePropertyChanged(nameof(ShowCopyEngineeringAgentHandover));
+        RaisePropertyChanged(nameof(ShowHumanReadableOutboundPackage));
+        RaisePropertyChanged(nameof(HumanReadableOutboundHeading));
         Refresh();
     }
 
     private async Task SendToEngineeringAgentAsync()
+    {
+        await PrepareEngineeringAgentHandoverAsync().ConfigureAwait(true);
+    }
+
+    private async Task PrepareEngineeringAgentHandoverAsync()
     {
         StatusMessage = null;
         var package = _transient.LastCommittedHandoverPackage
@@ -475,19 +524,85 @@ public sealed class PlanningRegionGuidedExchangeViewModel : ViewModelBase
         }
 
         var preparation = _relayWorkflow.PrepareEngineeringAgentHandover(package, validation);
-        if (!preparation.IsReadyForManualTransfer || preparation.RenderedHandover is null)
+        if (!preparation.IsReadyForManualTransfer
+            || preparation.RenderedHandover is null
+            || preparation.ExportPackage is null)
         {
             StatusMessage = "Engineering Agent handover is not ready for manual transfer.";
             AppendTechnicalDiagnostics(preparation.Validation.Diagnostics);
+            _transient.ClearPreparedEaHandover();
+            SyncHumanReadableOutboundView();
             Refresh();
             return;
         }
 
+        _transient.ClearPreparedEaHandover();
+        _transient.PreparedEaExportPackage = preparation.ExportPackage;
+        _transient.PreparedEaRenderedHandover = preparation.RenderedHandover;
         _transient.CachedEngineeringHandover = preparation.RenderedHandover;
-        await _copyTextAsync(preparation.RenderedHandover).ConfigureAwait(true);
-        StatusMessage = "Engineering Agent handover copied for manual transfer (Plan mode).";
+        _transient.PreparedEaSourceHandoverPackageId = package.PackageId.Value;
+        _transient.PreparedEaHumanReadableView = GovernedRelayHumanReadablePackageProjector.Project(
+            preparation.ExportPackage,
+            new GovernedRelayHumanReadablePackageOptions(
+                GovernedRelayHumanReadableCounterparty.EngineeringAgent,
+                WorkSubject));
+
+        StatusMessage =
+            "Engineering Agent handover prepared. Review what will be sent, then copy the canonical governed package for manual transfer.";
         _onWorkStateMayHaveChanged?.Invoke();
+        SyncHumanReadableOutboundView();
+        RaisePropertyChanged(nameof(TechnicalPackageDetail));
         Refresh();
+        await Task.CompletedTask.ConfigureAwait(true);
+    }
+
+    private async Task CopyEngineeringAgentHandoverAsync()
+    {
+        if (string.IsNullOrWhiteSpace(_transient.PreparedEaRenderedHandover))
+        {
+            return;
+        }
+
+        await _copyTextAsync(_transient.PreparedEaRenderedHandover).ConfigureAwait(true);
+        StatusMessage =
+            "Canonical governed package copied for manual transfer to the Engineering Agent (Plan mode).";
+        Refresh();
+        await Task.CompletedTask.ConfigureAwait(true);
+    }
+
+    private void SyncHumanReadableOutboundView()
+    {
+        HumanReadableOutboundPackageView = _transient.PreparedEaHumanReadableView;
+    }
+
+    private void InvalidatePreparedEaHandoverIfNeeded(
+        PlanningRegionGuidedStep step,
+        GovernedWorkStateOperatorProjection projection,
+        PlanningRegionRelayReadModelSnapshot relay)
+    {
+        if (_transient.PreparedEaExportPackage is null)
+        {
+            return;
+        }
+
+        if (step != PlanningRegionGuidedStep.SendToEngineeringAgent)
+        {
+            _transient.ClearPreparedEaHandover();
+            return;
+        }
+
+        if (projection.CurrentWork.Count == 1 && projection.CurrentWork[0].StopActive)
+        {
+            _transient.ClearPreparedEaHandover();
+            return;
+        }
+
+        var sourcePackage = _transient.LastCommittedHandoverPackage ?? relay.LatestConsumedPaHandover?.Package;
+        if (sourcePackage is null
+            || _transient.PreparedEaSourceHandoverPackageId != sourcePackage.PackageId.Value)
+        {
+            _transient.ClearPreparedEaHandover();
+        }
     }
 
     private async Task ValidatePaResponseAsync()
@@ -556,6 +671,7 @@ public sealed class PlanningRegionGuidedExchangeViewModel : ViewModelBase
             result.Import.Package,
             result.Import.Validation);
 
+        _transient.ClearPreparedEaHandover();
         _transient.LastCommittedHandoverPackage = result.Import.Package;
         _transient.LastCommittedHandoverValidation = result.Import.Validation;
         _transient.LastValidationAttemptFailed = false;
@@ -652,6 +768,7 @@ public sealed class PlanningRegionGuidedExchangeViewModel : ViewModelBase
         }
 
         _relayWorkflow.SetProjectArchitectSessionIntent(projectId, paIntent);
+        _transient.ClearPreparedEaHandover();
         _relayWorkflow.SetEngineeringAgentSessionIntent(projectId, eaIntent);
         StatusMessage = "Conversation continuity recorded.";
         Refresh();
@@ -760,6 +877,7 @@ public sealed class PlanningRegionGuidedExchangeViewModel : ViewModelBase
         (PrimaryActionCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
         (ValidatePaResponseCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
         (CopyCorrectionRequestCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
+        (CopyEngineeringAgentHandoverCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
         (ReturnToCurrentWorkCommand as RelayCommand)?.RaiseCanExecuteChanged();
     }
 }

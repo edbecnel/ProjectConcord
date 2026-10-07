@@ -4,6 +4,7 @@ using Edf.Application.Operator.WorkContinuity;
 using Edf.Application.Projects;
 using Edf.Application.Projects.InMemory;
 using Edf.Application.Relay;
+using Edf.Application.Relay.Serialization;
 using Edf.Application.Relay.EngineeringAgent;
 using Edf.Application.Workflow;
 using Edf.Application.Tests.Relay;
@@ -152,7 +153,7 @@ public class PlanningRegionGuidedExchangeViewModelTests
         Assert.True(harness.Guided.ShowBlockedByStop);
         Assert.False(harness.Guided.HasPrimaryAction);
         Assert.NotEqual("Send to Project Architect", harness.Guided.PrimaryActionLabel);
-        Assert.NotEqual("Send to Engineering Agent", harness.Guided.PrimaryActionLabel);
+        Assert.NotEqual("Prepare handover for Engineering Agent", harness.Guided.PrimaryActionLabel);
         Assert.True(harness.Persistence.WorkflowInstanceStops.GetSummary(instance.InstanceId)!.IsStopActive);
     }
 
@@ -167,6 +168,123 @@ public class PlanningRegionGuidedExchangeViewModelTests
         Assert.Contains(DevelopmentWorkAuthorizationKind.Planning, work.ApplicableActiveAuthorizationKinds);
         Assert.DoesNotContain(DevelopmentWorkAuthorizationKind.Implementation, work.ApplicableActiveAuthorizationKinds);
         Assert.Contains("not authorized", harness.Guided.AuthorizationSummary ?? string.Empty, StringComparison.OrdinalIgnoreCase);
+    }
+
+
+    [Fact]
+    public void EngineeringAgentStep_InitialPrimaryAction_IsPrepare_NotCopy()
+    {
+        var harness = WireToEngineeringAgentStep();
+        Assert.Equal("Prepare handover for Engineering Agent", harness.Guided.PrimaryActionLabel);
+        Assert.False(harness.Guided.ShowCopyEngineeringAgentHandover);
+    }
+
+    [Fact]
+    public async Task PrepareEngineeringAgentHandover_DoesNotCopy_ShowsHumanReadableAndTechnicalDetail()
+    {
+        var harness = WireToEngineeringAgentStep();
+        ((AsyncRelayCommand)harness.Guided.PrimaryActionCommand).Execute(null);
+        await Task.Delay(50);
+
+        Assert.Empty(harness.Clipboard);
+        Assert.True(harness.Guided.ShowHumanReadableOutboundPackage);
+        Assert.Contains("What will be sent to the Engineering Agent", harness.Guided.HumanReadableOutboundHeading);
+        Assert.Contains("prepared", harness.Guided.StatusMessage ?? string.Empty, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("copied", harness.Guided.StatusMessage ?? string.Empty, StringComparison.OrdinalIgnoreCase);
+        Assert.NotNull(harness.Guided.TechnicalPackageDetail);
+        Assert.Contains(GovernedRelayV1Format.MachineBlockFenceLanguage, harness.Guided.TechnicalPackageDetail!, StringComparison.Ordinal);
+        Assert.Contains("EXACT_REQUESTED_WORK_FOR_GUIDED_TEST", harness.Guided.HumanReadableOutboundPackageView ?? string.Empty, StringComparison.Ordinal);
+    }
+
+    [Fact]
+    public async Task CopyEngineeringAgentHandover_CopiesCanonical_NotHumanReadableView()
+    {
+        var harness = WireToEngineeringAgentStep();
+        ((AsyncRelayCommand)harness.Guided.PrimaryActionCommand).Execute(null);
+        await Task.Delay(50);
+        var humanView = harness.Guided.HumanReadableOutboundPackageView;
+
+        ((AsyncRelayCommand)harness.Guided.CopyEngineeringAgentHandoverCommand).Execute(null);
+        await Task.Delay(50);
+
+        Assert.Single(harness.Clipboard);
+        Assert.Contains(GovernedRelayV1Format.MachineBlockFenceLanguage, harness.Clipboard[0], StringComparison.Ordinal);
+        Assert.Equal(harness.Guided.TechnicalPackageDetail, harness.Clipboard[0]);
+        Assert.Contains("copied", harness.Guided.StatusMessage ?? string.Empty, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task RePrepare_ReplacesHumanReadableAndCanonicalPair()
+    {
+        var harness = WireToEngineeringAgentStep();
+        ((AsyncRelayCommand)harness.Guided.PrimaryActionCommand).Execute(null);
+        await Task.Delay(50);
+        var firstTechnical = harness.Guided.TechnicalPackageDetail;
+
+        ((AsyncRelayCommand)harness.Guided.PrimaryActionCommand).Execute(null);
+        await Task.Delay(50);
+
+        Assert.NotNull(harness.Guided.TechnicalPackageDetail);
+        Assert.Equal(firstTechnical, harness.Guided.TechnicalPackageDetail);
+    }
+
+    [Fact]
+    public void SendToProjectArchitect_PrimaryLabel_Unchanged()
+    {
+        var harness = PlanningRegionHarness.Create();
+        ConfirmSubjectIfNeeded(harness);
+        harness.Guided.Refresh();
+        if (harness.Guided.ShowConfirmSessionContinuity)
+        {
+            harness.Guided.SelectedPaSessionIntent = AgentSessionIntent.Continue;
+            harness.Guided.SelectedEaSessionIntent = AgentSessionIntent.Continue;
+            ((RelayCommand)harness.Guided.ConfirmSessionContinuityCommand).Execute(null);
+        }
+
+        Assert.Equal("Send to Project Architect", harness.Guided.PrimaryActionLabel);
+    }
+
+    private static PlanningRegionHarness WireToEngineeringAgentStep()
+    {
+        var harness = PlanningRegionHarness.Create();
+        ConfirmSubjectIfNeeded(harness);
+        harness.Guided.SelectedPaSessionIntent = AgentSessionIntent.Continue;
+        harness.Guided.SelectedEaSessionIntent = AgentSessionIntent.Continue;
+        ((RelayCommand)harness.Guided.ConfirmSessionContinuityCommand).Execute(null);
+
+        var export = harness.CountingRelay.GeneratePaReviewExport(
+            harness.ProjectId,
+            harness.Root,
+            new RelayPaReviewExportOptions(EngineeringAgentMode.Plan, null));
+        Assert.NotNull(export.RenderedPackage);
+        var review = harness.LatestPlanningRegionReviewExport();
+
+        var handover = PlanningAuthorizationRelayFixtures.CreateQualifyingPlanningAuthorizationHandover(
+            harness.ProjectId,
+            payload => payload with
+            {
+                WorkContext = new Edf.Application.Relay.SoftwareDevelopment.WorkContextProjection(
+                    null,
+                    "EXACT_REQUESTED_WORK_FOR_GUIDED_TEST"),
+            }) with
+        {
+            CorrelationId = review.CorrelationId,
+            GovernanceCritical = PlanningAuthorizationRelayFixtures
+                .CreateQualifyingPlanningAuthorizationHandover(harness.ProjectId)
+                .GovernanceCritical with
+            {
+                WorkContextPresent = true,
+            },
+        };
+
+        harness.CountingRelay.CommitConsumedPaHandoverImport(
+            harness.ProjectId,
+            handover,
+            RelayValidationResult.Valid([]));
+        harness.Guided.Refresh();
+
+        Assert.Equal(PlanningRegionGuidedStep.SendToEngineeringAgent, harness.Guided.CurrentStep);
+        return harness;
     }
 
     private static void ConfirmSubjectIfNeeded(PlanningRegionHarness harness)
@@ -206,6 +324,8 @@ public class PlanningRegionGuidedExchangeViewModelTests
         public ProjectConcordProjectId ProjectId { get; }
         public ProjectRoot Root { get; }
 
+        public List<string> Clipboard { get; } = [];
+
         private PlanningRegionHarness(
             InMemoryUserApplicationStatePersistence persistence,
             IProjectWorkspaceService workspace,
@@ -213,7 +333,8 @@ public class PlanningRegionGuidedExchangeViewModelTests
             WorkflowApplicationServices workflow,
             PlanningRegionGuidedExchangeViewModel guided,
             ProjectConcordProjectId projectId,
-            ProjectRoot root)
+            ProjectRoot root,
+            List<string> clipboard)
         {
             Persistence = persistence;
             Workspace = workspace;
@@ -222,6 +343,7 @@ public class PlanningRegionGuidedExchangeViewModelTests
             Guided = guided;
             ProjectId = projectId;
             Root = root;
+            Clipboard = clipboard;
         }
 
         public static PlanningRegionHarness Create(string? projectFolderName = null)
@@ -241,11 +363,16 @@ public class PlanningRegionGuidedExchangeViewModelTests
             Assert.True(open.Success);
             var projectId = open.ProjectId!.Value;
             BootstrapPostPlanningDwa(workflow, projectId);
+            var clipboard = new List<string>();
             var guided = new PlanningRegionGuidedExchangeViewModel(
                 countingRelay,
                 workspace,
                 workflow,
-                _ => Task.CompletedTask,
+                text =>
+                {
+                    clipboard.Add(text);
+                    return Task.CompletedTask;
+                },
                 () => { },
                 () => new DirectoryInfo(dir.FullName).Name,
                 null);
@@ -258,7 +385,8 @@ public class PlanningRegionGuidedExchangeViewModelTests
                 workflow,
                 guided,
                 projectId,
-                open.Root!);
+                open.Root!,
+                clipboard);
         }
 
         public GovernedRelayPackage LatestPlanningRegionReviewExport()

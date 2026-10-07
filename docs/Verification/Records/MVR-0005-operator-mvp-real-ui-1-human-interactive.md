@@ -561,6 +561,20 @@ Per PA disposition: per-instance Waiting On grouping, Attention strip, `Operator
 | **Interpretation** | Operator understood a next action was indicated; exposed **Planning-Region** / **region work** product language was not understood; not a governance or architecture defect |
 | **Human execution** | Remains **Paused** for bounded terminology correction; MVT-5/6/7 **Pending** |
 
+**Human-readable outbound EA handover (human-observed — not MVT Pass/Fail):**
+
+| Field | Value |
+|---|---|
+| **Publication baseline** | `9d6cb9bca23c6f6c0e9e8da516dc8624b9fc40c8` |
+| **Investigation handover** | `8cc593fb-61e6-44bb-81cf-8327e02b4fbd` |
+| **Implementation handover** | `d0d57417-76f8-4392-9626-5db20c80d74e` (local/uncommitted at record edit) |
+| **Implementation execution** | Engineering Agent mode **requested** for `d0d57417`; Cursor **remained in PLAN** (AGENT switch rejected); changes applied via **shell** — not AGENT-mode file edits |
+| **Context** | After terminology retest **Yes** on Current Work; Guided Planning Work context/next step understood; operator clicked **Prepare/Send to Engineering Agent** path; prior implementation prepared and auto-copied handover |
+| **Operator observation (verbatim)** | Yes, send the copied message to the Engineering Agent but I want to see what is being sent to the EA. I can look at the technical package but I need a human readable package. |
+| **Interpretation** | Operator understood manual EA transfer was next; ordinary surface lacked deterministic human-readable inspection of the exact outbound governed package before transfer |
+| **Human execution** | Remains **Paused** for bounded remediation; MVT-5/6/7 **Pending**; human-readable view **not** yet human-retested |
+
+
 ## Notes
 
 - MVR prepared **2026-10-06**; no human MVT had been executed at preparation time.

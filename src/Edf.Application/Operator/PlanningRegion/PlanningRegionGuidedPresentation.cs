@@ -38,7 +38,13 @@ public static class PlanningRegionGuidedPresentation
         {
             PlanningRegionGuidedStep.SendToProjectArchitect => "Send to Project Architect",
             PlanningRegionGuidedStep.BringBackPaResponse => "Validate Project Architect response",
-            PlanningRegionGuidedStep.SendToEngineeringAgent => "Send to Engineering Agent",
+            PlanningRegionGuidedStep.SendToEngineeringAgent => "Prepare handover for Engineering Agent",
             _ => string.Empty,
         };
+
+    public static string ComposeCopyEngineeringAgentHandoverActionLabel() =>
+        "Copy governed package for Engineering Agent";
+
+    public static string ComposeHumanReadableOutboundHeading() =>
+        "What will be sent to the Engineering Agent";
 }

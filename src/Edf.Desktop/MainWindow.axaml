@@ -260,6 +260,14 @@
                   </StackPanel>
                   <Button Content="{Binding PrimaryActionLabel}" Command="{Binding PrimaryActionCommand}" HorizontalAlignment="Left"
                           IsVisible="{Binding HasPrimaryAction}" />
+                  <StackPanel Spacing="6" IsVisible="{Binding ShowHumanReadableOutboundPackage}">
+                    <SelectableTextBlock Text="{Binding HumanReadableOutboundHeading}" FontWeight="SemiBold" FontSize="13" TextWrapping="Wrap" />
+                    <SelectableTextBlock Text="{Binding HumanReadableOutboundPackageView}" TextWrapping="Wrap" FontSize="13" />
+                    <Button Content="{Binding CopyEngineeringAgentHandoverActionLabel}"
+                            Command="{Binding CopyEngineeringAgentHandoverCommand}"
+                            HorizontalAlignment="Left" />
+                  </StackPanel>
+
                   <StackPanel Spacing="6" IsVisible="{Binding ShowBringBackPaResponse}">
                     <TextBox Text="{Binding PaResponseDraft}" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="120"
                              PlaceholderText="Paste the complete Project Architect response" />
