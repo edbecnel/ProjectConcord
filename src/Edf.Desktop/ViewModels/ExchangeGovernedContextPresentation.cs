@@ -12,7 +12,7 @@ internal static class ExchangeGovernedContextPresentation
         + "\n"
         + "Recommended Engineering Agent mode: Plan"
         + "\n"
-        + "Why: This exchange is continuing planning-region work."
+        + "Why: This exchange is continuing guided planning work."
         + "\n"
         + "Important: Engineering Agent mode is a routing/execution intent, not development work authorization."
         + " Choosing Agent does not grant implementation permission."

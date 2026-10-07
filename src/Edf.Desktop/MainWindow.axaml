@@ -131,7 +131,7 @@
 
               <StackPanel Spacing="6" IsVisible="{Binding CanOpenGovernedExchange}">
                 <SelectableTextBlock Text="{Binding PlanningRegionWorkActionExplanation}" TextWrapping="Wrap" FontSize="13" />
-                <Button Content="Continue Planning-Region Work"
+                <Button Content="Continue Guided Planning Work"
                         Command="{Binding OpenGovernedExchangeCommand}"
                         HorizontalAlignment="Left" />
               </StackPanel>
@@ -231,7 +231,7 @@
             <Border Padding="14" CornerRadius="6" BorderThickness="2" BorderBrush="#5A9FD4"
                     IsVisible="{Binding IsPlanningRegionGuidedVisible}">
               <StackPanel Spacing="10" DataContext="{Binding PlanningRegionGuided}">
-                <SelectableTextBlock Text="Planning-Region Work — Guided Exchange"
+                <SelectableTextBlock Text="Guided Planning Work — Guided Exchange"
                            FontWeight="SemiBold" FontSize="16" TextWrapping="Wrap" />
                 <SelectableTextBlock Text="{Binding WorkSubject}" FontWeight="SemiBold" FontSize="14" TextWrapping="Wrap" />
                 <SelectableTextBlock Text="{Binding WhatJustHappened}" TextWrapping="Wrap" FontSize="13" />

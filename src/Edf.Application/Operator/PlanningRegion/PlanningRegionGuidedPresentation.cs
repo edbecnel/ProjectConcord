@@ -6,7 +6,7 @@ using Edf.Domain.Workflow;
 
 public static class PlanningRegionGuidedPresentation
 {
-    public static string ComposeWhereWeAre() => "Governed Planning (planning-region work)";
+    public static string ComposeWhereWeAre() => "Governed Planning (current planning work)";
 
     public static string ComposeAuthorizationSummary(GovernedWorkStateOperatorProjection projection)
     {
@@ -15,7 +15,7 @@ public static class PlanningRegionGuidedPresentation
             return "Planning development work authorization is not yet on record. This guided surface does not grant authorization.";
         }
 
-        return "Planning development work authorization is on record and permits planning-region work under its governed scope. "
+        return "Planning development work authorization is on record and permits planning work under its governed scope. "
                + "Repository implementation is not authorized by that Planning development work authorization.";
     }
 
@@ -23,7 +23,7 @@ public static class PlanningRegionGuidedPresentation
         step switch
         {
             PlanningRegionGuidedStep.SendToProjectArchitect =>
-                "Project Architect judgment is needed for the next planning-region decision. ProjectConcord prepares the governed review package behind this action.",
+                "Project Architect judgment is needed for the next planning decision. ProjectConcord prepares the governed review package behind this action.",
             PlanningRegionGuidedStep.BringBackPaResponse =>
                 "ProjectConcord must validate the complete external response before it can be trusted for continuation.",
             PlanningRegionGuidedStep.SendToEngineeringAgent =>

@@ -23,6 +23,17 @@ namespace Edf.Desktop.Tests;
 public class PlanningRegionGuidedExchangeViewModelTests
 {
     [Fact]
+    public void GuidedSurface_OrdinaryCopy_DoesNotExposePlanningRegionTerminology()
+    {
+        var harness = PlanningRegionHarness.Create();
+        ConfirmSubjectIfNeeded(harness);
+
+        Assert.DoesNotContain("planning-region", harness.Guided.WhereWeAre, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("Planning-Region", harness.Guided.AuthorizationSummary ?? string.Empty, StringComparison.Ordinal);
+        Assert.Contains("not authorized", harness.Guided.AuthorizationSummary ?? string.Empty, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public void DisplayNameContainingMvr0005_RequiresSubjectConfirmation_NotGovernedReference()
     {
         var harness = PlanningRegionHarness.Create(projectFolderName: "workspace-MVR-0005-disposable");

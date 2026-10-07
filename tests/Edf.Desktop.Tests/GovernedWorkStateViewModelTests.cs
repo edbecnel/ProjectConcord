@@ -220,7 +220,11 @@ public class GovernedWorkStateViewModelTests
         Assert.True(workState.CanOpenGovernedExchange);
         Assert.Contains("Planning development work authorization is durably on record", workState.OperatorSituationSummary ?? string.Empty, StringComparison.Ordinal);
         Assert.Contains("Repository implementation is not authorized", workState.OperatorSituationSummary ?? string.Empty, StringComparison.OrdinalIgnoreCase);
-        Assert.Contains("Guided Work", workState.OperatorNextStepSummary ?? string.Empty, StringComparison.Ordinal);
+        Assert.Equal(
+            GovernedWorkStatePresentation.ComposeContinuePlanningRegionWorkNextStepSummary(),
+            workState.OperatorNextStepSummary);
+        Assert.DoesNotContain("planning-region", workState.OperatorNextStepSummary ?? string.Empty, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("Planning-Region", workState.PlanningRegionWorkActionExplanation ?? string.Empty, StringComparison.Ordinal);
         Assert.DoesNotContain("Whether you may execute is not determined", workState.OperatorNextStepSummary ?? string.Empty, StringComparison.OrdinalIgnoreCase);
 
         var recoveryBefore = workflow.WorkStateRecovery.RecoverForProject(projectId);

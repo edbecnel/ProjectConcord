@@ -102,6 +102,9 @@ public class OperatorShellViewModelTests
 
         Assert.Equal(OperatorShellTab.Exchange, vm.SelectedOperatorTab);
         Assert.Equal(OperatorGuidedContext.PlanningRegionWork, vm.GuidedContext);
+        Assert.Equal(
+            GovernedWorkStatePresentation.ComposeContinuePlanningRegionWorkNextStepSummary(),
+            vm.WorkState!.OperatorNextStepSummary);
         Assert.True(vm.IsPlanningRegionGuidedVisible);
         Assert.True(vm.IsAnyGuidedExchangeVisible);
         Assert.False(vm.IsLegacyExchangeVisible);

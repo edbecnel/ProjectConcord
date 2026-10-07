@@ -119,7 +119,7 @@ internal static class GovernedWorkStatePresentation
             WorkflowEligibilityReasonCodes.NextActionGovernedPlanningEntry =>
                 "complete the planning-entry exchange with the Project Architect, then use Enter Governed Planning when eligible",
             WorkflowEligibilityReasonCodes.NextActionPlanningRegionWork =>
-                "continue planning-region work only under fully governed rules",
+                "continue guided planning work only under fully governed rules",
             WorkflowEligibilityReasonCodes.NextActionObtainPlanningAuthorization =>
                 "obtain planning development work authorization",
             WorkflowEligibilityReasonCodes.NextActionImplementationRegionWork =>
@@ -162,7 +162,7 @@ internal static class GovernedWorkStatePresentation
             WorkflowEligibilityReasonCodes.NextActionGovernedPlanningEntry =>
                 "Enter governed planning",
             WorkflowEligibilityReasonCodes.NextActionPlanningRegionWork =>
-                "Planning-region work (permission indeterminate)",
+                "Guided planning work (permission indeterminate)",
             WorkflowEligibilityReasonCodes.NextActionObtainPlanningAuthorization =>
                 "Obtain planning authorization",
             WorkflowEligibilityReasonCodes.NextActionImplementationRegionWork =>
@@ -270,10 +270,10 @@ internal static class GovernedWorkStatePresentation
         + "Repository implementation is not authorized by this Planning development work authorization.";
 
     public static string ComposeContinuePlanningRegionWorkNextStepSummary() =>
-        "Continue planning-region work in Guided Work.";
+        "Continue planning work in Guided Work.";
 
     public static string ComposePlanningRegionGovernedExchangeActionExplanation() =>
-        "Open Guided Work to continue planning-region exchanges with meaningful steps. "
+        "Open Guided Work to continue planning exchanges with meaningful steps. "
         + "This is guidance about where to continue — not a new authorization. "
         + "Guided actions do not grant implementation authorization. "
         + "Relay validation and import do not create durable development work authorization.";

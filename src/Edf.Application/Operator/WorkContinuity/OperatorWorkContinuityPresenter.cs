@@ -13,7 +13,7 @@ public static class OperatorWorkContinuityPresenter
     {
         if (projection.CurrentWork.Count == 1 && projection.CurrentWork[0].StopActive)
         {
-            return "STOP is active on this workflow instance. Normal planning-region progression is blocked until STOP is cleared under governed rules.";
+            return "STOP is active on this workflow instance. Normal guided planning progression is blocked until STOP is cleared under governed rules.";
         }
 
         if (relay.LatestConsumedPaHandover is not null)
@@ -31,7 +31,7 @@ public static class OperatorWorkContinuityPresenter
                 DevelopmentWorkAuthorizationKind.Planning)
             && !PlanningAuthorizationWorkStateFacts.InstanceNeedsPlanningDevelopmentWorkAuthorization(projection))
         {
-            return "Planning development work authorization was recorded. Planning-region work may continue under that governed scope.";
+            return "Planning development work authorization was recorded. Planning work may continue under that governed scope.";
         }
 
         return "Continue from the current governed planning position using the guided steps below.";

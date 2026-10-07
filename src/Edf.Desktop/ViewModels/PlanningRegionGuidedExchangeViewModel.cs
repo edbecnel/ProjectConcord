@@ -336,7 +336,7 @@ public sealed class PlanningRegionGuidedExchangeViewModel : ViewModelBase
         AuthorizationSummary = PlanningRegionGuidedPresentation.ComposeAuthorizationSummary(projection);
         StopSummary = projection.CurrentWork.Count == 1 && projection.CurrentWork[0].StopActive
             ? "STOP is active. Guided progression is blocked until STOP is cleared."
-            : "STOP is not blocking ordinary planning-region progression.";
+            : "STOP is not blocking ordinary guided planning progression.";
         NextStepSummary = PlanningRegionGuidedPresentation.ComposePrimaryActionLabel(step);
         WhySummary = PlanningRegionGuidedPresentation.ComposeWhyNextStep(step);
         PrimaryActionLabel = PlanningRegionGuidedPresentation.ComposePrimaryActionLabel(step);
@@ -377,7 +377,7 @@ public sealed class PlanningRegionGuidedExchangeViewModel : ViewModelBase
                 StepTitle = "Conversation continuity";
                 StepBody =
                     "Select how your Project Architect and Engineering Agent conversations continue. "
-                    + "Engineering Agent mode remains Plan for planning-region work.";
+                    + "Engineering Agent mode remains Plan for guided planning work.";
                 HydrateSessionIntentSelections(_workspace.CurrentProjectId!.Value);
                 break;
             case PlanningRegionGuidedStep.SendToProjectArchitect:
@@ -399,7 +399,7 @@ public sealed class PlanningRegionGuidedExchangeViewModel : ViewModelBase
                     + "Use the primary action to prepare the Engineering Agent handover for manual transfer in Plan mode.";
                 break;
             default:
-                StepTitle = "Planning-region guided work";
+                StepTitle = "Guided planning work";
                 StepBody = "This guided surface is not active for the current workflow state.";
                 break;
         }

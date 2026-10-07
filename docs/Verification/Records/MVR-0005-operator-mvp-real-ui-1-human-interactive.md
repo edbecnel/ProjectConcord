@@ -538,7 +538,7 @@ Per PA disposition: per-instance Waiting On grouping, Attention strip, `Operator
 |---|---|
 | **Implementation handover** | `b43838ad-d458-4f49-b63e-3ab459f9e654` |
 | **Baseline** | `7f9bbf8d95454ae944f9278dd00e20ef1da7aed9` |
-| **Status** | Local/uncommitted implementation; human execution remains **Paused** |
+| **Status** | Published `db84b5f091b0d8e46597aca47066723217372521`; human execution **Paused** |
 | **MVT-5 / MVT-6 / MVT-7** | **Pending** (no automated Pass/Fail) |
 | **Scope** | Minimum ADR-0026 tranche: work focus persistence, `PlanningRegionWork` guided context, post–Planning-DWA routing, guided PA progression, legacy Exchange as advanced |
 
@@ -549,6 +549,17 @@ Per PA disposition: per-instance Waiting On grouping, Attention strip, `Operator
 | **Review handover** | `789038e1-c17a-4f58-b0ed-7ec4b569718a` — subject-provenance defect (display-name `MVR-0005` heuristic) |
 | **Correction handover** | `55062921-f45b-480b-a55e-7969220b15ed` — bounded remediation; retained-project UUID bootstrap accepted for minimum tranche |
 | **Human execution** | Remains **Paused**; MVT-5/6/7 **Pending** |
+
+**Operator terminology remediation (human-observed — not MVT Pass/Fail):**
+
+| Field | Value |
+|---|---|
+| **Publication baseline** | `db84b5f091b0d8e46597aca47066723217372521` |
+| **Remediation handover** | `29c895e8-2816-4e1a-948d-7ab0abdd57f2` (local/uncommitted at record edit) |
+| **Context** | First human verification step after guided-work publication; PA stopped progression before the operator clicked the primary action |
+| **Operator observation (verbatim)** | Yes, except I don't understand what "Region Work" means |
+| **Interpretation** | Operator understood a next action was indicated; exposed **Planning-Region** / **region work** product language was not understood; not a governance or architecture defect |
+| **Human execution** | Remains **Paused** for bounded terminology correction; MVT-5/6/7 **Pending** |
 
 ## Notes
 

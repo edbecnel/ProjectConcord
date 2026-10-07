@@ -128,7 +128,7 @@ public sealed class GewV1PlanningDevelopmentWorkAuthorizationGrantService
                 string.Empty,
                 granted,
                 "ProjectConcord recorded Planning development work authorization from the validated Project Architect response. "
-                + "This authorizes planning-region governed work under evaluated rules — not implementation in the repository.");
+                + "This authorizes governed planning work under evaluated rules — not implementation in the repository.");
         }
         catch (DevelopmentWorkAuthorizationOperationException ex)
         {
