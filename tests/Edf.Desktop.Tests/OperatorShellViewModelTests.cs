@@ -101,6 +101,8 @@ public class OperatorShellViewModelTests
         ((RelayCommand)vm.WorkState.OpenGovernedExchangeCommand).Execute(null);
 
         Assert.Equal(OperatorShellTab.Exchange, vm.SelectedOperatorTab);
+        Assert.True(vm.Relay!.HasGovernedExchangeContext);
+        Assert.Contains("Recommended Engineering Agent mode: Plan", vm.Relay.GovernedExchangeContextSummary ?? string.Empty, StringComparison.Ordinal);
         Assert.False(vm.IsAnyGuidedExchangeVisible);
         Assert.True(vm.IsLegacyExchangeVisible);
         Assert.False(vm.IsPlanningAuthorizationGuidedVisible);

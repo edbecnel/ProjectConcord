@@ -74,7 +74,8 @@ public sealed class MainWindowViewModel : ViewModelBase
                 _copyTextAsync,
                 automatedTransport,
                 relayOperatorProjections,
-                () => WorkState?.RefreshFromProjection());
+                () => WorkState?.RefreshFromProjection(),
+                workflowServices?.WorkStateOperatorProjection);
 
         if (workflowServices is not null && relayWorkflow is not null)
         {
@@ -466,6 +467,7 @@ public sealed class MainWindowViewModel : ViewModelBase
     {
         OpenLegacyExchange();
         SelectedOperatorTabIndex = (int)OperatorShellTab.Exchange;
+        Relay?.RefreshGovernedExchangeContext(applyRecommendedPlan: true);
     }
 
     private void ReturnFromGuidedExchange()

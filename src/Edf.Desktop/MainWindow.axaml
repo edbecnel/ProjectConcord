@@ -364,10 +364,23 @@
                          Foreground="DarkOrange"
                          TextWrapping="Wrap" />
 
+              <Border Padding="12" CornerRadius="4" BorderThickness="2" BorderBrush="#5A9FD4"
+                      IsVisible="{Binding HasGovernedExchangeContext}">
+                <StackPanel Spacing="6">
+                  <SelectableTextBlock Text="Governed context for this exchange"
+                             FontWeight="SemiBold" FontSize="13" />
+                  <SelectableTextBlock Text="{Binding GovernedExchangeContextSummary}"
+                             TextWrapping="Wrap" FontSize="13" />
+                </StackPanel>
+              </Border>
+
               <Expander Header="1. Session and Engineering Agent mode" IsExpanded="True"
                         IsVisible="{Binding IsRelaySectionEnabled}">
                 <StackPanel Spacing="8" Margin="0,8,0,0">
                   <SelectableTextBlock Text="{Binding SessionIntentHint}" TextWrapping="Wrap" FontSize="12" Foreground="Gray" />
+                  <SelectableTextBlock Text="{Binding PlanningRegionRecommendedModeNotice}"
+                             TextWrapping="Wrap" FontSize="12"
+                             IsVisible="{Binding ShowPlanningRegionModeRecommendation}" />
                   <Grid ColumnDefinitions="*,*">
                     <StackPanel Grid.Column="0" Spacing="6" Margin="0,0,8,0">
                       <SelectableTextBlock Text="Project Architect session" FontWeight="SemiBold" />
@@ -383,9 +396,16 @@
                       <SelectableTextBlock Text="Engineering Agent mode" FontWeight="SemiBold" />
                       <ComboBox ItemsSource="{Binding EngineeringAgentModeOptions}"
                                 SelectedItem="{Binding EngineeringAgentMode}" />
-                      <SelectableTextBlock Text="Prior Engineering Agent mode (optional)" FontWeight="SemiBold" />
-                      <ComboBox ItemsSource="{Binding PriorEngineeringAgentModeOptions}"
-                                SelectedItem="{Binding PriorEngineeringAgentMode}" />
+                      <StackPanel Spacing="4" IsVisible="{Binding ShowPriorEngineeringAgentModeControls}">
+                        <SelectableTextBlock Text="Prior Engineering Agent mode (optional)" FontWeight="SemiBold" />
+                        <SelectableTextBlock Text="{Binding PriorEngineeringAgentModeExplanation}"
+                                   TextWrapping="Wrap" FontSize="11" Foreground="Gray" />
+                        <ComboBox ItemsSource="{Binding PriorEngineeringAgentModeOptions}"
+                                  SelectedItem="{Binding PriorEngineeringAgentMode}" />
+                      </StackPanel>
+                      <SelectableTextBlock Text="{Binding PriorEngineeringAgentModeExplanation}"
+                                 TextWrapping="Wrap" FontSize="11" Foreground="Gray"
+                                 IsVisible="{Binding !ShowPriorEngineeringAgentModeControls}" />
                     </StackPanel>
                   </Grid>
                 </StackPanel>

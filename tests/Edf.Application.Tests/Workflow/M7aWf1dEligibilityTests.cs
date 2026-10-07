@@ -102,6 +102,23 @@ public class M7aWf1dEligibilityTests
         Assert.False(PlanningRegionWorkContinuationFacts.InstanceShouldOfferGovernedExchangeContinuation(
             projection,
             primary));
+        Assert.False(ExchangeGovernedContextResolver.IsPlanningRegionContinuationApplicable(projection));
+    }
+
+    [Fact]
+    public void PlanningGoverned_WithPlanningDwa_ExchangeContextResolverApplicable()
+    {
+        var (services, instance, _) = CreateServices(withProfile: true);
+        instance = TransitionTo(services, instance, GewV1TopologyPlaces.PlanningGoverned);
+        services.DevelopmentWorkAuthorizations.RecordGovernedGrant(
+            instance.InstanceId,
+            DevelopmentWorkAuthorizationKind.Planning,
+            null,
+            null,
+            null,
+            GovernedWorkflowMutationAuthorityTestSupport.ForTestHarness(GovernedCorrelationId.New()));
+        var projection = services.WorkStateOperatorProjection.ProjectForProject(instance.ProjectId, null);
+        Assert.True(ExchangeGovernedContextResolver.IsPlanningRegionContinuationApplicable(projection));
     }
 
     [Fact]

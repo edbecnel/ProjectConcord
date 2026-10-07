@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Edf.Application.Operator;
 using Edf.Application.Operator.Relay;
+using Edf.Application.Operator.WorkState;
 using Edf.Application.Projects;
 using Edf.Application.Relay;
 using Edf.Application.Relay.EngineeringAgent.Transport;
@@ -21,7 +22,10 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
     private readonly Func<string, Task> _copyTextAsync;
     private readonly IEngineeringAgentAutomatedTransportService? _automatedTransport;
     private readonly RelayWorkflowOperatorProjectionService? _operatorProjections;
+    private readonly GovernedWorkStateOperatorProjectionService? _workStateProjection;
     private readonly Action? _onOperatorWorkStateMayHaveChanged;
+    private bool _engineeringAgentModeUserSelected;
+    private string? _governedExchangeContextSummary;
 
     private AgentSessionIntent? _projectArchitectSessionIntent;
     private AgentSessionIntent? _engineeringAgentSessionIntent;
@@ -48,7 +52,7 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
         IGovernedRelayP0WorkflowService workflow,
         IProjectWorkspaceService workspace,
         Func<string, Task> copyTextAsync)
-        : this(workflow, workspace, copyTextAsync, null, null, null)
+        : this(workflow, workspace, copyTextAsync, null, null, null, null)
     {
     }
 
@@ -58,13 +62,15 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
         Func<string, Task> copyTextAsync,
         IEngineeringAgentAutomatedTransportService? automatedTransport,
         RelayWorkflowOperatorProjectionService? operatorProjections,
-        Action? onOperatorWorkStateMayHaveChanged = null)
+        Action? onOperatorWorkStateMayHaveChanged = null,
+        GovernedWorkStateOperatorProjectionService? workStateProjection = null)
     {
         _workflow = workflow ?? throw new ArgumentNullException(nameof(workflow));
         _workspace = workspace ?? throw new ArgumentNullException(nameof(workspace));
         _copyTextAsync = copyTextAsync ?? throw new ArgumentNullException(nameof(copyTextAsync));
         _automatedTransport = automatedTransport;
         _operatorProjections = operatorProjections;
+        _workStateProjection = workStateProjection;
         _onOperatorWorkStateMayHaveChanged = onOperatorWorkStateMayHaveChanged;
         _hasAutomatedTransportIntegration = automatedTransport is not null && operatorProjections is not null;
 
@@ -166,6 +172,8 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
         {
             if (SetProperty(ref _engineeringAgentMode, value))
             {
+                _engineeringAgentModeUserSelected = true;
+                RaisePropertyChanged(nameof(ShowPriorEngineeringAgentModeControls));
                 RefreshOperatorProjections();
             }
         }
@@ -174,8 +182,42 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
     public EngineeringAgentMode? PriorEngineeringAgentMode
     {
         get => _priorEngineeringAgentMode;
-        set => SetProperty(ref _priorEngineeringAgentMode, value);
+        set
+        {
+            if (SetProperty(ref _priorEngineeringAgentMode, value))
+            {
+                RaisePropertyChanged(nameof(ShowPriorEngineeringAgentModeControls));
+            }
+        }
     }
+
+    public string? GovernedExchangeContextSummary
+    {
+        get => _governedExchangeContextSummary;
+        private set
+        {
+            if (SetProperty(ref _governedExchangeContextSummary, value))
+            {
+                RaisePropertyChanged(nameof(HasGovernedExchangeContext));
+                RaisePropertyChanged(nameof(ShowPlanningRegionModeRecommendation));
+            }
+        }
+    }
+
+    public bool HasGovernedExchangeContext =>
+        !string.IsNullOrWhiteSpace(GovernedExchangeContextSummary);
+
+    public bool ShowPlanningRegionModeRecommendation => HasGovernedExchangeContext;
+
+    public string PriorEngineeringAgentModeExplanation =>
+        ExchangeGovernedContextPresentation.PriorModeExplanation;
+
+    public bool ShowPriorEngineeringAgentModeControls =>
+        EngineeringAgentMode != EngineeringAgentMode.Plan
+        || PriorEngineeringAgentMode is not null;
+
+    public string PlanningRegionRecommendedModeNotice =>
+        ExchangeGovernedContextPresentation.RecommendedPlanNotice;
 
     public string? PaReviewRendered
     {
@@ -307,11 +349,18 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
     {
         IsRelaySectionEnabled = hasActiveProject && projectId is not null;
         ClearRelayOutputs();
+        _engineeringAgentModeUserSelected = false;
+        _engineeringAgentMode = EngineeringAgentMode.Plan;
+        _priorEngineeringAgentMode = null;
+        RaisePropertyChanged(nameof(EngineeringAgentMode));
+        RaisePropertyChanged(nameof(PriorEngineeringAgentMode));
+        RaisePropertyChanged(nameof(ShowPriorEngineeringAgentModeControls));
 
         if (!IsRelaySectionEnabled || projectId is not { } activeProjectId)
         {
             ProjectArchitectSessionIntent = null;
             EngineeringAgentSessionIntent = null;
+            GovernedExchangeContextSummary = null;
             return;
         }
 
@@ -322,6 +371,41 @@ public sealed class RelayWorkflowViewModel : ViewModelBase
         RaisePropertyChanged(nameof(EngineeringAgentSessionIntent));
         RefreshProvenance(activeProjectId);
         RefreshOperatorProjections();
+        RefreshGovernedExchangeContext(applyRecommendedPlan: false);
+    }
+
+    internal void RefreshGovernedExchangeContext(bool applyRecommendedPlan = false)
+    {
+        if (_workStateProjection is null
+            || !IsRelaySectionEnabled
+            || _workspace.CurrentProjectId is not { } projectId)
+        {
+            GovernedExchangeContextSummary = null;
+            return;
+        }
+
+        var rootPath = _workspace.CurrentRoot?.AbsolutePath;
+        var projection = _workStateProjection.ProjectForProject(projectId, rootPath);
+        if (!ExchangeGovernedContextResolver.IsPlanningRegionContinuationApplicable(projection))
+        {
+            GovernedExchangeContextSummary = null;
+            return;
+        }
+
+        GovernedExchangeContextSummary = ExchangeGovernedContextPresentation.PlanningRegionContinuationSummary;
+        if (!_engineeringAgentModeUserSelected && _engineeringAgentMode != EngineeringAgentMode.Plan)
+        {
+            _engineeringAgentMode = EngineeringAgentMode.Plan;
+            RaisePropertyChanged(nameof(EngineeringAgentMode));
+            RaisePropertyChanged(nameof(ShowPriorEngineeringAgentModeControls));
+            RefreshOperatorProjections();
+        }
+        else if (applyRecommendedPlan
+                 && !_engineeringAgentModeUserSelected
+                 && _engineeringAgentMode == EngineeringAgentMode.Plan)
+        {
+            RefreshOperatorProjections();
+        }
     }
 
     private void ApplySessionIntentIfProjectActive(bool isProjectArchitect, AgentSessionIntent? intent)
