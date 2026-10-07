@@ -1,5 +1,7 @@
 namespace Edf.Application.Operator.PlanningEntry;
 
+using Edf.Application.Relay;
+
 public sealed class PlanningEntryGuidedTransientState
 {
     public bool ReviewCopied { get; set; }
@@ -12,6 +14,8 @@ public sealed class PlanningEntryGuidedTransientState
 
     public bool LastValidationAttemptFailed { get; set; }
 
+    public PaHandoverCorrectionFailureClass LastCorrectionFailureClass { get; set; }
+
     public string? CachedRenderedReview { get; set; }
 
     public void ResetForNewReviewCycle()
@@ -21,6 +25,7 @@ public sealed class PlanningEntryGuidedTransientState
         PaResponseDraft = string.Empty;
         LastOperatorValidationMessage = null;
         LastValidationAttemptFailed = false;
+        LastCorrectionFailureClass = PaHandoverCorrectionFailureClass.None;
         CachedRenderedReview = null;
     }
 }

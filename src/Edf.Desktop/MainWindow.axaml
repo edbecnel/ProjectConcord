@@ -256,6 +256,10 @@
                              PlaceholderText="Paste the complete Project Architect response" />
                     <Button Content="Validate PA Response" Command="{Binding ValidatePaResponseCommand}" HorizontalAlignment="Left" />
                     <SelectableTextBlock Text="{Binding ValidationOperatorMessage}" Foreground="DarkOrange" TextWrapping="Wrap" />
+                    <SelectableTextBlock Text="{Binding CorrectionNextStepHint}" TextWrapping="Wrap"
+                                           IsVisible="{Binding ShowCopyCorrectionRequest}" />
+                    <Button Content="Copy Correction Request" Command="{Binding CopyCorrectionRequestCommand}" HorizontalAlignment="Left"
+                            IsVisible="{Binding ShowCopyCorrectionRequest}" />
                     <Expander Header="Technical detail">
                       <SelectableTextBlock Text="{Binding TechnicalValidationDetail}" TextWrapping="Wrap" FontSize="11" Foreground="Gray" />
                     </Expander>
@@ -307,6 +311,10 @@
                              PlaceholderText="Paste the complete Project Architect response" />
                     <Button Content="Validate PA Response" Command="{Binding ValidatePaResponseCommand}" HorizontalAlignment="Left" />
                     <SelectableTextBlock Text="{Binding ValidationOperatorMessage}" Foreground="DarkOrange" TextWrapping="Wrap" />
+                    <SelectableTextBlock Text="{Binding CorrectionNextStepHint}" TextWrapping="Wrap"
+                                           IsVisible="{Binding ShowCopyCorrectionRequest}" />
+                    <Button Content="Copy Correction Request" Command="{Binding CopyCorrectionRequestCommand}" HorizontalAlignment="Left"
+                            IsVisible="{Binding ShowCopyCorrectionRequest}" />
                     <Expander Header="Technical detail">
                       <SelectableTextBlock Text="{Binding TechnicalValidationDetail}" TextWrapping="Wrap" FontSize="11" Foreground="Gray" />
                     </Expander>

@@ -4,9 +4,11 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
 using Edf.Application.Composition;
+using Edf.Application.Operator;
 using Edf.Application.Operator.PlanningEntry;
 using Edf.Application.Projects;
 using Edf.Application.Relay;
+using Edf.Application.Relay.Serialization;
 using Edf.Application.Relay.SoftwareDevelopment;
 using Edf.Application.Workflow.PlanningEntry;
 using Edf.Domain.Projects;
@@ -31,6 +33,8 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
     private string? _technicalValidationDetail;
     private bool _reviewCopied;
     private bool _showAwaitPaResponseButton;
+    private bool _showCopyCorrectionRequest;
+    private string? _correctionNextStepHint;
     private bool _isActive;
     private AgentSessionIntent? _selectedPaSessionIntent;
     private AgentSessionIntent? _selectedEaSessionIntent;
@@ -58,6 +62,7 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
         CopyReviewCommand = new AsyncRelayCommand(CopyReviewAsync, () => IsActive && _currentStep == PlanningEntryGuidedStep.SendReview && HasRenderableReview);
         AcknowledgeHavePaResponseCommand = new RelayCommand(AcknowledgeHavePaResponse, () => IsActive && _reviewCopied && _showAwaitPaResponseButton);
         ValidatePaResponseCommand = new AsyncRelayCommand(ValidatePaResponseAsync, () => IsActive && _currentStep == PlanningEntryGuidedStep.ValidateResponse);
+        CopyCorrectionRequestCommand = new AsyncRelayCommand(CopyCorrectionRequestAsync, () => IsActive && _showCopyCorrectionRequest);
         EnterGovernedPlanningCommand = new AsyncRelayCommand(EnterGovernedPlanningAsync, () => IsActive && _currentStep == PlanningEntryGuidedStep.ReviewDecision);
         ReturnToCurrentWorkCommand = new RelayCommand(() => _returnToCurrentWork(), () => IsActive);
         PrepareNewReviewCommand = new RelayCommand(StartNewReviewCycle, () => IsActive);
@@ -116,6 +121,18 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
     {
         get => _showAwaitPaResponseButton;
         private set => SetProperty(ref _showAwaitPaResponseButton, value);
+    }
+
+    public bool ShowCopyCorrectionRequest
+    {
+        get => _showCopyCorrectionRequest;
+        private set => SetProperty(ref _showCopyCorrectionRequest, value);
+    }
+
+    public string? CorrectionNextStepHint
+    {
+        get => _correctionNextStepHint;
+        private set => SetProperty(ref _correctionNextStepHint, value);
     }
 
     public string PaResponseDraft
@@ -187,6 +204,8 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
     public ICommand AcknowledgeHavePaResponseCommand { get; }
 
     public ICommand ValidatePaResponseCommand { get; }
+
+    public ICommand CopyCorrectionRequestCommand { get; }
 
     public ICommand EnterGovernedPlanningCommand { get; }
 
@@ -266,6 +285,12 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
             sessionReady);
 
         CurrentStep = step;
+        ShowCopyCorrectionRequest = _transient.LastValidationAttemptFailed
+                                    && PaHandoverExchangeCorrectionSupport.ShouldOfferCorrectionRequest(
+                                        _transient.LastCorrectionFailureClass);
+        CorrectionNextStepHint = ShowCopyCorrectionRequest
+            ? GovernedRelayManualPasteOperatorMessages.ComposeCorrectionNextStepHint()
+            : null;
         ApplyStepPresentation(step, relay, projectId, sessionReady);
         RaisePropertyChanged(nameof(StepProgressLabel));
         RaisePropertyChanged(nameof(HasRenderableReview));
@@ -439,11 +464,37 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
             return;
         }
 
-        var result = _relayWorkflow.ImportPaHandover(projectId, PaResponseDraft);
-        if (result.Import.Package is null || result.Import.Validation.State == RelayValidationState.RejectedMalformed)
+        var relay = _workflowServices.PlanningEntryRelayReadModel.Resolve(projectId);
+        var requiredCorrelation = relay.LatestPaReviewExport?.Package.CorrelationId;
+
+        var result = _relayWorkflow.TryValidatePaHandoverImport(
+            projectId,
+            PaResponseDraft,
+            requiredCorrelation);
+
+        if (!result.ProjectIdMatched)
         {
             _transient.LastValidationAttemptFailed = true;
-            ValidationOperatorMessage = GovernedRelayManualPasteOperatorMessages.ComposeImportFailureOperatorMessage(result.Import.Validation);
+            _transient.LastCorrectionFailureClass = PaHandoverCorrectionFailureClass.ProjectIdentityMismatch;
+            ValidationOperatorMessage = GovernedRelayManualPasteOperatorMessages.ComposeImportFailureOperatorMessage(
+                result.Import.Validation,
+                offersCorrectionRequest: true);
+            TechnicalValidationDetail = result.ProjectIdMismatchMessage;
+            _transient.LastOperatorValidationMessage = ValidationOperatorMessage;
+            Refresh();
+            return;
+        }
+
+        if (!PaHandoverExchangeCorrectionSupport.IsAuthorizedForGuidedDurableConsumption(result))
+        {
+            _transient.LastValidationAttemptFailed = true;
+            _transient.LastCorrectionFailureClass =
+                PaHandoverExchangeCorrectionSupport.ClassifyValidationFailure(result);
+            var offersCorrection = PaHandoverExchangeCorrectionSupport.ShouldOfferCorrectionRequest(
+                _transient.LastCorrectionFailureClass);
+            ValidationOperatorMessage = GovernedRelayManualPasteOperatorMessages.ComposeImportFailureOperatorMessage(
+                result.Import.Validation,
+                offersCorrection);
             TechnicalValidationDetail = FormatValidationDetail(result.Import.Validation);
             AppendTechnicalDiagnostics(result.Import.Validation.Diagnostics);
             _transient.LastOperatorValidationMessage = ValidationOperatorMessage;
@@ -451,15 +502,10 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
             return;
         }
 
-        if (!result.ProjectIdMatched)
-        {
-            _transient.LastValidationAttemptFailed = true;
-            ValidationOperatorMessage = result.ProjectIdMismatchMessage
-                                        ?? "This response belongs to a different project.";
-            _transient.LastOperatorValidationMessage = ValidationOperatorMessage;
-            Refresh();
-            return;
-        }
+        _relayWorkflow.CommitConsumedPaHandoverImport(
+            projectId,
+            result.Import.Package,
+            result.Import.Validation);
 
         var eligibility = _workflowServices.IntakePlanningEntryTransitions.EvaluateEligibility(
             projectId,
@@ -469,6 +515,8 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
         if (!eligibility.IsEligible)
         {
             _transient.LastValidationAttemptFailed = true;
+            _transient.LastCorrectionFailureClass =
+                PaHandoverCorrectionFailureClassifier.ClassifyGovernanceNonQualifying();
             ValidationOperatorMessage =
                 "The response was read, but it does not authorize Governed Planning entry. "
                 + "Ask your Project Architect for a planning-entry handover that authorizes planning without implementation.";
@@ -479,12 +527,39 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
         }
 
         _transient.LastValidationAttemptFailed = false;
+        _transient.LastCorrectionFailureClass = PaHandoverCorrectionFailureClass.None;
         _transient.LastOperatorValidationMessage = null;
         ValidationOperatorMessage = null;
         StatusMessage = "Project Architect response validated.";
         _onWorkStateMayHaveChanged?.Invoke();
         Refresh();
         await Task.CompletedTask.ConfigureAwait(true);
+    }
+
+    private async Task CopyCorrectionRequestAsync()
+    {
+        if (_workspace.CurrentProjectId is not { } projectId)
+        {
+            return;
+        }
+
+        var relay = _workflowServices.PlanningEntryRelayReadModel.Resolve(projectId);
+        var review = relay.LatestPaReviewExport?.Package;
+        if (review is null)
+        {
+            StatusMessage = "A prepared review is required before copying a correction request.";
+            Refresh();
+            return;
+        }
+
+        var request = GovernedRelayPaHandoverCorrectionRequest.RenderCompleteCorrectionRequest(
+            review,
+            PaHandoverResponseProfile.PlanningEntry,
+            _transient.LastCorrectionFailureClass);
+
+        await _copyTextAsync(request).ConfigureAwait(true);
+        StatusMessage = "Correction request copied.";
+        Refresh();
     }
 
     private async Task EnterGovernedPlanningAsync()
@@ -625,6 +700,7 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
         (CopyReviewCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
         (AcknowledgeHavePaResponseCommand as RelayCommand)?.RaiseCanExecuteChanged();
         (ValidatePaResponseCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
+        (CopyCorrectionRequestCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
         (EnterGovernedPlanningCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
         (ReturnToCurrentWorkCommand as RelayCommand)?.RaiseCanExecuteChanged();
         (PrepareNewReviewCommand as RelayCommand)?.RaiseCanExecuteChanged();

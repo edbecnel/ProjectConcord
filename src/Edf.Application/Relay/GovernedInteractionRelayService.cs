@@ -125,6 +125,13 @@ public sealed class GovernedInteractionRelayService : IGovernedInteractionRelayS
         ArgumentNullException.ThrowIfNull(package);
         ArgumentNullException.ThrowIfNull(validation);
 
+        var existing = _store.GetPackage(package.PackageId);
+        if (existing is not null
+            && HasPackageConsumedEvent(package.ProjectId, package.PackageId))
+        {
+            return existing;
+        }
+
         var persisted = ToPersisted(package, validation);
         _store.SavePackage(persisted);
 
@@ -136,6 +143,20 @@ public sealed class GovernedInteractionRelayService : IGovernedInteractionRelayS
             MinimalPayloadJson);
 
         return persisted;
+    }
+
+    private bool HasPackageConsumedEvent(ProjectConcordProjectId projectId, GovernedPackageId packageId)
+    {
+        foreach (var evt in _store.ListProvenanceEvents(projectId))
+        {
+            if (evt.EventType == RelayProvenanceEventType.PackageConsumed
+                && evt.PackageId == packageId)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public IReadOnlyList<RelayProvenanceEvent> ListProvenanceEvents(

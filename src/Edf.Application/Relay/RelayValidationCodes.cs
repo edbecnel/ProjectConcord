@@ -56,4 +56,5 @@ public static class RelayValidationCodes
     public const string ManualPasteRenderMarkerAmbiguous = "relay.manual_paste.render_marker.ambiguous";
     public const string ManualPasteMachineBlockMissing = "relay.manual_paste.machine_block.missing";
     public const string ManualPasteIncomplete = "relay.manual_paste.incomplete";
+    public const string HandoverCorrelationMismatch = "relay.handover.correlation.mismatch";
 }

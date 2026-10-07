@@ -433,6 +433,18 @@ public class EngineeringAgentA4T4RecoveryTests
             string renderedText) =>
             Inner.ImportPaHandover(projectId, renderedText);
 
+        public PaHandoverImportOperationResult TryValidatePaHandoverImport(
+            ProjectConcordProjectId projectId,
+            string renderedText,
+            GovernedCorrelationId? requiredReviewCorrelationId = null) =>
+            Inner.TryValidatePaHandoverImport(projectId, renderedText, requiredReviewCorrelationId);
+
+        public PaHandoverImportOperationResult CommitConsumedPaHandoverImport(
+            ProjectConcordProjectId projectId,
+            GovernedRelayPackage package,
+            RelayValidationResult validation) =>
+            Inner.CommitConsumedPaHandoverImport(projectId, package, validation);
+
         public EngineeringAgentHandoverPreparationResult PrepareEngineeringAgentHandover(
             GovernedRelayPackage validatedImportPackage,
             RelayValidationResult importValidation) =>

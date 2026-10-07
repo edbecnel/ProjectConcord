@@ -7,7 +7,9 @@ using Edf.Domain.Relay;
 /// </summary>
 public static class GovernedRelayManualPasteOperatorMessages
 {
-    public static string ComposeImportFailureOperatorMessage(RelayValidationResult validation)
+    public static string ComposeImportFailureOperatorMessage(
+        RelayValidationResult validation,
+        bool offersCorrectionRequest = false)
     {
         var codes = validation.Diagnostics.Select(d => d.Code).ToHashSet(StringComparer.Ordinal);
 
@@ -47,7 +49,12 @@ public static class GovernedRelayManualPasteOperatorMessages
                    + "Copy the entire reply from your Project Architect and try again.";
         }
 
-        return "ProjectConcord could not validate this Project Architect response. "
-               + "Review the response with your Project Architect and try again.";
+        return offersCorrectionRequest
+            ? "We couldn't safely use this Project Architect response."
+            : "ProjectConcord could not validate this Project Architect response. "
+              + "Review the response with your Project Architect and try again.";
     }
+
+    public static string ComposeCorrectionNextStepHint() =>
+        "What to do next: Ask your Project Architect for a corrected response, then paste the replacement here.";
 }

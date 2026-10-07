@@ -149,7 +149,10 @@ public sealed class GovernedRelayP0WorkflowService : IGovernedRelayP0WorkflowSer
         return new PaReviewExportOperationResult(rendered, validation, recorded.Package.PackageId);
     }
 
-    public PaHandoverImportOperationResult ImportPaHandover(ProjectConcordProjectId projectId, string renderedText)
+    public PaHandoverImportOperationResult TryValidatePaHandoverImport(
+        ProjectConcordProjectId projectId,
+        string renderedText,
+        GovernedCorrelationId? requiredReviewCorrelationId = null)
     {
         var import = _projectArchitect.TryParsePaHandoverImport(renderedText);
         if (import.Package is null)
@@ -166,8 +169,63 @@ public sealed class GovernedRelayP0WorkflowService : IGovernedRelayP0WorkflowSer
                 "Imported package project id does not match the active ProjectConcord project.");
         }
 
-        _relay.RecordConsumedPackage(import.Package, import.Validation);
+        if (requiredReviewCorrelationId is not null
+            && import.Package.CorrelationId != requiredReviewCorrelationId)
+        {
+            var mismatch = RelayValidationResult.RejectedMalformed(
+            [
+                new RelayValidationDiagnostic(
+                    RelayValidationCodes.HandoverCorrelationMismatch,
+                    "Handover correlation id does not match the active PA review export.",
+                    RelayValidationDiagnosticSeverity.Malformed),
+            ]);
+            return new PaHandoverImportOperationResult(
+                new PaHandoverImportResult(import.Package, mismatch),
+                ProjectIdMatched: true,
+                ProjectIdMismatchMessage: null);
+        }
+
         return new PaHandoverImportOperationResult(import, ProjectIdMatched: true, ProjectIdMismatchMessage: null);
+    }
+
+    public PaHandoverImportOperationResult CommitConsumedPaHandoverImport(
+        ProjectConcordProjectId projectId,
+        GovernedRelayPackage package,
+        RelayValidationResult validation)
+    {
+        ArgumentNullException.ThrowIfNull(package);
+        ArgumentNullException.ThrowIfNull(validation);
+
+        if (package.ProjectId != projectId)
+        {
+            return new PaHandoverImportOperationResult(
+                new PaHandoverImportResult(package, validation),
+                ProjectIdMatched: false,
+                ProjectIdMismatchMessage:
+                "Imported package project id does not match the active ProjectConcord project.");
+        }
+
+        _relay.RecordConsumedPackage(package, validation);
+        return new PaHandoverImportOperationResult(
+            new PaHandoverImportResult(package, validation),
+            ProjectIdMatched: true,
+            ProjectIdMismatchMessage: null);
+    }
+
+    public PaHandoverImportOperationResult ImportPaHandover(ProjectConcordProjectId projectId, string renderedText)
+    {
+        var validated = TryValidatePaHandoverImport(projectId, renderedText);
+        if (validated.Import.Package is null
+            || !validated.ProjectIdMatched
+            || validated.Import.Validation.State == RelayValidationState.RejectedMalformed)
+        {
+            return validated;
+        }
+
+        return CommitConsumedPaHandoverImport(
+            projectId,
+            validated.Import.Package,
+            validated.Import.Validation);
     }
 
     public EngineeringAgentHandoverPreparationResult PrepareEngineeringAgentHandover(

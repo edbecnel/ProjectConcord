@@ -21,6 +21,16 @@ public interface IGovernedRelayP0WorkflowService
         ProjectRoot projectRoot,
         RelayPaReviewExportOptions options);
 
+    PaHandoverImportOperationResult TryValidatePaHandoverImport(
+        ProjectConcordProjectId projectId,
+        string renderedText,
+        GovernedCorrelationId? requiredReviewCorrelationId = null);
+
+    PaHandoverImportOperationResult CommitConsumedPaHandoverImport(
+        ProjectConcordProjectId projectId,
+        GovernedRelayPackage package,
+        RelayValidationResult validation);
+
     PaHandoverImportOperationResult ImportPaHandover(ProjectConcordProjectId projectId, string renderedText);
 
     EngineeringAgentHandoverPreparationResult PrepareEngineeringAgentHandover(
