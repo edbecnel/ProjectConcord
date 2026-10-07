@@ -29,6 +29,7 @@ This is the primary documentation hub for humans and AI assistants.
 - [PCON-0006 — Governed Interactive Engineering Session (GIES)](docs/Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md) (**Accepted** 2026-10-03)
 - [ADR-0025 — Governed interaction layer responsibilities (GIES)](docs/Architecture/ADRs/ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md) (**Accepted** 2026-10-03)
 - [AWI-0011 — Governed Interactive Engineering Session follow-through](docs/Architecture/Watch_Items/AWI-0011-Governed-Interactive-Engineering-Session.md)
+- [AWI-0012 — Governed AI handover attachments (deferred investigation)](docs/Architecture/Watch_Items/AWI-0012-Governed-AI-Handover-Attachments.md)
 - [AWI-0003 — Primary Orchestration and External AI/Engineering Tool Integration](docs/Architecture/Watch_Items/AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md)
 - [AWI-0004 — Governed Maintenance Fast Path (GMFP)](docs/Architecture/Watch_Items/AWI-0004-Governed-Maintenance-Fast-Path.md)
 - [SPEC-005 — Manual Verification Record Consumption](docs/Specifications/features/SPEC-005-manual-verification-record-consumption.md)

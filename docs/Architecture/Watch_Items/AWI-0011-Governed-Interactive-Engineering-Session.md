@@ -45,4 +45,5 @@ GIES investigation (accepted)
 - [PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) §13
 - [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) §18, PC-PAR-024
 - [AWI-0002](AWI-0002-Governed-Pause-Continuation-and-Resume.md), [AWI-0010](AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md)
+- [AWI-0012](AWI-0012-Governed-AI-Handover-Attachments.md) — governed file attachments for PA/EA exchanges (deferred; relate GIES session artifacts without duplicating scope)
 - [PCON-0007](../PCON-0007-Governed-Synchronization-Review.md)

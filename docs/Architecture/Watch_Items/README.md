@@ -25,6 +25,7 @@ EDF convention: `docs/Architecture/Watch_Items/AWI-NNNN-Short-Title.md` ([EDF Ga
 | [AWI-0009](AWI-0009-Governed-Structured-Authoring-Form-Runtime-and-Form-Editor.md) | Governed structured authoring, Form Runtime, form definitions, Form Editor (future) | Active — **deferred**, **capture-only** (2026-10-01) |
 | [AWI-0010](AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md) | Workflow Framework and GEW architectural follow-through (runtime, SPEC-004 reconciliation) | Active |
 | [AWI-0011](AWI-0011-Governed-Interactive-Engineering-Session.md) | Governed Interactive Engineering Session (GIES) — publication, SPEC/relay amendments, runtime | Active |
+| [AWI-0012](AWI-0012-Governed-AI-Handover-Attachments.md) | Governed AI handover attachments — identity, integrity, transport, provenance (deferred investigation) | Active — **deferred**, **capture-only** (2026-10-07) |
 
 ## Lifecycle
 
