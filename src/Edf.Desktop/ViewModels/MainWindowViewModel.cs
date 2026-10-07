@@ -55,6 +55,7 @@ public sealed class MainWindowViewModel : ViewModelBase
         RelayWorkflowViewModel? relayViewModel = null;
         PlanningEntryGuidedExchangeViewModel? planningEntryGuided = null;
         PlanningAuthorizationGuidedExchangeViewModel? planningAuthorizationGuided = null;
+        PlanningRegionGuidedExchangeViewModel? planningRegionGuided = null;
 
         WorkState = workflowServices is null
             ? null
@@ -93,11 +94,20 @@ public sealed class MainWindowViewModel : ViewModelBase
                 _copyTextAsync,
                 ReturnFromGuidedExchange,
                 () => WorkState?.RefreshFromProjection());
+            planningRegionGuided = new PlanningRegionGuidedExchangeViewModel(
+                relayWorkflow,
+                workspace,
+                workflowServices,
+                _copyTextAsync,
+                ReturnFromGuidedExchange,
+                () => ProjectDisplayName,
+                () => WorkState?.RefreshFromProjection());
         }
 
         Relay = relayViewModel;
         PlanningEntryGuided = planningEntryGuided;
         PlanningAuthorizationGuided = planningAuthorizationGuided;
+        PlanningRegionGuided = planningRegionGuided;
 
         SelectedOperatorTabIndex = (int)OperatorShellTab.CurrentWork;
         InitializeFromWorkspace();
@@ -139,6 +149,8 @@ public sealed class MainWindowViewModel : ViewModelBase
 
     public PlanningAuthorizationGuidedExchangeViewModel? PlanningAuthorizationGuided { get; }
 
+    public PlanningRegionGuidedExchangeViewModel? PlanningRegionGuided { get; }
+
     public OperatorGuidedContext GuidedContext
     {
         get => _guidedContext;
@@ -148,6 +160,7 @@ public sealed class MainWindowViewModel : ViewModelBase
             {
                 RaisePropertyChanged(nameof(IsPlanningEntryGuidedVisible));
                 RaisePropertyChanged(nameof(IsPlanningAuthorizationGuidedVisible));
+                RaisePropertyChanged(nameof(IsPlanningRegionGuidedVisible));
                 RaisePropertyChanged(nameof(IsAnyGuidedExchangeVisible));
                 RaisePropertyChanged(nameof(IsLegacyExchangeVisible));
             }
@@ -162,8 +175,14 @@ public sealed class MainWindowViewModel : ViewModelBase
         GuidedContext == OperatorGuidedContext.PlanningAuthorization
         && PlanningAuthorizationGuided?.IsActive == true;
 
+    public bool IsPlanningRegionGuidedVisible =>
+        GuidedContext == OperatorGuidedContext.PlanningRegionWork
+        && PlanningRegionGuided?.IsActive == true;
+
     public bool IsAnyGuidedExchangeVisible =>
-        IsPlanningEntryGuidedVisible || IsPlanningAuthorizationGuidedVisible;
+        IsPlanningEntryGuidedVisible
+        || IsPlanningAuthorizationGuidedVisible
+        || IsPlanningRegionGuidedVisible;
 
     public bool IsLegacyExchangeVisible => !IsAnyGuidedExchangeVisible;
 
@@ -445,6 +464,7 @@ public sealed class MainWindowViewModel : ViewModelBase
         Relay?.OnActiveProjectChanged(projectId, HasActiveProject);
         PlanningEntryGuided?.OnActiveProjectChanged(projectId, HasActiveProject);
         PlanningAuthorizationGuided?.OnActiveProjectChanged(projectId, HasActiveProject);
+        PlanningRegionGuided?.OnActiveProjectChanged(projectId, HasActiveProject);
     }
 
     private void LaunchPlanningEntryGuidedExchange()
@@ -465,9 +485,11 @@ public sealed class MainWindowViewModel : ViewModelBase
 
     private void LaunchGovernedExchangeTab()
     {
-        OpenLegacyExchange();
+        GuidedContext = OperatorGuidedContext.PlanningRegionWork;
+        PlanningRegionGuided?.ActivatePlanningRegionGuided();
         SelectedOperatorTabIndex = (int)OperatorShellTab.Exchange;
         Relay?.RefreshGovernedExchangeContext(applyRecommendedPlan: true);
+        RaiseGuidedExchangeVisibility();
     }
 
     private void ReturnFromGuidedExchange()
@@ -475,6 +497,7 @@ public sealed class MainWindowViewModel : ViewModelBase
         GuidedContext = OperatorGuidedContext.None;
         PlanningEntryGuided?.Deactivate();
         PlanningAuthorizationGuided?.Deactivate();
+        PlanningRegionGuided?.Deactivate();
         SelectedOperatorTabIndex = (int)OperatorShellTab.CurrentWork;
         RaiseGuidedExchangeVisibility();
     }
@@ -484,6 +507,7 @@ public sealed class MainWindowViewModel : ViewModelBase
         GuidedContext = OperatorGuidedContext.None;
         PlanningEntryGuided?.Deactivate();
         PlanningAuthorizationGuided?.Deactivate();
+        PlanningRegionGuided?.Deactivate();
         RaiseGuidedExchangeVisibility();
     }
 
@@ -491,6 +515,7 @@ public sealed class MainWindowViewModel : ViewModelBase
     {
         RaisePropertyChanged(nameof(IsPlanningEntryGuidedVisible));
         RaisePropertyChanged(nameof(IsPlanningAuthorizationGuidedVisible));
+        RaisePropertyChanged(nameof(IsPlanningRegionGuidedVisible));
         RaisePropertyChanged(nameof(IsAnyGuidedExchangeVisible));
         RaisePropertyChanged(nameof(IsLegacyExchangeVisible));
         (OpenLegacyExchangeCommand as RelayCommand)?.RaiseCanExecuteChanged();

@@ -22,7 +22,7 @@ public class WorkflowAuthorizationAndStopPersistenceTests
         {
         }
 
-        Assert.Equal(6, ReadSchemaVersion(path));
+        Assert.Equal(7, ReadSchemaVersion(path));
         Assert.True(TableExists(path, "development_work_authorization"));
         Assert.True(TableExists(path, "workflow_instance_stop_summary"));
         Assert.True(TableExists(path, "workflow_instance_stop_event"));

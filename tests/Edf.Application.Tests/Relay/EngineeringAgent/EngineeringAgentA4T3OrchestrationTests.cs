@@ -717,6 +717,9 @@ public class EngineeringAgentA4T3OrchestrationTests
 
         public IWorkflowInstanceStopStore WorkflowInstanceStops => inner.WorkflowInstanceStops;
 
+        public Edf.Application.Operator.WorkContinuity.IOperatorWorkFocusStore OperatorWorkFocus =>
+            inner.OperatorWorkFocus;
+
         public void ExecuteInTransaction(Action work) => inner.ExecuteInTransaction(work);
     }
 }

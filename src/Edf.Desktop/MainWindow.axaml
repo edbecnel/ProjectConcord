@@ -131,7 +131,7 @@
 
               <StackPanel Spacing="6" IsVisible="{Binding CanOpenGovernedExchange}">
                 <SelectableTextBlock Text="{Binding PlanningRegionWorkActionExplanation}" TextWrapping="Wrap" FontSize="13" />
-                <Button Content="Open Governed Exchange"
+                <Button Content="Continue Planning-Region Work"
                         Command="{Binding OpenGovernedExchangeCommand}"
                         HorizontalAlignment="Left" />
               </StackPanel>
@@ -228,6 +228,62 @@
         <ScrollViewer>
           <StackPanel Margin="8" Spacing="12"
                       IsVisible="{Binding Relay, Converter={x:Static ObjectConverters.IsNotNull}}">
+            <Border Padding="14" CornerRadius="6" BorderThickness="2" BorderBrush="#5A9FD4"
+                    IsVisible="{Binding IsPlanningRegionGuidedVisible}">
+              <StackPanel Spacing="10" DataContext="{Binding PlanningRegionGuided}">
+                <SelectableTextBlock Text="Planning-Region Work — Guided Exchange"
+                           FontWeight="SemiBold" FontSize="16" TextWrapping="Wrap" />
+                <SelectableTextBlock Text="{Binding WorkSubject}" FontWeight="SemiBold" FontSize="14" TextWrapping="Wrap" />
+                <SelectableTextBlock Text="{Binding WhatJustHappened}" TextWrapping="Wrap" FontSize="13" />
+                <SelectableTextBlock Text="{Binding WhereWeAre}" TextWrapping="Wrap" FontSize="12" Foreground="Gray" />
+                <SelectableTextBlock Text="{Binding AuthorizationSummary}" TextWrapping="Wrap" FontSize="12" />
+                <SelectableTextBlock Text="{Binding StopSummary}" TextWrapping="Wrap" FontSize="12" Foreground="DarkOrange" />
+                <SelectableTextBlock Text="{Binding NextStepSummary}" FontWeight="SemiBold" FontSize="13" />
+                <SelectableTextBlock Text="{Binding WhySummary}" TextWrapping="Wrap" FontSize="12" Foreground="Gray" />
+                <SelectableTextBlock Text="{Binding StepTitle}" FontWeight="SemiBold" FontSize="14" TextWrapping="Wrap" />
+                <SelectableTextBlock Text="{Binding StepBody}" TextWrapping="Wrap" FontSize="13" />
+                <SelectableTextBlock Text="{Binding StatusMessage}" Foreground="#0066CC" TextWrapping="Wrap" />
+
+                <StackPanel Spacing="8">
+                  <StackPanel Spacing="6" IsVisible="{Binding ShowConfirmSubject}">
+                    <TextBox Text="{Binding PendingSubjectConfirmation}" PlaceholderText="Work subject (human-readable)" />
+                    <Button Content="Confirm work subject" Command="{Binding ConfirmSubjectCommand}" HorizontalAlignment="Left" />
+                  </StackPanel>
+                  <StackPanel Spacing="8" IsVisible="{Binding ShowConfirmSessionContinuity}">
+                    <SelectableTextBlock Text="Project Architect conversation" FontWeight="SemiBold" />
+                    <ComboBox ItemsSource="{Binding SessionIntentOptions}" SelectedItem="{Binding SelectedPaSessionIntent}"
+                              PlaceholderText="Continue prior conversation or start new" />
+                    <SelectableTextBlock Text="Engineering Agent conversation (Plan mode)" FontWeight="SemiBold" />
+                    <ComboBox ItemsSource="{Binding SessionIntentOptions}" SelectedItem="{Binding SelectedEaSessionIntent}"
+                              PlaceholderText="Continue prior conversation or start new" />
+                    <Button Content="Continue" Command="{Binding ConfirmSessionContinuityCommand}" HorizontalAlignment="Left" />
+                  </StackPanel>
+                  <Button Content="{Binding PrimaryActionLabel}" Command="{Binding PrimaryActionCommand}" HorizontalAlignment="Left"
+                          IsVisible="{Binding HasPrimaryAction}" />
+                  <StackPanel Spacing="6" IsVisible="{Binding ShowBringBackPaResponse}">
+                    <TextBox Text="{Binding PaResponseDraft}" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="120"
+                             PlaceholderText="Paste the complete Project Architect response" />
+                    <CheckBox Content="I confirm this is the complete response from my Project Architect conversation."
+                              IsChecked="{Binding ImportAttestationConfirmed}" />
+                    <Button Content="Validate Project Architect response" Command="{Binding ValidatePaResponseCommand}" HorizontalAlignment="Left" />
+                    <SelectableTextBlock Text="{Binding ValidationOperatorMessage}" Foreground="DarkOrange" TextWrapping="Wrap" />
+                    <SelectableTextBlock Text="{Binding CorrectionNextStepHint}" TextWrapping="Wrap"
+                                           IsVisible="{Binding ShowCopyCorrectionRequest}" />
+                    <Button Content="Copy correction request" Command="{Binding CopyCorrectionRequestCommand}" HorizontalAlignment="Left"
+                            IsVisible="{Binding ShowCopyCorrectionRequest}" />
+                    <Expander Header="Technical validation detail">
+                      <SelectableTextBlock Text="{Binding TechnicalValidationDetail}" TextWrapping="Wrap" FontSize="11" Foreground="Gray" />
+                    </Expander>
+                  </StackPanel>
+                  <SelectableTextBlock Text="{Binding StepBody}" IsVisible="{Binding ShowBlockedByStop}" TextWrapping="Wrap" />
+                  <Expander Header="Technical package detail (advanced)">
+                    <SelectableTextBlock Text="{Binding TechnicalPackageDetail}" TextWrapping="Wrap" FontSize="11" Foreground="Gray" />
+                  </Expander>
+                  <Button Content="Return to Current Work" Command="{Binding ReturnToCurrentWorkCommand}" HorizontalAlignment="Left" />
+                </StackPanel>
+              </StackPanel>
+            </Border>
+
             <Border Padding="14" CornerRadius="6" BorderThickness="2" BorderBrush="#5A9FD4"
                     IsVisible="{Binding IsPlanningAuthorizationGuidedVisible}">
               <StackPanel Spacing="10" DataContext="{Binding PlanningAuthorizationGuided}">

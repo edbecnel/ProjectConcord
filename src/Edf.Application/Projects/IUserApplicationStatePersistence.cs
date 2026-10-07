@@ -1,5 +1,6 @@
 namespace Edf.Application.Projects;
 
+using Edf.Application.Operator.WorkContinuity;
 using Edf.Application.Relay;
 using Edf.Application.Relay.EngineeringAgent.Transport;
 
@@ -25,6 +26,8 @@ public interface IUserApplicationStatePersistence
     IDevelopmentWorkAuthorizationStore DevelopmentWorkAuthorizations { get; }
 
     IWorkflowInstanceStopStore WorkflowInstanceStops { get; }
+
+    IOperatorWorkFocusStore OperatorWorkFocus { get; }
 
     void ExecuteInTransaction(Action work);
 }

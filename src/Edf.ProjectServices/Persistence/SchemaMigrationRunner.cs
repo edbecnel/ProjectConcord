@@ -61,6 +61,12 @@ internal static class SchemaMigrationRunner
         if (fromVersion < Migration006WorkflowAuthorizationAndStop.Version)
         {
             Migration006WorkflowAuthorizationAndStop.Apply(connection, null);
+            fromVersion = Migration006WorkflowAuthorizationAndStop.Version;
+        }
+
+        if (fromVersion < Migration007OperatorWorkFocus.Version)
+        {
+            Migration007OperatorWorkFocus.Apply(connection, null);
         }
     }
 

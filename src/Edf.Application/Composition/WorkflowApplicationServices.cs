@@ -1,5 +1,7 @@
 using Edf.Application.Operator.PlanningAuthorization;
 using Edf.Application.Operator.PlanningEntry;
+using Edf.Application.Operator.PlanningRegion;
+using Edf.Application.Operator.WorkContinuity;
 using Edf.Application.Operator.WorkState;
 using Edf.Application.Projects;
 using Edf.Application.Workflow;
@@ -21,7 +23,9 @@ public sealed record WorkflowApplicationServices(
     IGewV1IntakePlanningEntryTransitionService IntakePlanningEntryTransitions,
     IPlanningEntryRelayReadModel PlanningEntryRelayReadModel,
     IGewV1PlanningDevelopmentWorkAuthorizationGrantService PlanningAuthorizationGrants,
-    IPlanningAuthorizationRelayReadModel PlanningAuthorizationRelayReadModel);
+    IPlanningAuthorizationRelayReadModel PlanningAuthorizationRelayReadModel,
+    IPlanningRegionRelayReadModel PlanningRegionRelayReadModel,
+    OperatorWorkFocusService OperatorWorkFocus);
 
 public static class WorkflowApplicationServicesFactory
 {
@@ -75,6 +79,8 @@ public static class WorkflowApplicationServicesFactory
             registry,
             developmentWorkAuthorizationService);
         var planningAuthorizationRelayReadModel = new PlanningAuthorizationRelayReadModel(persistence.RelayOperational);
+        var planningRegionRelayReadModel = new PlanningRegionRelayReadModel(persistence.RelayOperational);
+        var operatorWorkFocus = new OperatorWorkFocusService(persistence.OperatorWorkFocus);
         return new WorkflowApplicationServices(
             workflowService,
             relationshipService,
@@ -86,6 +92,8 @@ public static class WorkflowApplicationServicesFactory
             intakePlanningEntryTransitions,
             planningEntryRelayReadModel,
             planningAuthorizationGrants,
-            planningAuthorizationRelayReadModel);
+            planningAuthorizationRelayReadModel,
+            planningRegionRelayReadModel,
+            operatorWorkFocus);
     }
 }

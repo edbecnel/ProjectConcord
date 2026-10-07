@@ -2,5 +2,5 @@ namespace Edf.ProjectServices.Persistence;
 
 internal static class SchemaVersions
 {
-    public const int Current = 6;
+    public const int Current = 7;
 }

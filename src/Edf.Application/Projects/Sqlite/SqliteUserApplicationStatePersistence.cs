@@ -1,3 +1,4 @@
+using Edf.Application.Operator.WorkContinuity;
 using Edf.Application.Relay;
 using Edf.Application.Relay.EngineeringAgent.Hosting;
 using Edf.Application.Relay.EngineeringAgent.Transport;
@@ -18,6 +19,7 @@ public sealed class SqliteUserApplicationStatePersistence : IUserApplicationStat
     private readonly SqliteWorkflowDependencyStoreAdapter _workflowDependencies;
     private readonly SqliteDevelopmentWorkAuthorizationStoreAdapter _developmentWorkAuthorizations;
     private readonly SqliteWorkflowInstanceStopStoreAdapter _workflowInstanceStops;
+    private readonly SqliteOperatorWorkFocusStoreAdapter _operatorWorkFocus;
 
     public SqliteUserApplicationStatePersistence(SqliteUserApplicationStateStore store)
     {
@@ -31,6 +33,7 @@ public sealed class SqliteUserApplicationStatePersistence : IUserApplicationStat
         _workflowDependencies = new SqliteWorkflowDependencyStoreAdapter(store);
         _developmentWorkAuthorizations = new SqliteDevelopmentWorkAuthorizationStoreAdapter(store);
         _workflowInstanceStops = new SqliteWorkflowInstanceStopStoreAdapter(store);
+        _operatorWorkFocus = new SqliteOperatorWorkFocusStoreAdapter(store);
     }
 
     public IProjectRegistry ProjectRegistry => _registry;
@@ -50,6 +53,8 @@ public sealed class SqliteUserApplicationStatePersistence : IUserApplicationStat
     public IDevelopmentWorkAuthorizationStore DevelopmentWorkAuthorizations => _developmentWorkAuthorizations;
 
     public IWorkflowInstanceStopStore WorkflowInstanceStops => _workflowInstanceStops;
+
+    public IOperatorWorkFocusStore OperatorWorkFocus => _operatorWorkFocus;
 
     public void ExecuteInTransaction(Action work) => _store.ExecuteInTransaction(work);
 

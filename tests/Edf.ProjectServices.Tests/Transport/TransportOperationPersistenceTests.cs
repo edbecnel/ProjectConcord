@@ -22,7 +22,7 @@ public class TransportOperationPersistenceTests
         {
         }
 
-        Assert.Equal(6, ReadSchemaVersion(path));
+        Assert.Equal(7, ReadSchemaVersion(path));
         Assert.True(TableExists(path, "transport_operation"));
         TryDelete(path);
     }
@@ -43,7 +43,7 @@ public class TransportOperationPersistenceTests
 
         using var persistence = (SqliteUserApplicationStatePersistence)
             UserApplicationStatePersistenceFactory.CreateSqliteAtPath(path);
-        Assert.Equal(6, ReadSchemaVersion(path));
+        Assert.Equal(7, ReadSchemaVersion(path));
         using (var connection = new SqliteConnection($"Data Source={path}"))
         {
             connection.Open();

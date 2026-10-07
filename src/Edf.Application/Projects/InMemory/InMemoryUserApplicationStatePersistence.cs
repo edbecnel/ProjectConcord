@@ -1,5 +1,6 @@
 namespace Edf.Application.Projects.InMemory;
 
+using Edf.Application.Operator.WorkContinuity;
 using Edf.Application.Relay;
 using Edf.Application.Relay.EngineeringAgent.Transport;
 
@@ -40,7 +41,8 @@ public sealed class InMemoryUserApplicationStatePersistence : IUserApplicationSt
         InMemoryWorkflowOriginStore? workflowOrigins = null,
         InMemoryWorkflowDependencyStore? workflowDependencies = null,
         InMemoryDevelopmentWorkAuthorizationStore? developmentWorkAuthorizations = null,
-        InMemoryWorkflowInstanceStopStore? workflowInstanceStops = null)
+        InMemoryWorkflowInstanceStopStore? workflowInstanceStops = null,
+        InMemoryOperatorWorkFocusStore? operatorWorkFocus = null)
     {
         ProjectRegistry = projectRegistry ?? throw new ArgumentNullException(nameof(projectRegistry));
         UserPreferences = userPreferences ?? throw new ArgumentNullException(nameof(userPreferences));
@@ -52,6 +54,7 @@ public sealed class InMemoryUserApplicationStatePersistence : IUserApplicationSt
         WorkflowDependencies = workflowDependencies ?? new InMemoryWorkflowDependencyStore();
         DevelopmentWorkAuthorizations = developmentWorkAuthorizations ?? new InMemoryDevelopmentWorkAuthorizationStore();
         WorkflowInstanceStops = workflowInstanceStops ?? new InMemoryWorkflowInstanceStopStore();
+        OperatorWorkFocus = operatorWorkFocus ?? new InMemoryOperatorWorkFocusStore();
     }
 
     public IProjectRegistry ProjectRegistry { get; }
@@ -71,6 +74,8 @@ public sealed class InMemoryUserApplicationStatePersistence : IUserApplicationSt
     public IDevelopmentWorkAuthorizationStore DevelopmentWorkAuthorizations { get; }
 
     public IWorkflowInstanceStopStore WorkflowInstanceStops { get; }
+
+    public IOperatorWorkFocusStore OperatorWorkFocus { get; }
 
     public void ExecuteInTransaction(Action work)
     {

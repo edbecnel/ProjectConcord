@@ -18,7 +18,7 @@ public class SqliteUserApplicationStateStoreTests
         var path = CreateTempDatabasePath();
         using var store = new SqliteUserApplicationStateStore(path);
 
-        Assert.Equal(6, ReadSchemaVersion(path));
+        Assert.Equal(7, ReadSchemaVersion(path));
         Assert.True(File.Exists(path));
     }
 

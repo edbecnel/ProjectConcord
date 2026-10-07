@@ -63,7 +63,7 @@ public class OperatorShellViewModelTests
     }
 
     [Fact]
-    public void OpenGovernedExchange_FromPostPlanningDwa_SwitchesToLegacyExchange_ClearsGuidedContext()
+    public void OpenGovernedExchange_FromPostPlanningDwa_SwitchesToPlanningRegionGuidedWork()
     {
         var services = ApplicationCompositionRoot.CreateInMemoryDesktopServices();
         var vm = new MainWindowViewModel(
@@ -101,10 +101,13 @@ public class OperatorShellViewModelTests
         ((RelayCommand)vm.WorkState.OpenGovernedExchangeCommand).Execute(null);
 
         Assert.Equal(OperatorShellTab.Exchange, vm.SelectedOperatorTab);
-        Assert.True(vm.Relay!.HasGovernedExchangeContext);
-        Assert.Contains("Recommended Engineering Agent mode: Plan", vm.Relay.GovernedExchangeContextSummary ?? string.Empty, StringComparison.Ordinal);
-        Assert.False(vm.IsAnyGuidedExchangeVisible);
-        Assert.True(vm.IsLegacyExchangeVisible);
-        Assert.False(vm.IsPlanningAuthorizationGuidedVisible);
+        Assert.Equal(OperatorGuidedContext.PlanningRegionWork, vm.GuidedContext);
+        Assert.True(vm.IsPlanningRegionGuidedVisible);
+        Assert.True(vm.IsAnyGuidedExchangeVisible);
+        Assert.False(vm.IsLegacyExchangeVisible);
+        Assert.True(
+            vm.PlanningRegionGuided!.ShowConfirmSubject
+            || vm.PlanningRegionGuided.PrimaryActionLabel == "Send to Project Architect");
+        Assert.DoesNotContain("Plan vs Agent", vm.PlanningRegionGuided.StepBody ?? string.Empty, StringComparison.OrdinalIgnoreCase);
     }
 }

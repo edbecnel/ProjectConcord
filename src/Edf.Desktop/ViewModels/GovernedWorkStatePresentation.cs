@@ -270,11 +270,11 @@ internal static class GovernedWorkStatePresentation
         + "Repository implementation is not authorized by this Planning development work authorization.";
 
     public static string ComposeContinuePlanningRegionWorkNextStepSummary() =>
-        "Continue governed planning work through Governed Exchange.";
+        "Continue planning-region work in Guided Work.";
 
     public static string ComposePlanningRegionGovernedExchangeActionExplanation() =>
-        "Open Governed Exchange to run Project Architect and Engineering Agent exchanges for planning-region work. "
+        "Open Guided Work to continue planning-region exchanges with meaningful steps. "
         + "This is guidance about where to continue — not a new authorization. "
-        + "Opening Exchange does not grant implementation authorization. "
+        + "Guided actions do not grant implementation authorization. "
         + "Relay validation and import do not create durable development work authorization.";
 }

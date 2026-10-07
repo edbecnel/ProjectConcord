@@ -22,7 +22,7 @@ public class WorkflowRelationshipPersistenceTests
         {
         }
 
-        Assert.Equal(6, ReadSchemaVersion(path));
+        Assert.Equal(7, ReadSchemaVersion(path));
         Assert.True(TableExists(path, "workflow_origin"));
         Assert.True(TableExists(path, "workflow_dependency"));
         TryDelete(path);

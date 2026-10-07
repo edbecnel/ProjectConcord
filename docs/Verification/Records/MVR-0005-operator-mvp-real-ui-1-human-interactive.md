@@ -530,6 +530,26 @@ Per PA disposition: per-instance Waiting On grouping, Attention strip, `Operator
 
 **Architecture accepted (documentation only, uncommitted at record edit):** [ADR-0026](../../Architecture/ADRs/ADR-0026-Guided-Work-Surface-Work-Continuity-and-Relay-Technical-Surface.md); partial [AWI-0013](../../Architecture/Watch_Items/AWI-0013-Governed-Work-Continuity-Human-Readable-AI-Views-and-Hierarchical-Workflow-Navigator.md) promotion.
 
+**Published ADR-0026 baseline:** `7f9bbf8d95454ae944f9278dd00e20ef1da7aed9`.
+
+## Implementation chronology (automated — not human Pass/Fail)
+
+| Field | Value |
+|---|---|
+| **Implementation handover** | `b43838ad-d458-4f49-b63e-3ab459f9e654` |
+| **Baseline** | `7f9bbf8d95454ae944f9278dd00e20ef1da7aed9` |
+| **Status** | Local/uncommitted implementation; human execution remains **Paused** |
+| **MVT-5 / MVT-6 / MVT-7** | **Pending** (no automated Pass/Fail) |
+| **Scope** | Minimum ADR-0026 tranche: work focus persistence, `PlanningRegionWork` guided context, post–Planning-DWA routing, guided PA progression, legacy Exchange as advanced |
+
+**Review/correction (automated — not human Pass/Fail):**
+
+| Field | Value |
+|---|---|
+| **Review handover** | `789038e1-c17a-4f58-b0ed-7ec4b569718a` — subject-provenance defect (display-name `MVR-0005` heuristic) |
+| **Correction handover** | `55062921-f45b-480b-a55e-7969220b15ed` — bounded remediation; retained-project UUID bootstrap accepted for minimum tranche |
+| **Human execution** | Remains **Paused**; MVT-5/6/7 **Pending** |
+
 ## Notes
 
 - MVR prepared **2026-10-06**; no human MVT had been executed at preparation time.
