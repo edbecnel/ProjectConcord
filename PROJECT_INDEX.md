@@ -28,6 +28,7 @@ This is the primary documentation hub for humans and AI assistants.
 - [AWI-0010 — Workflow Framework and GEW follow-through](docs/Architecture/Watch_Items/AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md)
 - [PCON-0006 — Governed Interactive Engineering Session (GIES)](docs/Architecture/PCON-0006-Governed-Interactive-Engineering-Session-Framework.md) (**Accepted** 2026-10-03)
 - [ADR-0025 — Governed interaction layer responsibilities (GIES)](docs/Architecture/ADRs/ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md) (**Accepted** 2026-10-03)
+- [ADR-0026 — Guided Work Surface, work continuity, and Relay Technical Surface](docs/Architecture/ADRs/ADR-0026-Guided-Work-Surface-Work-Continuity-and-Relay-Technical-Surface.md) (**Accepted** 2026-10-07)
 - [AWI-0011 — Governed Interactive Engineering Session follow-through](docs/Architecture/Watch_Items/AWI-0011-Governed-Interactive-Engineering-Session.md)
 - [AWI-0012 — Governed AI handover attachments (deferred investigation)](docs/Architecture/Watch_Items/AWI-0012-Governed-AI-Handover-Attachments.md)
 - [AWI-0013 — Governed work continuity, human-readable AI views, and Workflow Navigator (deferred investigation)](docs/Architecture/Watch_Items/AWI-0013-Governed-Work-Continuity-Human-Readable-AI-Views-and-Hierarchical-Workflow-Navigator.md)

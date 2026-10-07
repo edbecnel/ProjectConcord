@@ -9,7 +9,7 @@
 | **Record ID** | MVR-0005 |
 | **Title** | ProjectConcord Operator MVP / Real-UI-1 — human-interactive verification |
 | **Manual QA** | **Required** |
-| **Human execution status** | **Pending** |
+| **Human execution status** | **Paused** (architecture prerequisite — 2026-10-07; see [Human execution pause](#human-execution-pause-2026-10-07)) |
 | **Verification classification** | **Human-interactive** (retained Operator Desktop surface) + **Automated** (prerequisite Release evidence; not re-executed by operator as human proof) |
 | **Owner** | Project owner |
 | **Verification date** | 2026-10-06 — execution in progress |
@@ -26,6 +26,7 @@
 | MVR preparation authorization | Handover `38a85e3b-e884-4fd1-91ea-6ef65f8594d2` | Preparation only; execution separate |
 | Real-UI readiness investigation | Handover `2b875e92-820f-4d20-8f70-fcf998cf00b2` | Context |
 | Operator projections / shell direction | [ADR-0020](../../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) | Presentation must not invent governance |
+| Guided Work vs relay technical surface | [ADR-0026](../../Architecture/ADRs/ADR-0026-Guided-Work-Surface-Work-Continuity-and-Relay-Technical-Surface.md), [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) PC-PAR-026 | Human MVR resumes after minimum guided implementation |
 | Per-user operational state | [02_Per_User_Application_State.md](../../Developer_Handbook/02_Per_User_Application_State.md) | `user-state.db` persistence |
 | Disposable verification workspaces | [DVW-0001 (EDF)](https://github.com/edbecnel/Engineering-Documentation-Framework/blob/048cdc6bc9ee581bb60fea5e7d26f7de673e5569/docs/Specifications/DVW-0001-Disposable-Verification-Workspaces.md) | Safe second project / empty GEW scenario |
 | WF-1d machine criteria | [MVR-0004](MVR-0004-m7a-wf-1d-governed-eligibility-recovery-projections.md) | **Not** manually re-verified in this MVR |
@@ -224,7 +225,9 @@ Record observed failure and **STOP** further MVTs on the affected path when:
 
   **Purpose:** Retained Exchange UX supports routine PA/EA workflow without raw package scroll.
 
-  **Prerequisites:** Project open; **Exchange** tab.
+  **PA disposition (2026-10-07):** Understandable progression is evaluated against the **Guided Work Surface** when available for the exercised path ([ADR-0026](../../Architecture/ADRs/ADR-0026-Guided-Work-Surface-Work-Continuity-and-Relay-Technical-Surface.md), [AWI-0008](../../Architecture/Watch_Items/AWI-0008-Governed-Operator-Experience-and-Product-Shell.md) §B). The legacy relay control panel alone is **not** the intended ordinary primary experience (PC-PAR-023c, PC-PAR-026). Human execution **paused** until minimum guided-work implementation is accepted.
+
+  **Prerequisites:** Project open; **Exchange** tab or successor **Guided Work** area for the path under test.
 
   **Procedure:**
   1. Confirm staged sections approximately: (1) Session/mode, (2) Project Architect exchange, (3) Engineering Agent exchange, (4) Diagnostics/provenance.
@@ -244,11 +247,13 @@ Record observed failure and **STOP** further MVTs on the affected path when:
 
   **Purpose:** Real governed PA exchange through the retained UI.
 
+  **PA disposition (2026-10-07):** When a **Guided Work Surface** is available for the exercised path, the round trip **SHALL** be performed through **meaningful human actions** on that surface (orchestrating relay mechanics), not by treating generate/copy/import as the primary operator workflow. Relay legs remain authoritative; human execution **paused** until that surface exists for planning-region continuation.
+
   **Prerequisites:** Project open; ChatGPT Project Architect chat available.
 
   **Procedure:**
-  1. **Exchange** → set PA and EA session intents (NEW/CONTINUE as appropriate).
-  2. Generate PA review/request package → **Copy for PA**.
+  1. Open the **Guided Work** path (or **Exchange** tab only when no guided surface exists for the path under test) → set PA and EA session intents (NEW/CONTINUE as appropriate) when required by the surface.
+  2. Perform the governed PA review/request step (guided: e.g. send to Project Architect; legacy fallback: generate PA review/request package → **Copy for PA**).
   3. Paste into active Project Architect chat; obtain a handover response suitable for import.
   4. Paste response into import field → **Import PA handover**.
   5. Confirm validation summary and app coherence; switch to **Current Work** and confirm refresh without fabricated workflow authorization.
@@ -503,6 +508,28 @@ Per PA disposition: per-instance Waiting On grouping, Attention strip, `Operator
 | Operator MVP architecture freeze | `671df4e753cedd53e69905c06c49ef2a45ef2d10` | Published baseline |
 | Publication of MVP-1 + Real-UI-1 | _Pending PA authorization after human MVR_ | Not asserted here |
 
+## Human execution pause (2026-10-07)
+
+**Handover:** `0191d293` (architecture/documentation tranche); investigation `70f8c80b`.
+
+**PA disposition:**
+
+- Human MVR execution is **Paused** pending acceptance of minimum **Guided Work** implementation (not further incremental legacy Exchange remediation).
+- Bounded legacy-Exchange progression remediation (`531d1df4`) is **cancelled** and **must not** be implemented.
+- **MVT-5**, **MVT-6**, and **MVT-7** remain **Pending** — no Pass/Fail recorded for this pause tranche.
+- Human verification resumes only after PA accepts architecture publication and later authorizes/accepts the minimum guided implementation tranche.
+
+**Preserve verbatim human observations (2026-10-07 retest arc):**
+
+- *No. Not in the slightest.*
+- *I will click on "Open Governed Exchange"*
+- *Now, here I really don't know if I should use Plan or Agent because I don't know where we are in the workflow*
+- *No. It doesn't tell me if I should click "Generate review package for PA" or Generate package text (detail)*
+- *This is not really the sort of guided UI I intended. And I don't understand the context of what we did before and what is expected of me now*
+- *Yes, we shouldn't be trying to force a intuitive workflow into a UI that wasn't intended to work the way we need it to work*
+
+**Architecture accepted (documentation only, uncommitted at record edit):** [ADR-0026](../../Architecture/ADRs/ADR-0026-Guided-Work-Surface-Work-Continuity-and-Relay-Technical-Surface.md); partial [AWI-0013](../../Architecture/Watch_Items/AWI-0013-Governed-Work-Continuity-Human-Readable-AI-Views-and-Hierarchical-Workflow-Navigator.md) promotion.
+
 ## Notes
 
 - MVR prepared **2026-10-06**; no human MVT had been executed at preparation time.
@@ -531,6 +558,7 @@ Per PA disposition: per-instance Waiting On grouping, Attention strip, `Operator
 - **Automated remediation (2026-10-07, uncommitted):** Required recovery-path matrix tests exposed a guided-exchange defect: `Incomplete` parsed packages could reach `CommitConsumedPaHandoverImport` before eligibility. PA authorized narrow correction (handover `763c07b2`): guided Validate PA Response now commits only when `RelayValidationState.Valid`. Guided consumption-gate tests added; Release validation recorded after correction (see Engineering return package). MVT-5 remains **Pending**.
 - **MVT-5 human retest (2026-10-07, continued):** After recovery-loop publication and successful Planning-authorization guided flow on real project `aff1297f-f0fe-475c-b2b4-ddf27663caff` / GEW `…8f396384`, durable **Planning** development work authorization recorded via ordinary UI. **Current Work post-authorization failure:** actionable continuation absent — operator judgment *No. Not in the slightest.* (see MVT-5 record evidence). Engineering PLAN `1f886d78-5a66-4749-885c-f835f01d7a67`; implementation published `f1a68c7037a0f87a923593e73e6102a76f8073e7` (Open Governed Exchange). **Governed Exchange Plan/Agent ambiguity:** operator *I will click on "Open Governed Exchange"* then *Now, here I really don't know if I should use Plan or Agent because I don't know where we are in the workflow*; broader continuity observations → AWI-0013 (`92a8a672`). PLAN `b87db8cb`; implementation `f7c75630` (Exchange governed-context projection; uncommitted). MVT-5/MVT-6/MVT-7 remain **Pending**.
 - **AWI-0013 (2026-10-07, published `92a8a672`):** Deferred capture for Workflow Navigator, subject-matter continuity, human-readable AI views — **not** implemented by `f7c75630` thin Exchange context strip.
+- **Architecture tranche (2026-10-07, handover `0191d293`, uncommitted):** Investigation `70f8c80b` → **ADR-0026** Accepted (Guided Work Surface vs Relay Technical Surface; minimum work continuity model). Human MVR **Paused**. Published code baseline remains `bf1aa1b` until separate publication. Legacy Exchange incremental remediation `531d1df4` **cancelled**.
 
 ---
 

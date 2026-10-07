@@ -39,6 +39,7 @@ Individual ADRs live in [docs/Architecture/ADRs/](docs/Architecture/ADRs/README.
 | [ADR-0023](docs/Architecture/ADRs/ADR-0023-Engineering-Agent-Plugin-Hosting-and-Registration-Architecture.md) | Engineering Agent plugin hosting and registration architecture | Accepted | 2026-10-01 |
 | [ADR-0024](docs/Architecture/ADRs/ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) | Governed Engineering Workflow — prescribed workflow and profiles | Accepted | 2026-10-03 |
 | [ADR-0025](docs/Architecture/ADRs/ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md) | Governed interaction — operational boundaries and layer responsibilities (GIES) | Accepted | 2026-10-03 |
+| [ADR-0026](docs/Architecture/ADRs/ADR-0026-Guided-Work-Surface-Work-Continuity-and-Relay-Technical-Surface.md) | Guided Work Surface, work continuity, and Relay Technical Surface (partial AWI-0013) | Accepted | 2026-10-07 |
 
 ## Related Documents
 

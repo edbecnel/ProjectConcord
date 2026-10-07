@@ -36,6 +36,7 @@
 - [SPEC-006 Reconciliation Documentation Tranche Plan](../../Handover/ProjectConcord-SPEC-006-Reconciliation-Documentation-Tranche-Plan.md)
 - [SPEC-006 GIES interaction relay reconciliation tranche plan](../../Handover/ProjectConcord-SPEC-006-GIES-Interaction-Relay-Reconciliation-Tranche-Plan.md) (**Published** 2026-10-03; tranche **closed**)
 - [ADR-0020 — Operator projections, product shell, and workspace navigation](../../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) (**Accepted** 2026-10-01)
+- [ADR-0026 — Guided Work Surface, work continuity, and Relay Technical Surface](../../Architecture/ADRs/ADR-0026-Guided-Work-Surface-Work-Continuity-and-Relay-Technical-Surface.md) (**Accepted** 2026-10-07)
 - [ADR-0021 — Engineering Agent provider plugin contract](../../Architecture/ADRs/ADR-0021-Engineering-Agent-Provider-Plugin-Contract.md) (**Accepted** 2026-10-01)
 - [ADR-0022 — Engineering Agent automated transport architecture](../../Architecture/ADRs/ADR-0022-Engineering-Agent-Automated-Transport-Architecture.md) (**Accepted** 2026-10-01)
 - [PCON-0005 — ProjectConcord Workflow Framework](../../Architecture/PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03)
@@ -326,6 +327,11 @@ This section defines **presentation/workflow projection** binding between the Co
 **Non-goals (PC-PAR-023):** new relay package kinds; weakening machine JSON authority; bypassing STOP; substituting free prose for governance-critical fields; collapsing **Required**, **Available**, and **Recommended** actions.
 
 | **PC-PAR-023f** | **GIES:** Operator projections such as Awaiting Human Input, Awaiting PA Input, Awaiting Authorization, Interaction Conflict, or Interaction Incomplete **SHALL** be derived from governed GIES + relay state ([ADR-0020](../../Architecture/ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md)) — they are **not** required wire protocol values and **MUST NOT** be confused with relay **INCOMPLETE** validation disposition. |
+| **PC-PAR-026** | For ordinary operator progression through the P0 manual intra-project Project Architect ↔ Engineering Agent relay track, the product shell **SHALL** present a **Guided Work Surface** per [ADR-0026](../../Architecture/ADRs/ADR-0026-Guided-Work-Surface-Work-Continuity-and-Relay-Technical-Surface.md) as the **primary** workflow-local experience. Meaningful human actions on that surface **MAY** orchestrate relay operations without exposing package generation, copy, import, and validation as the primary workflow choices when policy permits orchestration. |
+| **PC-PAR-026a** | The **Relay Technical Surface** (relay control panel exposing generate/copy/import/prepare mechanics as first-class primary controls, full package text regions, and session/mode controls without guided work continuity) **MAY** remain for advanced, diagnostic, recovery, governance inspection, troubleshooting, MVR harness, and fallback paths but **MUST NOT** be the sole or architecturally designated **ordinary primary** experience for routine planning-region continuation after Planning development work authorization is on record. |
+| **PC-PAR-026b** | A **human-readable AI communication view** of a governed package **SHALL** be a read-only alternate projection deterministically derived from canonical relay content where practical ([ADR-0026](../../Architecture/ADRs/ADR-0026-Guided-Work-Surface-Work-Continuity-and-Relay-Technical-Surface.md) §8). It **MUST NOT** substitute for canonical packages or for guided-work continuity narrative. |
+
+**Non-goals (PC-PAR-026):** weakening relay validation; bypassing STOP; inventing authorization from guided presentation; storing provider chat transcripts as canonical relay content.
 
 ## 18. GIES interaction relay (EA boundary)
 

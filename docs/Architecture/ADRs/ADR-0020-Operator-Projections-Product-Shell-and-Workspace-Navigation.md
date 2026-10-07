@@ -10,6 +10,8 @@ Accepted
 
 **Amended:** 2026-10-03 — governed work-state recovery binding **published** ([tranche plan](../../Handover/ProjectConcord-Durable-Governed-Work-State-Recovery-Binding-Tranche-Plan.md))
 
+**Amended:** 2026-10-07 — Guided Work Surface vs Relay Technical Surface ([ADR-0026](ADR-0026-Guided-Work-Surface-Work-Continuity-and-Relay-Technical-Surface.md))
+
 ## Context
 
 [AWI-0008](../Watch_Items/AWI-0008-Governed-Operator-Experience-and-Product-Shell.md) captured operator-experience requirements from A2 P0 manual governed relay verification. Partial promotions established terminology ([ADR-0018](ADR-0018-Adopter-Terminology-Policy-and-Projection-Architecture.md)), instance and persistence architecture ([ADR-0019](ADR-0019-Local-First-Operational-Persistence-Service-Boundary-Synchronization-and-Concurrency.md)), and governed interaction direction (work/review packages, state sources **A** / **B** / **C**).
@@ -132,6 +134,8 @@ visible governed progression (workflow-local)
 This is **not** required to be a modal linear wizard. The operator **MAY** move among global Project areas while a workflow-local progression indicator reflects relay stage completion and eligibility.
 
 **Raw relay/package transport** (machine JSON, fenced blocks, full rendered package text) **SHALL** remain available through **progressive disclosure** for diagnostics, expert inspection, manual transfer, and interoperability. Raw transport **MUST NOT** remain the **primary** production operator workflow UX ([AWI-0008](../Watch_Items/AWI-0008-Governed-Operator-Experience-and-Product-Shell.md) §B).
+
+For ordinary operator progression through governed relay interactions, the **Guided Work Surface** ([ADR-0026](ADR-0026-Guided-Work-Surface-Work-Continuity-and-Relay-Technical-Surface.md)) is the normative **primary** workflow-local presentation. The **Relay Technical Surface** (legacy relay control panel and equivalent) is **not** the designated ordinary primary experience; it remains available for advanced, diagnostic, recovery, and fallback use per ADR-0026 §3.
 
 ### 6. Product shell navigation layers
 
@@ -328,3 +332,4 @@ Relay import **non-regression** and **Valid** vs **actionable** applicability ar
 - [PCON-0005](../PCON-0005-ProjectConcord-Workflow-Framework.md) (**Accepted** 2026-10-03 — workflow framework; operator projections remain derived)
 - [Work-state recovery binding tranche plan](../../Handover/ProjectConcord-Durable-Governed-Work-State-Recovery-Binding-Tranche-Plan.md)
 - [ADR-0024](ADR-0024-Governed-Engineering-Workflow-Prescribed-Workflow-Architecture.md) (**Accepted** 2026-10-03 — GEW prescribed workflow)
+- [ADR-0026](ADR-0026-Guided-Work-Surface-Work-Continuity-and-Relay-Technical-Surface.md) (**Accepted** 2026-10-07 — Guided Work vs Relay Technical Surface)

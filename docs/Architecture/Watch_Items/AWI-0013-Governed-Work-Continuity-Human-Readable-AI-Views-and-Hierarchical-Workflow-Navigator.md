@@ -4,13 +4,13 @@
 
 | | |
 |---|---|
-| **Status** | Active — **deferred**, **capture-only** |
-| **Disposition** | **NOT architectural acceptance** — **NOT implementation authorization** |
+| **Status** | Active — **partially promoted** (2026-10-07); remainder **deferred** |
+| **Disposition** | Minimum guided-work / continuity decisions **Accepted** in [ADR-0026](../ADRs/ADR-0026-Guided-Work-Surface-Work-Continuity-and-Relay-Technical-Surface.md). Full navigator, broad history UX, and related capabilities remain **NOT implementation authorization**. |
 | **Owner** | ProjectConcord |
 | **Created** | 2026-10-07 |
 | **Revisit Trigger** | Before any operator continuity / workflow-navigator / human-readable relay-view tranche; PA request to promote to ADR/specification; material change to operator projection architecture ([ADR-0020](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md)) |
 | **Discovery source** | Human MVT-5 operator verification (2026-10-07); operator dogfooding observations during Governed Exchange and Engineering Agent mode selection; PA handover `d876dd66-e301-499e-b88f-fc98c6245806` |
-| **Related ADRs** | [ADR-0020](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md) (operator projections — illustrative only); [ADR-0025](../ADRs/ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md) (governed interaction boundaries) |
+| **Related ADRs** | [ADR-0026](../ADRs/ADR-0026-Guided-Work-Surface-Work-Continuity-and-Relay-Technical-Surface.md) (**Accepted** 2026-10-07 — partial promotion); [ADR-0020](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md); [ADR-0025](../ADRs/ADR-0025-Governed-Interaction-Operational-Boundaries-and-Layer-Responsibilities.md) |
 | **Related specs** | [SPEC-004](../../Specifications/features/SPEC-004-ai-assisted-development-governance-workflow.md) (PC-AIGOV-017 — work outside active workflow); [SPEC-006](../../Specifications/features/SPEC-006-par-project-root-and-governed-workflow-relay.md) (canonical relay packages) |
 | **Cross-reference** | [AWI-0008 §B.1](AWI-0008-Governed-Operator-Experience-and-Product-Shell.md#b1-hierarchical-workflow-view-deferred--capture-2026-10-03) (**Hierarchical Workflow View** — **incorporated and expanded here**, not duplicated); [AWI-0011](AWI-0011-Governed-Interactive-Engineering-Session.md) (GIES — session continuity); [AWI-0012](AWI-0012-Governed-AI-Handover-Attachments.md) (governed attachments — future node/view references); [AWI-0010](AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md) (GEW runtime and operator deferred UX); [AWI-0003](AWI-0003-Primary-Orchestration-and-External-AI-Engineering-Tool-Integration.md) (orchestration and external AI) |
 
@@ -55,13 +55,31 @@ These observations are **architectural/product evidence**. They **motivate** thi
 
 How should ProjectConcord **derive, persist, and present** human-readable **governed work continuity** and **subject-matter continuity** — including a **hierarchical Workflow Navigator** and **human-readable AI communication views** — from authoritative governed state and artifacts, without creating parallel sources of truth that can silently diverge?
 
+## Partial promotion (2026-10-07)
+
+Handover `0191d293` / investigation `70f8c80b`. The Project Architect **Accepted** [ADR-0026](../ADRs/ADR-0026-Guided-Work-Surface-Work-Continuity-and-Relay-Technical-Surface.md), promoting **minimum** decisions from this AWI:
+
+| Promoted now (ADR-0026 / PC-PAR-026) | Still deferred in this AWI |
+|---|---|
+| Guided Work Surface vs Relay Technical Surface | Full Hierarchical Workflow Navigator UI |
+| Minimum active work focus + episode continuity responsibilities | Broad multi-work-item navigation UX |
+| Human-readable package view **authority rules** (derivative, not substitute) | Human-readable renderer implementation |
+| Navigator binding constraints (`node visible ≠ node mutable`) | Complete historical narrative / search |
+| Persistence/recovery requirements at conceptual level | OOB side-work protocol |
+| Post-DWA guided-primary routing direction | GIES runtime |
+| | Governed attachment integration |
+| | Rigor-level ceremony variants in UI |
+| | Final persistence schema / event taxonomy freeze |
+
+**No** `src/` implementation is authorized by this partial promotion.
+
 ## Current baseline (explicit non-claims)
 
-While **Active** and **capture-only**:
+While **Active** (deferred remainder):
 
-- Operator continuity today relies heavily on **external** PA/EA conversation history, manual correlation, and partial in-app projections (workflow stage, relay packages, Current Work, etc.).
-- **No** canonical work-context model, **no** Workflow Navigator implementation, and **no** first-class human-readable relay view are authorized by this AWI.
-- **No** `src/` changes, prototypes, or UI tranches are authorized.
+- Operator continuity today still relies heavily on **external** PA/EA conversation history plus partial in-app projections until guided-work implementation lands.
+- **No** Workflow Navigator implementation and **no** human-readable renderer are authorized yet.
+- Legacy Exchange as primary post-DWA path is **superseded architecturally** by ADR-0026 §10 — implementation separately authorized.
 
 ## Scope and non-goals
 
@@ -253,8 +271,9 @@ The future investigation **should** leave open at least:
 
 ```text
 Deferred capture (this AWI)
-    -> PA-governed architecture investigation
-    -> Proposed ADR(s) / SPEC amendment(s) (separate)
+    -> PA-governed architecture investigation (70f8c80b)
+    -> ADR-0026 + SPEC-006 PC-PAR-026 (Accepted 2026-10-07) — partial
+    -> Remaining AWI scope -> future ADR/SPEC as needed
     -> Implementation tranches (separately authorized)
 ```
 
@@ -265,6 +284,7 @@ Deferred capture (this AWI)
 ## Related Documents
 
 - [AWI-0008 §B.1 — Hierarchical Workflow View (deferred UX)](AWI-0008-Governed-Operator-Experience-and-Product-Shell.md#b1-hierarchical-workflow-view-deferred--capture-2026-10-03)
+- [ADR-0026 — Guided Work Surface, work continuity, and Relay Technical Surface](../ADRs/ADR-0026-Guided-Work-Surface-Work-Continuity-and-Relay-Technical-Surface.md) (**Accepted** 2026-10-07 — partial promotion)
 - [ADR-0020 — Operator projections and workspace navigation](../ADRs/ADR-0020-Operator-Projections-Product-Shell-and-Workspace-Navigation.md)
 - [PCON-0005 — Workflow Framework](../PCON-0005-ProjectConcord-Workflow-Framework.md)
 - [AWI-0011 — Governed Interactive Engineering Session](AWI-0011-Governed-Interactive-Engineering-Session.md)

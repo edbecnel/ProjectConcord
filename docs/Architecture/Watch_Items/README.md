@@ -26,7 +26,7 @@ EDF convention: `docs/Architecture/Watch_Items/AWI-NNNN-Short-Title.md` ([EDF Ga
 | [AWI-0010](AWI-0010-Workflow-Framework-and-GEW-Architectural-Follow-Through.md) | Workflow Framework and GEW architectural follow-through (runtime, SPEC-004 reconciliation) | Active |
 | [AWI-0011](AWI-0011-Governed-Interactive-Engineering-Session.md) | Governed Interactive Engineering Session (GIES) — publication, SPEC/relay amendments, runtime | Active |
 | [AWI-0012](AWI-0012-Governed-AI-Handover-Attachments.md) | Governed AI handover attachments — identity, integrity, transport, provenance (deferred investigation) | Active — **deferred**, **capture-only** (2026-10-07) |
-| [AWI-0013](AWI-0013-Governed-Work-Continuity-Human-Readable-AI-Views-and-Hierarchical-Workflow-Navigator.md) | Governed work continuity, subject-matter context, human-readable AI views, hierarchical Workflow Navigator (expands AWI-0008 §B.1) | Active — **deferred**, **capture-only** (2026-10-07) |
+| [AWI-0013](AWI-0013-Governed-Work-Continuity-Human-Readable-AI-Views-and-Hierarchical-Workflow-Navigator.md) | Governed work continuity, subject-matter context, human-readable AI views, hierarchical Workflow Navigator — **partial → ADR-0026** (2026-10-07); navigator/remainder deferred | Active — **partially promoted** |
 
 ## Lifecycle
 
