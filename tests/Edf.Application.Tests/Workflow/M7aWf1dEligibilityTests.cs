@@ -74,6 +74,37 @@ public class M7aWf1dEligibilityTests
     }
 
     [Fact]
+    public void PlanningGoverned_WithPlanningDwa_OffersGovernedExchangeContinuationFact()
+    {
+        var (services, instance, _) = CreateServices(withProfile: true);
+        instance = TransitionTo(services, instance, GewV1TopologyPlaces.PlanningGoverned);
+        services.DevelopmentWorkAuthorizations.RecordGovernedGrant(
+            instance.InstanceId,
+            DevelopmentWorkAuthorizationKind.Planning,
+            null,
+            null,
+            null,
+            GovernedWorkflowMutationAuthorityTestSupport.ForTestHarness(GovernedCorrelationId.New()));
+        var projection = services.WorkStateOperatorProjection.ProjectForProject(instance.ProjectId, null);
+        var primary = projection.WorkflowNextActions.FirstOrDefault();
+        Assert.True(PlanningRegionWorkContinuationFacts.InstanceShouldOfferGovernedExchangeContinuation(
+            projection,
+            primary));
+    }
+
+    [Fact]
+    public void PlanningGoverned_WithoutPlanningDwa_DoesNotOfferGovernedExchangeContinuationFact()
+    {
+        var (services, instance, _) = CreateServices(withProfile: true);
+        instance = TransitionTo(services, instance, GewV1TopologyPlaces.PlanningGoverned);
+        var projection = services.WorkStateOperatorProjection.ProjectForProject(instance.ProjectId, null);
+        var primary = projection.WorkflowNextActions.FirstOrDefault();
+        Assert.False(PlanningRegionWorkContinuationFacts.InstanceShouldOfferGovernedExchangeContinuation(
+            projection,
+            primary));
+    }
+
+    [Fact]
     public void ImplementationGoverned_WrongDwaKind_BlocksAuthorization()
     {
         var (services, instance, _) = CreateServices(withProfile: true);

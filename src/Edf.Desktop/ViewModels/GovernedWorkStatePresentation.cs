@@ -261,4 +261,20 @@ internal static class GovernedWorkStatePresentation
 
     public static string ComposeObtainPlanningAuthorizationNextStepSummary() =>
         "Obtain Planning Authorization";
+
+    public static string ComposeGovernedPlanningPostPlanningDwaSituationSummary() =>
+        "The project is in the governed planning stage."
+        + Environment.NewLine
+        + "Planning development work authorization is durably on record."
+        + Environment.NewLine
+        + "Repository implementation is not authorized by this Planning development work authorization.";
+
+    public static string ComposeContinuePlanningRegionWorkNextStepSummary() =>
+        "Continue governed planning work through Governed Exchange.";
+
+    public static string ComposePlanningRegionGovernedExchangeActionExplanation() =>
+        "Open Governed Exchange to run Project Architect and Engineering Agent exchanges for planning-region work. "
+        + "This is guidance about where to continue — not a new authorization. "
+        + "Opening Exchange does not grant implementation authorization. "
+        + "Relay validation and import do not create durable development work authorization.";
 }

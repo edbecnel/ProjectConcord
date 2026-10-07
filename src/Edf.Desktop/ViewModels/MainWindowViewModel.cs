@@ -63,7 +63,8 @@ public sealed class MainWindowViewModel : ViewModelBase
                 workflowServices,
                 () => relayViewModel?.ConsumedPaHandover ?? default,
                 LaunchPlanningEntryGuidedExchange,
-                LaunchPlanningAuthorizationGuidedExchange);
+                LaunchPlanningAuthorizationGuidedExchange,
+                LaunchGovernedExchangeTab);
 
         relayViewModel = relayWorkflow is null
             ? null
@@ -459,6 +460,12 @@ public sealed class MainWindowViewModel : ViewModelBase
         PlanningAuthorizationGuided?.ActivatePlanningAuthorizationGuided();
         SelectedOperatorTabIndex = (int)OperatorShellTab.Exchange;
         RaiseGuidedExchangeVisibility();
+    }
+
+    private void LaunchGovernedExchangeTab()
+    {
+        OpenLegacyExchange();
+        SelectedOperatorTabIndex = (int)OperatorShellTab.Exchange;
     }
 
     private void ReturnFromGuidedExchange()

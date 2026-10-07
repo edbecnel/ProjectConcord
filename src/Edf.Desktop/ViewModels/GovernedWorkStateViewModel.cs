@@ -25,6 +25,7 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
     private readonly Func<(GovernedRelayPackage? Package, RelayValidationResult? Validation)>? _consumedPaHandoverProvider;
     private readonly Action? _launchPlanningEntryGuidedExchange;
     private readonly Action? _launchPlanningAuthorizationGuidedExchange;
+    private readonly Action? _openGovernedExchangeTab;
     private bool _isSectionEnabled;
     private string? _statusMessage;
     private string? _fullyGovernedFrontierLine;
@@ -38,8 +39,10 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
     private bool _canOpenExchange;
     private bool _canEnterGovernedPlanning;
     private bool _canObtainPlanningAuthorization;
+    private bool _canOpenGovernedExchange;
     private string? _planningEntryActionExplanation;
     private string? _planningAuthorizationActionExplanation;
+    private string? _planningRegionWorkActionExplanation;
 
     public GovernedWorkStateViewModel(
         IProjectWorkspaceService workspace,
@@ -53,7 +56,8 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
         WorkflowApplicationServices workflowServices,
         Func<(GovernedRelayPackage? Package, RelayValidationResult? Validation)>? consumedPaHandoverProvider,
         Action? openExchangeTab,
-        Action? openPlanningAuthorizationExchange = null)
+        Action? openPlanningAuthorizationExchange = null,
+        Action? openGovernedExchangeTab = null)
     {
         _workspace = workspace ?? throw new ArgumentNullException(nameof(workspace));
         ArgumentNullException.ThrowIfNull(workflowServices);
@@ -64,6 +68,7 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
         _consumedPaHandoverProvider = consumedPaHandoverProvider;
         _launchPlanningEntryGuidedExchange = openExchangeTab;
         _launchPlanningAuthorizationGuidedExchange = openPlanningAuthorizationExchange;
+        _openGovernedExchangeTab = openGovernedExchangeTab;
 
         CurrentWorkItems = new ObservableCollection<GovernedWorkStateCurrentWorkItemViewModel>();
         WaitingOnItems = new ObservableCollection<GovernedWorkStateWaitingOnItemViewModel>();
@@ -75,6 +80,9 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
         ObtainPlanningAuthorizationCommand = new RelayCommand(
             OpenPlanningAuthorizationExchange,
             () => CanObtainPlanningAuthorization);
+        OpenGovernedExchangeCommand = new RelayCommand(
+            OpenGovernedExchange,
+            () => CanOpenGovernedExchange);
     }
 
     public ObservableCollection<GovernedWorkStateCurrentWorkItemViewModel> CurrentWorkItems { get; }
@@ -90,6 +98,8 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
     public ICommand EnterGovernedPlanningCommand { get; }
 
     public ICommand ObtainPlanningAuthorizationCommand { get; }
+
+    public ICommand OpenGovernedExchangeCommand { get; }
 
     public bool SuppressGenericNextStepSummary
     {
@@ -143,6 +153,24 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
     {
         get => _planningAuthorizationActionExplanation;
         private set => SetProperty(ref _planningAuthorizationActionExplanation, value);
+    }
+
+    public bool CanOpenGovernedExchange
+    {
+        get => _canOpenGovernedExchange;
+        private set
+        {
+            if (SetProperty(ref _canOpenGovernedExchange, value))
+            {
+                (OpenGovernedExchangeCommand as RelayCommand)?.RaiseCanExecuteChanged();
+            }
+        }
+    }
+
+    public string? PlanningRegionWorkActionExplanation
+    {
+        get => _planningRegionWorkActionExplanation;
+        private set => SetProperty(ref _planningRegionWorkActionExplanation, value);
     }
 
     public string BoundaryNotice =>
@@ -246,8 +274,10 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
         CanOpenExchange = false;
         CanEnterGovernedPlanning = false;
         CanObtainPlanningAuthorization = false;
+        CanOpenGovernedExchange = false;
         PlanningEntryActionExplanation = null;
         PlanningAuthorizationActionExplanation = null;
+        PlanningRegionWorkActionExplanation = null;
 
         if (!IsSectionEnabled || _workspace.CurrentProjectId is not { } projectId)
         {
@@ -318,6 +348,7 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
         (OpenExchangeCommand as RelayCommand)?.RaiseCanExecuteChanged();
         (EnterGovernedPlanningCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
         (ObtainPlanningAuthorizationCommand as RelayCommand)?.RaiseCanExecuteChanged();
+        (OpenGovernedExchangeCommand as RelayCommand)?.RaiseCanExecuteChanged();
     }
 
     private void ApplyPlanningEntryOperatorPresentation(
@@ -346,6 +377,19 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
                 CanObtainPlanningAuthorization = true;
                 PlanningAuthorizationActionExplanation =
                     "Start here to complete the governed authorization steps in ProjectConcord.";
+            }
+            else if (PlanningRegionWorkContinuationFacts.InstanceShouldOfferGovernedExchangeContinuation(
+                         projection,
+                         primaryNextAction))
+            {
+                OperatorSituationSummary =
+                    GovernedWorkStatePresentation.ComposeGovernedPlanningPostPlanningDwaSituationSummary();
+                SuppressGenericNextStepSummary = true;
+                OperatorNextStepSummary =
+                    GovernedWorkStatePresentation.ComposeContinuePlanningRegionWorkNextStepSummary();
+                CanOpenGovernedExchange = true;
+                PlanningRegionWorkActionExplanation =
+                    GovernedWorkStatePresentation.ComposePlanningRegionGovernedExchangeActionExplanation();
             }
             else
             {
@@ -394,6 +438,11 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
     private void OpenPlanningAuthorizationExchange()
     {
         _launchPlanningAuthorizationGuidedExchange?.Invoke();
+    }
+
+    private void OpenGovernedExchange()
+    {
+        _openGovernedExchangeTab?.Invoke();
     }
 
     private async Task EnterGovernedPlanningAsync()

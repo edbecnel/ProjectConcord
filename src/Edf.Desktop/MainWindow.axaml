@@ -129,6 +129,13 @@
                         HorizontalAlignment="Left" />
               </StackPanel>
 
+              <StackPanel Spacing="6" IsVisible="{Binding CanOpenGovernedExchange}">
+                <SelectableTextBlock Text="{Binding PlanningRegionWorkActionExplanation}" TextWrapping="Wrap" FontSize="13" />
+                <Button Content="Open Governed Exchange"
+                        Command="{Binding OpenGovernedExchangeCommand}"
+                        HorizontalAlignment="Left" />
+              </StackPanel>
+
               <StackPanel Spacing="6" IsVisible="{Binding CanOpenExchange}">
                 <SelectableTextBlock Text="{Binding PlanningEntryActionExplanation}" TextWrapping="Wrap" FontSize="13" />
                 <Button Content="Get Project Architect Approval"

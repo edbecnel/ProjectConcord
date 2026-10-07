@@ -162,6 +162,7 @@ public class GovernedWorkStateViewModelTests
         workState.RefreshFromProjection();
 
         Assert.True(workState.CanObtainPlanningAuthorization);
+        Assert.False(workState.CanOpenGovernedExchange);
         Assert.Contains("Obtain Planning Authorization", workState.OperatorNextStepSummary ?? string.Empty, StringComparison.Ordinal);
         Assert.Contains("not currently authorized", workState.OperatorSituationSummary ?? string.Empty, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("implementation authorized", workState.OperatorSituationSummary ?? string.Empty, StringComparison.OrdinalIgnoreCase);
@@ -184,12 +185,14 @@ public class GovernedWorkStateViewModelTests
         var projectId = open.ProjectId!.Value;
 
         var launchAuth = false;
+        var launchGovernedExchange = false;
         var workState = new GovernedWorkStateViewModel(
             workspace,
             workflow,
             null,
             () => { },
-            () => launchAuth = true);
+            () => launchAuth = true,
+            () => launchGovernedExchange = true);
         workState.OnActiveProjectChanged(projectId, hasActiveProject: true);
         ((AsyncRelayCommand)workState.StartGewBootstrapCommand).Execute(null);
         var instance = workflow.WorkStateRecovery.RecoverForProject(projectId).ActiveInstances.Single();
@@ -214,6 +217,91 @@ public class GovernedWorkStateViewModelTests
         workState.RefreshFromProjection();
 
         Assert.False(workState.CanObtainPlanningAuthorization);
+        Assert.True(workState.CanOpenGovernedExchange);
+        Assert.Contains("Planning development work authorization is durably on record", workState.OperatorSituationSummary ?? string.Empty, StringComparison.Ordinal);
+        Assert.Contains("Repository implementation is not authorized", workState.OperatorSituationSummary ?? string.Empty, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("Governed Exchange", workState.OperatorNextStepSummary ?? string.Empty, StringComparison.Ordinal);
+        Assert.DoesNotContain("Whether you may execute is not determined", workState.OperatorNextStepSummary ?? string.Empty, StringComparison.OrdinalIgnoreCase);
+
+        var recoveryBefore = workflow.WorkStateRecovery.RecoverForProject(projectId);
+        var placeBefore = recoveryBefore.ActiveInstances.Single().TopologyPlaceId.Value;
+        var dwaCountBefore = recoveryBefore.DevelopmentWorkAuthorizations.Count;
+
+        ((RelayCommand)workState.OpenGovernedExchangeCommand).Execute(null);
+        Assert.True(launchGovernedExchange);
+
+        var recoveryAfter = workflow.WorkStateRecovery.RecoverForProject(projectId);
+        Assert.Equal(placeBefore, recoveryAfter.ActiveInstances.Single().TopologyPlaceId.Value);
+        Assert.Equal(dwaCountBefore, recoveryAfter.DevelopmentWorkAuthorizations.Count);
+    }
+
+    [Fact]
+    public void PlanningGoverned_WithStopActive_DoesNotOfferGovernedExchangeContinuation()
+    {
+        var persistence = new InMemoryUserApplicationStatePersistence();
+        var (workState, projectId) = CreateWorkStateViewModel(persistence);
+        var workflow = WorkflowApplicationServicesFactory.Create(persistence);
+        workState.OnActiveProjectChanged(projectId, hasActiveProject: true);
+        ((AsyncRelayCommand)workState.StartGewBootstrapCommand).Execute(null);
+        var instance = workflow.WorkStateRecovery.RecoverForProject(projectId).ActiveInstances.Single();
+        workflow.WorkflowInstances.RecordGovernedTopologyTransition(
+            instance.InstanceId,
+            TopologyPlaceId.Parse(GewV1TopologyPlaces.PlanningGoverned),
+            instance.ResourceVersion,
+            GovernedWorkflowTransitionAuthority.FromRelayProvenance(
+                GovernedCorrelationId.New(),
+                GovernedPackageId.New()));
+        var handover = PlanningAuthorizationRelayFixtures.CreateQualifyingPlanningAuthorizationHandover(projectId);
+        workflow.PlanningAuthorizationGrants.TryRecordPlanningAuthorizationGrant(
+            projectId,
+            handover,
+            RelayValidationResult.Valid([]));
+        var authority = GovernedWorkflowMutationAuthorityTestSupport.ForTestHarness(GovernedCorrelationId.New());
+        workflow.WorkflowInstanceStops.RecordGovernedStopSet(instance.InstanceId, null, authority);
+        workState.RefreshFromProjection();
+
+        Assert.False(workState.CanOpenGovernedExchange);
+        Assert.False(workState.CanObtainPlanningAuthorization);
+    }
+
+    [Fact]
+    public void PlanningGoverned_PostGrant_ReopenedWorkStateViewModel_PreservesGovernedExchangeCta()
+    {
+        var persistence = new InMemoryUserApplicationStatePersistence();
+        var actor = new DegenerateAdministratorActor();
+        var workspace = new ProjectWorkspaceService(
+            new ProjectRootResolver(),
+            actor,
+            persistence,
+            new LocalProjectRuntime());
+        var workflow = WorkflowApplicationServicesFactory.Create(persistence);
+        var dir = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), "edf-mvp1-" + Guid.NewGuid().ToString("N")));
+        var open = workspace.OpenProjectRoot(dir.FullName);
+        Assert.True(open.Success);
+        var projectId = open.ProjectId!.Value;
+
+        var workState = new GovernedWorkStateViewModel(workspace, workflow);
+        workState.OnActiveProjectChanged(projectId, hasActiveProject: true);
+        ((AsyncRelayCommand)workState.StartGewBootstrapCommand).Execute(null);
+        var instance = workflow.WorkStateRecovery.RecoverForProject(projectId).ActiveInstances.Single();
+        workflow.WorkflowInstances.RecordGovernedTopologyTransition(
+            instance.InstanceId,
+            TopologyPlaceId.Parse(GewV1TopologyPlaces.PlanningGoverned),
+            instance.ResourceVersion,
+            GovernedWorkflowTransitionAuthority.FromRelayProvenance(
+                GovernedCorrelationId.New(),
+                GovernedPackageId.New()));
+        var handover = PlanningAuthorizationRelayFixtures.CreateQualifyingPlanningAuthorizationHandover(projectId);
+        workflow.PlanningAuthorizationGrants.TryRecordPlanningAuthorizationGrant(
+            projectId,
+            handover,
+            RelayValidationResult.Valid([]));
+
+        var reopened = new GovernedWorkStateViewModel(workspace, workflow);
+        reopened.OnActiveProjectChanged(projectId, hasActiveProject: true);
+
+        Assert.True(reopened.CanOpenGovernedExchange);
+        Assert.False(reopened.CanObtainPlanningAuthorization);
     }
 
     [Fact]
