@@ -1,8 +1,10 @@
+using Edf.Application.Operator.PlanningAuthorization;
 using Edf.Application.Operator.PlanningEntry;
 using Edf.Application.Operator.WorkState;
 using Edf.Application.Projects;
 using Edf.Application.Workflow;
 using Edf.Application.Workflow.Eligibility;
+using Edf.Application.Workflow.PlanningAuthorization;
 using Edf.Application.Workflow.PlanningEntry;
 using Edf.ProjectServices.Relay;
 
@@ -17,7 +19,9 @@ public sealed record WorkflowApplicationServices(
     IGovernedWorkStateRecoveryService WorkStateRecovery,
     GovernedWorkStateOperatorProjectionService WorkStateOperatorProjection,
     IGewV1IntakePlanningEntryTransitionService IntakePlanningEntryTransitions,
-    IPlanningEntryRelayReadModel PlanningEntryRelayReadModel);
+    IPlanningEntryRelayReadModel PlanningEntryRelayReadModel,
+    IGewV1PlanningDevelopmentWorkAuthorizationGrantService PlanningAuthorizationGrants,
+    IPlanningAuthorizationRelayReadModel PlanningAuthorizationRelayReadModel);
 
 public static class WorkflowApplicationServicesFactory
 {
@@ -64,6 +68,13 @@ public static class WorkflowApplicationServicesFactory
             registry,
             workflowService);
         var planningEntryRelayReadModel = new PlanningEntryRelayReadModel(persistence.RelayOperational);
+        var planningAuthorizationGrants = new GewV1PlanningDevelopmentWorkAuthorizationGrantService(
+            recovery,
+            effectiveConfigurationResolver,
+            eligibilityEvaluator,
+            registry,
+            developmentWorkAuthorizationService);
+        var planningAuthorizationRelayReadModel = new PlanningAuthorizationRelayReadModel(persistence.RelayOperational);
         return new WorkflowApplicationServices(
             workflowService,
             relationshipService,
@@ -73,6 +84,8 @@ public static class WorkflowApplicationServicesFactory
             recovery,
             projection,
             intakePlanningEntryTransitions,
-            planningEntryRelayReadModel);
+            planningEntryRelayReadModel,
+            planningAuthorizationGrants,
+            planningAuthorizationRelayReadModel);
     }
 }

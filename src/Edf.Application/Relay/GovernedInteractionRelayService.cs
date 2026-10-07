@@ -83,7 +83,8 @@ public sealed class GovernedInteractionRelayService : IGovernedInteractionRelayS
         GovernedRelayPackage package,
         RelayValidationResult validation,
         ProjectRoot? projectRootForTier0 = null,
-        string? renderedBodyHash = null)
+        string? renderedBodyHash = null,
+        PaHandoverResponseProfile? paReviewResponseProfile = null)
     {
         ArgumentNullException.ThrowIfNull(package);
         ArgumentNullException.ThrowIfNull(validation);
@@ -104,12 +105,15 @@ public sealed class GovernedInteractionRelayService : IGovernedInteractionRelayS
             enriched.CorrelationId,
             RelayProvenanceEventType.ObservedContext,
             MinimalPayloadJson);
+        var producedPayload = package.Kind == GovernedPackageKind.PaReviewExport && paReviewResponseProfile is not null
+            ? RelayPaReviewExportProvenance.CreatePayload(paReviewResponseProfile.Value)
+            : MinimalPayloadJson;
         AppendEvent(
             enriched.ProjectId,
             enriched.PackageId,
             enriched.CorrelationId,
             RelayProvenanceEventType.PackageProduced,
-            MinimalPayloadJson);
+            producedPayload);
 
         return persisted;
     }

@@ -240,9 +240,25 @@ internal static class GovernedWorkStatePresentation
 
     public static string ComposeGovernedPlanningEnteredSummary(GovernedWorkStateCurrentWorkItem item)
     {
+        return ComposeGovernedPlanningSituationSummary(item);
+    }
+
+    public static string ComposeGovernedPlanningSituationSummary(GovernedWorkStateCurrentWorkItem item)
+    {
+        if (item.GovernedEligibility.EvaluatedConstraintViolationCodes.Contains(
+                WorkflowEligibilityReasonCodes.BlockedAuthorization))
+        {
+            return "Implementation work is not currently authorized."
+                   + Environment.NewLine
+                   + "Planning development work authorization is required before governed planning work can continue under the evaluated rules.";
+        }
+
         var auth = DescribeAuthorizationSituation(item);
-        return "The project has entered the governed planning stage."
+        return "The project is in the governed planning stage."
                + Environment.NewLine
                + auth;
     }
+
+    public static string ComposeObtainPlanningAuthorizationNextStepSummary() =>
+        "Obtain Planning Authorization";
 }

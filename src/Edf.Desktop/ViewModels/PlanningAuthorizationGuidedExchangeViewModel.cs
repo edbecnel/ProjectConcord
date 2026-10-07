@@ -4,16 +4,16 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
 using Edf.Application.Composition;
-using Edf.Application.Operator.PlanningEntry;
+using Edf.Application.Operator.PlanningAuthorization;
 using Edf.Application.Projects;
 using Edf.Application.Relay;
 using Edf.Application.Relay.SoftwareDevelopment;
-using Edf.Application.Workflow.PlanningEntry;
+using Edf.Application.Workflow.PlanningAuthorization;
 using Edf.Domain.Projects;
 using Edf.Domain.Relay;
 using Edf.Domain.Workflow;
 
-public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
+public sealed class PlanningAuthorizationGuidedExchangeViewModel : ViewModelBase
 {
     private readonly IGovernedRelayP0WorkflowService _relayWorkflow;
     private readonly IProjectWorkspaceService _workspace;
@@ -21,8 +21,8 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
     private readonly Func<string, Task> _copyTextAsync;
     private readonly Action _returnToCurrentWork;
     private readonly Action? _onWorkStateMayHaveChanged;
-    private readonly PlanningEntryGuidedTransientState _transient = new();
-    private PlanningEntryGuidedStep _currentStep = PlanningEntryGuidedStep.Inactive;
+    private readonly PlanningAuthorizationGuidedTransientState _transient = new();
+    private PlanningAuthorizationGuidedStep _currentStep = PlanningAuthorizationGuidedStep.Inactive;
     private string? _stepTitle;
     private string? _stepBody;
     private string? _statusMessage;
@@ -36,7 +36,7 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
     private AgentSessionIntent? _selectedEaSessionIntent;
     private string _paResponseDraft = string.Empty;
 
-    public PlanningEntryGuidedExchangeViewModel(
+    public PlanningAuthorizationGuidedExchangeViewModel(
         IGovernedRelayP0WorkflowService relayWorkflow,
         IProjectWorkspaceService workspace,
         WorkflowApplicationServices workflowServices,
@@ -53,12 +53,12 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
 
         TechnicalDiagnostics = new ObservableCollection<string>();
 
-        PrepareReviewCommand = new AsyncRelayCommand(PrepareReviewAsync, () => IsActive && _currentStep == PlanningEntryGuidedStep.PrepareReview);
-        ConfirmSessionContinuityCommand = new RelayCommand(ConfirmSessionContinuity, () => IsActive && _currentStep == PlanningEntryGuidedStep.ConfirmSessionContinuity);
-        CopyReviewCommand = new AsyncRelayCommand(CopyReviewAsync, () => IsActive && _currentStep == PlanningEntryGuidedStep.SendReview && HasRenderableReview);
+        PrepareReviewCommand = new AsyncRelayCommand(PrepareReviewAsync, () => IsActive && _currentStep == PlanningAuthorizationGuidedStep.PrepareReview);
+        ConfirmSessionContinuityCommand = new RelayCommand(ConfirmSessionContinuity, () => IsActive && _currentStep == PlanningAuthorizationGuidedStep.ConfirmSessionContinuity);
+        CopyReviewCommand = new AsyncRelayCommand(CopyReviewAsync, () => IsActive && _currentStep == PlanningAuthorizationGuidedStep.SendReview && HasRenderableReview);
         AcknowledgeHavePaResponseCommand = new RelayCommand(AcknowledgeHavePaResponse, () => IsActive && _reviewCopied && _showAwaitPaResponseButton);
-        ValidatePaResponseCommand = new AsyncRelayCommand(ValidatePaResponseAsync, () => IsActive && _currentStep == PlanningEntryGuidedStep.ValidateResponse);
-        EnterGovernedPlanningCommand = new AsyncRelayCommand(EnterGovernedPlanningAsync, () => IsActive && _currentStep == PlanningEntryGuidedStep.ReviewDecision);
+        ValidatePaResponseCommand = new AsyncRelayCommand(ValidatePaResponseAsync, () => IsActive && _currentStep == PlanningAuthorizationGuidedStep.ValidateResponse);
+        RecordPlanningAuthorizationCommand = new AsyncRelayCommand(RecordPlanningAuthorizationAsync, () => IsActive && _currentStep == PlanningAuthorizationGuidedStep.ReviewDecision);
         ReturnToCurrentWorkCommand = new RelayCommand(() => _returnToCurrentWork(), () => IsActive);
         PrepareNewReviewCommand = new RelayCommand(StartNewReviewCycle, () => IsActive);
     }
@@ -77,7 +77,7 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
         }
     }
 
-    public PlanningEntryGuidedStep CurrentStep
+    public PlanningAuthorizationGuidedStep CurrentStep
     {
         get => _currentStep;
         private set => SetProperty(ref _currentStep, value);
@@ -96,9 +96,9 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
     }
 
     public string StepProgressLabel =>
-        _currentStep is PlanningEntryGuidedStep.Inactive or PlanningEntryGuidedStep.Complete
+        _currentStep is PlanningAuthorizationGuidedStep.Inactive or PlanningAuthorizationGuidedStep.Complete
             ? string.Empty
-            : $"Step {PlanningEntryGuidedStepResolver.StepNumber(_currentStep)} of {PlanningEntryGuidedStepResolver.StepCount(_currentStep)}";
+            : $"Step {PlanningAuthorizationGuidedStepResolver.StepNumber(_currentStep)} of {PlanningAuthorizationGuidedStepResolver.StepCount(_currentStep)}";
 
     public string? StatusMessage
     {
@@ -166,17 +166,17 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
     public bool HasRenderableReview =>
         !string.IsNullOrWhiteSpace(_transient.CachedRenderedReview);
 
-    public bool ShowConfirmSessionContinuity => _currentStep == PlanningEntryGuidedStep.ConfirmSessionContinuity;
+    public bool ShowConfirmSessionContinuity => _currentStep == PlanningAuthorizationGuidedStep.ConfirmSessionContinuity;
 
-    public bool ShowPrepareReview => _currentStep == PlanningEntryGuidedStep.PrepareReview;
+    public bool ShowPrepareReview => _currentStep == PlanningAuthorizationGuidedStep.PrepareReview;
 
-    public bool ShowSendReview => _currentStep == PlanningEntryGuidedStep.SendReview;
+    public bool ShowSendReview => _currentStep == PlanningAuthorizationGuidedStep.SendReview;
 
-    public bool ShowValidateResponse => _currentStep == PlanningEntryGuidedStep.ValidateResponse;
+    public bool ShowValidateResponse => _currentStep == PlanningAuthorizationGuidedStep.ValidateResponse;
 
-    public bool ShowReviewDecision => _currentStep == PlanningEntryGuidedStep.ReviewDecision;
+    public bool ShowReviewDecision => _currentStep == PlanningAuthorizationGuidedStep.ReviewDecision;
 
-    public bool ShowComplete => _currentStep == PlanningEntryGuidedStep.Complete;
+    public bool ShowComplete => _currentStep == PlanningAuthorizationGuidedStep.Complete;
 
     public ICommand PrepareReviewCommand { get; }
 
@@ -188,13 +188,13 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
 
     public ICommand ValidatePaResponseCommand { get; }
 
-    public ICommand EnterGovernedPlanningCommand { get; }
+    public ICommand RecordPlanningAuthorizationCommand { get; }
 
     public ICommand ReturnToCurrentWorkCommand { get; }
 
     public ICommand PrepareNewReviewCommand { get; }
 
-    public void ActivatePlanningEntryGuided()
+    public void ActivatePlanningAuthorizationGuided()
     {
         IsActive = true;
         Refresh();
@@ -203,7 +203,7 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
     public void Deactivate()
     {
         IsActive = false;
-        CurrentStep = PlanningEntryGuidedStep.Inactive;
+        CurrentStep = PlanningAuthorizationGuidedStep.Inactive;
     }
 
     public void OnActiveProjectChanged(ProjectConcordProjectId? projectId, bool hasActiveProject)
@@ -224,7 +224,7 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
     public (GovernedRelayPackage? Package, RelayValidationResult? Validation) ResolveAuthoritativeConsumedHandover(
         ProjectConcordProjectId projectId)
     {
-        var relay = _workflowServices.PlanningEntryRelayReadModel.Resolve(projectId);
+        var relay = _workflowServices.PlanningAuthorizationRelayReadModel.Resolve(projectId);
         var consumed = relay.LatestConsumedPaHandover;
         if (consumed is null)
         {
@@ -241,8 +241,9 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
             return;
         }
 
-        var place = ResolveIntakeTopologyPlace(projectId);
-        var relay = _workflowServices.PlanningEntryRelayReadModel.Resolve(projectId);
+        var place = ResolvePlanningGovernedTopologyPlace(projectId);
+        var needsPlanningDwa = ResolveInstanceNeedsPlanningDwa(projectId);
+        var relay = _workflowServices.PlanningAuthorizationRelayReadModel.Resolve(projectId);
         var session = _relayWorkflow.GetSessionState(projectId);
         var sessionReady = session.ProjectArchitectSessionIntent is not null
                            && session.EngineeringAgentSessionIntent is not null;
@@ -253,15 +254,16 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
         if (relay.LatestPaReviewExport is not null
             && string.IsNullOrWhiteSpace(_transient.CachedRenderedReview))
         {
-            _transient.CachedRenderedReview = PlanningEntryReviewExportRenderer.RenderCompleteClipboardPayload(
+            _transient.CachedRenderedReview = PlanningAuthorizationReviewExportRenderer.RenderCompleteClipboardPayload(
                 relay.LatestPaReviewExport.Package);
         }
 
-        var step = PlanningEntryGuidedStepResolver.Resolve(
+        var step = PlanningAuthorizationGuidedStepResolver.Resolve(
             place,
+            needsPlanningDwa,
             relay,
             _transient,
-            _workflowServices.IntakePlanningEntryTransitions,
+            _workflowServices.PlanningAuthorizationGrants,
             projectId,
             sessionReady);
 
@@ -284,8 +286,8 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
     }
 
     private void ApplyStepPresentation(
-        PlanningEntryGuidedStep step,
-        PlanningEntryRelayReadModelSnapshot relay,
+        PlanningAuthorizationGuidedStep step,
+        PlanningAuthorizationRelayReadModelSnapshot relay,
         ProjectConcordProjectId projectId,
         bool sessionReady)
     {
@@ -295,42 +297,41 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
 
         switch (step)
         {
-            case PlanningEntryGuidedStep.Complete:
-                StepTitle = "Entered Governed Planning";
-                StepBody = "ProjectConcord is now in Governed Planning. Return to Current Work and use Obtain Planning Authorization when ProjectConcord indicates it is required.";
+            case PlanningAuthorizationGuidedStep.Complete:
+                StepTitle = "Planning authorization recorded";
+                StepBody = "ProjectConcord recorded Planning development work authorization. Return to Current Work for updated status.";
                 break;
-            case PlanningEntryGuidedStep.ConfirmSessionContinuity:
+            case PlanningAuthorizationGuidedStep.ConfirmSessionContinuity:
                 StepTitle = "Conversation continuity";
                 StepBody =
                     "Before preparing the review, ProjectConcord needs your choices for conversation continuity. "
                     + "These are not guesses — select what applies to your Project Architect and Engineering Agent conversations.";
                 HydrateSessionIntentSelections(projectId);
                 break;
-            case PlanningEntryGuidedStep.PrepareReview:
-                StepTitle = "Prepare review";
+            case PlanningAuthorizationGuidedStep.PrepareReview:
+                StepTitle = "Prepare authorization review";
                 StepBody =
-                    "ProjectConcord needs your Project Architect to decide whether this project may enter Governed Planning. "
-                    + "ProjectConcord will prepare the governed project information needed for that review.";
+                    "ProjectConcord will prepare the governed information needed for Planning development work authorization.";
                 break;
-            case PlanningEntryGuidedStep.SendReview:
+            case PlanningAuthorizationGuidedStep.SendReview:
                 StepTitle = "Send review to Project Architect";
                 StepBody = ReviewCopied
                     ? "Review copied. Paste it into your Project Architect conversation. When the Project Architect returns a response, come back here."
                     : "Your Project Architect review is ready. Copy the review and paste it into your Project Architect conversation.";
                 break;
-            case PlanningEntryGuidedStep.ValidateResponse:
+            case PlanningAuthorizationGuidedStep.ValidateResponse:
                 StepTitle = "Bring back the Project Architect response";
                 StepBody =
                     "Copy the complete response returned by your Project Architect (one outer copy surface) and paste it below. "
-                    + "ProjectConcord will validate it before you can enter Governed Planning.";
+                    + "ProjectConcord will validate it before you can record Planning authorization.";
                 break;
-            case PlanningEntryGuidedStep.ReviewDecision:
-                StepTitle = "Review Project Architect decision";
-                StepBody = "Project Architect decision received. Review what this permits before entering Governed Planning.";
+            case PlanningAuthorizationGuidedStep.ReviewDecision:
+                StepTitle = "Review authorization decision";
+                StepBody = "Review what this permits before recording Planning development work authorization in ProjectConcord.";
                 DecisionSummary = ComposeDecisionSummary(relay.LatestConsumedPaHandover);
                 break;
             default:
-                StepTitle = "Planning Entry";
+                StepTitle = "Obtain Planning Authorization";
                 StepBody = "This guided exchange is not active for the current workflow state.";
                 break;
         }
@@ -358,11 +359,13 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
             new RelayPaReviewExportOptions(
                 EngineeringAgentMode.Plan,
                 null,
-                PaHandoverResponseProfile.PlanningEntry));
+                PaHandoverResponseProfile.PlanningDevelopmentWorkAuthorization));
 
         if (result.RenderedPackage is null)
         {
-            StatusMessage = "The review could not be prepared.";
+            StatusMessage = session.ProjectArchitectSessionIntent is null || session.EngineeringAgentSessionIntent is null
+                ? "Select conversation continuity for both roles, then try Prepare Review again."
+                : "ProjectConcord could not prepare the review package. Confirm conversation continuity and try again.";
             AppendTechnicalDiagnostics(result.Validation.Diagnostics);
             Refresh();
             return;
@@ -461,7 +464,7 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
             return;
         }
 
-        var eligibility = _workflowServices.IntakePlanningEntryTransitions.EvaluateEligibility(
+        var eligibility = _workflowServices.PlanningAuthorizationGrants.EvaluateGrantEligibility(
             projectId,
             result.Import.Package,
             result.Import.Validation);
@@ -470,8 +473,8 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
         {
             _transient.LastValidationAttemptFailed = true;
             ValidationOperatorMessage =
-                "The response was read, but it does not authorize Governed Planning entry. "
-                + "Ask your Project Architect for a planning-entry handover that authorizes planning without implementation.";
+                "The response was read, but it does not qualify for Planning development work authorization. "
+                + "ProjectConcord did not record any authorization.";
             TechnicalValidationDetail = eligibility.ReasonCode;
             _transient.LastOperatorValidationMessage = ValidationOperatorMessage;
             Refresh();
@@ -487,7 +490,7 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
         await Task.CompletedTask.ConfigureAwait(true);
     }
 
-    private async Task EnterGovernedPlanningAsync()
+    private async Task RecordPlanningAuthorizationAsync()
     {
         StatusMessage = null;
         if (_workspace.CurrentProjectId is not { } projectId)
@@ -498,12 +501,12 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
         var (package, validation) = ResolveAuthoritativeConsumedHandover(projectId);
         if (package is null || validation is null)
         {
-            StatusMessage = "A validated Project Architect response is required before entering Governed Planning.";
+            StatusMessage = "A validated Project Architect response is required before recording Planning authorization.";
             Refresh();
             return;
         }
 
-        var result = _workflowServices.IntakePlanningEntryTransitions.TryEnterGovernedPlanning(
+        var result = _workflowServices.PlanningAuthorizationGrants.TryRecordPlanningAuthorizationGrant(
             projectId,
             package,
             validation);
@@ -535,22 +538,22 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
         }
     }
 
-    private string? ResolveIntakeTopologyPlace(ProjectConcordProjectId projectId)
+    private string? ResolvePlanningGovernedTopologyPlace(ProjectConcordProjectId projectId)
     {
         var recovery = _workflowServices.WorkStateRecovery.RecoverForProject(projectId);
-        var intake = recovery.ActiveInstances
-            .FirstOrDefault(i => i.TopologyPlaceId.Value == GewV1TopologyPlaces.Intake);
-        if (intake is not null)
-        {
-            return GewV1TopologyPlaces.Intake;
-        }
-
         var planning = recovery.ActiveInstances
             .FirstOrDefault(i => i.TopologyPlaceId.Value == GewV1TopologyPlaces.PlanningGoverned);
         return planning?.TopologyPlaceId.Value;
     }
 
-    private static string ComposeDecisionSummary(PlanningEntryRelayHandoverSnapshot? consumed)
+    private bool ResolveInstanceNeedsPlanningDwa(ProjectConcordProjectId projectId)
+    {
+        var rootPath = _workspace.CurrentRoot?.AbsolutePath;
+        var projection = _workflowServices.WorkStateOperatorProjection.ProjectForProject(projectId, rootPath);
+        return PlanningAuthorizationWorkStateFacts.InstanceNeedsPlanningDevelopmentWorkAuthorization(projection);
+    }
+
+    private static string ComposeDecisionSummary(PlanningAuthorizationRelayHandoverSnapshot? consumed)
     {
         if (consumed is null)
         {
@@ -560,8 +563,8 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
         var package = consumed.Package;
         var gc = package.GovernanceCritical;
         var builder = new StringBuilder();
-        builder.AppendLine("✓ Governed Planning authorized for entry (planning entry handover).");
-        builder.AppendLine("Implementation is NOT authorized by this decision.");
+        builder.AppendLine("✓ Planning development work authorization is present in this Project Architect response.");
+        builder.AppendLine("Implementation in the repository is NOT authorized by this decision.");
 
         if (gc.Stop.State == RelayStopState.Active)
         {
@@ -583,11 +586,12 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
 
         if (payload.DevelopmentWorkAuthorization is not null)
         {
-            builder.AppendLine("A development-work authorization record is present — review technical detail if unexpected.");
+            builder.AppendLine(
+                $"Relay projection kind: {payload.DevelopmentWorkAuthorization.Kind} (durable record is created only after you confirm recording).");
         }
         else
         {
-            builder.AppendLine("No durable development-work authorization is granted by this step.");
+            builder.AppendLine("No Planning development work authorization projection is present.");
         }
 
         if (payload.AuthorizationDisposition is { } disposition)
@@ -625,7 +629,7 @@ public sealed class PlanningEntryGuidedExchangeViewModel : ViewModelBase
         (CopyReviewCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
         (AcknowledgeHavePaResponseCommand as RelayCommand)?.RaiseCanExecuteChanged();
         (ValidatePaResponseCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
-        (EnterGovernedPlanningCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
+        (RecordPlanningAuthorizationCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
         (ReturnToCurrentWorkCommand as RelayCommand)?.RaiseCanExecuteChanged();
         (PrepareNewReviewCommand as RelayCommand)?.RaiseCanExecuteChanged();
     }

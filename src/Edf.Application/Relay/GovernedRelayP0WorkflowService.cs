@@ -131,7 +131,12 @@ public sealed class GovernedRelayP0WorkflowService : IGovernedRelayP0WorkflowSer
             return new PaReviewExportOperationResult(null, validation, null);
         }
 
-        var recorded = _relay.RecordProducedPackage(package, validation, projectRoot);
+        var recorded = _relay.RecordProducedPackage(
+            package,
+            validation,
+            projectRoot,
+            renderedBodyHash: null,
+            paReviewResponseProfile: options.PaHandoverResponseProfile);
         var reviewBody = _projectArchitect.RenderPaReviewPackage(recorded.Package);
         var contract = GovernedRelayPaHandoverResponseInstruction.Render(
             recorded.Package,

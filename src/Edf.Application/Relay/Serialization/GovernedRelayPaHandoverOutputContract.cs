@@ -240,6 +240,19 @@ public static class GovernedRelayPaHandoverOutputContract
             };
         }
 
+        if (reporting.RequiresPlanningDevelopmentWorkAuthorizationProjection && planningAuthorized)
+        {
+            payload = payload with
+            {
+                DevelopmentWorkAuthorization = new DevelopmentWorkAuthorizationProjection(
+                    SoftwareDevelopmentAuthorizationKind.Planning,
+                    null,
+                    ["planning-governed-work"],
+                    dwaReference ?? PlaceholderDwaAuthorizationReference,
+                    false),
+            };
+        }
+
         return SoftwareDevelopmentProfilePayloadSerializer.Serialize(payload);
     }
 
@@ -272,6 +285,7 @@ public static class GovernedRelayPaHandoverOutputContract
         {
             PaHandoverResponseProfile.PlanningEntry => "PLANNING ENTRY",
             PaHandoverResponseProfile.ImplementationDirected => "IMPLEMENTATION DIRECTED",
+            PaHandoverResponseProfile.PlanningDevelopmentWorkAuthorization => "PLANNING DEVELOPMENT WORK AUTHORIZATION",
             _ => profile.ToString(),
         };
 
@@ -289,6 +303,14 @@ public static class GovernedRelayPaHandoverOutputContract
                 + "You must **not** authorize implementation in this profile (`implementationAuthorized` must remain **false**). "
                 + "Do **not** add a `developmentWorkAuthorization` projection. "
                 + "Directive flags must remain false. STOP remains your governance judgment.");
+        }
+        else if (reporting.ResponseProfile == PaHandoverResponseProfile.PlanningDevelopmentWorkAuthorization)
+        {
+            builder.AppendLine(
+                "This review requests **Planning development work authorization** for the active planning-governed workflow. "
+                + "When you authorize planning development work, set `planningAuthorized` **true**, keep `implementationAuthorized` **false**, "
+                + "and include an explicit `developmentWorkAuthorization` projection with kind **planning**. "
+                + "Do **not** direct implementation or tranche work. STOP remains your governance judgment.");
         }
         else
         {
@@ -316,7 +338,7 @@ public static class GovernedRelayPaHandoverOutputContract
         builder.AppendLine(
             $"| Document first line `{GovernedRelayV1Format.RenderVersionLinePrefix} 1` | PRESERVE | Yes | Exact line; render version **1**. |");
         builder.AppendLine(
-            $"| Machine fence ` ```{fence}` | PRESERVE | Yes | Preserve the inner fence exactly; do not nest an outer fence around the whole response. |");
+            $"| Machine fence ` ```{fence}` | PRESERVE | Yes | Preserve the inner machine fence and JSON exactly inside the canonical relay document. |");
         builder.AppendLine(
             $"| `kind` | PRESERVE | Yes | Must be `paHandoverImport`. |");
         builder.AppendLine(
@@ -355,11 +377,9 @@ public static class GovernedRelayPaHandoverOutputContract
             + "Must mirror `softwareDevelopmentProfile.authorizationDisposition` and governance-critical disposition flags. |");
         builder.AppendLine(
             "| `softwareDevelopmentProfile.developmentWorkAuthorization` | Profile-dependent | "
-            + (reporting.RequiresDevelopmentWorkAuthorizationProjection ? "Yes when implementation authorized" : "No")
+            + DescribeDwaFieldRequirement(reporting)
             + " | "
-            + (reporting.RequiresDevelopmentWorkAuthorizationProjection
-                ? "Required when directing implementation work with implementation authorization."
-                : "Must be absent for Planning Entry profile."));
+            + DescribeDwaFieldRules(reporting));
         builder.AppendLine();
         builder.AppendLine(
             "**Machine JSON booleans** and **human-readable projection booleans** (including `## Authorization-Disposition` "
@@ -397,9 +417,28 @@ public static class GovernedRelayPaHandoverOutputContract
             builder.AppendLine("- Set `implementationAuthorized` true or add `developmentWorkAuthorization` in the Planning Entry profile");
             builder.AppendLine("- Set directive flags to direct implementation or tranche work in the Planning Entry profile");
         }
+        else if (reporting.ResponseProfile == PaHandoverResponseProfile.PlanningDevelopmentWorkAuthorization)
+        {
+            builder.AppendLine("- Set `implementationAuthorized` true or use an implementation-kind `developmentWorkAuthorization` in the Planning DWA profile");
+            builder.AppendLine("- Omit the planning-kind `developmentWorkAuthorization` projection when you deny planning development work authorization");
+        }
 
         builder.AppendLine("- Remove STOP without an explicit governed STOP decision reflected consistently");
     }
+
+    private static string DescribeDwaFieldRequirement(GovernedRelayPaHandoverReportingRequirements reporting) =>
+        reporting.RequiresDevelopmentWorkAuthorizationProjection
+            ? "Yes when implementation authorized"
+            : reporting.RequiresPlanningDevelopmentWorkAuthorizationProjection
+                ? "Yes when planning development work authorized"
+                : "No";
+
+    private static string DescribeDwaFieldRules(GovernedRelayPaHandoverReportingRequirements reporting) =>
+        reporting.RequiresDevelopmentWorkAuthorizationProjection
+            ? "Required when directing implementation work with implementation authorization."
+            : reporting.RequiresPlanningDevelopmentWorkAuthorizationProjection
+                ? "Required with kind **planning** when `planningAuthorized` is true. Must be absent when planning development work is denied."
+                : "Must be absent for Planning Entry profile.";
 
     private static void AppendOutputIsolation(StringBuilder builder)
     {

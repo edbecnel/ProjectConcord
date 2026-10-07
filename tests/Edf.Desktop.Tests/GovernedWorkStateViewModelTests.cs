@@ -3,7 +3,11 @@ using Edf.Application.Projects;
 using Edf.Application.Projects.InMemory;
 using Edf.Application.Relay;
 using Edf.Application.Relay.Serialization;
+using Edf.Application.Tests.Workflow.PlanningAuthorization;
 using Edf.Application.Tests.Workflow.PlanningEntry;
+using Edf.Application.Workflow;
+using Edf.Domain.Relay;
+using Edf.Domain.Workflow;
 using Edf.Application.Workflow.Eligibility;
 using Edf.Domain.Relay;
 using Edf.Domain.Workflow;
@@ -140,6 +144,79 @@ public class GovernedWorkStateViewModelTests
     }
 
     [Fact]
+    public void PlanningGoverned_WithoutPlanningDwa_ShowsObtainAuthorizationAction()
+    {
+        var persistence = new InMemoryUserApplicationStatePersistence();
+        var (workState, projectId) = CreateWorkStateViewModel(persistence);
+        workState.OnActiveProjectChanged(projectId, hasActiveProject: true);
+        ((AsyncRelayCommand)workState.StartGewBootstrapCommand).Execute(null);
+        var workflow = WorkflowApplicationServicesFactory.Create(persistence);
+        var instance = workflow.WorkStateRecovery.RecoverForProject(projectId).ActiveInstances.Single();
+        workflow.WorkflowInstances.RecordGovernedTopologyTransition(
+            instance.InstanceId,
+            TopologyPlaceId.Parse(GewV1TopologyPlaces.PlanningGoverned),
+            instance.ResourceVersion,
+            GovernedWorkflowTransitionAuthority.FromRelayProvenance(
+                GovernedCorrelationId.New(),
+                GovernedPackageId.New()));
+        workState.RefreshFromProjection();
+
+        Assert.True(workState.CanObtainPlanningAuthorization);
+        Assert.Contains("Obtain Planning Authorization", workState.OperatorNextStepSummary ?? string.Empty, StringComparison.Ordinal);
+        Assert.Contains("not currently authorized", workState.OperatorSituationSummary ?? string.Empty, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("implementation authorized", workState.OperatorSituationSummary ?? string.Empty, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task PlanningGoverned_AfterGrant_RecomputesWithoutObtainAction()
+    {
+        var persistence = new InMemoryUserApplicationStatePersistence();
+        var actor = new DegenerateAdministratorActor();
+        var workspace = new ProjectWorkspaceService(
+            new ProjectRootResolver(),
+            actor,
+            persistence,
+            new LocalProjectRuntime());
+        var workflow = WorkflowApplicationServicesFactory.Create(persistence);
+        var dir = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), "edf-mvp1-" + Guid.NewGuid().ToString("N")));
+        var open = workspace.OpenProjectRoot(dir.FullName);
+        Assert.True(open.Success);
+        var projectId = open.ProjectId!.Value;
+
+        var launchAuth = false;
+        var workState = new GovernedWorkStateViewModel(
+            workspace,
+            workflow,
+            null,
+            () => { },
+            () => launchAuth = true);
+        workState.OnActiveProjectChanged(projectId, hasActiveProject: true);
+        ((AsyncRelayCommand)workState.StartGewBootstrapCommand).Execute(null);
+        var instance = workflow.WorkStateRecovery.RecoverForProject(projectId).ActiveInstances.Single();
+        workflow.WorkflowInstances.RecordGovernedTopologyTransition(
+            instance.InstanceId,
+            TopologyPlaceId.Parse(GewV1TopologyPlaces.PlanningGoverned),
+            instance.ResourceVersion,
+            GovernedWorkflowTransitionAuthority.FromRelayProvenance(
+                GovernedCorrelationId.New(),
+                GovernedPackageId.New()));
+        workState.RefreshFromProjection();
+        Assert.True(workState.CanObtainPlanningAuthorization);
+
+        workState.ObtainPlanningAuthorizationCommand.Execute(null);
+        Assert.True(launchAuth);
+
+        var handover = PlanningAuthorizationRelayFixtures.CreateQualifyingPlanningAuthorizationHandover(projectId);
+        workflow.PlanningAuthorizationGrants.TryRecordPlanningAuthorizationGrant(
+            projectId,
+            handover,
+            RelayValidationResult.Valid([]));
+        workState.RefreshFromProjection();
+
+        Assert.False(workState.CanObtainPlanningAuthorization);
+    }
+
+    [Fact]
     public void RelayImport_DoesNotRegress_AndRefreshesWorkStateCallback()
     {
         var persistence = new InMemoryUserApplicationStatePersistence();
@@ -225,9 +302,10 @@ public class GovernedWorkStateViewModelTests
         return (workState, relayRef, open.ProjectId!.Value);
     }
 
-    private static (GovernedWorkStateViewModel Vm, Edf.Domain.Projects.ProjectConcordProjectId ProjectId) CreateWorkStateViewModel()
+    private static (GovernedWorkStateViewModel Vm, Edf.Domain.Projects.ProjectConcordProjectId ProjectId) CreateWorkStateViewModel(
+        InMemoryUserApplicationStatePersistence? persistence = null)
     {
-        var persistence = new InMemoryUserApplicationStatePersistence();
+        persistence ??= new InMemoryUserApplicationStatePersistence();
         var actor = new DegenerateAdministratorActor();
         var workspace = new ProjectWorkspaceService(
             new ProjectRootResolver(),

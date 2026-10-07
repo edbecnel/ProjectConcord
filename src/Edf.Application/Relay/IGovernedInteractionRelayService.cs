@@ -25,7 +25,8 @@ public interface IGovernedInteractionRelayService
         GovernedRelayPackage package,
         RelayValidationResult validation,
         ProjectRoot? projectRootForTier0 = null,
-        string? renderedBodyHash = null);
+        string? renderedBodyHash = null,
+        PaHandoverResponseProfile? paReviewResponseProfile = null);
 
     /// <summary>
     /// Records a consumed package (import path) with validation disposition and provenance events.

@@ -1,23 +1,23 @@
-namespace Edf.Application.Operator.PlanningEntry;
+namespace Edf.Application.Operator.PlanningAuthorization;
 
 using Edf.Application.Relay;
 using Edf.Domain.Projects;
 using Edf.Domain.Relay;
 
-public sealed class PlanningEntryRelayReadModel : IPlanningEntryRelayReadModel
+public sealed class PlanningAuthorizationRelayReadModel : IPlanningAuthorizationRelayReadModel
 {
     private readonly IRelayOperationalStore _store;
 
-    public PlanningEntryRelayReadModel(IRelayOperationalStore store)
+    public PlanningAuthorizationRelayReadModel(IRelayOperationalStore store)
     {
         _store = store ?? throw new ArgumentNullException(nameof(store));
     }
 
-    public PlanningEntryRelayReadModelSnapshot Resolve(ProjectConcordProjectId projectId)
+    public PlanningAuthorizationRelayReadModelSnapshot Resolve(ProjectConcordProjectId projectId)
     {
         var events = _store.ListProvenanceEvents(projectId);
-        PlanningEntryRelayHandoverSnapshot? latestConsumed = null;
-        PlanningEntryRelayHandoverSnapshot? latestReview = null;
+        PlanningAuthorizationRelayHandoverSnapshot? latestConsumed = null;
+        PlanningAuthorizationRelayHandoverSnapshot? latestReview = null;
 
         for (var i = events.Count - 1; i >= 0; i--)
         {
@@ -43,7 +43,7 @@ public sealed class PlanningEntryRelayReadModel : IPlanningEntryRelayReadModel
             if (evt.EventType == RelayProvenanceEventType.PackageProduced
                 && persisted.Package.Kind == GovernedPackageKind.PaReviewExport
                 && latestReview is null
-                && IsPlanningEntryReviewExport(evt, persisted.Package))
+                && IsPlanningAuthorizationReviewExport(evt, persisted.Package))
             {
                 latestReview = ToSnapshot(persisted);
             }
@@ -54,15 +54,15 @@ public sealed class PlanningEntryRelayReadModel : IPlanningEntryRelayReadModel
             }
         }
 
-        return new PlanningEntryRelayReadModelSnapshot(latestConsumed, latestReview);
+        return new PlanningAuthorizationRelayReadModelSnapshot(latestConsumed, latestReview);
     }
 
-    private static bool IsPlanningEntryReviewExport(
+    private static bool IsPlanningAuthorizationReviewExport(
         RelayProvenanceEvent packageProducedEvent,
         GovernedRelayPackage package)
     {
-        var profile = RelayPaReviewExportProvenance.TryReadProfile(packageProducedEvent);
-        if (profile == PaHandoverResponseProfile.PlanningDevelopmentWorkAuthorization)
+        if (RelayPaReviewExportProvenance.TryReadProfile(packageProducedEvent)
+            != PaHandoverResponseProfile.PlanningDevelopmentWorkAuthorization)
         {
             return false;
         }
@@ -75,7 +75,7 @@ public sealed class PlanningEntryRelayReadModel : IPlanningEntryRelayReadModel
                && !gc.DirectiveFlags.DirectsTrancheWork;
     }
 
-    private static PlanningEntryRelayHandoverSnapshot ToSnapshot(PersistedGovernedRelayPackage persisted) =>
+    private static PlanningAuthorizationRelayHandoverSnapshot ToSnapshot(PersistedGovernedRelayPackage persisted) =>
         new(persisted.Package, ToValidationResult(persisted));
 
     private static RelayValidationResult ToValidationResult(PersistedGovernedRelayPackage persisted) =>

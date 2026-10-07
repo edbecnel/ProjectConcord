@@ -1,7 +1,5 @@
 using Edf.Application.Relay;
 using Edf.Domain.Relay;
-using Edf.Desktop.ViewModels;
-using System.Reflection;
 
 namespace Edf.Desktop.Tests;
 
@@ -18,14 +16,15 @@ public class PlanningEntryGuidedImportFailureMessageTests
                 RelayValidationDiagnosticSeverity.Malformed),
         ]);
 
-        var message = InvokeComposeImportFailureOperatorMessage(validation);
+        var message = GovernedRelayManualPasteOperatorMessages.ComposeImportFailureOperatorMessage(validation);
 
         Assert.Contains("governance information is inconsistent", message, StringComparison.OrdinalIgnoreCase);
         Assert.DoesNotContain("outer plain-text", message, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("backtick", message, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]
-    public void ManualPasteFailure_UsesTransportRecopyGuidance()
+    public void ManualPasteFailure_UsesEntireReplyGuidance()
     {
         var validation = RelayValidationResult.RejectedMalformed(
         [
@@ -35,18 +34,24 @@ public class PlanningEntryGuidedImportFailureMessageTests
                 RelayValidationDiagnosticSeverity.Malformed),
         ]);
 
-        var message = InvokeComposeImportFailureOperatorMessage(validation);
+        var message = GovernedRelayManualPasteOperatorMessages.ComposeImportFailureOperatorMessage(validation);
 
-        Assert.Contains("complete", message, StringComparison.OrdinalIgnoreCase);
-        Assert.Contains("not JSON alone", message, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("entire reply", message, StringComparison.OrdinalIgnoreCase);
+        Assert.DoesNotContain("backtick", message, StringComparison.OrdinalIgnoreCase);
     }
 
-    private static string InvokeComposeImportFailureOperatorMessage(RelayValidationResult validation)
+    [Fact]
+    public void AmbiguousPaste_UsesSingleResponseGuidance()
     {
-        var method = typeof(PlanningEntryGuidedExchangeViewModel).GetMethod(
-            "ComposeImportFailureOperatorMessage",
-            BindingFlags.NonPublic | BindingFlags.Static);
-        Assert.NotNull(method);
-        return (string)method!.Invoke(null, [validation])!;
+        var validation = RelayValidationResult.RejectedMalformed(
+        [
+            new RelayValidationDiagnostic(
+                RelayValidationCodes.ManualPasteRenderMarkerAmbiguous,
+                "Multiple markers.",
+                RelayValidationDiagnosticSeverity.Malformed),
+        ]);
+
+        var message = GovernedRelayManualPasteOperatorMessages.ComposeImportFailureOperatorMessage(validation);
+        Assert.Contains("more than one", message, StringComparison.OrdinalIgnoreCase);
     }
 }

@@ -131,7 +131,7 @@ public class GovernedRelayManualPasteDocumentNormalizerTests
     }
 
     [Fact]
-    public void NestedCompetingOuterWrappers_AreRejected()
+    public void NestedCompetingOuterWrappers_AreToleratedWhenSingleArtifact()
     {
         var canonical = LoadMvr0005PlanningEntryFixture();
         var doubleWrapped = GovernedRelayManualPasteCopyFence.WrapForManualCopy(
@@ -139,7 +139,7 @@ public class GovernedRelayManualPasteDocumentNormalizerTests
 
         var result = _paAdapter.TryParsePaHandoverImport(doubleWrapped);
 
-        Assert.NotEqual(RelayValidationState.Valid, result.Validation.State);
+        Assert.Equal(RelayValidationState.Valid, result.Validation.State);
     }
 
     [Fact]

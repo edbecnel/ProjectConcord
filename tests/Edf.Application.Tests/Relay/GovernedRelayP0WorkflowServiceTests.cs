@@ -15,7 +15,7 @@ public class GovernedRelayP0WorkflowServiceTests
     [Fact]
     public void GeneratePaReviewExport_RequiresExplicitSessionIntents()
     {
-        var (service, projectId, root) = CreateService();
+        var (service, projectId, root, _) = CreateService();
         var result = service.GeneratePaReviewExport(
             projectId,
             root,
@@ -28,7 +28,7 @@ public class GovernedRelayP0WorkflowServiceTests
     [Fact]
     public void GeneratePaReviewExport_WithSessions_RendersValidPackage()
     {
-        var (service, projectId, root) = CreateService();
+        var (service, projectId, root, _) = CreateService();
         service.SetProjectArchitectSessionIntent(projectId, AgentSessionIntent.New);
         service.SetEngineeringAgentSessionIntent(projectId, AgentSessionIntent.Continue);
 
@@ -44,7 +44,63 @@ public class GovernedRelayP0WorkflowServiceTests
         Assert.Contains("PLANNING ENTRY", result.RenderedPackage, StringComparison.Ordinal);
     }
 
-    private static (IGovernedRelayP0WorkflowService Service, ProjectConcordProjectId ProjectId, ProjectRoot Root) CreateService()
+    [Fact]
+    public void GeneratePaReviewExport_PlanningDevelopmentWorkAuthorization_WithSessions_RendersValidPackage()
+    {
+        var (service, projectId, root, _) = CreateService();
+        service.SetProjectArchitectSessionIntent(projectId, AgentSessionIntent.New);
+        service.SetEngineeringAgentSessionIntent(projectId, AgentSessionIntent.Continue);
+
+        var result = service.GeneratePaReviewExport(
+            projectId,
+            root,
+            new RelayPaReviewExportOptions(
+                EngineeringAgentMode.Plan,
+                null,
+                PaHandoverResponseProfile.PlanningDevelopmentWorkAuthorization));
+
+        Assert.Equal(RelayValidationState.Valid, result.Validation.State);
+        Assert.NotNull(result.RenderedPackage);
+        Assert.Contains(
+            "PLANNING DEVELOPMENT WORK AUTHORIZATION",
+            result.RenderedPackage,
+            StringComparison.Ordinal);
+        Assert.NotNull(result.PackageId);
+    }
+
+    [Fact]
+    public void GeneratePaReviewExport_PlanningDevelopmentWorkAuthorization_RecordsProfileProvenance_AndValidGovernance()
+    {
+        var (service, projectId, root, persistence) = CreateService();
+        service.SetProjectArchitectSessionIntent(projectId, AgentSessionIntent.New);
+        service.SetEngineeringAgentSessionIntent(projectId, AgentSessionIntent.Continue);
+
+        var result = service.GeneratePaReviewExport(
+            projectId,
+            root,
+            new RelayPaReviewExportOptions(
+                EngineeringAgentMode.Plan,
+                null,
+                PaHandoverResponseProfile.PlanningDevelopmentWorkAuthorization));
+
+        Assert.NotNull(result.PackageId);
+        var persisted = persistence.RelayOperational.GetPackage(result.PackageId.Value);
+        Assert.NotNull(persisted);
+        Assert.False(persisted!.Package.GovernanceCritical.AuthorizationDispositionPresent);
+
+        var produced = persistence.RelayOperational
+            .ListProvenanceEvents(projectId)
+            .Last(e => e.EventType == RelayProvenanceEventType.PackageProduced);
+        Assert.Equal(
+            PaHandoverResponseProfile.PlanningDevelopmentWorkAuthorization,
+            RelayPaReviewExportProvenance.TryReadProfile(produced));
+    }
+
+    private static (
+        IGovernedRelayP0WorkflowService Service,
+        ProjectConcordProjectId ProjectId,
+        ProjectRoot Root,
+        InMemoryUserApplicationStatePersistence Persistence) CreateService()
     {
         var persistence = new InMemoryUserApplicationStatePersistence();
         var service = GovernedRelayP0WorkflowService.Create(persistence);
@@ -57,6 +113,6 @@ public class GovernedRelayP0WorkflowServiceTests
         var dir = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), "edf-t7-app-" + Guid.NewGuid().ToString("N")));
         var open = workspace.OpenProjectRoot(dir.FullName);
         Assert.True(open.Success);
-        return (service, open.ProjectId!.Value, open.Root!);
+        return (service, open.ProjectId!.Value, open.Root!, persistence);
     }
 }

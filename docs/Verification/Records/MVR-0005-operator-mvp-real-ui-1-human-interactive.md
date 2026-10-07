@@ -214,7 +214,7 @@ Record observed failure and **STOP** further MVTs on the affected path when:
 
   **Expected result:** All applicable items (A–G) hold for observed state.
 
-  **Observed result:** _[operator notes per item A–G]_
+  **Observed result (2026-10-06, paused — handover `5adbfdf3`):** Operator understood DWA was required but could not determine the expected next action from Current Work alone: *"The problem I have is that although it says 'Development work authorization required'. I have no idea what is expected of me to do next."* Formal A–G checklist **not completed**; execution **paused** for Engineering remediation (handover `89626783`). **Remediation implemented (unpublished):** Current Work **Obtain Planning Authorization** + guided exchange recording durable Planning DWA — **human MVT-5 retest pending**.
 
   **Result:** Pending / Pass / Fail / Blocked
 
@@ -403,10 +403,10 @@ _Human execution began 2026-10-06. MVT-1 through MVT-4 **Pass** (MVT-4 initial F
 
 | Field | Value |
 |---|---|
-| **Result** | Pending |
+| **Result** | **Pending** (human retest after remediation `89626783`) |
 | **Executor** | |
 | **Date** | |
-| **Evidence** | |
+| **Evidence** | **Paused observation (2026-10-06):** blocker understood; next action not — quote preserved in procedure section. **Remediation identity:** Engineering handover `89626783` (guided Planning DWA path; PA profile `PlanningDevelopmentWorkAuthorization`). |
 | **Evidence provenance** | Human interactive observation |
 
 ^mvt-5-record
@@ -524,6 +524,9 @@ Per PA disposition: per-instance Waiting On grouping, Attention strip, `Operator
 - **Governance projection mismatch (2026-10-06, MVT-4 retry evidence):** Complete single-copy PA artifact pasted successfully; PA followed ProjectConcord-generated `pa-handover-response/v1` contract using **Yes**/**No** on Authorization-Disposition lines as contract prose instructed. Importer `ParseBool` treated **Yes** as false while machine JSON had `planningAuthorized: true` → `relay.structural.governance_projection.mismatch`; topology transition correctly blocked. Guided UI initially advised recopying complete artifact. **Bounded correction** (handover `b14b962e`): parser accepts `true`/`false`/`yes`/`no` fail-closed; new contracts instruct `true`/`false` only; guided message distinguishes mismatch from transport failures. Human re-verification **completed** (handover `65bf171e`; final Pass).
 - **Operator rejection of static Exchange (2026-10-06):** Operator stated the Project Architect Exchange surface must be a **wizard-type explicit flow**, not a static control panel with buttons and edit boxes. MVT-4 human retry **paused** (handover `45e7222c`, implementation `1e8f2e34`) pending purpose-built **Planning Entry guided exchange**.
 - **MVT-4 final human Pass (2026-10-06):** Sequence per handover `65bf171e`: Intake → guided Planning Entry → PA review copy → complete one-paste artifact → initial Yes/No mismatch (`relay.structural.governance_projection.mismatch`) → correction → new PA response with `true`/`false` → validate → decision review → explicit Enter Governed Planning → Governed Planning completion → Current Work post-state (DWA waiting, no implementation auth). Operator comprehension judgment: **Yes**.
+- **MVT-5 paused (2026-10-06, handover `5adbfdf3`):** At Governed Planning with Planning DWA absent, operator could not determine expected next action despite "Development work authorization required" — see MVT-5 procedure **Observed result**. PLAN investigation `5adbfdf3`; implementation remediation `89626783` (unpublished at record edit time). Real GEW `…8f396384` reserved for post-remediation human retest; automated development used disposable fixtures only.
+- **MVT-5 human retest (2026-10-06):** Current Work **Obtain Planning Authorization** path judged clear by operator (positive evidence preserved). Guided **Prepare Review** failed with *"The review could not be prepared."* at Step 1/4 — PLAN `45c28c98` root cause: invalid `authorizationDispositionPresent` on `PaReviewExport`; bounded correction `24e9a81f` (unpublished). MVT-5 remains **Pending** pending human retest after correction.
+- **MVT-5 human retest (2026-10-07, continued):** After `24e9a81f`, **Prepare Review** succeeded; **Copy Review** succeeded (`packageId` `d3eed858-74c3-44e8-a698-b1a895a1eefc`, profile **PLANNING DEVELOPMENT WORK AUTHORIZATION**). At Step 3 **Validate PA Response**, operator pasted a normal Project Architect copy and received *"ProjectConcord could not read a complete Project Architect response…"* — operator report **"Failure!"**; Planning DWA **not** recorded. PLAN `6c48a24d` / implementation handover `67f59131`: presentation brittleness at shared manual AI-response ingestion boundary; **tolerant reader** corrective implementation (unpublished). **Automated validation (same tranche, unpublished):** `Edf.ProjectServices.Tests` 62, `Edf.Application.Tests` 373, `Edf.Desktop.Tests` 30 — **465 passed**, 0 failed. MVT-5 remains **Pending** for human retest after correction (tolerant reader not yet human-verified).
 
 ---
 

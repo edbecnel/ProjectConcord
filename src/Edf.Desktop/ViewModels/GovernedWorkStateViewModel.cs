@@ -6,6 +6,7 @@ using Edf.Application.Projects;
 using Edf.Application.Relay;
 using Edf.Application.Workflow;
 using Edf.Application.Workflow.Eligibility;
+using Edf.Application.Operator.PlanningAuthorization;
 using Edf.Application.Operator.PlanningEntry;
 using Edf.Application.Workflow.PlanningEntry;
 using Edf.Domain.Projects;
@@ -23,6 +24,7 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
     private readonly IPlanningEntryRelayReadModel _planningEntryRelayReadModel;
     private readonly Func<(GovernedRelayPackage? Package, RelayValidationResult? Validation)>? _consumedPaHandoverProvider;
     private readonly Action? _launchPlanningEntryGuidedExchange;
+    private readonly Action? _launchPlanningAuthorizationGuidedExchange;
     private bool _isSectionEnabled;
     private string? _statusMessage;
     private string? _fullyGovernedFrontierLine;
@@ -35,7 +37,9 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
     private bool _suppressGenericNextStepSummary;
     private bool _canOpenExchange;
     private bool _canEnterGovernedPlanning;
+    private bool _canObtainPlanningAuthorization;
     private string? _planningEntryActionExplanation;
+    private string? _planningAuthorizationActionExplanation;
 
     public GovernedWorkStateViewModel(
         IProjectWorkspaceService workspace,
@@ -48,7 +52,8 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
         IProjectWorkspaceService workspace,
         WorkflowApplicationServices workflowServices,
         Func<(GovernedRelayPackage? Package, RelayValidationResult? Validation)>? consumedPaHandoverProvider,
-        Action? openExchangeTab)
+        Action? openExchangeTab,
+        Action? openPlanningAuthorizationExchange = null)
     {
         _workspace = workspace ?? throw new ArgumentNullException(nameof(workspace));
         ArgumentNullException.ThrowIfNull(workflowServices);
@@ -58,6 +63,7 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
         _planningEntryRelayReadModel = workflowServices.PlanningEntryRelayReadModel;
         _consumedPaHandoverProvider = consumedPaHandoverProvider;
         _launchPlanningEntryGuidedExchange = openExchangeTab;
+        _launchPlanningAuthorizationGuidedExchange = openPlanningAuthorizationExchange;
 
         CurrentWorkItems = new ObservableCollection<GovernedWorkStateCurrentWorkItemViewModel>();
         WaitingOnItems = new ObservableCollection<GovernedWorkStateWaitingOnItemViewModel>();
@@ -66,6 +72,9 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
         StartGewBootstrapCommand = new AsyncRelayCommand(StartGewBootstrapAsync, () => CanStartGewBootstrap);
         OpenExchangeCommand = new RelayCommand(OpenExchange, () => CanOpenExchange);
         EnterGovernedPlanningCommand = new AsyncRelayCommand(EnterGovernedPlanningAsync, () => CanEnterGovernedPlanning);
+        ObtainPlanningAuthorizationCommand = new RelayCommand(
+            OpenPlanningAuthorizationExchange,
+            () => CanObtainPlanningAuthorization);
     }
 
     public ObservableCollection<GovernedWorkStateCurrentWorkItemViewModel> CurrentWorkItems { get; }
@@ -79,6 +88,8 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
     public ICommand OpenExchangeCommand { get; }
 
     public ICommand EnterGovernedPlanningCommand { get; }
+
+    public ICommand ObtainPlanningAuthorizationCommand { get; }
 
     public bool SuppressGenericNextStepSummary
     {
@@ -114,6 +125,24 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
     {
         get => _planningEntryActionExplanation;
         private set => SetProperty(ref _planningEntryActionExplanation, value);
+    }
+
+    public bool CanObtainPlanningAuthorization
+    {
+        get => _canObtainPlanningAuthorization;
+        private set
+        {
+            if (SetProperty(ref _canObtainPlanningAuthorization, value))
+            {
+                (ObtainPlanningAuthorizationCommand as RelayCommand)?.RaiseCanExecuteChanged();
+            }
+        }
+    }
+
+    public string? PlanningAuthorizationActionExplanation
+    {
+        get => _planningAuthorizationActionExplanation;
+        private set => SetProperty(ref _planningAuthorizationActionExplanation, value);
     }
 
     public string BoundaryNotice =>
@@ -216,7 +245,9 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
         SuppressGenericNextStepSummary = false;
         CanOpenExchange = false;
         CanEnterGovernedPlanning = false;
+        CanObtainPlanningAuthorization = false;
         PlanningEntryActionExplanation = null;
+        PlanningAuthorizationActionExplanation = null;
 
         if (!IsSectionEnabled || _workspace.CurrentProjectId is not { } projectId)
         {
@@ -276,7 +307,7 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
             OperatorNextStepSummary = GovernedWorkStatePresentation.ComposeNextStepOperatorSummary(primaryNextAction);
         }
 
-        ApplyPlanningEntryOperatorPresentation(projectId, projection);
+        ApplyPlanningEntryOperatorPresentation(projectId, projection, primaryNextAction);
 
         RaisePropertyChanged(nameof(HasCurrentWorkItems));
         RaisePropertyChanged(nameof(HasWaitingOnItems));
@@ -286,11 +317,13 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
         (StartGewBootstrapCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
         (OpenExchangeCommand as RelayCommand)?.RaiseCanExecuteChanged();
         (EnterGovernedPlanningCommand as AsyncRelayCommand)?.RaiseCanExecuteChanged();
+        (ObtainPlanningAuthorizationCommand as RelayCommand)?.RaiseCanExecuteChanged();
     }
 
     private void ApplyPlanningEntryOperatorPresentation(
         ProjectConcordProjectId projectId,
-        GovernedWorkStateOperatorProjection projection)
+        GovernedWorkStateOperatorProjection projection,
+        WorkflowOperatorNextActionItem? primaryNextAction)
     {
         if (CurrentWorkItems.Count != 1)
         {
@@ -303,9 +336,26 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
         if (place == GewV1TopologyPlaces.PlanningGoverned)
         {
             OperatorSituationHeadline = "Where you are: Governed Planning";
-            OperatorSituationSummary = GovernedWorkStatePresentation.ComposeGovernedPlanningEnteredSummary(primaryItem);
-            SuppressGenericNextStepSummary = true;
-            OperatorNextStepSummary = null;
+            OperatorSituationSummary = GovernedWorkStatePresentation.ComposeGovernedPlanningSituationSummary(primaryItem);
+            var needsPlanningDwa = PlanningAuthorizationWorkStateFacts.InstanceNeedsPlanningDevelopmentWorkAuthorization(
+                projection);
+            if (needsPlanningDwa)
+            {
+                SuppressGenericNextStepSummary = true;
+                OperatorNextStepSummary = GovernedWorkStatePresentation.ComposeObtainPlanningAuthorizationNextStepSummary();
+                CanObtainPlanningAuthorization = true;
+                PlanningAuthorizationActionExplanation =
+                    "Start here to complete the governed authorization steps in ProjectConcord.";
+            }
+            else
+            {
+                SuppressGenericNextStepSummary = false;
+                if (primaryNextAction is not null)
+                {
+                    OperatorNextStepSummary = GovernedWorkStatePresentation.ComposeNextStepOperatorSummary(primaryNextAction);
+                }
+            }
+
             return;
         }
 
@@ -339,6 +389,11 @@ public sealed class GovernedWorkStateViewModel : ViewModelBase
     private void OpenExchange()
     {
         _launchPlanningEntryGuidedExchange?.Invoke();
+    }
+
+    private void OpenPlanningAuthorizationExchange()
+    {
+        _launchPlanningAuthorizationGuidedExchange?.Invoke();
     }
 
     private async Task EnterGovernedPlanningAsync()

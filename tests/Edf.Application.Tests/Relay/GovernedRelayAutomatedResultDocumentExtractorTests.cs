@@ -138,11 +138,11 @@ public class GovernedRelayAutomatedResultDocumentExtractorTests
     }
 
     [Fact]
-    public void ManualBridge_EnvelopeWithoutExtraction_StillRejected()
+    public void ManualBridge_MidLineEnvelope_IsToleratedBySharedManualPasteReader()
     {
         var doc = RenderValidEngineeringResult();
         var raw = BuildMidLineEnvelope(doc);
-        Assert.Equal(RelayValidationState.RejectedMalformed, _bridge.TryParseEngineeringResult(raw).Validation.State);
+        Assert.Equal(RelayValidationState.Valid, _bridge.TryParseEngineeringResult(raw).Validation.State);
     }
 
     [Fact]

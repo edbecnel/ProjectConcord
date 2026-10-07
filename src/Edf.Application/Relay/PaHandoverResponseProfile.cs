@@ -7,4 +7,5 @@ public enum PaHandoverResponseProfile
 {
     PlanningEntry = 0,
     ImplementationDirected = 1,
+    PlanningDevelopmentWorkAuthorization = 2,
 }

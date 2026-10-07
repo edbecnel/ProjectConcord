@@ -12,6 +12,7 @@ public sealed record GovernedRelayPaHandoverReportingRequirements(
     bool DirectsImplementationWork,
     bool DirectsTrancheWork,
     bool RequiresDevelopmentWorkAuthorizationProjection,
+    bool RequiresPlanningDevelopmentWorkAuthorizationProjection,
     bool PlanningAuthorizedFixed,
     bool? PlanningAuthorizedFixedValue,
     bool ImplementationAuthorizedFixed,
@@ -22,6 +23,7 @@ public sealed record GovernedRelayPaHandoverReportingRequirements(
         {
             PaHandoverResponseProfile.PlanningEntry => PlanningEntry,
             PaHandoverResponseProfile.ImplementationDirected => ImplementationDirected,
+            PaHandoverResponseProfile.PlanningDevelopmentWorkAuthorization => PlanningDevelopmentWorkAuthorization,
             _ => PlanningEntry,
         };
 
@@ -36,6 +38,7 @@ public sealed record GovernedRelayPaHandoverReportingRequirements(
             DirectsImplementationWork: false,
             DirectsTrancheWork: false,
             RequiresDevelopmentWorkAuthorizationProjection: false,
+            RequiresPlanningDevelopmentWorkAuthorizationProjection: false,
             PlanningAuthorizedFixed: false,
             PlanningAuthorizedFixedValue: null,
             ImplementationAuthorizedFixed: true,
@@ -52,8 +55,26 @@ public sealed record GovernedRelayPaHandoverReportingRequirements(
             DirectsImplementationWork: true,
             DirectsTrancheWork: true,
             RequiresDevelopmentWorkAuthorizationProjection: true,
+            RequiresPlanningDevelopmentWorkAuthorizationProjection: false,
             PlanningAuthorizedFixed: false,
             PlanningAuthorizedFixedValue: null,
             ImplementationAuthorizedFixed: false,
             ImplementationAuthorizedFixedValue: null);
+
+    /// <summary>
+    /// Planning-governed region: grant durable Planning DevelopmentWorkAuthorization (not topology entry; not implementation).
+    /// </summary>
+    public static GovernedRelayPaHandoverReportingRequirements PlanningDevelopmentWorkAuthorization =>
+        new(
+            PaHandoverResponseProfile.PlanningDevelopmentWorkAuthorization,
+            AuthorizationDispositionPresent: true,
+            WorkContextPresent: false,
+            DirectsImplementationWork: false,
+            DirectsTrancheWork: false,
+            RequiresDevelopmentWorkAuthorizationProjection: false,
+            RequiresPlanningDevelopmentWorkAuthorizationProjection: true,
+            PlanningAuthorizedFixed: false,
+            PlanningAuthorizedFixedValue: null,
+            ImplementationAuthorizedFixed: true,
+            ImplementationAuthorizedFixedValue: false);
 }

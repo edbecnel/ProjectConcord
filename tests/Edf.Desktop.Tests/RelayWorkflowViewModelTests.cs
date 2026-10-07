@@ -125,7 +125,10 @@ public class RelayWorkflowViewModelTests
         ((AsyncRelayCommand)vm.ImportPaHandoverCommand).Execute(null);
 
         Assert.Contains("RejectedMalformed", vm.PaImportValidationSummary, StringComparison.Ordinal);
-        Assert.Contains(RelayValidationCodes.ManualPasteMachineBlockMissing, vm.PaImportValidationSummary, StringComparison.Ordinal);
+        Assert.True(
+            vm.PaImportValidationSummary.Contains(RelayValidationCodes.ManualPasteMachineBlockMissing, StringComparison.Ordinal)
+            || vm.PaImportValidationSummary.Contains(RelayValidationCodes.ManualPasteIncomplete, StringComparison.Ordinal),
+            vm.PaImportValidationSummary);
         Assert.False(vm.CanPrepareEngineeringHandover);
         Assert.NotEmpty(vm.Diagnostics);
         Assert.Contains(RelayValidationCodes.ManualPasteMachineBlockMissing, vm.Diagnostics[0], StringComparison.Ordinal);
