@@ -69,6 +69,8 @@ The P0 long vertically scrollable relay panel is **not** an acceptable target pr
 
 **Future capability:** An operator-visible **Hierarchical Workflow View** that helps users navigate **WorkflowInstances** and their **governed relationships** that arose during engineering work (conceptual example: A → B → D and A → C). The view **may** surface origin/discovery links, blocking dependencies, **Satisfied** / **Released** dependency history, lifecycle/topology state, and later relationship kinds.
 
+**Expanded continuity scope (2026-10-07):** Subject-matter continuity, human-readable governed AI communication views, recovery-oriented work continuity, and side-panel **Workflow Navigator** product direction are captured in [AWI-0013](AWI-0013-Governed-Work-Continuity-Human-Readable-AI-Views-and-Hierarchical-Workflow-Navigator.md) — **extends** this §B.1 without replacing it.
+
 **Authoritative model vs visualization:**
 
 ```text
